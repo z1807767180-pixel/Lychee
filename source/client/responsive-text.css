@@ -1,0 +1,27 @@
+/* The empty room and the host availability line are notices, outside the message rows. */
+.garden-app .room-log > .room-empty,
+.garden-app .soup-room > small[role="status"] {
+  box-sizing: border-box;
+  inline-size: fit-content;
+  max-inline-size: calc(100% - 1rem);
+  min-inline-size: 0;
+  margin-inline: auto;
+  padding: .32em .8em;
+  font-size: clamp(.9375rem, calc(.86rem + .45vw), 1.125rem);
+  font-weight: 500;
+  line-height: 1.55;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.garden-app .soup-room > small[role="status"] {
+  flex: 0 0 auto;
+  margin-block: .25rem;
+}
+
+.garden-app .room-empty > span {
+  display: inline-block;
+  max-inline-size: 100%;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "lychee-android-pilot",
+  "version": "6.4.7",
+  "private": true,
+  "engines": {"node": ">=22"},
+  "dependencies": {"@capacitor/android": "8.6.1", "@capacitor/core": "8.6.1"},
+  "devDependencies": {"@capacitor/cli": "8.6.1"}
+}

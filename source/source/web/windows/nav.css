@@ -1,0 +1,15 @@
+html[data-windows-workspace] .windows-nav {display:none}
+@media (min-width:760px) {
+  html[data-windows-workspace] .windows-nav {
+    display:block; background:#faf4e8; color:#314b3c; border-right:1px solid #decfb4;
+  }
+  html[data-windows-workspace] .windows-nav section {margin:0 0 18px;padding:0;border:0;background:transparent}
+  html[data-windows-workspace] .windows-nav h2 {margin:0 0 4px;font:700 13px/1.6 system-ui,sans-serif;color:#775b40}
+  html[data-windows-workspace] .windows-nav button {
+    display:block;width:100%;padding:6px 10px;border:0;border-radius:6px;text-align:left;
+    background:transparent;color:inherit;cursor:pointer;font:500 14px/1.4 system-ui,sans-serif;
+  }
+  html[data-windows-workspace] .windows-nav button:hover,
+  html[data-windows-workspace] .windows-nav button[aria-current=page] {background:#e7eadc;color:#284731}
+  html[data-windows-workspace] .windows-nav button:focus-visible {outline:2px solid #875440;outline-offset:-2px}
+}

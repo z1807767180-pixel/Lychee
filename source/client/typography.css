@@ -1,0 +1,46 @@
+@font-face {
+  font-family: "LXGW 975 Yuan SC";
+  src: url("./fonts/LXGW975YuanSC-500W.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 599;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LXGW 975 Yuan SC";
+  src: url("./fonts/LXGW975YuanSC-700W.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+}
+:root {
+  --lychee-ui-font: "LXGW 975 Yuan SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+/* The original skins and components set their own font shorthands. Keep their
+   sizes, spacing and weights, while sharing one family across both clients. */
+html[data-phone],
+html[data-phone] body,
+html[data-phone] body :where(*):not(:is(svg,svg *,code,pre,kbd,samp)) {
+  font-family: var(--lychee-ui-font) !important;
+}
+html[data-phone] :is(input,textarea)::placeholder {
+  font-family: var(--lychee-ui-font);
+}
+.garden-app[data-skin] .mine .profile-id {
+  grid-template-columns: clamp(64px, 19vw, 96px) minmax(0, 1fr) max-content;
+  column-gap: clamp(8px, 2.4vw, 15px);
+}
+.garden-app[data-skin] .mine .profile-id::after {content: none;}
+.profile-id .profile-edit-label {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: center;
+  padding: 5px 10px;
+  border: 1px solid #d3c5a5;
+  border-radius: 1em;
+  color: #355d47;
+  background: #fffbefed;
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 500;
+  line-height: 1.45;
+  white-space: nowrap;
+}

@@ -1,0 +1,181 @@
+.garden-app .orchard-ledger{padding:14px 18px 28px;color:var(--ink);font:16px/1.45 -apple-system,"PingFang SC",sans-serif}
+.orchard-ledger .ledger-header{display:flex;flex-direction:column;justify-content:center;min-height:145px}
+.garden-app[data-skin=orchard] .ledger-header{background:url('/mobile/ledger-stall.webp') right center/auto 100% no-repeat}
+.ledger-header h2,.orchard-ledger h3{margin:0 0 6px}.ledger-header strong{align-self:flex-start;font:650 clamp(35px,10vw,52px)/1.2 Georgia,serif;color:var(--accent);background:var(--paper)}
+.ledger-actions,.ledger-field,.ledger-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.ledger-actions{margin:12px 0 20px}.ledger-actions input,.ledger-actions button{min-height:42px;width:auto;max-width:54%;padding:5px 10px}.orchard-ledger h3{font-size:16px;margin-top:18px}
+.garden-app .ledger-row{width:100%;padding:8px 0;min-height:52px;border:0;border-top:1px solid var(--rim);border-radius:0;background:transparent;text-align:left;color:var(--ink)}
+.ledger-row img,.ledger-cats img{object-fit:contain;mix-blend-mode:multiply}.ledger-row img,.other-icon{width:38px;height:36px}.other-icon{display:grid;place-items:center;color:var(--accent)}.ledger-row span{overflow-wrap:anywhere}.ledger-row b{margin-left:auto;color:var(--accent);font-variant-numeric:tabular-nums}
+.orchard-ledger form{width:100%}.orchard-ledger fieldset{border:none;margin:0;padding:0;min-width:0}.orchard-ledger.editor h2{font:700 30px/1.2 var(--skin-font);margin:8px 0 14px}
+.garden-app .orchard-ledger .ledger-amount{border:1px solid var(--rim);border-radius:15px;display:flex;justify-content:center;align-items:center;font-size:32px;color:var(--accent)}
+.garden-app .ledger-amount input{width:7ch;text-align:center;background:transparent;border:0;padding:0;color:inherit;font-size:38px;font-weight:650}
+.ledger-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0}.garden-app .ledger-cats button{padding:4px 0;background:transparent;border:1px solid transparent;color:var(--ink)}
+.ledger-cats img{display:block;width:47px;height:40px;margin:auto}.garden-app .ledger-cats [aria-pressed=true]{background:var(--blush);border:1px solid var(--accent);border-radius:12px}
+.ledger-field{min-height:44px;border-bottom:1px solid var(--rim)}.garden-app .ledger-field input{min-width:0;max-width:65%;background:transparent;text-align:right;border:0;font-size:16px}
+.ledger-keys{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:12px 0}.garden-app .ledger-keys button{background:var(--surface);border:1px solid var(--rim);min-height:43px;border-radius:10px;font-size:22px;color:var(--ink)}
+.ledger-save{width:100%;min-height:46px}.orchard-ledger [role=alert]{color:var(--accent)}
+.garden-app[data-skin=orchard] .focus-dial{width:min(100%,50dvh,410px);background:url('/mobile/ledger-clock.webp') center/100% 100% no-repeat;clip-path:polygon(1% 8%,36% 8%,39% 0,100% 0,100% 100%,1% 100%);margin:8px auto 14px}
+.garden-app[data-skin=orchard] .focus-dial>.dial-center,.garden-app[data-skin=orchard] .focus-dial>svg{inset:23.6% auto auto 19.4%;width:59.2%;height:54.5%;border-radius:50%}
+.garden-app[data-skin=orchard] .focus-dial .dial-center{background:radial-gradient(ellipse,#fff7e6,#f7ead1);border:2px solid #b99965}
+.garden-app[data-skin=orchard] .focus-dial>svg{z-index:1;pointer-events:none}.garden-app[data-skin=orchard] .dial-center img{display:none}.garden-app[data-skin=orchard] .dial-center .timer{color:#a2351e;font:720 clamp(32px,9vw,48px)/1.2 -apple-system,sans-serif}
+.garden-app[data-skin=orchard] .focus-page .pills{gap:0;border:1px solid var(--rim);border-radius:18px;overflow:hidden}
+.garden-app[data-skin=orchard] .focus-page .pills button[aria-pressed=true]{background:var(--accent);color:var(--surface)}
+.garden-app[data-skin=orchard]:has(.gomoku)>.appbar{height:clamp(72px,15dvh,135px);background:var(--paper) url('/mobile/gomoku-court.webp') center/100% 100% no-repeat}.garden-app[data-skin=orchard]:has(.gomoku)>.appbar h1{opacity:0}
+.garden-app .gomoku{overflow-y:auto;font:15px/1.3 -apple-system,sans-serif}.garden-app .gomoku .board-area{container-type:normal;flex:0 0 auto;min-height:auto;padding:4px 8px}
+.garden-app .gomoku .gomoku-board{width:min(100%,50dvh,490px);border:4px solid #b77c3f;border-radius:10px;background-color:#ecc084;box-shadow:inset 0 0 12px #ab783b}
+.garden-app .gomoku .game-summary{min-height:38px;padding:4px 10px}.garden-app[data-skin=orchard] .gomoku .board-area:after{content:"";display:block;width:min(100%,50dvh,490px);height:clamp(34px,8dvh,75px);background:url('/mobile/gomoku-shelf.webp') center/cover}
+.garden-undo{flex:none;text-align:center;padding:4px 9px;background:var(--surface);color:var(--ink)}.garden-undo b,.garden-undo span{display:block}.garden-undo span{font-size:14px}.garden-app .garden-undo button{margin:3px;padding:6px 16px;border:1px solid var(--accent);border-radius:20px;min-height:36px;background:var(--surface);color:var(--accent)}
+.garden-app .garden-undo button+button{background:var(--accent);color:white}.gomoku:has(.garden-undo b) .gomoku-board [data-last]{outline:2px solid #b23f23}
+
+.garden-app .garden-segments,.garden-app .phase-tabs{display:flex;gap:4px;margin:8px 0 14px;padding:4px;border-radius:15px;background:var(--blush)}
+.garden-app .garden-segments button,.garden-app .phase-tabs button{flex:1;min-width:0;width:auto;min-height:42px;border:0;border-radius:12px;background:transparent;color:var(--ink);font:600 15px/1.25 inherit;font-family:inherit}
+.garden-app .garden-segments [aria-pressed=true]{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px #593b1928}
+.garden-app .phase-tabs{justify-content:center;background:transparent}.garden-app .phase-tabs [aria-pressed=true]{background:var(--accent);color:var(--surface)}.garden-app .phase-tabs button:disabled{opacity:.8}
+.ledger-summary,.focus-buttons{display:flex;align-items:center;gap:14px}.ledger-summary{margin:6px 0;gap:24px}.ledger-summary span{font-size:14px}.ledger-summary b{display:block;font-size:19px;font-variant-numeric:tabular-nums}
+.garden-app .ledger-search,.garden-app .focus-task input{box-sizing:border-box;width:100%;min-width:0;min-height:44px;border:1px solid var(--rim);background:var(--surface);border-radius:12px;padding:8px 12px;color:var(--ink);font-size:16px}
+.ledger-row small{display:block;font-size:12px;opacity:.75}.ledger-row b[data-kind=income]{color:#367952}
+.orchard-ledger .other-icon{display:grid;place-items:center;margin:auto;font:700 17px var(--skin-font);background:var(--blush);border-radius:12px}.ledger-row .other-icon{margin:0}
+.ledger-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center;gap:3px}.ledger-calendar small{padding:5px;color:var(--accent)}
+.garden-app .ledger-calendar button{position:relative;min-height:43px;border:0;border-radius:12px;background:var(--surface);color:var(--ink)}
+.ledger-calendar [data-records=true]:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:currentColor;bottom:3px;left:calc(50% - 2.5px)}
+.garden-app .ledger-calendar [aria-pressed=true]{background:var(--accent);color:var(--surface)}
+.garden-app .ledger-rank{position:relative;display:grid;align-items:center;grid-template-columns:1fr auto 3.5em;gap:8px;width:100%;padding:10px 0 14px;text-align:left;background:none;border:0;border-radius:0;color:var(--ink)}
+.ledger-rank small{text-align:right}.ledger-rank i{position:absolute;bottom:3px;left:0;height:4px;background:var(--accent);border-radius:10px}
+.garden-app .garden-focus{display:block;padding:12px 18px 26px}.garden-focus .focus-dial{max-height:none;aspect-ratio:1;flex:none}
+.garden-app .time-settings,.garden-app .focus-buttons{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0}
+.garden-focus .time-settings button,.garden-focus .focus-buttons button{min-height:44px;border-radius:14px;padding:8px 18px}
+.garden-focus .time-settings input{width:5em;font-size:16px}.garden-app .focus-task{display:block;font-size:15px;margin:12px 0}.focus-task input{display:block;margin-top:6px}
+.garden-app .focus-buttons .solid{width:auto;flex:1;color:white;background:var(--accent)}
+.focus-total{text-align:center;font-size:14px}.week-total{font:700 31px var(--skin-font)}.week-chart{display:grid;grid-template-columns:repeat(7,1fr);align-items:end;gap:4px;margin:20px 0 25px;border-bottom:1px solid var(--rim)}
+.week-chart div{display:grid;justify-items:center;gap:4px;font-size:13px}.week-chart i{background:var(--accent);width:44%;border-radius:6px 6px 0 0}
+.garden-app .game-host:has(.gomoku),.garden-app .game-host:has(.soup-room){align-items:stretch;min-width:0;width:100%;box-sizing:border-box;padding:0}
+.garden-app .gomoku,.garden-app .soup-room{align-items:stretch;min-width:0;width:100%;box-sizing:border-box}
+.garden-app .gomoku .game-history,.garden-app .soup-room .game-history{width:100%;box-sizing:border-box;padding:10px 14px;font:16px/1.5 -apple-system,"PingFang SC",sans-serif}
+.garden-app .gomoku .compact-history{flex:1 0 clamp(92px,16dvh,150px);min-height:92px;max-height:180px}
+.garden-app .gomoku[data-chat=full]{overflow:hidden}.garden-app .gomoku[data-chat=full] .game-history{flex:1 1 0;max-height:none}
+.garden-app .chess-message{display:flex;align-items:flex-start;flex-direction:column;gap:3px;border:0;padding:4px 0}
+.chess-message b,.case-question small{color:var(--accent);font:600 12px/1.4 -apple-system,sans-serif}.chess-message span{background:var(--surface);padding:7px 12px;border-radius:4px 14px 14px 14px;max-width:88%;overflow-wrap:anywhere;white-space:pre-wrap}
+.chess-message[data-mine=true]{align-items:flex-end}.chess-message[data-mine=true] span{background:var(--blush);border-radius:14px 4px 14px 14px}
+.garden-app .gomoku .game-compose,.garden-app .soup-room .soup-compose{position:sticky;bottom:0;z-index:1;display:flex;align-items:end;gap:8px;box-sizing:border-box;width:100%;padding:8px 12px max(8px,env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--rim)}
+.garden-app .game-compose textarea,.garden-app .soup-compose input{display:block;flex:1 1 0;box-sizing:border-box;min-width:0;min-height:46px;max-height:92px;resize:none;field-sizing:content;border-radius:15px;border:1px solid var(--rim);background:var(--surface);color:var(--ink);padding:10px 12px;font:16px/24px -apple-system,sans-serif}
+.garden-app .gomoku .game-compose button,.garden-app .soup-compose button{min-height:46px;padding:6px 14px;border:0;border-radius:14px;color:var(--surface);background:var(--accent)}
+.garden-app .game-compose button:disabled,.garden-app .soup-compose button:disabled{opacity:.6}
+.garden-app .soup-modes{display:grid;gap:14px;align-content:start;padding:14px}.soup-modes header{padding:16px 14px;background:var(--blush);border-radius:18px}.soup-modes h2{margin:0;font:750 26px var(--skin-font)}.soup-modes p{margin:8px 0 0}.garden-app .soup-modes button{display:flex;align-items:center;justify-content:space-between;padding:18px 14px;border:1px solid var(--rim);border-radius:15px;background:var(--surface);font-size:18px}
+.garden-app .case-sheet,.garden-app .case-peek{padding:16px;color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC",sans-serif}
+.garden-app .case-sheet h3{font:750 26px/1.3 var(--skin-font);margin:6px 0}.case-label{color:var(--accent);font-weight:650}.garden-app .case-sheet>p{margin:14px 0}
+.garden-app .case-peek{flex:none;max-height:28%;overflow:auto;margin:4px 12px 0;padding:9px 13px;border-radius:12px;background:var(--blush)}.case-peek summary{font-weight:650;cursor:pointer}.case-peek p{white-space:pre-line;margin:6px 0}
+.garden-app .case-question{margin:0 0 10px;padding:10px 12px;border:0;border-radius:13px;background:var(--surface);white-space:normal}.case-question p,.case-question .host-line span{white-space:pre-wrap}.garden-app .case-question .host-line{display:flex;gap:10px;margin-top:8px;padding:6px 0 0;border-top:1px solid var(--rim);font-size:15px}.host-line b{flex:none;color:var(--accent)}
+.garden-app .soup-compose select{max-width:26%;min-height:46px;color:var(--ink);font-size:15px}.garden-app .soup-room .game-tabs button,.garden-app .soup-controls button{min-height:42px}
+html[data-keyboard=open] .garden-app:has(.gomoku[data-chat=full])>.appbar,html[data-keyboard=open] .garden-app:has(.soup-compose)>.appbar{display:none}
+.garden-app .gomoku .game-compose textarea{height:auto;min-height:46px;max-height:92px;align-self:end;margin:0}
+
+/* Shared mobile game folio. The room's own header carries its navigation. */
+.garden-app:has(.game-host :is(.gomoku,.soup-room,.riddle-room))>.appbar{position:absolute;right:6px;top:4px;width:36px;height:36px;min-height:0;padding:0;background:none;border:0;z-index:6}
+.garden-app:has(.game-host :is(.gomoku,.soup-room,.riddle-room))>.appbar>:not(.bubble){display:none}
+.garden-app .game-host :is(.gomoku .game-nav,.soup-room .room-nav,.riddle-room .room-nav){flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:44px;padding:0 49px 0 9px;border:0;border-bottom:1px solid var(--rim);background:var(--paper)}
+.garden-app .game-host :is(.room-nav,.game-nav)>b{flex:1;text-align:center;font:750 21px/1.15 var(--skin-font)}
+.garden-app .game-host :is(.room-nav,.game-nav) button{color:var(--accent);background:transparent;white-space:nowrap;border:none;font:550 13px/1.1 -apple-system,sans-serif;min-height:36px;padding:1px 3px}
+.garden-app .game-host :is(.room-nav,.game-nav) .exit-game{margin:0}
+.garden-app[data-skin=orchard] .game-host :is(.gomoku,.soup-room,.riddle-room){--book-ink:#352c22;--book-green:#416c35;--page-grain:url('/mobile/game-paper.webp');font-family:'Songti SC','Noto Serif CJK SC',Georgia,serif;background-color:#fff8e9;background-image:var(--page-grain);color:var(--book-ink)}
+.garden-app .gomoku[data-live=yes]{overflow:hidden}
+.chess-split{flex:1 1 0;min-height:0;display:grid;grid-template-rows:minmax(0,2fr) minmax(0,1fr)}
+.chess-play,.chess-panel{min-height:0;min-width:0;display:flex;align-items:stretch;flex-direction:column}
+.garden-app .chess-play .game-summary{display:flex;justify-content:center;gap:10px;min-height:26px;padding:1px 4px;font-size:13px;text-align:center}
+.garden-app[data-skin=orchard] .chess-play{background:url('/mobile/chess-branch.webp') left top/55px auto no-repeat}
+.garden-app .gomoku .chess-play .board-area{flex:1 1 0;min-height:0;min-width:0;container-type:size;display:grid;place-items:center;padding:3px 9px;box-sizing:border-box}
+.garden-app .gomoku .chess-play .board-area:after{display:none}
+.garden-app .gomoku .chess-play .gomoku-board{box-sizing:border-box;flex:none;width:min(100cqw,100cqh,540px);max-width:100%;height:auto;aspect-ratio:1;border:5px solid #ce9449;background-color:#efc687;background-image:repeating-linear-gradient(2deg,#91652b0a 0 1px,transparent 2px 7px);box-shadow:inset 0 0 10px #bb844b77,0 2px 3px #7e4c271f}
+.chess-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;min-height:26px}
+.garden-app .chess-controls .garden-undo,.garden-app .chess-controls .game-tools{margin:0;padding:0;background:none;font-size:12px}
+.garden-app .chess-controls button{min-height:28px;margin:1px;padding:2px 9px;border-radius:12px;font-size:12px}
+.chess-controls .garden-undo:has(b){display:grid;grid-template-columns:1fr auto;align-items:center;text-align:left}.chess-controls .garden-undo:has(b)>span{display:none}
+.chess-panel{overflow:hidden}.garden-app .chess-panel h3{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;margin:1px 14px;font:700 15px/20px var(--skin-font)}
+.chess-panel h3:before,.chess-panel h3:after{content:"";height:1px;background:var(--rim);flex:1}
+.garden-app .gomoku .chess-panel .game-history{flex:1 1 0;min-height:0;max-height:none;padding:2px 12px;overflow:auto}
+.garden-app .chess-panel .chess-message{display:grid;grid-template-columns:26px minmax(0,1fr);grid-template-areas:"a n" "a m";justify-items:start;gap:1px 6px;margin:0 0 4px}
+.garden-app .chess-panel .chess-message[data-mine=true]{grid-template-columns:minmax(0,1fr) 26px;grid-template-areas:"n a" "m a";justify-items:end}
+.chess-message img{grid-area:a;width:26px;height:26px;object-fit:cover;border-radius:50%}.chess-message b{grid-area:n;font-size:11px}.chess-message span{grid-area:m;max-width:95%;padding:3px 9px;font:15px/1.4 -apple-system,sans-serif}
+.garden-app .gomoku .chess-panel .game-compose{position:static;align-items:center;margin:0;padding:4px 9px max(4px,env(safe-area-inset-bottom));border:0;background:transparent}
+.garden-app .gomoku .chess-panel :is(textarea,.game-compose button){height:40px;min-height:40px;padding-block:6px;box-sizing:border-box}
+.garden-app[data-skin=orchard] .game-host :is(.game-compose,.soup-compose) button{background:#4b7d3c;color:white}
+.garden-app .night-art{height:clamp(60px,14dvh,145px);flex:none;background:var(--hero) center/cover;border-block-end:1px solid var(--rim)}
+.garden-app[data-skin=orchard] .night-art,.garden-app[data-skin=orchard] .soup-modes header{background:#252c46 url('/mobile/case-night.webp') center/cover}
+.garden-app[data-skin=orchard] .soup-modes header{color:white;text-shadow:0 1px 4px #111;padding-top:50px}
+.garden-app .case-surface{flex:none;max-height:29%;overflow:auto;padding:9px 14px;color:var(--book-ink,var(--ink))}
+.case-surface header,.investigation header{display:flex;align-items:center;gap:9px}.garden-app .case-surface h2{flex:1;margin:0;font:750 23px/1.23 var(--skin-font)}.case-surface .ink-stamp{background:#a1432f;color:#fff6df;border-radius:4px;padding:3px 6px;white-space:nowrap}.case-surface p{white-space:pre-wrap;font-size:16px;line-height:1.55;margin:8px 0 0}.case-surface .case-hint{font-size:14px;color:var(--accent)}
+.garden-app .case-surface button,.garden-app .case-modes button{flex:none;border:1px solid var(--rim);border-radius:20px;padding:6px 12px;font-weight:600}
+.garden-app .investigation{min-height:0;flex:1;display:flex;flex-direction:column;margin:4px 11px;padding:8px 11px 2px;color:var(--ink);background:var(--surface);border-radius:5px 12px 7px 3px;border:1px solid var(--rim)}
+.garden-app[data-skin=orchard] .investigation{background:linear-gradient(110deg,#fffbed,#f9efdc);border-color:#d9bd8a;box-shadow:2px 2px 0 #dccba7}
+.investigation h3{font:700 19px var(--skin-font);margin:0;flex:1;color:var(--accent)}
+.case-entries{overflow:auto;flex:1;min-height:0}.case-entries article{padding:9px 0;border-bottom:1px dashed var(--rim);overflow-wrap:anywhere}
+.case-entries article>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.case-entries article small{font:12px -apple-system,sans-serif;color:var(--accent)}.case-entries article b{font-size:16px;font-weight:600;white-space:pre-wrap}
+.case-entries article em{font:700 15px var(--skin-font);white-space:nowrap;border:2px solid currentColor;border-radius:5px;padding:2px 6px;transform:rotate(-3deg);color:#63793e}.case-entries em[data-answer=不是]{color:#a8432c}.case-entries em[data-answer=无关]{color:#95691d}
+.case-entries article p{margin:4px 0;white-space:pre-wrap}.case-modes{display:flex;justify-content:center;gap:4px;padding:6px}.garden-app .case-modes [aria-pressed=true]{background:var(--blush);border-color:var(--accent);color:var(--accent)}
+.garden-app .soup-room:has(.investigation) .soup-compose{border:0;background:transparent;padding-top:1px}
+.garden-app .riddle-room .riddle-scroll{padding:0 0 18px}.garden-app .riddle-room :is(.riddle-tabs,.riddle-decks){display:flex;justify-content:center;gap:8px;align-items:center;margin:0;padding:3px 8px;border:0;background:transparent}
+.garden-app .riddle-room :is(.riddle-tabs,.riddle-decks) button{padding:3px 10px;border:0;border-radius:14px;color:var(--ink);background:transparent;min-height:27px;font-size:13px}
+.garden-app .riddle-room :is(.riddle-tabs,.riddle-decks) [aria-pressed=true]{background:var(--blush);color:var(--accent);font-weight:700}
+.riddle-slip{margin:0 4px 9px;background:var(--surface);overflow:hidden;border-radius:4px 13px 12px 5px}
+.garden-app[data-skin=orchard] .riddle-slip{background:linear-gradient(104deg,#fff3be,#fff7d9 58%,#f6e1a2);box-shadow:1px 2px 1px #bd974a66}
+.picnic-art{background:var(--hero) center/cover;width:100%;height:clamp(128px,28dvh,320px)}
+.garden-app[data-skin=orchard] .picnic-art{background-image:url('/mobile/riddle-picnic.webp');background-position:50% 58%;mask-image:linear-gradient(#000 94%,transparent)}
+.slip-paper{padding:7px 16px 16px}.slip-paper>small{font-size:12px;color:var(--accent)}
+.garden-app .slip-paper h2{margin:10px 0 18px;color:var(--book-ink,var(--ink));font:750 clamp(23px,6vw,34px)/1.5 'Songti SC','Noto Serif CJK SC',serif;white-space:pre-wrap;overflow-wrap:anywhere}
+.garden-app .slip-paper h2.long-question{font-size:19px}
+.slip-paper label{display:block;font-weight:650}
+.garden-app .riddle-room :is(.slip-paper,.riddle-card) textarea{box-sizing:border-box;display:block;width:100%;min-height:54px;resize:vertical;border:1px solid var(--rim);border-radius:12px;background:var(--surface);font:16px/1.4 -apple-system,sans-serif;padding:9px;margin:4px 0 8px;color:var(--ink)}
+.garden-app .riddle-room .play-primary{width:100%;min-height:42px;color:white;background:var(--accent);border:0;border-radius:13px;font-size:16px;font-weight:650}
+.slip-links{display:flex;justify-content:space-between;gap:10px}.garden-app .slip-links button{min-height:38px;color:var(--accent);font-weight:650}
+.slip-result{padding:10px;background:var(--surface);border-radius:12px}.slip-result p{margin:6px 0;overflow-wrap:anywhere}.riddle-source{padding:0 12px}
+@media(max-height:530px){.garden-app .night-art{height:40px}.garden-app .gomoku .chess-panel h3{font-size:12px;line-height:16px}.garden-app .chess-controls button{min-height:22px}.garden-app .picnic-art{height:80px}}
+.garden-app[data-skin=orchard] .game-host :is(.gomoku,.soup-room,.riddle-room){--accent:#416c35;--ink:#352c22;--surface:#fffbef;--blush:#e8edc7}
+.garden-app .gomoku-board button:disabled{opacity:1}
+.garden-app .case-entries{overflow-x:hidden;padding:2px 3px}
+.garden-app .investigation header,.garden-app .case-surface header{position:static;min-height:0;height:auto;flex:none;padding:3px 0;background:transparent;border:0}
+.garden-app .case-surface header{padding-block:0}
+.garden-app .riddle-scroll:has(.riddle-slip){display:flex;flex-direction:column}
+.garden-app .riddle-slip{flex:1 0 auto;display:flex;flex-direction:column}
+.garden-app .slip-paper{flex:1;position:relative;padding-inline:18px}
+.garden-app[data-skin=orchard] .slip-paper{background:url('/mobile/slip-leaves.webp') left center/12px 100% no-repeat}
+.garden-app[data-skin=orchard] .slip-paper:after{content:"";pointer-events:none;position:absolute;right:0;bottom:0;width:24px;height:24px;background:linear-gradient(139deg,transparent 48%,#cfac67 52%,#fce9b5 69%,var(--paper) 74%)}
+.garden-app[data-skin=orchard] .riddle-slip .picnic-art{height:clamp(115px,33dvh,355px)}
+.garden-app .chess-play .game-summary>span{padding:3px 12px;background:var(--surface);border:1px solid var(--rim);border-radius:16px}
+.garden-app .chess-play .chess-controls{min-height:30px}
+@media(max-height:530px){.garden-app[data-skin=orchard] .riddle-slip .picnic-art{height:80px}.garden-app .chess-play .chess-controls{min-height:22px}}
+
+/* Soup screens keep only one navigation row, including on narrow iPhones. */
+main.garden-app[data-soup-page=yes]>.appbar{position:absolute;inset:3px 5px auto auto;display:grid;place-items:center;width:38px;height:38px;min-height:0;padding:0;border:0;background:transparent;z-index:6}
+main.garden-app[data-soup-page=yes]>.appbar>:not(.bubble){display:none}
+.garden-app .soup-room .soup-modes{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:14px}
+.soup-modes>.soup-intro{box-sizing:border-box;display:flex;flex:none;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:5px;min-height:124px;height:auto;padding:16px;border-radius:16px;background:var(--surface);color:var(--ink)}
+.garden-app[data-skin=orchard] .soup-intro{background:linear-gradient(0deg,#142335e8,#14233577 58%,transparent),url('/mobile/case-night.webp') center/cover;color:#fffaf1}
+.garden-app .soup-intro h2{margin:0;color:inherit;font:700 clamp(20px,5.8vw,25px)/1.24 var(--skin-font);letter-spacing:.02em;overflow-wrap:anywhere}
+.garden-app .soup-intro p{margin:0;color:inherit;font:400 14px/1.5 -apple-system,"PingFang SC",sans-serif}
+.garden-app .soup-room .soup-modes>button{min-height:56px;padding:10px 14px;gap:12px;font:600 17px/1.4 -apple-system,"PingFang SC",sans-serif}
+.garden-app .soup-modes>button span{font-size:14px;font-weight:500}
+.case-workspace{min-width:0;min-height:0;flex:1 1 0;display:flex;flex-direction:column;overflow:hidden}
+.case-workspace .case-heading{display:flex;align-items:center;gap:8px;min-width:0}
+.case-workspace .case-heading h2,.case-workspace .case-heading h3{flex:1;min-width:0;overflow-wrap:anywhere}
+.case-workspace .case-heading button{flex:none}
+.garden-app .case-workspace>.case-surface{max-height:32%;box-sizing:border-box;overflow-y:auto}
+.case-workspace>.investigation{overflow:hidden}
+.garden-app .case-workspace>.soup-compose{position:static;flex:0 0 auto;align-items:center;min-height:0;margin:0;padding:4px 10px 6px}
+.garden-app .case-workspace>.soup-compose input{height:42px;min-height:42px;line-height:22px;padding:8px 10px;font-size:16px}
+.garden-app .case-workspace>.soup-compose button{min-height:42px;min-width:42px;padding:5px 10px}
+.garden-app .case-workspace[data-compact=yes]>.night-art{display:none}
+.garden-app .case-fold{display:flex;align-items:center;gap:8px;flex:none;min-height:34px;margin:2px 10px;padding:4px 8px;text-align:left;border:0;border-bottom:1px solid var(--rim);background:transparent;color:var(--ink)}
+.case-fold strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:650 15px/1.35 var(--skin-font)}
+.case-fold span{font-size:12px;color:var(--accent)}
+.garden-app .case-workspace[data-compact=yes]>.case-surface{margin:0;padding:4px 12px;max-height:24%}
+.case-workspace[data-compact=yes] .case-surface .ink-stamp,.case-workspace[data-compact=yes] .case-surface h2{display:none}
+.garden-app .case-workspace[data-compact=yes]>.investigation{margin:2px 9px;padding:4px 9px;min-height:0}
+.case-workspace[data-compact=yes] .investigation h3{font-size:16px}
+.case-workspace[data-compact=yes] .case-entries article{padding:5px 0}
+.garden-app .case-workspace[data-compact=yes]>.soup-compose{gap:6px;padding:4px 8px}
+.garden-app .case-workspace .soup-compose select{min-height:38px;max-width:24%;width:auto;min-width:0;padding:2px;border:0;background:var(--surface);color:var(--accent);font:550 14px/1.25 -apple-system,sans-serif}
+html[data-keyboard=open]:has(.case-workspace) #root{padding-bottom:0}
+
+/* 5.8.1: one visible back control per game screen; preserve the quick-chat action. */
+.garden-app:has(.game-host .orchard-room)>.appbar{position:absolute;right:6px;top:4px;width:36px;height:36px;min-height:0;padding:0;background:none;border:0;z-index:6}
+.garden-app:has(.game-host .orchard-room)>.appbar>:not(.bubble){display:none}
+.garden-app .game-host .orchard-room>.room-nav{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:44px;padding:0 49px 0 9px;border:0;border-bottom:1px solid var(--rim);background:var(--paper)}
+.garden-app .game-host :is(.room-nav,.game-nav)>button.game-back{display:grid;place-items:center;flex:0 0 44px;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;font:400 32px/1 -apple-system,sans-serif;color:var(--accent)}

@@ -1,0 +1,47 @@
+.garden-app .toolbox-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(6px, 2vw, 12px);
+  margin-block: 10px 14px;
+}
+
+.garden-app .toolbox-shortcuts button {
+  display: flex;
+  grid-column: span 2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 90px;
+  padding: 8px 3px;
+  border: 1px solid #dccdb1;
+  border-radius: 14px;
+  background: #f9efd9;
+  color: #51442e;
+  box-shadow: 0 2px 0 #6e512215;
+  cursor: pointer;
+}
+
+.garden-app .toolbox-shortcuts button:nth-child(2) { background: #f9e9d8; }
+.garden-app .toolbox-shortcuts button:nth-child(3) { background: #ecf0db; }
+.garden-app .toolbox-shortcuts button:nth-child(n+4) { grid-column: span 3; background: #f6e5d5; }
+.garden-app .toolbox-shortcuts button:nth-child(5) { background: #edf0da; }
+.garden-app .toolbox-shortcuts img {
+  width: 62px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 6px;
+  mix-blend-mode: multiply;
+}
+.garden-app .toolbox-shortcuts b {font-size: clamp(14px, 2.5vw, 17px); line-height: 1.35;}
+.garden-app .toolbox-shortcuts button:focus-visible {outline: 3px solid #577341; outline-offset: 1px;}
+.garden-app .toolbox-shortcuts button:active {box-shadow: none; transform: translateY(1px);}
+
+@media (min-width: 760px) {
+  .garden-app .toolbox-shortcuts {grid-template-columns:repeat(5,minmax(0,1fr));}
+  .garden-app .toolbox-shortcuts button:nth-child(n) {grid-column: auto; padding: 8px 4px;}
+  .garden-app .toolbox-shortcuts img {width: 64px; height: 58px;}
+}
+
+.garden-app .settings-version { margin: 8px 16px 14px; color: #665642; font-size: 14px; }

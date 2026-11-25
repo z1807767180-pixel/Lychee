@@ -1,0 +1,229 @@
+/* Each skin decorates app-owned surfaces. Covers, avatars and tool illustrations
+   are separate content elements and receive no theme filters or overlays. */
+html[data-phone] { overflow-x: hidden; overscroll-behavior-x: none }
+html[data-phone] body { margin: 0; width: 100%; overflow: hidden }
+html[data-phone] #root {
+  position: fixed; box-sizing: border-box; width: 100%; max-width: 100%;
+  overflow-x: hidden; padding-bottom: env(safe-area-inset-bottom,0px);
+}
+html[data-phone]:has(.garden-app[data-room-chat=true]) #root { padding-bottom: 0 }
+.garden-app[data-skin] {
+  --banner: url('/mobile/orchard-courtyard.jpg'); --paper: #faf5e9; --surface: #fffcf4;
+  --ink: #342e25; --accent: #49613e; --muted: #63674f; --rim: #dacfaf;
+  --light: #e6ecd7; --blush: #f7d7c9; --motif: #87996426;
+  --weave: repeating-linear-gradient(115deg, transparent 0 12px,var(--motif) 12px 13px,transparent 13px 26px);
+  --skin-radius: 18px; --line: 1px; --skin-font: var(--serif);
+  background: var(--paper); color: var(--ink);
+}
+.garden-app[data-skin=miffy] {
+  --banner: url('/mobile/hd-theme-1.webp'); --paper: #fff7df; --surface: #fffdf2;
+  --ink: #2d3545; --accent: #ac4321; --muted: #6b543d; --rim: #dbb979;
+  --light: #ffedb5; --blush: #ffd9a5; --motif: #e88a3230;
+  --weave: repeating-linear-gradient(90deg,transparent 0 9px,var(--motif) 9px 15px,transparent 15px 22px);
+  --skin-radius: 23px; --line: 2px; --skin-font: ui-rounded,'PingFang SC',sans-serif;
+}
+.garden-app[data-skin=tutu] {
+  --banner: url('/mobile/hd-theme-2.webp'); --paper: #edf6f7; --surface: #fbffff;
+  --ink: #293d45; --accent: #2d6477; --muted: #45606a; --rim: #afcfd1;
+  --light: #dcf0e1; --blush: #ceebfb; --motif: #6aa5a94a;
+  --weave: radial-gradient(circle at 3px 3px,var(--motif) 1.5px,transparent 2px) 0 0 / 12px 12px;
+  --skin-radius: 13px 22px 13px 22px; --line: 2px; --skin-font: ui-rounded,'PingFang SC',sans-serif;
+}
+.garden-app[data-skin=kitty] {
+  --banner: url('/mobile/hd-theme-3.webp'); --paper: #fff1f1; --surface: #fffbf9;
+  --ink: #4b313e; --accent: #943c5c; --muted: #795665; --rim: #e7b9c9;
+  --light: #fbe1eb; --blush: #fbd0e1; --motif: #df83a328;
+  --weave: repeating-linear-gradient(0deg,transparent 0 5px,var(--motif) 5px 10px),
+    repeating-linear-gradient(90deg,transparent 0 5px,var(--motif) 5px 10px);
+  --skin-radius: 22px; --line: 1px; --skin-font: var(--serif);
+}
+.garden-app[data-skin] .ph-scroll { overflow-x: hidden; min-width: 0; background: var(--paper) }
+.garden-app[data-skin] .ph-scroll :is(label,input,textarea,select) { min-width: 0; max-width: 100%; box-sizing: border-box }
+.garden-app[data-skin] .appbar, .garden-app[data-skin][data-home=true] .appbar {
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg,transparent 0%,var(--paper) 33%,var(--paper) 67%,transparent 100%),var(--banner);
+  background-position: center,center 55%; background-size: cover; background-repeat: no-repeat;
+  border-bottom: 1px solid var(--rim); justify-content: center;
+}
+.garden-app[data-skin] .appbar h1,.garden-app[data-skin] .ph-scroll h2 { color: var(--ink); font-family: var(--skin-font) }
+.garden-app[data-skin] .appbar h1 { font-size: 23px; text-shadow: 0 1px 3px var(--surface) }
+.garden-app[data-skin] .appbar :is(.back,.bubble,.garden-info,.layout-toggle) {
+  color: var(--accent); background: var(--surface); border: 1px solid var(--rim); border-radius: 50%;
+  width: 38px; height: 38px; min-width: 38px; min-height: 38px;
+}
+.garden-app[data-skin] :is(.garden-portals button,.theme-grid button,.face-grid button,.cardform,.post) {
+  border: var(--line) solid var(--rim); border-radius: var(--skin-radius); background-color: var(--surface);
+}
+.garden-app[data-skin] .garden-portals button {
+  position: relative; isolation: isolate; gap: 5px; padding: 11px 8px 9px;
+  background: var(--weave),var(--surface); box-shadow: 0 2px 0 var(--rim);
+}
+.garden-app[data-skin] .garden-portals img { flex: 0 1 auto; width: 65%; height: 61%; object-fit: contain; border-radius: 11px }
+.garden-app[data-skin] .garden-portals b {
+  color: var(--ink); background: var(--surface); border: 1px solid var(--rim);
+  padding: 3px 13px; border-radius: 16px; font: 650 16px/1.3 var(--skin-font);
+}
+.garden-app[data-skin] .portrait-cover { background: var(--banner) center / cover no-repeat }
+.garden-app[data-skin] .bottom { background: var(--surface); border-color: var(--rim); gap: 4px; padding: 4px 8px }
+.garden-app[data-skin] .bottom button { color: var(--muted); font-family: var(--skin-font) }
+.garden-app[data-skin] .bottom button[aria-current=page] { background: var(--light); color: var(--accent); border-radius: var(--skin-radius) }
+.garden-app[data-skin] :is(.circle-tools button,.pills button,.sectionhead button,.appbar + .phone-update button) {
+  width: auto; background: var(--surface); border: var(--line) solid var(--rim);
+  border-radius: var(--skin-radius); color: var(--accent); padding: 6px 12px; font-weight: 650;
+}
+.garden-app[data-skin] :is(.solid,.pills [aria-pressed=true],.game-invite button) { background: var(--accent); color: white; border-radius: var(--skin-radius) }
+.garden-app[data-skin] button:active:not(:disabled) { opacity: .82 }
+.garden-app[data-skin] button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px }
+.garden-app[data-skin] .circle-entry { border-bottom: 1px solid var(--rim) }
+.garden-app[data-skin] .circle-text .circle-name-line { color: var(--ink); font-family: var(--skin-font) }
+.garden-app[data-skin] .circle-text .circle-sub-line,.garden-app[data-skin] .circle-edit-action { color: var(--muted) }
+.garden-app[data-skin] .plan-cover {
+  display: grid; grid-template-columns: minmax(0,1fr) 43%; grid-template-rows: auto auto; align-content: center;
+  position: relative; isolation: isolate; padding: 13px 16px; column-gap: 8px; min-height: 108px; height: clamp(108px,17dvh,155px);
+  border: var(--line) solid var(--rim); border-radius: var(--skin-radius); background: var(--surface);
+}
+.garden-app[data-skin] .plan-cover strong,.garden-app[data-skin] .plan-cover span { grid-column: 1; max-width: 100%; font-family: var(--skin-font) }
+.garden-app[data-skin] .plan-cover::after { content: ''; position: absolute; inset: 0 0 0 58%; z-index: -1; background: url('/mobile/lake-plan.webp') center / cover }
+.garden-app[data-skin] .plan-cover[data-holiday=newyear]::after { background-image: url('/mobile/goal-newyear.jpg') }
+.garden-app[data-skin] .plan-cover b { color: var(--accent); font-size: 32px }
+.garden-app[data-skin] .tea-room-title p { color: var(--muted) }
+.garden-app[data-skin][data-room-chat=true] .game-invite { background: var(--light); color: var(--ink); border-radius: 0; padding-block: 3px }
+.garden-app[data-skin][data-room-chat=true] .room-bubble { background: var(--surface); border-color: var(--rim); color: var(--ink) }
+.garden-app[data-skin][data-room-chat=true] .mine .room-bubble { background: var(--blush); border-color: var(--rim) }
+.garden-app[data-skin][data-room-chat=true] .room-compose {
+  background: var(--surface); border-top: 1px solid var(--rim); gap: 3px;
+  padding: 5px 8px max(5px, env(safe-area-inset-bottom,0px));
+}
+html[data-keyboard=open] .garden-app[data-skin][data-room-chat=true] .room-compose,
+.garden-app[data-skin][data-room-chat=true] .team-room:has(.phone-picker) .room-compose { padding-bottom: 5px }
+.garden-app[data-skin][data-room-chat=true] .room-compose input:not([hidden]) { color: var(--ink); border-color: var(--rim); background: var(--paper); min-height: 42px; }
+.garden-app[data-skin][data-room-chat=true] .room-compose button { color: var(--accent); min-width: 42px; }
+.garden-app[data-skin][data-room-chat=true] .room-compose .room-send { background: var(--accent); color: white }
+.garden-app .team-room>.phone-picker {
+  order: 2; display: flex; flex-direction: column; flex: 0 1 auto; height: min(34dvh,285px);
+  max-height: 46%; min-height: 0; padding: 5px 9px max(6px,env(safe-area-inset-bottom,0px)); box-sizing: border-box;
+  background: var(--paper); border-top: 1px solid var(--rim);
+}
+.phone-picker .emoji-categories { display: flex; gap: 5px; overflow-x: auto; flex: none; padding: 1px 1px 5px; scrollbar-width: none }
+.garden-app .phone-picker .emoji-categories button { white-space: nowrap; flex: none; padding: 5px 10px; min-height: 34px; color: var(--muted); font: 550 14px/1.3 -apple-system,sans-serif; border-radius: 18px }
+.garden-app .phone-picker .emoji-categories [aria-pressed=true] { background: var(--accent); color: white }
+.garden-app .phone-picker .emoji-grid { display: grid; align-content: start; overflow-y: auto; grid-template-columns: repeat(auto-fit,minmax(45px,1fr)); }
+.garden-app .phone-picker .emoji-grid button { min-height: 46px; font: 28px/1.4 'Apple Color Emoji','Segoe UI Emoji',sans-serif }
+.garden-app .phone-picker .stickers { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px }
+.garden-app .phone-picker .stickers button { background: white; border: 1px solid var(--rim); border-radius: 13px; padding: 3px }
+.phone-picker .stickers img { display: block; width: 100%; height: clamp(50px,8.5dvh,76px); object-fit: contain }
+@media(max-height:530px) { .garden-app[data-skin][data-room-chat=true]>.appbar { min-height: 40px; padding-block: 2px } }
+
+/* The orchard's fruit-crate labels, woven baskets and red stamp buttons. */
+.garden-app[data-skin=orchard] {
+  --paper: #fcf5e4; --surface: #fffaf0; --ink: #253d35; --accent: #963e30;
+  --muted: #536650; --rim: #c8bc97; --light: #e1ebd7; --blush: #ffddc6;
+  --skin-radius: 14px 17px 15px 12px;
+  --weave: repeating-linear-gradient(0deg,transparent 0 7px,#a6844914 7px 9px),
+    repeating-linear-gradient(90deg,transparent 0 7px,#a6844914 7px 9px);
+}
+.garden-app[data-skin=orchard] .orchard-courtyard {
+  height: clamp(92px,15dvh,152px); margin: 0 -15px 12px;
+  background: var(--banner) center 63% / cover; border-bottom: 2px solid #c9b78c;
+}
+.garden-app[data-skin=orchard] .portrait-cover { background-position: center 61% }
+.garden-app[data-skin=orchard] .theme-grid button:first-child img { object-position: center 63% }
+.garden-app[data-skin=orchard] .appbar {
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg,transparent,var(--paper) 27% 73%,transparent),var(--banner);
+  background-position: center,center 17%; border-bottom: 1px solid var(--rim);
+}
+.garden-app[data-skin=orchard] .garden-portals button {
+  background: var(--weave),#f6ead2; border: 1px solid #b5a177; border-bottom: 3px solid #b5a177;
+  border-radius: 12px 17px 13px 16px; box-shadow: none;
+}
+.garden-app[data-skin=orchard] .garden-portals b {
+  border: 1px solid #718a72; color: #294f41; border-radius: 4px 9px;
+  background: #fffae9; padding-inline: 15px;
+}
+.garden-app[data-skin=orchard] :is(.circle-tools button,.room-send,button.solid,.game-invite button) {
+  border-radius: 10px 12px 10px 9px; background: var(--accent); color: #fffaf0; border: 1px solid #873c2f;
+}
+.garden-app[data-skin=orchard] .bottom { border-top: 2px solid #b8c7a4 }
+.garden-app[data-skin=orchard] .bottom button[aria-current=page] { color: #315440; background: #e0ebcf }
+.garden-app[data-skin=orchard][data-room-chat=true] .room-bubble { border-color: #d9cba7; background: #fffaf0 }
+.garden-app[data-skin=orchard][data-room-chat=true] .mine .room-bubble { border-color: #b4c6a1; background: #dfeecf }
+.garden-app[data-skin=orchard][data-room-chat=true] .room-compose { border-top-color: #c9ba97 }
+
+/* Artwork comes from the approved orchard design. User images stay in their own elements. */
+.garden-app[data-skin=orchard] {
+  --paper:#fcf6e9; --surface:#fffbf1; --ink:#243e31; --rim:#cbbb9a; --light:#e0eaca;
+  --stationery:repeating-linear-gradient(0deg,transparent 0 10px,#bba07810 10px 11px),
+    repeating-linear-gradient(90deg,transparent 0 10px,#bba07810 10px 11px);
+}
+.garden-app[data-skin=orchard] .bottom {background:#fff9eb;border-top:1px solid #aab696;padding:3px 8px;gap:5px}
+.garden-app[data-skin=orchard] .bottom button {border-radius:16px;color:#36523e;gap:1px;font:550 12px/1.18 -apple-system,'PingFang SC',sans-serif}
+.garden-app[data-skin=orchard] .bottom button[aria-current=page] {background:#deebc9;color:#29462f;font-weight:750}
+.garden-app[data-skin=orchard] .orchard-tab-art {display:block;width:38px;height:28px;object-fit:contain;pointer-events:none}
+.garden-app[data-skin=orchard] .bottom button:not([aria-current]) .orchard-tab-art {width:28px;height:26px}
+.garden-app[data-skin=orchard] :is(.garden-portals button,.profile-rows .entry,.profile-id,.plan-cover) {
+  background-color:#faf0dc;background-image:var(--stationery);border:1px solid #c7b794;border-radius:15px;box-shadow:0 1px 0 #dbc9a6;
+}
+.garden-app[data-skin=orchard] .garden-portals b {background:#faf8e9;color:#2b4934;border:1px solid #9d9f7e;border-radius:7px}
+.garden-app[data-skin=orchard] .circle-entry {border:1px solid var(--rim);border-radius:15px;background:var(--surface);overflow:hidden}
+.garden-app[data-skin=orchard] .circle-entry .circle-picture,.garden-app[data-skin=orchard] .circle-entry .circle-banner {border-radius:0}
+.garden-app[data-skin=orchard] .circle-caption-row {padding-inline:10px}
+.garden-app[data-skin=orchard] .circle-tools button {background:#fbf2de;color:#803e30;border:1px solid #b9a98a;border-radius:22px}
+.garden-app[data-skin=orchard] .portrait-cover {height:clamp(100px,18dvh,170px);background-position:50% 55%}
+.garden-app[data-skin=orchard] .profile-id {
+  box-sizing:border-box;display:grid;position:relative;isolation:isolate;overflow:hidden;
+  width:calc(100% - 32px);min-height:120px;margin:12px 16px 15px;
+  grid-template-columns:clamp(80px,25vw,118px) 40px minmax(0,1fr);grid-template-rows:auto auto;
+  align-content:center;align-items:center;column-gap:10px;row-gap:1px;padding:10px 14px 10px 5px;text-align:left;
+}
+.garden-app[data-skin=orchard] .profile-id::before {content:'';grid-row:1 / 3;grid-column:1;
+  width:100%;aspect-ratio:354/318;background:url('/mobile/orchard-mascot.webp') center/contain no-repeat;mix-blend-mode:multiply;
+  mask-image:linear-gradient(90deg,transparent,#000 6% 96%,transparent)}
+.garden-app[data-skin=orchard] .profile-id::after {content:'';position:absolute;z-index:-1;right:4px;bottom:2px;
+  width:47px;height:28px;background:url('/mobile/orchard-basket.webp') center/contain no-repeat;mix-blend-mode:multiply}
+.garden-app[data-skin=orchard] .profile-id img {grid-row:1 / 3;grid-column:2;width:40px;height:40px;border:2px solid #fffaf0;box-shadow:0 0 0 1px #c6b89b}
+.garden-app[data-skin=orchard] .profile-id b,.garden-app[data-skin=orchard] .profile-id small {grid-column:3;text-align:left;overflow-wrap:anywhere;min-width:0}
+.garden-app[data-skin=orchard] .profile-id b {font-size:clamp(18px,5.2vw,24px);color:var(--ink);line-height:1.25;align-self:end}
+.garden-app[data-skin=orchard] .profile-id small {align-self:start;justify-content:flex-start;line-height:1.35;color:#58694b}
+.garden-app[data-skin] .profile-rows {
+  display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0 16px;padding:0;
+}
+.garden-app[data-skin] .profile-rows > .entry {
+  box-sizing:border-box;width:100%;min-height:52px;padding:8px 14px;margin:0;
+  border:var(--line) solid var(--rim);border-radius:var(--skin-radius);background-color:var(--surface);
+}
+.garden-app[data-skin=orchard] .profile-rows > .entry {
+  background:var(--stationery),#faf0dc;border:1px solid #c7b794;border-radius:15px;
+}
+.garden-app[data-skin=orchard] .profile-rows .entry>svg:first-child {color:#6c7748}
+@media(max-height:540px){.garden-app[data-skin=orchard] .bottom .orchard-tab-art {height:22px}}
+
+.garden-app[data-skin] .mine .profile-id {
+  box-sizing:border-box;position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:center;
+  grid-template-columns:clamp(72px,21vw,96px) minmax(0,1fr) 18px;grid-template-rows:auto auto;
+  width:calc(100% - 32px);min-height:116px;margin:12px 16px 15px;padding:14px 16px;gap:3px 15px;
+  text-align:left;background:#faf2df;border:1px solid #d1bc95;border-radius:17px;box-shadow:0 2px 0 #c7b78e5c;
+}
+.garden-app[data-skin] .mine .profile-id::before {
+  content:'';position:absolute;inset:0;z-index:-1;width:auto;height:auto;aspect-ratio:auto;grid-area:auto;
+  background:linear-gradient(90deg,#fff6df 5%,#fff6dff7 42%,#fff6dfcd 66%,#faf2df33),url('/mobile/orchard-courtyard.jpg') right top/cover no-repeat;
+  mask-image:none;mix-blend-mode:normal;
+}
+.garden-app[data-skin] .mine .profile-id::after {
+  content:'›';position:static;grid-column:3;grid-row:1/3;z-index:0;align-self:center;width:auto;height:auto;
+  background:none;mix-blend-mode:normal;color:#45543c;font:26px/1 Georgia,serif;text-shadow:0 1px 3px #fff7e5;
+}
+.garden-app[data-skin] .mine .profile-id img {
+  grid-column:1;grid-row:1/3;display:block;width:100%;height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;
+  border:3px solid #fffaf0;box-shadow:0 0 0 1px #c9b58e,0 2px 5px #6e56332b;
+}
+.garden-app[data-skin] .mine .profile-id b,.garden-app[data-skin] .mine .profile-id small{grid-column:2;min-width:0;overflow-wrap:anywhere;text-align:left}
+.garden-app[data-skin] .mine .profile-id b{grid-row:1;align-self:end;margin:0;font:700 clamp(20px,5.2vw,26px)/1.25 var(--serif);color:#30432f}
+.garden-app[data-skin] .mine .profile-id small{grid-row:2;align-self:start;justify-content:flex-start;color:#505e47}
+.portrait-editor{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px 14px;align-items:center}
+.portrait-editor>img{width:76px;height:76px;border:2px solid #fff8eb;box-shadow:0 0 0 1px #cab690;object-fit:cover;border-radius:50%}
+.portrait-options h3{margin:0 0 7px}.portrait-choices,.portrait-confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.portrait-upload{position:relative;display:inline-grid;place-items:center;overflow:hidden;min-height:40px;border:1px solid #cbbd99;border-radius:10px;padding:6px 11px;background:#fff9ea;font:inherit}
+.portrait-upload input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}.portrait-upload:focus-within{outline:2px solid #71884b}
+.portrait-options .portrait-presets{border:0;background:none;padding:7px 0;color:#52613c;font-size:13px;text-decoration:underline}
+.portrait-confirm,.portrait-editor>small{grid-column:1/-1}.v61-profile .v61-profile-top:has(>.v61-grow:only-child){display:block}

@@ -1,0 +1,46 @@
+.garden-app[data-journal=true]>.appbar{display:none}
+.garden-app .j-page{display:flex;flex:1 1 0;min-height:0;min-width:0;flex-direction:column;background:var(--surface);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.j-page *{box-sizing:border-box}
+.garden-app .j-page button{font:inherit;color:inherit;background:none;border:0;border-radius:9px;min-width:0;box-shadow:none;padding:6px 9px;cursor:pointer}
+.j-nav{flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;min-height:65px;padding:10px 8px 3px;background:var(--surface);border-bottom:1px solid color-mix(in srgb,var(--rim) 30%,transparent)}
+[data-skin=orchard] .j-nav{background:linear-gradient(0deg,var(--surface),transparent 53%),url('/mobile/journal-twig.webp') right -5px top -9px / 103px auto no-repeat,var(--surface)}
+.j-page .j-nav h1{text-align:center;margin:0;line-height:44px;letter-spacing:.035em;font-size:20px;color:var(--ink)}
+.j-leading,.j-trailing,.j-actions,.j-byline,.j-images,.j-kinds,.j-dock,.j-stickers,.j-detail figcaption{display:flex;align-items:center}
+.j-trailing{justify-content:flex-end}
+.j-page .j-nav button,.j-page .j-actions button{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:2px 7px;font-size:14px;white-space:nowrap}
+.j-page .j-nav .j-back{font-size:32px;width:34px}.j-page .j-nav .j-example{font-size:13px;text-decoration:underline;text-underline-offset:4px}
+.j-page .j-nav .j-solid,.j-page .j-solid,.j-page .j-dock .j-solid{background:var(--ink);color:var(--surface);border-radius:12px;padding:9px 19px;font-weight:600}
+.j-page .j-nav .j-solid{min-height:36px;margin-bottom:4px}.j-glyph{display:inline-flex;line-height:1}
+.j-scroll{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;overflow-wrap:anywhere;padding:0 15px max(16px,env(safe-area-inset-bottom))}
+.j-story{padding:20px 0 10px;border-bottom:1px solid color-mix(in srgb,var(--rim) 45%,transparent)}
+.j-byline{gap:10px}.j-byline>img{width:40px;height:40px;border-radius:50%;object-fit:cover}.j-byline>div{flex:1;min-width:0}
+.j-byline b{font-size:17px}.j-page small,.j-mood,.j-hint,.j-detail figcaption{font-size:13px;color:var(--muted)}
+.j-byline small{display:block}.j-mood{margin-left:8px}.j-mood:before{content:"";display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:#94a252}
+.j-text{margin:12px 0;white-space:pre-wrap;font-size:17px}.j-story>.j-image{margin-top:8px}
+.j-page button.j-image{display:block;padding:0;max-width:100%;overflow:hidden;border-radius:10px;text-align:left}
+.j-image img{display:block;max-width:100%;height:auto;max-height:55vh;object-fit:contain}
+.j-actions{gap:10px}.j-page .j-actions button{padding:0 5px;min-width:44px;gap:5px;font-size:14px}.j-actions .j-glyph{font-size:24px}
+.j-actions img{width:25px;height:25px;object-fit:contain;mix-blend-mode:multiply}
+.j-stickers{border:1px solid var(--rim);width:max-content;max-width:100%;padding:4px;gap:4px;border-radius:14px;background:var(--surface);box-shadow:0 3px 12px #36281513}
+.j-page .j-stickers button{display:grid;justify-items:center;font-size:12px}.j-stickers img{width:50px;height:44px;object-fit:contain;mix-blend-mode:multiply}
+.j-page button[aria-pressed=true]{background:var(--light)}
+.j-hint,.j-error{padding:9px 12px;margin:8px 0;border-radius:9px;background:var(--light)}.j-error{color:var(--accent)}
+.j-compose,.j-detail{padding:17px 0}.j-compose textarea,.j-page input{width:100%;font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--rim);border-radius:8px;padding:9px}
+.j-compose textarea{min-height:84px;border:0;padding:4px 0;resize:vertical}.j-images{gap:9px;margin-bottom:22px}
+.j-upload{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;min-height:44px;cursor:pointer}
+.j-upload input{position:absolute;width:100%;height:100%;inset:0;opacity:0;cursor:pointer}
+.j-images .j-upload,.j-preview{width:93px;height:93px;border-radius:10px}.j-images .j-upload{border:1px dashed var(--rim)}
+.j-preview{position:relative}.j-preview img{width:100%;height:100%;object-fit:cover;border-radius:10px}.j-preview button{position:absolute;right:0;top:0;background:var(--surface)!important}
+.j-compose h3{font-size:16px;margin:0 0 9px}.j-kinds,.j-fields{gap:8px}.j-page .j-kinds button{flex:1;border:1px solid var(--rim);height:44px}.j-kinds .j-glyph{margin-right:7px}
+.j-fields{display:grid;margin:12px 0}.j-fields>div,.j-comments form{display:flex;align-items:center;gap:6px}.j-fields input,.j-comments input{min-width:0}
+.j-assoc{margin-top:20px;border-block:1px solid var(--rim);padding:6px 0}.j-assoc>button{display:flex;align-items:center;gap:5px;width:100%;min-height:44px}.j-assoc span:last-child{margin-left:auto}
+.j-page .j-relay-link,.j-page .j-album-link{display:flex;width:100%;align-items:center;text-align:left;gap:7px;min-height:44px;padding:6px 0}
+.j-relay-link span{margin-left:auto;color:var(--accent);white-space:nowrap}.j-poll{display:grid;gap:6px;margin:10px 0 4px}
+.j-page .j-poll button{position:relative;overflow:hidden;padding:8px 12px;display:flex;justify-content:space-between;min-height:42px;text-align:left;background:color-mix(in srgb,var(--light) 40%,var(--surface));color:var(--ink);opacity:1}
+.j-poll i{position:absolute;inset:0 auto 0 0;background:var(--light);border-radius:5px}.j-poll span{position:relative}.j-detail h2{font-size:25px;line-height:1.3;margin:0 0 8px}.j-detail>.j-image{margin:12px 0}
+.j-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}.j-grid figure{margin:0}.j-grid .j-image,.j-grid .j-image img{width:100%}.j-grid .j-image img{aspect-ratio:4/3;object-fit:cover}
+.j-detail figcaption{gap:5px;margin-top:4px}.j-detail figcaption img{border-radius:50%;width:20px;height:20px}.j-dock{padding:8px 16px max(10px,env(safe-area-inset-bottom));background:var(--surface)}.j-dock>*{flex:1;text-align:center}
+.j-comments p{margin:4px 0}.j-comments form{margin:8px 0}.j-comments button{white-space:nowrap}
+.j-empty{text-align:center;margin:16vh auto 0}.j-empty img{width:70px;mix-blend-mode:multiply}.j-empty h2{font-size:20px;margin:8px}.j-full{min-height:100%;display:grid;place-items:center}.j-full img{max-width:100%;max-height:75dvh}
+.j-film{display:flex;gap:5px;margin-bottom:2px}.j-film img{width:calc((100% - 10px)/3);aspect-ratio:2/1;object-fit:cover;border-radius:6px}
+@media(max-width:360px){.j-nav{padding-inline:3px}.j-page .j-nav button{padding-inline:4px}.j-page .j-nav h1{font-size:18px}}

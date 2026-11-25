@@ -1,0 +1,30 @@
+.lychee-native-window { scrollbar-color:#bdad8a transparent; scrollbar-width:thin }
+.lychee-native-window * { scrollbar-width:thin }
+.lychee-window-controls { display:none }
+.lychee-unified-header .lychee-window-controls {
+  position:fixed; z-index:32; display:flex; align-items:center; padding:0 2px;
+  background:#fff9eeda; color:#395747; border-radius:10px; -webkit-app-region:no-drag;
+}
+.lychee-window-controls button {
+  position:relative; width:30px; height:30px; padding:0; margin:0; border:0; border-radius:8px;
+  background:transparent; color:inherit; cursor:default;
+}
+.lychee-window-controls button:hover {background:#dae4d0}
+.lychee-window-controls [data-command=close]:hover {background:#a53e2b;color:white}
+.lychee-window-controls button::before,.lychee-window-controls [data-command=close]::after {
+  content:""; position:absolute; left:50%; top:50%; width:10px; height:0;
+  border-top:1.5px solid currentColor; transform:translate(-50%,-50%);
+}
+.lychee-window-controls [data-command=maximize]::before {height:8px;width:8px;border:1.4px solid currentColor;border-radius:1px}
+.lychee-window-controls [data-command=close]::before {transform:translate(-50%,-50%) rotate(45deg)}
+.lychee-window-controls [data-command=close]::after {transform:translate(-50%,-50%) rotate(-45deg)}
+html.lychee-unified-header .garden-app > header.appbar {
+  -webkit-app-region:drag; app-region:drag; box-sizing:border-box;
+  padding-inline:52px 100px; min-width:0; justify-content:center;
+}
+html.lychee-unified-header .appbar :is(button,input,a) {-webkit-app-region:no-drag;app-region:no-drag}
+html.lychee-unified-header .garden-app > .appbar .bubble {right:102px}
+html.lychee-unified-header .garden-app > .appbar:has(.bubble) {padding-right:144px}
+html.lychee-unified-header .garden-app > .appbar :is(h1,.tea-room-title) {
+  min-width:0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}

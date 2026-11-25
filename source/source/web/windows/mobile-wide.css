@@ -1,0 +1,238 @@
+/* Only the standalone Windows workspace opts in. Narrow windows use the original tabs. */
+html[data-windows-workspace] .garden-app > .windows-nav {
+  display: none;
+}
+
+/* The eight source illustrations are 384 × 512. Keep the picture and its
+   original percentage-based controls inside the same 3:4 coordinate system.
+   Below a usable height, scroll the scene rather than squeezing the artwork. */
+html[data-windows-workspace] .garden-app > .game-host:has(> .yard65) {
+  container-type: size;
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+}
+html[data-windows-workspace] .game-host > .yard65 {
+  --scene-width: min(100%, max(288px, calc(75cqh - 39px)));
+  position: static;
+  align-items: center;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  background: #f3ecda;
+}
+html[data-windows-workspace] .yard65 > .yard-scene {
+  flex: none;
+  width: var(--scene-width);
+  height: auto;
+  aspect-ratio: 3 / 4;
+}
+html[data-windows-workspace] .yard-scene > .yard-land {
+  object-fit: contain;
+}
+/* The base button press shifts ordinary buttons down one pixel. On anchored
+   props it must retain the centering transform until pointerup. */
+html[data-windows-workspace] .yard65 button.yard-sign:active:not(:disabled) {
+  transform: translate(-50%, -50%) rotate(-3deg);
+}
+html[data-windows-workspace] .yard65 button:is(.yard-fruit, .yard-butterfly):active:not(:disabled) {
+  transform: translate(-50%, -50%);
+}
+html[data-windows-workspace] .yard65 > .yard-latest {
+  width: var(--scene-width);
+}
+
+/* The folio is attached to the visible game host, including when the picture
+   behind it is scrolled. Long records and forms scroll inside the paper. */
+html[data-windows-workspace] .yard65 > .yard-card {
+  inset: auto 0 0;
+  width: min(100%, 560px);
+  height: auto;
+  aspect-ratio: 680 / 413;
+  max-height: calc(100% - 6px);
+  min-height: min(13rem, calc(100% - 6px));
+  margin-inline: auto;
+  padding: clamp(11px, 4cqh, 26px) clamp(12px, 6cqw, 36px);
+  display: flex;
+  flex-direction: column;
+  background-color: #f7ecd1;
+  background-size: contain;
+  background-position: center;
+}
+html[data-windows-workspace] .yard-card > .yard-page {
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
+  scroll-padding-block: 8px;
+}
+html[data-windows-workspace] .yard-page > * {
+  flex-shrink: 0;
+}
+html[data-windows-workspace] .yard-card :is(input, select, textarea, button) {
+  max-width: 100%;
+  scroll-margin-block: 8px;
+}
+html[data-windows-workspace] .yard-memory img:first-child {
+  height: auto;
+  object-fit: contain;
+}
+html[data-windows-workspace] .garden-app :is(.garden-portals, .a62-toolcard, .a62-gallery, .j-preview, .j-grid, .j-film, .a624-styles) img {
+  object-fit: contain;
+}
+html[data-windows-workspace] .garden-app img:is(.a62-tools-hero, .a62-hero, .circle-banner) {
+  aspect-ratio: auto;
+  height: auto;
+  object-fit: contain;
+}
+/* Scene paintings use their intrinsic proportions. The gradients behind text
+   still span their surfaces. Theme paper, masks and overlaid labels stay intact. */
+html[data-windows-workspace] .garden-app[data-skin] :is(.garden-art, .night-art, .picnic-art),
+html[data-windows-workspace] .garden-app[data-skin=orchard] .soup-modes header {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* These decorative covers span a section; crop instead of shrinking into a thumbnail. */
+html[data-windows-workspace] .garden-app[data-skin] .mine > .portrait-cover,
+html[data-windows-workspace] .garden-app[data-skin=orchard] .chat-home > .orchard-courtyard {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.8;
+  max-height: min(38dvh, 350px);
+  margin: 0 0 12px;
+  background-size: cover;
+}
+html[data-windows-workspace] .garden-app[data-skin=orchard] .mine > .portrait-cover,
+html[data-windows-workspace] .garden-app[data-skin=orchard] .chat-home > .orchard-courtyard {
+  background-position: center 76%;
+}
+html[data-windows-workspace] .garden-app[data-skin] .plan-cover::after,
+html[data-windows-workspace] .garden-app .v61-wrap .v61-goal-hero::after {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+html[data-windows-workspace] .garden-app .v61-wrap .v61-goal-hero::after {
+  align-self: center;
+  width: min(100%, 540px);
+  margin-inline: 0;
+  aspect-ratio: 564 / 450;
+  max-height: min(38dvh, 320px);
+}
+html[data-windows-workspace] .garden-app .v61-wrap .v61-goal-hero[data-newyear=true]::after {
+  aspect-ratio: 1100 / 367;
+}
+html[data-windows-workspace] .garden-app[data-skin] .mine .profile-id::before,
+html[data-windows-workspace] .garden-app .v61-hero:not(.v61-goal-hero),
+html[data-windows-workspace] .garden-app .plan-cover[style*="background-image"],
+html[data-windows-workspace] .garden-app .v61-goal-hero[style*="background-image"] {
+  background-size: 100% 100%, contain;
+  background-position: center, right center;
+  background-repeat: no-repeat;
+}
+html[data-windows-workspace] .garden-app .team-room > .room-log {
+  background-size: 100% 100%, contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+html[data-windows-workspace] .garden-app[data-room-chat=true] > .team-room > .room-log {
+  background-size: contain;
+}
+html[data-windows-workspace] .garden-app .v61-toast {
+  inset-inline-start: auto;
+  max-width: min(30rem, calc(100% - 24px));
+  box-sizing: border-box;
+}
+html[data-windows-workspace] .garden-app .v61-toast .v61-grow {
+  min-width: 0;
+}
+
+@media (min-width: 800px) {
+  html[data-windows-workspace] main.garden-app:has(> .windows-nav) {
+    --windows-nav-width: clamp(164px, 18vw, 224px);
+    --windows-reading-width: 840px;
+    box-sizing: border-box;
+    max-width: 1560px;
+    padding-inline-start: var(--windows-nav-width);
+  }
+
+  html[data-windows-workspace] .garden-app > .windows-nav {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: var(--windows-nav-width);
+    padding: 14px 10px;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    background: var(--surface);
+    border-inline-end: 1px solid var(--rim);
+  }
+
+  html[data-windows-workspace] .garden-app:has(> .windows-nav) > .bottom {
+    display: none;
+  }
+  html[data-windows-workspace] .garden-app:has(> .windows-nav) > .drawer-wrap {
+    inset-inline-start: var(--windows-nav-width);
+    max-height: 100%;
+  }
+
+  /* Keep the mobile scroll owner: cards, forms and back buttons retain their events. */
+  html[data-windows-workspace] .garden-app > :is(.ph-scroll, .team-room, .j-page) {
+    min-inline-size: 0;
+    box-sizing: border-box;
+  }
+  html[data-windows-workspace] .garden-app > .ph-scroll {
+    inline-size: 100%;
+    padding-inline: clamp(16px, 2.5vw, 36px);
+    scrollbar-gutter: stable;
+    scroll-padding-block: 12px 24px;
+  }
+  html[data-windows-workspace] .garden-app > .ph-scroll:is(.v61-screen, .a62-screen, .detail, .focus-page, .orchard-ledger) {
+    max-inline-size: var(--windows-reading-width);
+    align-self: center;
+  }
+  html[data-windows-workspace] .garden-app > :is(.j-page, .team-room) {
+    inline-size: min(100%, 960px);
+    align-self: center;
+  }
+  html[data-windows-workspace] .garden-app > .ph-scroll:is(.chat-home, .tools, .garden-hub, .mine) {
+    max-inline-size: 1120px;
+    align-self: center;
+  }
+  html[data-windows-workspace] .garden-app .ph-scroll:is(.tools, .garden-hub) .garden-portals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+    align-items: start;
+    gap: 14px;
+  }
+  html[data-windows-workspace] .garden-app .ph-scroll:is(.tools, .garden-hub) .garden-portals > button {
+    aspect-ratio: 4 / 3;
+    min-inline-size: 0;
+    max-block-size: 204px;
+    inline-size: 100%;
+  }
+  html[data-windows-workspace] .garden-app .mine .profile-rows {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  html[data-windows-workspace] .garden-app .v61-screen .v61-chipline {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  /* Existing stage coordinates and canvas hit targets use the mobile content width. */
+  html[data-windows-workspace] .garden-app > .game-host {
+    align-self: center;
+    inline-size: min(100%, 640px);
+    min-inline-size: 0;
+  }
+  html[data-windows-workspace] .garden-app:has(.yard65) > .appbar {
+    right: max(8px, calc((100% - var(--windows-nav-width) - 640px) / 2 + 8px));
+  }
+}

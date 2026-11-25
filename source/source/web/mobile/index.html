@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN" data-phone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#fff9ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="荔枝园">
+<meta name="lychee-release" content="6.3.3">
+<title>荔枝园</title>
+<link rel="manifest" href="/mobile/app.webmanifest">
+<link rel="apple-touch-icon" href="/mobile/icon.png">
+<link rel="stylesheet" href="/app.css">
+<link rel="stylesheet" href="/mobile/phone.css?v=6.3.3">
+<link rel="stylesheet" href="/mobile/themes.css?v=6.3.3">
+<script src="/mobile/viewport.js?v=6.3.3" defer></script>
+<script src="/mobile/v62.js?v=6.3.3" defer></script>
+<script src="/mobile/v61.js?v=6.3.3" defer></script>
+<script src="/mobile/journal.js?v=6.3.3" defer></script>
+<script src="/mobile/yard65.js?v=6.3.3" defer></script>
+<script src="/mobile/phone.js?v=6.3.3" defer></script>
+<link rel="stylesheet" href="/mobile/garden-tools.css?v=6.3.3">
+<link rel="stylesheet" href="/mobile/journal.css?v=6.3.3">
+<link rel="stylesheet" href="/mobile/v61.css?v=6.3.3">
+<link rel="stylesheet" href="/mobile/v62.css?v=6.3.3">
+<link rel="stylesheet" href="/mobile/yard65.css?v=6.3.3">
+<style>
+html[data-phone], html[data-phone] body, html[data-phone] #root {
+  touch-action: manipulation;
+  touch-action: pan-x pan-y;
+}
+@media (any-pointer: coarse) {
+  html[data-phone] :where(input:not([type]),input:is([type="text"],[type="password"],[type="email"],[type="search"],[type="tel"],[type="url"],[type="number"],[type="date"],[type="time"],[type="datetime-local"]),textarea,select,[contenteditable="true"],[contenteditable="plaintext-only"]):not(.circle-name-line):not(.ledger-amount input) {
+    font-size: max(16px, 1em) !important;
+  }
+}
+</style>
+</head><body><div id="root"></div></body></html>

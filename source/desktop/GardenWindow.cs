@@ -1,0 +1,217 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Automation;
+using System.Windows.Shell;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
+
+[assembly: AssemblyProduct("荔枝 Windows")]
+[assembly: AssemblyVersion("6.4.0.0")]
+[assembly: AssemblyFileVersion("6.4.7.0")]
+
+internal static class Program {
+    [STAThread] public static int Main(string[] args) {
+        Uri origin = new Uri("https://lychee-link-check.onrender.com/");
+        bool local = args.Length == 2 && args[0] == "--test-local";
+        if (local && (!Uri.TryCreate(args[1], UriKind.Absolute, out origin) || origin.Scheme != "http" ||
+            origin.Host != "127.0.0.1" || origin.AbsolutePath != "/" || origin.UserInfo.Length != 0 ||
+            origin.Query.Length != 0 || origin.Fragment.Length != 0)) return 2;
+        try {
+            string sdk=PrepareRuntime(local);
+            AppDomain.CurrentDomain.AssemblyResolve+=delegate(object sender,ResolveEventArgs e) {
+                string name=new AssemblyName(e.Name).Name;
+                if(name!="Microsoft.Web.WebView2.Core" && name!="Microsoft.Web.WebView2.Wpf")return null;
+                return Assembly.LoadFrom(Path.Combine(sdk,name+".dll"));
+            };
+            return Run(origin,local,sdk);
+        } catch(Exception err) {
+            if(local) Console.Error.WriteLine(err); else MessageBox.Show(err.Message,"荔枝启动失败");return 1;
+        }
+    }
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static int Run(Uri origin,bool local,string sdk) {
+        CoreWebView2Environment.SetLoaderDllFolderPath(sdk);
+        return new Application().Run(new GardenWindow(origin,local));
+    }
+    private static string PrepareRuntime(bool local) {
+        string dir=Path.Combine(local? Path.GetTempPath():Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                local?"Lychee-Windows-QA":"LycheeGardenDesktop","Runtime",typeof(Program).Assembly.ManifestModule.ModuleVersionId.ToString("N"));
+        Directory.CreateDirectory(dir);
+        foreach(string dll in new[]{"Microsoft.Web.WebView2.Core.dll","Microsoft.Web.WebView2.Wpf.dll","WebView2Loader.dll"}) {
+            string dest=Path.Combine(dir,dll);
+            using(var input=typeof(Program).Assembly.GetManifestResourceStream(dll))
+            using(var sha=SHA256.Create()) {
+                var expected=sha.ComputeHash(input);input.Position=0;
+                if(!File.Exists(dest)) {
+                    string tmp=dest+"."+Guid.NewGuid().ToString("N")+".tmp";
+                    try {
+                        using(var file=new FileStream(tmp,FileMode.CreateNew,FileAccess.Write,FileShare.None)){input.CopyTo(file);}
+                        try {File.Move(tmp,dest);} catch(IOException){if(!File.Exists(dest))throw;}
+                    } finally {if(File.Exists(tmp))File.Delete(tmp);}
+                }
+                using(var read=File.OpenRead(dest))if(!sha.ComputeHash(read).SequenceEqual(expected))
+                    throw new IOException("荔枝运行组件校验失败，请重新安装。");
+            }
+        }
+        return dir;
+    }
+}
+
+internal sealed class GardenWindow : Window {
+    readonly Uri origin;
+    readonly string profile;
+    readonly WebView2 web = new WebView2();
+    readonly DockPanel caption = new DockPanel { Height=34, Background=new SolidColorBrush(Color.FromRgb(248,241,222)) };
+    readonly WindowChrome chrome = new WindowChrome { CaptionHeight=34, GlassFrameThickness=new Thickness(0), ResizeBorderThickness=new Thickness(8), CornerRadius=new CornerRadius(0), UseAeroCaptionButtons=false };
+    readonly StackPanel startup = new StackPanel {VerticalAlignment=VerticalAlignment.Center, HorizontalAlignment=HorizontalAlignment.Center};
+    readonly TextBlock message = new TextBlock {Text="正在打开荔枝…",HorizontalAlignment=HorizontalAlignment.Center,Margin=new Thickness(0,10,0,10)};
+    readonly Button retry = new Button {Content="重试",Visibility=Visibility.Collapsed};
+    readonly ZipArchive archive;
+    readonly Dictionary<string,ZipArchiveEntry> assets;
+    bool connected, closing;
+    static readonly Dictionary<string,string> types = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase) {
+        {".html","text/html; charset=utf-8"},{".css","text/css; charset=utf-8"},{".js","text/javascript; charset=utf-8"},
+        {".mjs","text/javascript; charset=utf-8"},{".json","application/json"},{".webmanifest","application/manifest+json"},
+        {".svg","image/svg+xml"},{".jpg","image/jpeg"},{".jpeg","image/jpeg"},{".png","image/png"},{".webp","image/webp"},
+        {".ico","image/x-icon"},{".woff","font/woff"},{".woff2","font/woff2"}
+    };
+    public GardenWindow(Uri server,bool local) {
+        origin=server;
+        profile=local ? Path.Combine(Path.GetTempPath(),"Lychee-Windows-QA",origin.Port.ToString())
+                      : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"LycheeGardenDesktop","WebView2");
+        Title="荔枝"; Width=1000; Height=760; MinWidth=340; MinHeight=320;
+        WindowStartupLocation=WindowStartupLocation.CenterScreen;
+        WindowChrome.SetWindowChrome(this,chrome);
+        ResizeMode=ResizeMode.CanResize;
+        var paper=new SolidColorBrush(Color.FromRgb(252,247,233));
+        var layout=new Grid {Background=paper};
+        // WebView2 owns a child HWND. Keep it entirely inside the native sizing rim
+        // so Windows receives the hit test and runs its usual move/size loop.
+        var frame=new Border {Child=layout,Background=paper,Padding=chrome.ResizeBorderThickness,UseLayoutRounding=true};
+        Content=frame;
+        layout.RowDefinitions.Add(new RowDefinition {Height=GridLength.Auto});
+        layout.RowDefinitions.Add(new RowDefinition());
+        var controls=new StackPanel {Orientation=Orientation.Horizontal};
+        DockPanel.SetDock(controls,Dock.Right);caption.Children.Add(controls);
+        AddCaptionButton(controls,"─","最小化",delegate {WindowState=WindowState.Minimized;});
+        var maximize=AddCaptionButton(controls,"□","最大化",ToggleMaximize);
+        AddCaptionButton(controls,"×","关闭",Close);
+        StateChanged+=delegate {
+            frame.Padding=WindowState==WindowState.Normal?chrome.ResizeBorderThickness:new Thickness(0);
+            string label=WindowState==WindowState.Maximized?"还原":"最大化";
+            maximize.Content=WindowState==WindowState.Maximized?"❐":"□";
+            maximize.ToolTip=label;AutomationProperties.SetName(maximize,label);
+        };
+        var brand=new StackPanel {Orientation=Orientation.Horizontal,Margin=new Thickness(12,0,0,0),VerticalAlignment=VerticalAlignment.Center};
+        caption.Children.Add(brand);layout.Children.Add(caption);
+        Grid.SetRow(web,1);Grid.SetRow(startup,1);
+        archive=new ZipArchive(Assembly.GetExecutingAssembly().GetManifestResourceStream("Lychee.Site"),ZipArchiveMode.Read);
+        assets=archive.Entries.ToDictionary(x=>"/"+x.FullName,StringComparer.Ordinal);
+        using (var iconStream=assets["/mobile/icon.png"].Open()) using (var stream=new MemoryStream()) {
+            iconStream.CopyTo(stream);stream.Position=0;
+            var b=new BitmapImage();b.BeginInit();b.CacheOption=BitmapCacheOption.OnLoad;b.StreamSource=stream;b.EndInit();b.Freeze();
+            Icon=b;startup.Children.Add(new Image {Source=b,Width=76,Height=76});
+            brand.Children.Add(new Image {Source=b,Width=19,Height=19});
+            brand.Children.Add(new TextBlock {Text="荔枝",Margin=new Thickness(7,0,0,0),FontWeight=FontWeights.SemiBold,Foreground=Brushes.DarkGreen});
+        }
+        startup.Children.Add(new TextBlock{Text="荔枝",FontSize=27,HorizontalAlignment=HorizontalAlignment.Center,Margin=new Thickness(0,9,0,0)});
+        startup.Children.Add(message);startup.Children.Add(retry);
+        web.Visibility=Visibility.Hidden;layout.Children.Add(web);layout.Children.Add(startup);
+        retry.Click+=async delegate {await Open();};
+        Loaded+=async delegate {await Open();};
+        Closed+=delegate {closing=true;web.Dispose();archive.Dispose();};
+    }
+    Button AddCaptionButton(StackPanel parent,string icon,string label,Action click) {
+        var button=new Button {Content=icon,ToolTip=label,FontSize=16,Width=36,Height=30,Background=Brushes.Transparent,BorderThickness=new Thickness(0),Foreground=new SolidColorBrush(Color.FromRgb(45,76,58))};
+        AutomationProperties.SetName(button,label);WindowChrome.SetIsHitTestVisibleInChrome(button,true);
+        button.Click+=delegate {click();};parent.Children.Add(button);return button;
+    }
+    void ToggleMaximize(){WindowState=WindowState==WindowState.Maximized?WindowState.Normal:WindowState.Maximized;}
+    void SetIntegrated(bool integrated) {
+        caption.Visibility=integrated?Visibility.Collapsed:Visibility.Visible;
+        if(chrome.CaptionHeight!=(integrated?0:34))chrome.CaptionHeight=integrated?0:34;
+    }
+    bool IsSameOrigin(Uri u) {return u.Scheme==origin.Scheme && u.Host==origin.Host && u.Port==origin.Port && u.UserInfo.Length==0;}
+    static bool IsApi(string path) {
+        if(path.StartsWith("/api/",StringComparison.Ordinal))return true;
+        var seg=path.Split('/');
+        return seg.Length>=5 && seg[1]=="g" && seg[2].Length!=0 && seg[3]=="api";
+    }
+    void LocalAsset(object sender,CoreWebView2WebResourceRequestedEventArgs e) {
+        var u=new Uri(e.Request.Uri);
+        if(u.Scheme!="https" && u.Scheme!="http")return;
+        var env=web.CoreWebView2.Environment;
+        string path=u.AbsolutePath;
+        if(!IsSameOrigin(u)){e.Response=env.CreateWebResourceResponse(null,403,"Forbidden","");return;}
+        if(IsApi(path))return;
+        if(path.EndsWith("/"))path+="index.html";
+        ZipArchiveEntry entry;string type;
+        if((e.Request.Method!="GET" && e.Request.Method!="HEAD") || !assets.TryGetValue(path,out entry)) {
+            e.Response=env.CreateWebResourceResponse(null,404,"Not found","");return;
+        }
+        if(!types.TryGetValue(Path.GetExtension(path),out type))type="application/octet-stream";
+        var bytes=new MemoryStream();
+        if(e.Request.Method=="GET"){using(var content=entry.Open())content.CopyTo(bytes);bytes.Position=0;}
+        e.Response=env.CreateWebResourceResponse(bytes,200,"OK","Content-Type: "+type+"\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff");
+    }
+    async Task Open() {
+        retry.Visibility=Visibility.Collapsed;message.Text="正在打开荔枝…";
+        try {
+            if(!connected){
+                var env=await CoreWebView2Environment.CreateAsync(null,profile);
+                if(closing)return;
+                await web.EnsureCoreWebView2Async(env);if(closing)return;
+                var core=web.CoreWebView2;
+                core.Settings.IsStatusBarEnabled=false;
+                core.Settings.IsZoomControlEnabled=false;
+                try {
+                    core.Settings.IsNonClientRegionSupportEnabled=true;
+                    await core.AddScriptToExecuteOnDocumentCreatedAsync("window.lycheeNativeFrame=true;");
+                } catch(NotImplementedException) { /* Older WebView runtimes keep the native title bar. */ }
+                core.WebMessageReceived+=delegate(object s,CoreWebView2WebMessageReceivedEventArgs m) {
+                    Uri source;
+                    if(!Uri.TryCreate(m.Source,UriKind.Absolute,out source)||!IsSameOrigin(source)||source.AbsolutePath!="/windows/workspace.html")return;
+                    switch(m.WebMessageAsJson) {
+                        case "\"frame:on\"":SetIntegrated(true);break;
+                        case "\"frame:off\"":SetIntegrated(false);break;
+                        case "\"window:minimize\"":WindowState=WindowState.Minimized;break;
+                        case "\"window:maximize\"":ToggleMaximize();break;
+                        case "\"window:close\"":Close();break;
+                    }
+                };
+                core.AddWebResourceRequestedFilter("*",CoreWebView2WebResourceContext.All);
+                core.WebResourceRequested+=LocalAsset;
+                core.NavigationStarting+=delegate(object s,CoreWebView2NavigationStartingEventArgs n){
+                    Uri u;if(!Uri.TryCreate(n.Uri,UriKind.Absolute,out u) || !IsSameOrigin(u) || IsApi(u.AbsolutePath))n.Cancel=true;else SetIntegrated(false);
+                };
+                core.NewWindowRequested+=delegate(object s,CoreWebView2NewWindowRequestedEventArgs n){n.Handled=true;};
+                core.NavigationCompleted+=delegate(object s,CoreWebView2NavigationCompletedEventArgs n){
+                    if(closing)return;
+                    if(!n.IsSuccess){ShowError("页面未能打开，可以重试。");return;}
+                    web.Visibility=Visibility.Visible;startup.Visibility=Visibility.Collapsed;
+                };connected=true;
+            }
+            web.CoreWebView2.Navigate(new Uri(origin,"windows/workspace.html").AbsoluteUri);
+        } catch(WebView2RuntimeNotFoundException) {
+            ShowError("此电脑需要 Microsoft Edge WebView2 运行时。安装后点重试。");
+            if(startup.Children.OfType<Button>().Count()==1){
+                var download=new Button{Content="打开微软官方下载页",Margin=new Thickness(0,10,0,0)};
+                download.Click+=delegate{Process.Start(new ProcessStartInfo("https://developer.microsoft.com/microsoft-edge/webview2/"){UseShellExecute=true});};
+                startup.Children.Add(download);
+            }
+        } catch(Exception failure) {if(origin.IsLoopback) Console.Error.WriteLine(failure);if(!closing)ShowError("荔枝窗口启动失败，可以重试。");}
+    }
+    void ShowError(string text){SetIntegrated(false);web.Visibility=Visibility.Hidden;startup.Visibility=Visibility.Visible;message.Text=text;retry.Visibility=Visibility.Visible;}
+}

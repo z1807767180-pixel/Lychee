@@ -1,0 +1,16 @@
+/lychee-mobile-assets.zip
+/www/
+/node_modules/
+/__pycache__/
+/android/.gradle/
+/android/local.properties
+/android/build/
+/android/app/build/
+/android/app/src/main/assets/
+/android/capacitor-cordova-android-plugins/
+/android/capacitor.settings.gradle
+/android/app/capacitor.build.gradle
+*.jks
+*.keystore
+*.p12
+*.apk

@@ -1,0 +1,8 @@
+/
+  Cache-Control: no-cache, max-age=0, must-revalidate
+/mobile/
+  Cache-Control: no-cache, max-age=0, must-revalidate
+/mobile/index.html
+  Cache-Control: no-cache, max-age=0, must-revalidate
+/windows/workspace.html
+  Cache-Control: no-cache, max-age=0, must-revalidate

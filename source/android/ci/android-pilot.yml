@@ -1,0 +1,39 @@
+name: Lychee Android pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    if: github.event.repository.private
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.14.0'
+      - name: Read only the approved client input from this private repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download lychee-android-6.4.7-input --repo "$GITHUB_REPOSITORY" --pattern lychee-mobile-assets.zip --dir "$RUNNER_TEMP"
+      - name: Build Capacitor debug APK
+        working-directory: android
+        env:
+          EXPECTED: 856b197061106f08cb3eb3126998de1a508b9d412956c86b099a0c13571ad975
+        run: |
+          export JAVA_HOME="$JAVA_HOME_21_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          python3 build.py --assets "$RUNNER_TEMP/lychee-mobile-assets.zip" --sha256 "$EXPECTED" --expected-build 6.4.7 --out "$GITHUB_WORKSPACE/dist/Lychee-6.4.7-debug.apk"
+          cp package-lock.json "$GITHUB_WORKSPACE/dist/"
+          cd "$GITHUB_WORKSPACE/dist"
+          sha256sum Lychee-6.4.7-debug.apk > SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Lychee-Android-6.4.7-debug
+          path: dist/
+          if-no-files-found: error
+          retention-days: 3
