@@ -45,6 +45,7 @@ def main():
     cli.add_argument('--sha256', required=True)
     cli.add_argument('--expected-build', required=True)
     cli.add_argument('--prepare-only', action='store_true')
+    cli.add_argument('--unsigned-release', action='store_true')
     cli.add_argument('--out', type=Path)
     args = cli.parse_args()
     if not re.fullmatch(r'\d{1,2}\.\d{1,2}\.\d{1,2}',args.expected_build):
@@ -69,6 +70,18 @@ def main():
     major,minor,patch = map(int,args.expected_build.split('.'))
     code = major*10000+minor*100+patch
     wrapper = ROOT/'android'/('gradlew.bat' if os.name=='nt' else 'gradlew')
+    if args.unsigned_release:
+        run(*([] if os.name=='nt' else ['bash']), wrapper, '-p', ROOT/'android', '--no-daemon',
+            f'-PlycheeCode={code}', f'-PlycheeVersion={args.expected_build}', ':app:assembleRelease')
+        apk = ROOT/'android/app/build/outputs/apk/release/app-release-unsigned.apk'
+        with ZipFile(apk) as package:
+            if not package.read('classes.dex').startswith(b'dex\n') or any(
+                    package.read('assets/public/'+name) != expected for name,expected in files.items()):
+                raise ValueError('Release code or bundled assets differ')
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(apk, args.out)
+        print('Prepared release APK for offline signing:', sha256(apk.read_bytes()).hexdigest())
+        return
     run(*([] if os.name=='nt' else ['bash']),wrapper,'-p',ROOT/'android','--no-daemon',
         f'-PlycheeCode={code}',f'-PlycheeVersion={args.expected_build}-debug',':app:assembleDebug')
     apk = ROOT/'android/app/build/outputs/apk/debug/app-debug.apk'
