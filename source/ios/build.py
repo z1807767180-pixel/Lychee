@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import plistlib
+import struct
 import subprocess
 import sys
 import tempfile
@@ -69,9 +70,23 @@ def export(app, files):
             APP_ID,VERSION,['iPhoneOS']):
         raise ValueError('Device build identity mismatch')
     binary = app / info['CFBundleExecutable']
-    subprocess.run(['lipo','-verify_arch','arm64',binary],check=True)
-    if 'platform IOS' not in subprocess.check_output(['xcrun','vtool','-show-build',binary],text=True):
-        raise ValueError('Mach-O is not an iOS device executable')
+    executable = binary.read_bytes()
+    magic, cpu, _, kind, count = struct.unpack_from('<5I', executable)
+    if (magic,cpu,kind) != (0xfeedfacf,0x0100000c,2):
+        raise ValueError('Expected a 64-bit ARM executable')
+    offset = 32
+    for _ in range(count):
+        command, size = struct.unpack_from('<II',executable,offset)
+        if size < 8 or offset+size > len(executable):
+            raise ValueError('Invalid Mach-O load command')
+        if command == 0x32:  # LC_BUILD_VERSION
+            platform, _, sdk = struct.unpack_from('<III',executable,offset+8)
+            if platform != 2 or sdk >> 16 < 26:
+                raise ValueError('Expected the iPhoneOS 26 or later device SDK')
+            break
+        offset += size
+    else:
+        raise ValueError('Missing iOS build version')
     destination = OUT / 'export'
     destination.mkdir(parents=True, exist_ok=True)
     ipa = destination/f'Lychee-{VERSION}-iPhone-unsigned.ipa'
