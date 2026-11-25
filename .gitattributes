@@ -1,0 +1,2 @@
+# Preserve exact release/archive bytes; manifests use SHA-256.
+* -text

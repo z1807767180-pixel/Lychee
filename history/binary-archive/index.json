@@ -1,0 +1,270 @@
+{
+  "format": 1,
+  "parts": [
+    {
+      "path": "originals.pack.001",
+      "sha256": "d265674d7f82e7621c653b2a592b1e1cd98e7f6411eecde5eddbe5e899dca17a",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.002",
+      "sha256": "5ea864ed4bdeaf0f4b521b22d636d355284005bba6b8a1fb5ba508854debf757",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.003",
+      "sha256": "ef23f75d7dc8b348d97df9ccd4c0a797b8f68d898c826d0fc0307476b1b695ba",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.004",
+      "sha256": "ae15f94b0575dfb2d075f04d4328baa4937a563eb98896208f2eb4435962bb89",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.005",
+      "sha256": "3688b0fd8a88c6c5d6ab2c9da2b3507114633a521b41b0910eafa4daa124422e",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.006",
+      "sha256": "9384f45fdc98dc0b3ccdf7a643baef4d0143d3f099ac7cc32173ee2bdeea5be5",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.007",
+      "sha256": "60d877ec4b80c46dc6b51b5d6609a445abf6b5a823ea91c4849eeb8e95e382dd",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.008",
+      "sha256": "e185aba11479c932e52e9357a6988405fca94d01c27b79eec312d918144b202e",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.009",
+      "sha256": "09547a82d0d67b1b311b1936d8d63970a31d2a73e1a367efe23d16b64a67d7af",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.010",
+      "sha256": "31609a4a093b151a6b06418053f50d0cc6a7da139a8bdc6f6f00073c968ce8b3",
+      "bytes": 6291456
+    },
+    {
+      "path": "originals.pack.011",
+      "sha256": "87da558ef9fb243452fe7d487fffa06c33da66cc462f90044e30779fef2b96f1",
+      "bytes": 940634
+    }
+  ],
+  "originals": [
+    {
+      "path": "windows-release-build/Lychee.exe",
+      "version": "6.4.5",
+      "type": "Windows 独立 EXE",
+      "bytes": 19772928,
+      "sha256": "de4dc7929c9e11ea79a3b2a23be2f5b84c3f304bf9c5f4acbd27a480907a5266",
+      "gitBlob": "496b7f7b6c3534ed2cdd477e6aff625a9ddf6ccb"
+    },
+    {
+      "path": "windows-release-build/Lychee.msi",
+      "version": "6.4.5",
+      "type": "Windows 安装 MSI",
+      "bytes": 19214336,
+      "sha256": "77007012d837a57978cd514a8c49985b0b9c4300ecbcb25161ff948944373d8f",
+      "gitBlob": "cc6ec4debc5919b9b3dbe8429bf9f012c2aa354e"
+    },
+    {
+      "path": "windows-release-build/site.zip",
+      "version": "6.4.0 页面 / 6.4.5 构建",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18831083,
+      "sha256": "2b439e50fff06e5c641098b2f5edfb238229f129e4b18353ea81d8145cdce007",
+      "gitBlob": "3dc7c692ecf6cb18c10366d4f2ccd561da61c8d7"
+    },
+    {
+      "path": "windows-646-final/Lychee.exe",
+      "version": "6.4.6",
+      "type": "Windows 独立 EXE",
+      "bytes": 19782656,
+      "sha256": "425ee1ddb9dddb7725a0f8b14f7eb55a015413c5861df21ba47ffd484397b399",
+      "gitBlob": "4d873a6d2960b589266d89187f560cae8fd396f3"
+    },
+    {
+      "path": "windows-646-final/Lychee.msi",
+      "version": "6.4.6",
+      "type": "Windows 安装 MSI",
+      "bytes": 19222528,
+      "sha256": "0a2b5416a443f259666af862a994bc28f7bb2b4e99f7b1a1c38004ed8ccf71d2",
+      "gitBlob": "8eff7cdd000b28ded3b8df5c6932b072faded852"
+    },
+    {
+      "path": "windows-646-final/site.zip",
+      "version": "6.4.6",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18836589,
+      "sha256": "ce674ea1811d3d0c2a48989c3f898a7d674d4b11e7dd0b5d9e386038e88703c6",
+      "gitBlob": "4a9e9103553f7a0e87e458a92a5e88b64a9ba4e0"
+    },
+    {
+      "path": "windows-646-release/Lychee.exe",
+      "version": "6.4.6",
+      "type": "Windows 独立 EXE",
+      "bytes": 19782656,
+      "sha256": "6151bca740e62e4584c5e6f833fdb4f86d89de104d5ad5247b4708aec467add8",
+      "gitBlob": "69a16594488913cd6229e25db516945e6237af09"
+    },
+    {
+      "path": "windows-646-release/Lychee.msi",
+      "version": "6.4.6",
+      "type": "Windows 安装 MSI",
+      "bytes": 19222528,
+      "sha256": "7fddcd5eaa070def538c6f037e5c82f931dae7b551655012c45dea3050d5917c",
+      "gitBlob": "a2121d7ffc1e41f08ade8138bcb0b1b45f76d85e"
+    },
+    {
+      "path": "windows-646-release/site.zip",
+      "version": "6.4.6",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18836475,
+      "sha256": "eded6165cd837b6cbdeee681568c643f24c20ccca73fd8962e144f0613125b7c",
+      "gitBlob": "4341cd18e2dc5c2b44809bd3c332d20657a70c64"
+    },
+    {
+      "path": "windows-647-final/Lychee.exe",
+      "version": "6.4.7",
+      "type": "Windows 独立 EXE",
+      "bytes": 19783168,
+      "sha256": "4e2dc33ce2138174275f28561d01e24a6d466fb49e92d31779a82d40cf626530",
+      "gitBlob": "7156ad3089b101b5cefaff7c8a15ea704c5dcecf"
+    },
+    {
+      "path": "windows-647-final/Lychee.msi",
+      "version": "6.4.7",
+      "type": "Windows 安装 MSI",
+      "bytes": 19222528,
+      "sha256": "01c845125cd259163086b19b819d22fff1d0d359473f456ae1fcdd26ff774d07",
+      "gitBlob": "826ef1072b873836cedcf600d1f572cc1788ba41"
+    },
+    {
+      "path": "windows-647-final/site.zip",
+      "version": "6.4.7",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18836650,
+      "sha256": "dab6eac0e5ff712345506419aaf29cca4efd24bc8a9dfe6b5369c4e4f282f0f1",
+      "gitBlob": "d95b78f53b4422b9b7b812ed627abd8be4cdb065"
+    },
+    {
+      "path": "windows-647-complete/Lychee.exe",
+      "version": "6.4.7",
+      "type": "Windows 独立 EXE",
+      "bytes": 19783168,
+      "sha256": "635375f965bcb027a03703c04b9b16f94aa41570bd7a9b4df65d5603df28581e",
+      "gitBlob": "59adaa7b151f6073797947ec70c6dbd69949974a"
+    },
+    {
+      "path": "windows-647-complete/Lychee.msi",
+      "version": "6.4.7",
+      "type": "Windows 安装 MSI",
+      "bytes": 19222528,
+      "sha256": "d55b5c95579c624ed761acfb55f712292e377da0345783d43bfc25ac07bcdb7a",
+      "gitBlob": "d10d678897fc419a4a72c5ec752bcaba3e19bf85"
+    },
+    {
+      "path": "windows-647-complete/site.zip",
+      "version": "6.4.7",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18836790,
+      "sha256": "9d3f08e97d463ab9dc5b20ce302f0a3fc495023e2e3df6b68ed92069404752da",
+      "gitBlob": "1396b670d342d0f66368a2b2d6ff9c8a1d75f4c2"
+    },
+    {
+      "path": "frame646/Lychee.exe",
+      "version": "6.4.6",
+      "type": "Windows 独立 EXE",
+      "bytes": 19777024,
+      "sha256": "81a031df1b2d7cb49cf781ca1189584899ae1fb6b025abb0a16c4334f9cfc619",
+      "gitBlob": "62bfa0cc03e1536c4549f95c2470904bd1a040be"
+    },
+    {
+      "path": "frame646/site.zip",
+      "version": "6.4.0 页面 / 6.4.5 构建",
+      "type": "Windows 站点资源 ZIP",
+      "bytes": 18830856,
+      "sha256": "b250d51f72fd6f2d3bb971e0c80968e2babef8c32968456043a0f3dcbbb504ed",
+      "gitBlob": "ad496a831b3b6ddf98a9bcc757f9a86bdb22f6cf"
+    },
+    {
+      "path": "resize647/Lychee.exe",
+      "version": "6.4.7",
+      "type": "Windows 独立 EXE",
+      "bytes": 19782656,
+      "sha256": "5407185d65ac04b746d321a5d047bb0047077815b20a6bbbb50b9d7431579cbc",
+      "gitBlob": "58811609fc79e88a8490afd62566ca7e3f6dd166"
+    },
+    {
+      "path": "windows-4.1.7/lychee-countdown.exe",
+      "version": "4.1.7 / build 3",
+      "type": "Windows 原客户端",
+      "bytes": 707072,
+      "sha256": "b07acbb6ce358266a849aecdbc39361cfba94cc51b9b5811d68be98d676f89d4",
+      "gitBlob": "9b04808367a298fb51749a5fa5cb72242cbcb80f"
+    },
+    {
+      "path": "windows-4.1.7/windows.release",
+      "version": "4.1.7 / build 3",
+      "type": "Windows 更新清单",
+      "bytes": 300,
+      "sha256": "f414f50041a7a2e74adecea9b72bf5941c11c54661812ea5cde5294fc7ea26b2",
+      "gitBlob": "6d29e359191c034bc22fb196f4fb8e0bc4054837"
+    },
+    {
+      "path": "windows-6.4.7/荔枝-Windows-6.4.7.zip",
+      "version": "6.4.7",
+      "type": "Windows 发行 ZIP",
+      "bytes": 38297010,
+      "sha256": "edfe0b2c47cbd0729066e3aee9f0b688177edab1b6326a6263a06fc0471f1f4e",
+      "gitBlob": "8b9a8d1764a8cbf71f440210c4b7493f16a2fec7"
+    },
+    {
+      "path": "android-6.4.7/capacitor-host-6.4.7.zip",
+      "version": "6.4.7",
+      "type": "Android 宿主工程 ZIP",
+      "bytes": 85206,
+      "sha256": "c54f71fed6e8ef3cbc7f35ee3bc56db51ecba1d6900705e3aab06d6519e5381b",
+      "gitBlob": "a9c88fa10d2461386a6018750f59cb03f49c6045"
+    },
+    {
+      "path": "android-6.4.7/lychee-mobile-assets.zip",
+      "version": "6.4.7",
+      "type": "Android 网页资源 ZIP",
+      "bytes": 18706353,
+      "sha256": "856b197061106f08cb3eb3126998de1a508b9d412956c86b099a0c13571ad975",
+      "gitBlob": "6e84e68df89580d2d19c85ba98d5c97779c100df"
+    },
+    {
+      "path": "android-6.4.5/preview-assets.zip",
+      "version": "6.4.0 页面 / 6.4.5 构建",
+      "type": "Android 网页资源 ZIP",
+      "bytes": 18700683,
+      "sha256": "57360d3bb09b5109a340048a8dc59aeb312f2bdf46f2df548bf5d94846c2cea5",
+      "gitBlob": "ac31ac497648e161bef6fb4d95693faeaed4d1e7"
+    },
+    {
+      "path": "windows-early-host/Lychee-Windows.exe",
+      "version": "无独立版本",
+      "type": "早期 Windows 试用宿主",
+      "bytes": 26112,
+      "sha256": "b94401e5aa10cfd4e645ab047986e2c90705e23588152f8427a9e080c865e688",
+      "gitBlob": "ec01ea84067f6040644a4e75502da046b2293441"
+    },
+    {
+      "path": "windows-early-trial/荔枝试用.exe",
+      "version": "无独立版本",
+      "type": "早期 Windows 试用宿主",
+      "bytes": 26112,
+      "sha256": "10146d3b28eaeca7538262b7a9a5a65af3245172d0bb3d1c9786d04a93825da5",
+      "gitBlob": "3bfd757280037ff533e9be82e437b78ff0212c94"
+    }
+  ]
+}
