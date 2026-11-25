@@ -23,6 +23,13 @@ jobs:
           set -euo pipefail
           export JAVA_HOME="$JAVA_HOME_21_X64" PATH="$JAVA_HOME_21_X64/bin:$PATH"
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-36' 'build-tools;36.0.0'
+          mkdir -p "$HOME/.gradle/init.d"
+          cat > "$HOME/.gradle/init.d/central-mirror.gradle" <<'GRADLE'
+          beforeProject { p ->
+              p.buildscript.repositories.maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+              p.repositories.maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+          }
+          GRADLE
           digest=856b197061106f08cb3eb3126998de1a508b9d412956c86b099a0c13571ad975
           python3 history/binary-archive/restore.py --select "$digest" --out "$RUNNER_TEMP/original"
           assets=$(find "$RUNNER_TEMP/original" -name '*.zip' -type f)
