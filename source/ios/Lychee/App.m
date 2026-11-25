@@ -122,7 +122,7 @@ static BOOL APIRoute(NSString *path, NSString *method) {
     }
     NSURL *url = [NSURL URLWithString:[@"lychee://localhost" stringByAppendingString:path]];
     if (!Local(url) || !APIRoute(url.path, method) || ([method isEqual:@"POST"] &&
-        ![params[@"type"] hasPrefix:@"application/json"])) {reply(nil,@"此请求不可用"); return;}
+        (![params[@"type"] isKindOfClass:NSString.class] || ![params[@"type"] hasPrefix:@"application/json"]))) {reply(nil,@"此请求不可用"); return;}
     [self api:url method:method body:body completion:^(NSData *data, NSInteger status, NSDictionary *headers, NSError *error) {
         if (error || status < 200 || status >= 600) reply(nil,@"暂时连不上荔枝服务");
         else reply(@{@"status":@(status), @"headers":headers, @"data":[data base64EncodedStringWithOptions:0] ?: @""},nil);
@@ -203,6 +203,28 @@ static BOOL APIRoute(NSString *path, NSString *method) {
     if(file) [NSFileManager.defaultManager removeItemAtURL:file.URLByDeletingLastPathComponent error:nil];
     [self.downloads removeObjectForKey:download];
 }
+- (void)webView:(WKWebView *)web runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame
+        completionHandler:(void (^)(void))completion {
+    UIAlertController *box = [UIAlertController alertControllerWithTitle:@"荔枝" message:message preferredStyle:UIAlertControllerStyleAlert];
+    [box addAction:[UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction *a){completion();}]];
+    [self presentViewController:box animated:YES completion:nil];
+}
+- (void)webView:(WKWebView *)web runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame
+        completionHandler:(void (^)(BOOL))completion {
+    UIAlertController *box = [UIAlertController alertControllerWithTitle:@"荔枝" message:message preferredStyle:UIAlertControllerStyleAlert];
+    [box addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *a){completion(NO);}]];
+    [box addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *a){completion(YES);}]];
+    [self presentViewController:box animated:YES completion:nil];
+}
+- (void)webView:(WKWebView *)web runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)text
+        initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString *))completion {
+    UIAlertController *box = [UIAlertController alertControllerWithTitle:@"荔枝" message:prompt preferredStyle:UIAlertControllerStyleAlert];
+    [box addTextFieldWithConfigurationHandler:^(UITextField *field){field.text=text;}];
+    [box addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *a){completion(nil);}]];
+    __weak UIAlertController *weakBox=box;
+    [box addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *a){completion(weakBox.textFields.firstObject.text);}]];
+    [self presentViewController:box animated:YES completion:nil];
+}
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)web { [web reload]; }
 #if TARGET_OS_SIMULATOR
 - (void)webView:(WKWebView *)web didFinishNavigation:(WKNavigation *)navigation {
@@ -215,7 +237,12 @@ static BOOL APIRoute(NSString *path, NSString *method) {
         if ([ok boolValue]) {
             NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).firstObject;
             [@"6.4.7" writeToFile:[doc stringByAppendingPathComponent:@"smoke.ok"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        } else if (remaining>0) dispatch_after(dispatch_time(DISPATCH_TIME_NOW,NSEC_PER_SEC),dispatch_get_main_queue(),^{[self checkLoginAfterLoad:remaining-1];});
+        } else if (!remaining) {
+            [self.web evaluateJavaScript:@"JSON.stringify({title:document.title, build:document.body?.dataset.clientBuild, status:document.body?.innerText.slice(0,250), online:navigator.onLine, crypto:typeof crypto.subtle})" completionHandler:^(id result, NSError *problem){
+                NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).firstObject;
+                [[NSString stringWithFormat:@"%@ %@",result,problem ?: @""] writeToFile:[doc stringByAppendingPathComponent:@"smoke.error"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            }];
+        } else dispatch_after(dispatch_time(DISPATCH_TIME_NOW,NSEC_PER_SEC),dispatch_get_main_queue(),^{[self checkLoginAfterLoad:remaining-1];});
     }];
 }
 #endif

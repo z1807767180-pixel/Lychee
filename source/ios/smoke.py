@@ -25,12 +25,16 @@ sim('bootstatus',udid,'-b')
 sim('install',udid,str(app))
 data = Path(sim('get_app_container',udid,APP_ID,'data'))
 receipt = data/'Documents/smoke.ok'
-receipt.unlink(missing_ok=True)
+failure = data/'Documents/smoke.error'
+for marker in (receipt,failure):
+    marker.unlink(missing_ok=True)
 sim('launch',udid,APP_ID,'--offline-smoke')
 for _ in range(80):
     if receipt.exists() and receipt.read_text()=='6.4.7':
         print(f"Verified {device['name']} {key}: bundled 6.4.7 login screen, offline fixture.")
         break
+    if failure.exists():
+        raise RuntimeError(failure.read_text())
     time.sleep(1)
 else:
     raise RuntimeError('The bundled 6.4.7 login screen was not verified')
