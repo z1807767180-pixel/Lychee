@@ -56,15 +56,25 @@ jobs:
             if [ "$(adb get-state 2>/dev/null || true)" = device ]; then break; fi
             sleep 2
           done
-          tail -60 "$RUNNER_TEMP/emulator.log"
+          echo "Emulator process is running"
           timeout 15 adb wait-for-device
           for i in $(seq 1 80); do [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ] && break; sleep 3; done
+          adb shell wm dismiss-keyguard
           adb shell input keyevent 82
+          adb shell settings put global window_animation_scale 0
+          adb shell settings put global transition_animation_scale 0
+          adb shell settings put global animator_duration_scale 0
           adb install dist/Lychee-6.4.7.apk
           adb shell am start -W -n dev.lychee.pilot/.MainActivity
           for i in $(seq 1 35); do
             adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true
             adb exec-out cat /sdcard/window.xml > "$RUNNER_TEMP/window.xml" || true
+            if grep -Fq "Pixel Launcher isn't responding" "$RUNNER_TEMP/window.xml"; then
+              coords=$(python3 -c 'import sys,re,xml.etree.ElementTree as E; n=next(n for n in E.parse(sys.argv[1]).iter("node") if n.get("text")=="Close app"); a,b,c,d=map(int,re.findall(r"\d+",n.get("bounds"))); print((a+c)//2,(b+d)//2)' "$RUNNER_TEMP/window.xml")
+              adb shell input tap $coords
+              adb shell am start -W -n dev.lychee.pilot/.MainActivity
+              continue
+            fi
             if grep -Eq '注册新账号|登录荔枝园' "$RUNNER_TEMP/window.xml"; then
               echo "Login UI verified on Android 15."
               exit 0
@@ -72,7 +82,8 @@ jobs:
             sleep 3
           done
           adb shell dumpsys activity activities | grep -m1 mResumedActivity || true
-          cat "$RUNNER_TEMP/window.xml" | head -c 7000
+          python3 -c 'import sys,xml.etree.ElementTree as E; print([(n.get("class"),n.get("text"),n.get("content-desc")) for n in E.parse(sys.argv[1]).iter("node") if n.get("text") or n.get("content-desc")][:35])' "$RUNNER_TEMP/window.xml"
+          adb logcat -d -s 'Capacitor/Console:E' 'AndroidRuntime:E' 'chromium:E' | tail -50
           exit 1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
