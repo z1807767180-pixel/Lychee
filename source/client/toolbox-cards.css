@@ -27,6 +27,8 @@
 .garden-app .toolbox-shortcuts button:nth-child(3) { background: #ecf0db; }
 .garden-app .toolbox-shortcuts button:nth-child(n+4) { grid-column: span 3; background: #f6e5d5; }
 .garden-app .toolbox-shortcuts button:nth-child(5) { background: #edf0da; }
+.garden-app .toolbox-shortcuts button:nth-child(6) { background: #f8eae2; }
+.garden-app .toolbox-shortcuts button:nth-child(7) { background: #e7edde; }
 .garden-app .toolbox-shortcuts img {
   width: 62px;
   height: 48px;

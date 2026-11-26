@@ -120,13 +120,23 @@ for(const remote of [false,true]){
         const {settings,account,op,now}=JSON.parse(Buffer.concat(chunks));
         const quota=await openAiQuota({...settings,clock:()=>now});
         const image=[...providerEndpoints].find(([,kind])=>kind==='image')[0];
-        await quota.run(account,op,meter=>meter(image,{},()=>process.exit(42)),{getImageInGarden:async()=>null});
+        await quota.run(account,op,meter=>meter(image,{},()=>{
+          process.stdout.write('provider-reserved');
+          return new Promise(()=>setTimeout(()=>process.exit(41),10000));
+        }),{getImageInGarden:async()=>null});
       `;
-      const child=spawn(process.execPath,['--input-type=module','-e',program],{stdio:['pipe','ignore','pipe'],windowsHide:true});
+      const child=spawn(process.execPath,['--input-type=module','-e',program],{stdio:['pipe','pipe','pipe'],windowsHide:true});
       let error='';child.stderr.on('data',b=>{error+=b;});
-      const end=new Promise((yes,no)=>{child.once('exit',yes);child.once('error',no);});
+      let marker='',killed=false;
+      child.stdout.on('data',chunk=>{
+        marker+=chunk;
+        if(!killed&&marker.includes('provider-reserved'))killed=child.kill('SIGKILL');
+      });
+      const end=new Promise((yes,no)=>{child.once('exit',(code,signal)=>yes({code,signal}));child.once('error',no);});
       child.stdin.end(JSON.stringify({settings,account:owner,op,now}));
-      assert.equal(await end,42,error);
+      const termination=await end;
+      assert.ok(killed,error||'child failed before the reservation');
+      assert.equal(termination.signal,'SIGKILL',error||JSON.stringify(termination));
     }
     const lost=opFor('进程丢失、无图'), committed=opFor('进程丢失、图片已提交');
     await crash(lost);await crash(committed);

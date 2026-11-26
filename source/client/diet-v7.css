@@ -1,0 +1,73 @@
+.diet-v7 {
+  --ink: #193e35;
+  --muted: #6d705a;
+  --line: #c9ad76;
+  --paper: #faf0d9;
+  width: min(100%, 660px);
+  margin: 0 auto;
+  padding: 8px clamp(9px, 2.5vw, 22px) 22px;
+  color: var(--ink);
+  font: inherit;
+}
+.diet-v7 *, .diet-v7 *::before, .diet-v7 *::after { box-sizing: border-box; }
+.diet-v7 button, .diet-v7 input, .diet-v7 select { font: inherit; color: inherit; }
+.diet-v7 button { cursor: pointer; }
+.diet-v7 button:disabled { opacity: .55; cursor: default; }
+.diet-v7 :is(button,input,select):focus-visible, .diet-v7-date:focus-within { outline: 3px solid #38785a; outline-offset: 2px; }
+.diet-v7-banner { display: block; width: 100%; height: auto; border-radius: 14px; }
+.diet-v7-week { display: grid; grid-template-columns: auto repeat(7,minmax(0,1fr)); align-items: center; gap: clamp(3px,1vw,8px); margin: 16px 0; }
+.diet-v7-date { position: relative; margin-right: 2px; font-weight: 700; font-size: clamp(14px,3.5vw,24px); cursor: pointer; }
+.diet-v7-date input { position: absolute; inset: 0; width: 100%; height: 100%; min-width: 0; opacity: 0; cursor: pointer; }
+.diet-v7-day, .diet-v7-soft { border: 1px solid var(--line); background: #fff8e9; border-radius: 8px; box-shadow: 0 1px 0 #c9ad7645; }
+.diet-v7-day { padding: 0; min-height: 36px; letter-spacing: 0; font-weight: 700; font-size: clamp(12px,3vw,17px); white-space: nowrap; }
+.diet-v7-day[aria-pressed=true] { background: #bc4e2a; color: #fffcef; border-color: #ad4325; }
+.diet-v7-top, .diet-v7-actions, .diet-v7-row-head, .diet-v7-portion { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.diet-v7-top { margin: 12px 1px; }
+.diet-v7-top h2, .diet-v7-report h3 { margin: 0; line-height: 1.25; }
+.diet-v7-top h2 { font-size: clamp(22px,4vw,32px); }
+.diet-v7-report-toggle { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.diet-v7-bars { width: 16px; height: 16px; background: linear-gradient(currentColor 0 0) 0 100% / 3px 40%, linear-gradient(currentColor 0 0) 6px 100% / 3px 65%, linear-gradient(currentColor 0 0) 12px 100% / 3px 94%; background-repeat: no-repeat; }
+.diet-v7-paper, .diet-v7-edit { padding: clamp(12px,3vw,24px); border: 1px solid var(--line); border-radius: 16px; box-shadow: inset 0 0 0 2px #fff8e766; }
+.diet-v7-paper { background-color: var(--paper); background-image: linear-gradient(#b2926135 1px, transparent 1px), linear-gradient(90deg,#b2926135 1px, transparent 1px); background-size: 13px 13px; }
+.diet-v7-summary { display: flex; align-items: baseline; gap: 9px; padding: 0 4px 8px; border-bottom: 1px solid #c8a96d; font-weight: 700; font-size: clamp(16px,3.3vw,22px); }
+.diet-v7-summary strong { font-size: clamp(36px,6vw,54px); font-variant-numeric: tabular-nums; line-height: 1.12; }
+.diet-v7-stickers { display: grid; gap: 8px; }
+.diet-v7-sticker { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 9px; align-items: center; padding: 5px 2px 0; width: 100%; background: transparent; border: 0; border-radius: 8px; }
+.diet-v7-sticker img, .diet-v7-preview { max-width: 100%; object-fit: contain; filter: drop-shadow(2px 0 white) drop-shadow(-2px 0 white) drop-shadow(0 2px white) drop-shadow(0 -2px white) drop-shadow(1px 3px 1px #78582f40); }
+.diet-v7-sticker img { width: 100%; height: clamp(76px,22vw,146px); }
+.diet-v7-caption { display: grid; justify-items: center; gap: 7px; text-align: center; }
+.diet-v7-caption b { font-size: clamp(17px,3.4vw,26px); max-width: 100%; overflow-wrap: anywhere; line-height: 1.32; }
+.diet-v7-caption small { border: 1px solid var(--line); background: #fff9e9d9; border-radius: 2em; padding: 2px 12px; font-size: clamp(13px,2.6vw,18px); }
+.diet-v7-no-photo { display: grid; place-items: center; width: 55px; height: 48px; margin: 10px auto; border: 1px dashed var(--line); color: #97794b; border-radius: 8px; }
+.diet-v7-empty { margin: 0; padding: 34px 0; text-align: center; color: var(--muted); }
+.diet-v7-empty small { display: block; margin-top: 5px; }
+.diet-v7 .diet-v7-primary, .diet-v7-soft { min-height: 36px; padding: 6px 12px; }
+.diet-v7 .diet-v7-primary { background: linear-gradient(105deg,#ffd6a6,#ffbc80); color: #412a17; border: 1px solid #d58236; border-radius: 28px; font-weight: 700; }
+.diet-v7 .diet-v7-add { display: flex; justify-content: center; align-items: center; gap: 10px; width: min(74%,370px); margin: 16px auto 0; min-height: 44px; font-size: clamp(18px,3.3vw,25px); }
+.diet-v7-camera { position: relative; display: inline-block; width: 24px; height: 17px; border: 2px solid currentColor; border-radius: 4px; }
+.diet-v7-camera::before { content: ''; position: absolute; top: -5px; left: 4px; width: 11px; height: 5px; border: 2px solid currentColor; border-bottom: 0; border-radius: 3px 3px 0 0; }
+.diet-v7-camera::after { content: ''; position: absolute; top: 2px; left: 6px; width: 9px; height: 9px; border: 1.5px solid currentColor; border-radius: 50%; }
+.diet-v7-note { display: block; margin-top: 12px; text-align: center; color: var(--muted); font-size: 12px; }
+.diet-v7-report h3 { margin-bottom: 10px; font-size: 18px; }
+.diet-v7-report-day { display: grid; grid-template-columns: auto auto 1fr; gap: 10px; width: 100%; padding: 9px 3px; border: 0; background: transparent; text-align: left; }
+.diet-v7-report-day span:last-child { text-align: right; }
+.diet-v7-edit { display: grid; gap: 14px; background: #fff9e9; }
+.diet-v7-preview { display: block; max-height: 180px; justify-self: center; }
+.diet-v7-edit label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+.diet-v7-edit input, .diet-v7-edit select { width: 100%; min-width: 0; background: #fffdfa; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.diet-v7-actions { justify-content: flex-start; }
+.diet-v7-row { display: grid; gap: 7px; padding: 11px; border: 1px solid #decc9e; border-radius: 12px; }
+.diet-v7-text { border: 0; background: transparent; text-decoration: underline; }
+.diet-v7-portion { align-items: flex-end; }
+.diet-v7-portion label { flex: 1; max-width: 200px; }
+.diet-v7-options { display: flex; flex-wrap: wrap; gap: 5px; }
+.diet-v7-options button, .diet-v7-status { font-size: 13px; }
+.diet-v7-macros { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; padding: 9px 0; border-block: 1px dashed var(--line); }
+.diet-v7-macros div { display: grid; gap: 3px; }
+.diet-v7-macros small, .diet-v7-status { color: var(--muted); }
+.diet-v7-status { margin: 4px 0; }
+@media (max-width:380px) {
+  .diet-v7 { padding-inline: 4px; }
+  .diet-v7-week { gap: 3px; }
+  .diet-v7-macros strong { font-size: 13px; }
+}

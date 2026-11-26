@@ -6,7 +6,10 @@ import {dirname,extname,join,resolve,sep} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createAccounts,LEGACY_GARDEN_ID} from './accounts.mjs';
 import {createDomains} from './domains.mjs';
-import {notices} from './notices.mjs';
+import {notices,mobileNotices} from './notices.mjs';
+import {handleDietVision} from './diet-vision.mjs';
+import {handleDietEntries} from './diet-store.mjs';
+import {createWebPush} from './notify-push.mjs';
 
 const project=dirname(dirname(fileURLToPath(import.meta.url)));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8',
@@ -16,6 +19,17 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=u
 const deny=(status,error)=>Response.json({error},{status,headers:{'cache-control':'private, no-store'}});
 const business=new Set(['/api/camp','/api/phone','/api/phone/circles']);
 const publicInfo=Object.freeze({protocol:1,version:'6.4.0',accountApi:'v640',privateGardens:true,accountNotices:true});
+const accountCatalog=[...mobileNotices,...notices];
+const mobileNoticeIds=new Set(mobileNotices.map(n=>n.id));
+
+async function accountRequest(accounts,url,request,ctx){
+  const response=await accounts.handle(new Request(url,request),ctx);
+  if(!response.ok || !mobileNoticeIds.size || url.pathname!=='/api/workspace' ||
+      url.searchParams.get('client')==='mobile-web')return response;
+  const state=await response.json();
+  state.notices=state.notices.filter(n=>!mobileNoticeIds.has(n.id));
+  return Response.json(state,{status:response.status,headers:response.headers});
+}
 
 async function staticFile(root,path,method){
   if(!root)return null;
@@ -50,9 +64,10 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     const {createTursoDomains}=await import('./turso-domains.mjs');
     const client=await createTursoClient({...turso,legacyDir});
     try{
-      const accounts=await createTursoAccounts(client,{notices});
+      const accounts=await createTursoAccounts(client,{notices:accountCatalog});
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
-      return {accounts,domains,async close(){try{await domains.close();}finally{client.close();}}};
+      const push=createWebPush({execute:(sql,args)=>client.execute({sql,args}),domains});
+      return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{client.close();}}};
     }catch(error){client.close();throw error;}
   }
   if(storage!=='sqlite')throw Error('Unsupported LYCHEE_STORAGE');
@@ -63,8 +78,12 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
   }
   await mkdir(data,{recursive:true,mode:0o700});
   const db=new DatabaseSync(join(data,'accounts.sqlite'));
-  const accounts=createAccounts(db,{notices}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
-  return {accounts,domains,async close(){try{await domains.close();}finally{db.close();}}};
+  const accounts=createAccounts(db,{notices:accountCatalog}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
+  const push=createWebPush({domains,execute(sql,args){
+    const statement=db.prepare(sql);
+    return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
+  }});
+  return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{db.close();}}};
 }
 
 export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(project,'public'),legacyDir=join(project,'legacy'),legacyWebRoot,origin,testProviderOrigin}){
@@ -80,11 +99,24 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
     if(!['GET','HEAD','POST'].includes(request.method))return deny(405,'不支持此操作');
     if(request.method==='POST'&&request.headers.get('origin')!==url.origin)return deny(403,'请从荔枝应用操作');
     if(path==='/api/client-capabilities'&&request.method==='GET')return Response.json(publicInfo,{headers:{'cache-control':'no-store'}});
-    if(path==='/api/v640/account'||path==='/api/v640/workspace'){
+    if(path==='/api/v640/account'||path==='/api/v640/workspace')
       url.pathname=path.replace('/api/v640/','/api/');
-      return accounts.handle(new Request(url,request),ctx);
+    if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,url,request,ctx);
+    if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'){
+      const session=await accounts.resolveSession(request);
+      if(!session)return deny(401,'请先登录');
+      if(url.searchParams.get('accountId')!==session.accountId)return deny(403,'账号已切换，请重新打开');
+      const gardenId=url.searchParams.get('gardenId');
+      const member=gardenId&&await accounts.resolveMember(session.accountId,gardenId);
+      if(!member)return deny(403,'需要先加入这个圈子');
+      if(path==='/api/v7/push')return stores.push.handle(request,session,member);
+      const config=storage==='turso'?{turso,legacyDir}:{quotaFile:join(dataDir,'accounts.sqlite')};
+      if(path.endsWith('/recognize')){
+        if(request.method!=='POST')return deny(405,'不支持此操作');
+        return handleDietVision(request,{accountId:session.accountId,gardenId,quotaConfig:config,env:process.env});
+      }
+      return handleDietEntries(request,{accountId:session.accountId,storageConfig:config});
     }
-    if(path==='/api/account'||path==='/api/workspace')return accounts.handle(request,ctx);
     const scoped=/^\/g\/([a-zA-Z0-9-]{1,64})\/api\/(?:for\/([a-zA-Z0-9-]{1,64})\/)?(camp|phone(?:\/circles)?)$/.exec(path);
     if(scoped||business.has(path)){
       const session=await accounts.resolveSession(request);
@@ -98,6 +130,7 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
       const normalized=new Request(canonical,{method:request.method,headers,
         body:request.method==='POST'?await request.arrayBuffer():undefined});
       const response=await domains.handle(normalized,member);
+      if(response.ok&&request.method==='POST')void stores.push.signal(member.gardenId);
       const safe=new Headers(response.headers);safe.set('cache-control','private, no-store');safe.delete('set-cookie');safe.set('x-content-type-options','nosniff');
       return new Response(response.body,{status:response.status,headers:safe});
     }

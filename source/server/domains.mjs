@@ -9,6 +9,7 @@ import { isMainThread, parentPort, Worker, workerData } from 'node:worker_thread
 import { bindLoopbackTestProvider, providerWorkerEnv } from './provider-config.mjs';
 import { openAiQuota, operationFor, providerEndpoints, quotaImageId } from './ai-quota.mjs';
 import { gardenImages, imageProviderPayload } from './image-result.mjs';
+import { notificationSource } from './notification-source.mjs';
 
 const routes = new Map([
   ['/api/camp', 'camp.mjs'],
@@ -80,6 +81,8 @@ function replaceOnce(source, original, updated) {
 
 function gardenSource(name, source, originalProfiles) {
   source = source.replaceAll('\r\n', '\n');
+  source = notificationSource(name, source, replaceOnce);
+  if (name === 'v61.mjs' || name === 'circle-route.mjs' || name === 'circles.mjs' || name === 'yard65.mjs') return source;
   if(name==='v62.mjs'){
     // Account-wide reservations are taken at the provider boundary in dispatch.
     const start=source.indexOf('async function quota(db,me,kind){');
@@ -195,7 +198,7 @@ async function serveGarden({ file, quotaFile, turso, legacyDir, gardenId, testPr
     return [0, 1, 2].map(index => ids[(offset + index) % ids.length]);
   };
   const urlFor = name => pathToFileURL(join(legacyDir, name)).href;
-  const adapted = new Map(['phone.mjs', 'camp.mjs', 'v62.mjs', 'chunk-ZIGCNLDY.mjs'].map(name => [urlFor(name), name]));
+  const adapted = new Map(['phone.mjs', 'camp.mjs', 'v61.mjs', 'v62.mjs', 'circle-route.mjs', 'circles.mjs', 'yard65.mjs', 'chunk-ZIGCNLDY.mjs'].map(name => [urlFor(name), name]));
   registerHooks({ load(url, context, nextLoad) {
     const loaded = nextLoad(url, context);
     const name = adapted.get(url);

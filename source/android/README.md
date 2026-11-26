@@ -1,4 +1,20 @@
-# 荔枝 Android 6.4.7
+# 荔枝 Android
+
+朋友首次安装、联网打开官方网页、检查安卓更新及换机恢复签名，见[朋友版 Android](FRIENDS.md)。以下记录保留原试用版的构建方式。
+
+## 从 7.0.0 源码准备更新
+
+在仓库根目录执行。第一条会重建共享客户端并与本次发布清单逐项核对，输出 ZIP 的 SHA-256。第二条的摘要填该次输出值。
+
+```powershell
+python source/android/mobile_assets.py --checkout --expected-build 7.0.0 --out source/android/lychee-mobile-assets.zip
+$digest = (Get-FileHash source/android/lychee-mobile-assets.zip).Hash.ToLowerInvariant()
+python source/android/build.py --assets source/android/lychee-mobile-assets.zip --expected-build 7.0.0 --sha256 $digest --unsigned-release --out source/dist/android/Lychee-7.0.0-unsigned.apk
+```
+
+发布验证流程读取同版本的 `distribution/android-7.0.0/build-run.txt` 和 `signature.json`。两项应取自本次构建与原私钥签名结果。流程核对签名与版本，并在模拟器从官方 6.4.7 APK 执行覆盖安装。
+
+## 6.4.7 交付参考
 
 使用 Capacitor 8.6.1、Android Gradle Plugin 8.13.0 和 Gradle 8.14.3。原生包名为 `dev.lychee.pilot`。最低 Android 7.0（API 24），面向 API 36。构建机需要 Node 22+、Python 3.10+、JDK 21、Android SDK Platform 36 和 Build Tools 36.0.0。手机需要支持本版页面的 Android System WebView。
 

@@ -10,8 +10,8 @@ if (!bootstrap || bootstrap.split(launch).length !== 2) {
   throw new Error('Original service launch point changed. Review before deploying.');
 }
 const installer = new URL('./install.mjs', import.meta.url);
-const installMobile = 'await (await import(' + JSON.stringify(installer.href) +
-  ')).install(join(folder,"web"));';
+const installMobile = '{const mobile=await import(' + JSON.stringify(installer.href) +
+  ');await mobile.installService(folder);await mobile.install(join(folder,"web"));}';
 const adapted = bootstrap.replace(launch, () => installMobile + '\n' + launch);
 const temporary = await mkdtemp(join(tmpdir(), 'lychee-start-'));
 const entry = join(temporary, 'start.mjs');

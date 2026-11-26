@@ -1,8 +1,8 @@
-name: Test and distribute Lychee Android 6.4.7
+name: Test and distribute Lychee Android 7.0.0
 on:
   push:
-    branches: ['android/6.4.7-release']
-    paths: ['distribution/android-6.4.7/**', '.github/workflows/android-delivery.yml']
+    branches: ['android/7.0.0-release']
+    paths: ['distribution/android-7.0.0/**', '.github/workflows/android-delivery.yml']
   workflow_dispatch:
 permissions: {}
 jobs:
@@ -21,19 +21,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          run=$(cat distribution/android-6.4.7/build-run.txt)
+          run=$(cat distribution/android-7.0.0/build-run.txt)
           gh run download "$run" --name Lychee-offline-signing-input --dir "$RUNNER_TEMP/input"
           mkdir dist
-          python3 distribution/android-6.4.7/restore.py "$RUNNER_TEMP/input/Lychee-unsigned.apk" distribution/android-6.4.7/signature.json dist/Lychee-6.4.7.apk
+          python3 distribution/android-6.4.7/restore.py "$RUNNER_TEMP/input/Lychee-unsigned.apk" distribution/android-7.0.0/signature.json dist/Lychee-7.0.0.apk
           tools="$ANDROID_HOME/build-tools/36.0.0"
-          "$tools/apksigner" verify --verbose --print-certs dist/Lychee-6.4.7.apk | tee "$RUNNER_TEMP/cert"
+          "$tools/apksigner" verify --verbose --print-certs dist/Lychee-7.0.0.apk | tee "$RUNNER_TEMP/cert"
           grep -Fi '054fd27dbf65d9c734589ba3be6ab280eed888417b179fd725da99667d73b948' "$RUNNER_TEMP/cert"
-          "$tools/zipalign" -c -P 16 4 dist/Lychee-6.4.7.apk
-          "$tools/aapt2" dump badging dist/Lychee-6.4.7.apk > "$RUNNER_TEMP/badging"
-          grep -F "name='dev.lychee.pilot' versionCode='60407' versionName='6.4.7'" "$RUNNER_TEMP/badging"
+          "$tools/zipalign" -c -P 16 4 dist/Lychee-7.0.0.apk
+          "$tools/aapt2" dump badging dist/Lychee-7.0.0.apk > "$RUNNER_TEMP/badging"
+          grep -F "name='dev.lychee.pilot' versionCode='70000' versionName='7.0.0'" "$RUNNER_TEMP/badging"
           if grep -q 'application-debuggable' "$RUNNER_TEMP/badging"; then exit 1; fi
-          cd dist && sha256sum Lychee-6.4.7.apk > SHA256SUMS.txt
-      - name: Install and open the app on Android
+          cd dist && sha256sum Lychee-7.0.0.apk > SHA256SUMS.txt
+      - name: Upgrade the published 6.4.7 app and open 7.0.0 on Android
         timeout-minutes: 18
         run: |
           set -euo pipefail
@@ -64,7 +64,16 @@ jobs:
           adb shell settings put global window_animation_scale 0
           adb shell settings put global transition_animation_scale 0
           adb shell settings put global animator_duration_scale 0
-          adb install dist/Lychee-6.4.7.apk
+          curl --fail --show-error --silent --location --retry 2 \
+            "https://github.com/${GITHUB_REPOSITORY}/releases/download/android-v6.4.7/Lychee-6.4.7.apk" \
+            --output "$RUNNER_TEMP/previous.apk"
+          echo "3beadea25a705619efe185cd86f9837165398250e92b05344b39ff6b6ede1117  $RUNNER_TEMP/previous.apk" | sha256sum --check
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs "$RUNNER_TEMP/previous.apk" > "$RUNNER_TEMP/previous-cert"
+          grep -Fi '054fd27dbf65d9c734589ba3be6ab280eed888417b179fd725da99667d73b948' "$RUNNER_TEMP/previous-cert"
+          adb install "$RUNNER_TEMP/previous.apk"
+          adb shell dumpsys package dev.lychee.pilot | grep -F 'versionName=6.4.7'
+          adb install -r dist/Lychee-7.0.0.apk
+          adb shell dumpsys package dev.lychee.pilot | grep -F 'versionName=7.0.0'
           adb shell am start -W -n dev.lychee.pilot/.MainActivity
           for i in $(seq 1 35); do
             adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true
@@ -105,4 +114,4 @@ jobs:
           set -euo pipefail
           gh run download "$GITHUB_RUN_ID" --name Lychee-Android-verified --dir dist
           (cd dist && sha256sum --check SHA256SUMS.txt)
-          gh release create android-v6.4.7 dist/Lychee-6.4.7.apk dist/SHA256SUMS.txt --target "$GITHUB_SHA" --title '荔枝 Android 6.4.7' --notes '安卓朋友请下载 Lychee-6.4.7.apk，然后按手机提示安装。支持 Android 7.0 及以上的兼容设备，需要联网及可用的 Android System WebView。'
+          gh release create android-v7.0.0 dist/Lychee-7.0.0.apk dist/SHA256SUMS.txt --target "$GITHUB_SHA" --title '荔枝 Android 7.0.0' --notes '安卓朋友请下载 Lychee-7.0.0.apk，然后按手机提示安装。支持 Android 7.0 及以上的兼容设备，需要联网及可用的 Android System WebView。'

@@ -17,6 +17,8 @@ static BOOL APIRoute(NSString *path, NSString *method) {
     BOOL read = [method isEqual:@"GET"];
     if (!(read || [method isEqual:@"POST"])) return NO;
     if ([path isEqual:@"/api/client-capabilities"]) return read;
+    if ([path isEqual:@"/api/v7/diet/recognize"]) return !read;
+    if ([path isEqual:@"/api/v7/diet/entries"]) return YES;
     if ([path isEqual:@"/api/v640/account"] || [path isEqual:@"/api/v640/workspace"]) return YES;
     return [path rangeOfString:@"^/g/(legacy|[0-9a-f-]{36})/api/(for/[0-9a-f-]{36}/)?(camp|phone(/circles)?)$"
                        options:NSRegularExpressionSearch].location != NSNotFound;
@@ -232,11 +234,11 @@ static BOOL APIRoute(NSString *path, NSString *method) {
     [self checkLoginAfterLoad:30];
 }
 - (void)checkLoginAfterLoad:(NSInteger)remaining {
-    NSString *script = @"document.body.dataset.clientBuild === '6.4.7' && !!document.querySelector('.garden-access input') && !document.querySelector('#lychee-launch') && typeof crypto.randomUUID === 'function' && !!crypto.subtle";
+    NSString *script = @"document.body.dataset.clientBuild === '7.0.0' && !!document.querySelector('.garden-access input') && !document.querySelector('#lychee-launch') && typeof crypto.randomUUID === 'function' && !!crypto.subtle";
     [self.web evaluateJavaScript:script completionHandler:^(id ok, NSError *error) {
         if ([ok boolValue]) {
             NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).firstObject;
-            [@"6.4.7" writeToFile:[doc stringByAppendingPathComponent:@"smoke.ok"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            [@"7.0.0" writeToFile:[doc stringByAppendingPathComponent:@"smoke.ok"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         } else if (!remaining) {
             [self.web evaluateJavaScript:@"JSON.stringify({title:document.title, build:document.body?.dataset.clientBuild, status:document.body?.innerText.slice(0,250), online:navigator.onLine, crypto:typeof crypto.subtle})" completionHandler:^(id result, NSError *problem){
                 NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).firstObject;

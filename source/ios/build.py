@@ -12,20 +12,16 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / 'out'
-VERSION = '6.4.7'
+VERSION = json.loads((ROOT.parent / 'public-build.json').read_text(encoding='utf8'))['version']
 APP_ID = 'dev.lychee.pilot.ios'
-FROZEN = '856b197061106f08cb3eb3126998de1a508b9d412956c86b099a0c13571ad975'
 sys.path.insert(0, str(ROOT.parent / 'android'))
-from mobile_assets import unpack
+from mobile_assets import pack_checkout
 
 
 def prepare():
     with tempfile.TemporaryDirectory() as work:
-        destination = Path(work) / 'original'
-        subprocess.run([sys.executable, ROOT.parents[1] / 'history/binary-archive/restore.py',
-                        '--select', FROZEN, '--out', destination], check=True)
-        files = unpack(next(destination.rglob('*.zip')), FROZEN, VERSION)
-    if len(files) != 146 or files['mobile/version.txt'].strip() != VERSION.encode():
+        files = pack_checkout(Path(work) / 'mobile.zip')
+    if files['mobile/version.txt'].strip() != VERSION.encode():
         raise ValueError('Unexpected mobile release')
     web = OUT / 'www'
     for name, data in files.items():
@@ -39,7 +35,7 @@ def prepare():
 def verify_resources(web, expected):
     actual = {p.relative_to(web).as_posix():p.read_bytes() for p in web.rglob('*') if p.is_file()}
     if actual != expected:
-        raise ValueError('The application must contain exactly the approved 146 files')
+        raise ValueError('The application resources differ from the checked-out release')
 
 
 def icon_catalog():

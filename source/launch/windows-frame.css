@@ -28,3 +28,38 @@ html.lychee-unified-header .garden-app > .appbar:has(.bubble) {padding-right:144
 html.lychee-unified-header .garden-app > .appbar :is(h1,.tea-room-title) {
   min-width:0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
+
+@media (max-width:420px) {
+  html.lychee-native-window .garden-app .phone-picker .emoji-categories {gap:2px}
+  html.lychee-native-window .garden-app .phone-picker .emoji-categories button {
+    flex:1 0 auto; padding-inline:2px;
+  }
+  html.lychee-native-window .diet-v7-edit,
+  html.lychee-native-window .diet-v7-row {grid-template-columns:minmax(0,1fr)}
+  html.lychee-native-window .diet-v7 :is(.diet-v7-actions,.diet-v7-row-head,.diet-v7-portion) {
+    flex-wrap:wrap;
+  }
+  html.lychee-native-window .diet-v7-macros {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-height:420px) {
+  html.lychee-native-window .garden-app .team-room > .phone-picker {
+    height:clamp(100px,36dvh,150px);
+  }
+  html.lychee-native-window .garden-app .phone-picker .emoji-grid button {min-height:38px}
+  html.lychee-native-window .garden-app .toolbox-shortcuts button:nth-child(n) {
+    min-height:64px; padding-block:4px; gap:3px;
+  }
+  html.lychee-native-window .garden-app .toolbox-shortcuts img {width:48px;height:36px}
+  html.lychee-native-window .diet-v7-preview {max-height:min(180px,44dvh)}
+}
+@media (min-width:560px) and (max-height:440px) {
+  html.lychee-native-window .v7-wheel {
+    width:min(100%,640px); align-items:start; grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:"banner topic" "stage options"; gap:10px 16px;
+  }
+  html.lychee-native-window .v7-wheel-banner {grid-area:banner}
+  html.lychee-native-window .v7-wheel-topic {grid-area:topic}
+  html.lychee-native-window .v7-wheel-stage {grid-area:stage}
+  html.lychee-native-window .v7-wheel-editor {grid-area:options}
+  html.lychee-native-window .v7-wheel-frame {width:min(100%,clamp(145px,51dvh,220px))}
+}

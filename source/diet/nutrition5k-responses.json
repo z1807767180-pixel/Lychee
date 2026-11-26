@@ -1,0 +1,67 @@
+{
+  "model": "deepseek-flash",
+  "date": "2026-11-26",
+  "responses": [
+    {
+      "id": "dish_1559844323",
+      "state": "failed",
+      "status": 503
+    },
+    {
+      "id": "dish_1566851584",
+      "state": "recognized",
+      "output": "{\"title\":\"凯撒沙拉与芝士披萨\",\"items\":[{\"ref\":\"salad\",\"name\":\"凯撒沙拉\",\"kind\":\"dish\",\"basis\":\"cooked\",\"grams\":110,\"ingredients\":[{\"name\":\"生菜\",\"grams\":70,\"basis\":\"raw_edible\"},{\"name\":\"凯撒沙拉酱\",\"grams\":15,\"basis\":\"as_eaten\"},{\"name\":\"面包丁\",\"grams\":15,\"basis\":\"cooked\"},{\"name\":\"帕玛森奶酪\",\"grams\":10,\"basis\":\"as_eaten\"}]},{\"ref\":\"pizza\",\"name\":\"芝士披萨\",\"kind\":\"dish\",\"basis\":\"cooked\",\"grams\":95,\"ingredients\":[{\"name\":\"披萨饼底\",\"grams\":60,\"basis\":\"cooked\"},{\"name\":\"番茄酱\",\"grams\":15,\"basis\":\"cooked\"},{\"name\":\"马苏里拉奶酪\",\"grams\":20,\"basis\":\"cooked\"}]}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1560801797",
+      "state": "recognized",
+      "output": "{\"title\":\"白盘中的少量熟食\",\"items\":[{\"ref\":\"cauliflower_1\",\"name\":\"熟花椰菜\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":60},{\"ref\":\"potato_1\",\"name\":\"熟马铃薯块\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":45},{\"ref\":\"skin_1\",\"name\":\"深色食物小块\",\"kind\":\"food\",\"basis\":\"unknown\",\"grams\":8}],\"outline\":[[245,25],[770,60],[955,365],[900,870],[680,980],[285,965],[45,850],[8,555],[25,150]]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1558030435",
+      "state": "recognized",
+      "output": "{\"title\":\"培根配土豆和蜜瓜\",\"items\":[{\"ref\":\"bacon\",\"name\":\"煎培根\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":30,\"cooking\":\"煎\"},{\"ref\":\"potato\",\"name\":\"熟土豆块\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":70,\"cooking\":\"煮或烤\"},{\"ref\":\"melon\",\"name\":\"蜜瓜块\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":60}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1567007814",
+      "state": "recognized",
+      "output": "{\"title\":\"水果拼盘\",\"items\":[{\"ref\":\"strawberries\",\"name\":\"草莓\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":30},{\"ref\":\"blueberries\",\"name\":\"蓝莓\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":15},{\"ref\":\"pineapple\",\"name\":\"菠萝块\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":35},{\"ref\":\"cantaloupe\",\"name\":\"哈密瓜块\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":40}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1562703408",
+      "state": "recognized",
+      "output": "{\"title\":\"披萨、牛肉与莓果拼盘\",\"items\":[{\"ref\":\"pizza\",\"name\":\"披萨块\",\"kind\":\"dish\",\"basis\":\"cooked\",\"grams\":90,\"ingredients\":[{\"name\":\"披萨饼底\",\"grams\":50,\"basis\":\"cooked\"},{\"name\":\"奶酪\",\"grams\":20,\"basis\":\"cooked\"},{\"name\":\"牛肉粒\",\"grams\":10,\"basis\":\"cooked\"},{\"name\":\"青椒\",\"grams\":10,\"basis\":\"cooked\"}]},{\"ref\":\"beef\",\"name\":\"切片熟牛肉\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":70},{\"ref\":\"berries\",\"name\":\"混合莓果（树莓和黑莓）\",\"kind\":\"food\",\"basis\":\"as_eaten\",\"grams\":80}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1564773847",
+      "state": "recognized",
+      "output": "{\"title\":\"白盘上的小番茄和熟鱼块\",\"items\":[{\"ref\":\"tomatoes\",\"name\":\"樱桃小番茄\",\"kind\":\"food\",\"basis\":\"raw_edible\",\"grams\":30},{\"ref\":\"fish\",\"name\":\"熟鱼肉块\",\"kind\":\"food\",\"basis\":\"cooked\",\"grams\":45}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    },
+    {
+      "id": "dish_1562790775",
+      "state": "recognized",
+      "output": "{\"title\":\"菠菜叶配胡萝卜丝\",\"items\":[{\"ref\":\"spinach_dish\",\"name\":\"菠菜叶配胡萝卜丝\",\"kind\":\"dish\",\"basis\":\"cooked\",\"grams\":80,\"ingredients\":[{\"name\":\"菠菜\",\"grams\":70,\"basis\":\"cooked\"},{\"name\":\"胡萝卜丝\",\"grams\":10,\"basis\":\"cooked\"}]}]}",
+      "status": 200,
+      "providerStatus": 200,
+      "finish": "stop"
+    }
+  ]
+}

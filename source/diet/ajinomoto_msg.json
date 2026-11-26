@@ -1,0 +1,15 @@
+{
+  "id": "label-4711173780014",
+  "name": "单一成分味精（味之素）",
+  "aliases": ["味精", "味素", "味之素味精", "谷氨酸钠", "MSG"],
+  "source": "台湾味之素，1公斤装纯L-谷氨酸钠，条码4711173780014，官方每100克营养标示。https://www.ajinomoto.com.tw/foodservice/product-detail.php?id=6",
+  "basis": "as_eaten",
+  "cookingNote": "参考单一成分味精的产品标签。每份1克，四项均采用每100克栏。",
+  "basisGrams": 100,
+  "portionGrams": 1,
+  "portionUnit": "标签每份",
+  "kcal": 291.6,
+  "protein": 41.4,
+  "carbs": 31.5,
+  "fat": 0
+}

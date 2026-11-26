@@ -94,10 +94,10 @@ try{
  await click('创建私密园');
  await js("document.querySelector('[name=gardenName]').value='朋友的小圈'");
  await click('创建并进入');
- await until(()=>js("document.querySelectorAll('.windows-nav button').length===19"),'原工作台');
+ await until(()=>js("document.querySelector('.windows-nav [data-page=wheel]')?.offsetWidth"),'7.0 工作台');
  const sidebar=await js(`Object.fromEntries([...document.querySelectorAll('.windows-nav section')].map(section=>[
    section.querySelector('h2').textContent,[...section.querySelectorAll('button')].map(b=>b.dataset.page)]))`);
- for(const tool of ['focus','ledger','tasks']){
+ for(const tool of ['focus','ledger','tasks','diet','wheel']){
    assert.ok(sidebar['工具箱'].includes(tool));
    assert.ok(!sidebar['我'].includes(tool));
  }
@@ -129,6 +129,26 @@ try{
  assert.ok(fit,'小窗口标题、聊天和窗口按钮应各自可见');
  await writeFile(join(stage,'frame-narrow.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
  await call('Emulation.clearDeviceMetricsOverride');
+ await call('Page.setInterceptFileChooserDialog',{enabled:true});
+ await click('照记饮食');await until(()=>js("document.querySelector('.diet-v7-add')?.disabled===false"),'桌面饮食载入');await click('拍照记一餐');
+ await until(()=>js("!!document.querySelector('.diet-v7-edit input[placeholder*=搜索米饭]')"),'桌面饮食录入');
+ async function field(label,text){
+   const found=await js('('+((label)=>{
+     const input=[...document.querySelectorAll('.diet-v7-edit label')].find(l=>l.firstChild.textContent===label)?.querySelector('input');
+     if(!input)return false;input.focus();input.select();return true;
+   }).toString()+')('+JSON.stringify(label)+')');
+   assert.ok(found,label);await call('Input.insertText',{text:String(text)});
+ }
+ await field('添加食物','番茄炒蛋');await click('番茄炒蛋');
+ await field('整盘可食净重（克）',200);
+ const kcal=()=>js("parseFloat(document.querySelector('.diet-v7-macros strong')?.textContent)");
+ await until(async()=>await kcal()===193,'番茄炒蛋 200 克');
+ await field('整盘可食净重（克）',400);await until(async()=>await kcal()===386,'番茄炒蛋 400 克');
+ await click('补油 / 拌酱');await field('实际吃了多少克',12);await click('更新克数');
+ const oil=await js("Array.from(document.querySelectorAll('.diet-v7-row')).filter(r=>r.querySelector('strong')?.textContent==='花生油').map(r=>Number(r.querySelector('input[type=number]').value))");
+ assert.deepEqual(oil,[12]);
+ await click('保存这一餐');await until(()=>js("!!document.querySelector('.diet-v7-sticker')"),'桌面保存番茄炒蛋');
+ report.diet={cooked200:193,cooked400:386,oilGrams:12,persisted:true};
  await mobile.open();await mobile.size(390,844,true);await mobile.call('Page.navigate',{url:phoneOrigin+'/mobile/'});
  await until(()=>mobile.js("!!document.querySelector('input[name=username]') && !document.querySelector('#lychee-launch')"),'mobile static login');
  await mobile.js("document.querySelector('[name=username]').value="+JSON.stringify(qaAccount)+";document.querySelector('[name=password]').value="+JSON.stringify(password)+";document.querySelector('.garden-access form').requestSubmit()");

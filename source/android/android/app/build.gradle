@@ -4,11 +4,11 @@ android {
     namespace = "dev.lychee.pilot"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "dev.lychee.pilot"
+        applicationId "dev.lychee.friends"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode Integer.parseInt(project.findProperty('lycheeCode') ?: '60407')
-        versionName (project.findProperty('lycheeVersion') ?: '6.4.7-debug')
+        versionCode Integer.parseInt(project.findProperty('lycheeCode') ?: '70002')
+        versionName (project.findProperty('lycheeVersion') ?: '7.0.2-debug')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

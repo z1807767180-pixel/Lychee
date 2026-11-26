@@ -1,0 +1,14 @@
+{
+  "id": "recipe-ottawa-caesar",
+  "name": "凯撒沙拉（含酱和面包丁）",
+  "aliases": ["凯撒沙拉", "凯萨沙拉", "恺撒沙拉", "凱撒沙拉", "凱薩沙拉"],
+  "source": "Ottawa Public Health, Eat, Play, Feel Good – Salad: Caesar. https://www.ottawapublichealth.ca/en/professionals-and-partners/resources/Documents/childcare/salad_caesar_en.pdf",
+  "basis": "as_eaten",
+  "cookingNote": "渥太华公共卫生食谱的成品营养。配方含罗马生菜、面包丁、帕玛森和凯撒酱，无鸡肉。",
+  "portionGrams": 45,
+  "portionUnit": "食谱标示的半杯成品",
+  "kcal": 45,
+  "protein": 1,
+  "carbs": 2,
+  "fat": 3.5
+}

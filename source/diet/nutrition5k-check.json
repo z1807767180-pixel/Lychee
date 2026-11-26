@@ -1,0 +1,87 @@
+{
+  "dataset": "Nutrition5k (Thames et al., CVPR 2021), official depth test split; CC BY 4.0",
+  "source": "https://github.com/google-research-datasets/Nutrition5k",
+  "selection": "Blind image selection before inference: 2 / 3 / 3 meals with 1–2 / 3–6 / 7+ ingredients respectively, ordered within each group by SHA-256 of dish_id and separated by at least one hour. RGB only. Reference nutrients are computed from independently weighed ingredients.",
+  "cases": [
+    {
+      "id": "dish_1559844323",
+      "rgb_sha256": "9646f7e071d8597f9e64d7175415168058fec2a75b736274a123cb966e31ed03",
+      "jpeg_sha256": "6ead1d8f1c56c941fffb1fd633ca3c7d400b88e2ceacb1fb28776f0d0418cc1c",
+      "grams": 161.0,
+      "kcal": 518.369995,
+      "protein": 18.487,
+      "carbs": 32.740002,
+      "fat": 39.761997
+    },
+    {
+      "id": "dish_1566851584",
+      "rgb_sha256": "06bcdc330732579d91fb8a0b159f8a826800d835cd3451b4b469a7695cc93937",
+      "jpeg_sha256": "ddf15aa086582827300ab99f4f994b439a89348c9e32ffb38d0aa4e721aee8f1",
+      "grams": 222.0,
+      "kcal": 286.294983,
+      "protein": 13.904001,
+      "carbs": 34.366001,
+      "fat": 10.867
+    },
+    {
+      "id": "dish_1560801797",
+      "rgb_sha256": "0b3130e57324874f3e5edcbe641896ff380e791defe4c4be00a6c37b1379dc94",
+      "jpeg_sha256": "e9e27632130d2a4c687e4debb886d01637189f2d639283bc5de233bb5055a23b",
+      "grams": 96.0,
+      "kcal": 25.655659,
+      "protein": 1.344873,
+      "carbs": 4.108631,
+      "fat": 0.700594
+    },
+    {
+      "id": "dish_1558030435",
+      "rgb_sha256": "7e8eb093a29f90a7f8b10c6bf423cdde15fd13720e7fbc7c8a56c61b0458784c",
+      "jpeg_sha256": "fa72bb7f152017a6574461eaa62ed9f021cf8aa1dedf9fc7f03b38d5a5e40e98",
+      "grams": 221.0,
+      "kcal": 246.940002,
+      "protein": 11.915,
+      "carbs": 24.954,
+      "fat": 11.115
+    },
+    {
+      "id": "dish_1567007814",
+      "rgb_sha256": "41d959a79bdf6fc17b2d4e9b6650f1b97c5fcfd3cf4aae1ea7284acddc33bea4",
+      "jpeg_sha256": "1bdbf283f7d61a958de46fef1fe0f1b44f8659cf527720ae4dfbdd1e1a56459f",
+      "grams": 152.0,
+      "kcal": 73.0,
+      "protein": 1.109,
+      "carbs": 17.92,
+      "fat": 0.398
+    },
+    {
+      "id": "dish_1562703408",
+      "rgb_sha256": "44c9b7a418c68fa617af19528143ab23e2657f266d42cfa84f062b0a62747c9b",
+      "jpeg_sha256": "802f12a7303a1e7ffda5461248581d5f5bb22ff9bcb0f0dd3bc3a216d4dc9405",
+      "grams": 196.0,
+      "kcal": 311.209167,
+      "protein": 17.407734,
+      "carbs": 32.833611,
+      "fat": 12.049189
+    },
+    {
+      "id": "dish_1564773847",
+      "rgb_sha256": "a96572a57c178c164b24f7e08cf5c1bd8d8b5d4370fbc3269e88cbbc68a6c8e7",
+      "jpeg_sha256": "3704c525aaf81805b8b178c42f376b2b8cd76e8b2b26ffd1fa5b96d53df0a131",
+      "grams": 161.0,
+      "kcal": 238.027573,
+      "protein": 17.603327,
+      "carbs": 5.8212,
+      "fat": 15.737777
+    },
+    {
+      "id": "dish_1562790775",
+      "rgb_sha256": "c9bf3fcfada20b7ccd4dcfbf8ac18c7bfcabbf9c464eea66b60bc5db7b859444",
+      "jpeg_sha256": "fed7bbc12431c260042f903f359e80afbfc8209c00f69c3a578b4aa55f8a9412",
+      "grams": 40.0,
+      "kcal": 75.686295,
+      "protein": 0.394182,
+      "carbs": 1.519515,
+      "fat": 7.803151
+    }
+  ]
+}

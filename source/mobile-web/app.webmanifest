@@ -1,0 +1,13 @@
+{
+  "name": "荔枝园",
+  "short_name": "荔枝园",
+  "lang": "zh-CN",
+  "start_url": "/mobile/",
+  "scope": "/mobile/",
+  "display": "standalone",
+  "background_color": "#fff9ef",
+  "theme_color": "#fff9ef",
+  "icons": [
+    { "src": "/mobile/icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

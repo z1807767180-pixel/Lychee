@@ -2,14 +2,14 @@
 
 荔枝是给朋友和家人共用的小园。大家用自己的账号登录，凭邀请码加入圈子，可以聊天、记录园中事、约定倒计时、照料荔枝树，也可以使用 AI 和个人小工具。
 
-## 使用荔枝 6.4.7
+## 使用荔枝
 
 | 设备 | 使用入口 | 开发入口 |
 | --- | --- | --- |
-| Windows 电脑 | [还原已发布的 EXE 和 MSI](archive/windows/6.4.7/README.md)。双击 EXE 可直接使用，MSI 可安装到开始菜单。需要 Windows x64 和 WebView2。 | [Windows 桌面工程](source/desktop/) |
-| 安卓手机 | [下载已签名 APK](https://github.com/z1807767180-pixel/Lychee/releases/download/android-v6.4.7/Lychee-6.4.7.apk)。支持 Android 7.0 及以上的兼容设备。 | [安卓工程](source/android/) |
-| iPhone 主屏幕网页版 | [打开荔枝园](https://lychee-link-check.onrender.com/mobile/)，在 Safari 点「分享」→「添加到主屏幕」。 | [手机网页发布脚本](source/mobile-web/) |
-| iOS 原生试验版 | 已构建未签名 IPA，真机安装需要 Apple 签名。当前供朋友使用的入口是上一行的网页版。 | [iOS 原生工程](source/ios/) |
+| Windows 电脑 | [还原已发布的 EXE 和 MSI](archive/windows/6.4.7/README.md)。双击 EXE 可直接使用，MSI 可安装到开始菜单。需要 Windows x64 和 WebView2。 | [Windows 桌面工程](source/desktop/) · [W7.0.3 候选备份](archive/windows/7.0.3-RC/README.md) |
+| 安卓手机 | [下载荔枝朋友版 V7.0.2 APK](https://github.com/z1807767180-pixel/Lychee/releases/download/android-friends-v7.0.2/Lychee-Friends-V7.0.2.apk)。首次安装后用原账号登录，安卓更新在「我 → 设置」查看。支持 Android 7.0 及以上的兼容设备。 | [朋友版安装与维护](source/android/FRIENDS.md) · [旧试用版 6.4.7](https://github.com/z1807767180-pixel/Lychee/releases/tag/android-v6.4.7) |
+| iPhone 主屏幕网页版 V7.0.2 | [打开荔枝园](https://lychee-link-check.onrender.com/mobile/)，在 Safari 点「分享」→「添加到主屏幕」。更新公告在「我 → 设置 → 账号公告」。 | [手机网页发布说明](source/mobile-web/README.md) |
+| iOS 原生试验版 | 当前源码 7.0.0，历史 6.4.7 有未签名构建。7.0.0 待 Mac 编译和 Apple 真机签名。当前供朋友使用的入口是上一行的网页版。 | [iOS 原生工程](source/ios/) |
 
 ## 从 main 接手
 

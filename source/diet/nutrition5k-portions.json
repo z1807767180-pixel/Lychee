@@ -1,0 +1,27 @@
+{
+  "dataset": "Thames et al., Nutrition5k (CVPR 2021), CC BY 4.0",
+  "source": "https://storage.googleapis.com/nutrition5k_dataset/nutrition5k_dataset/metadata/dish_metadata_cafe1.csv",
+  "sourceSha256": "881df31f27c2343d0ce219964527e0796f6ddadd60701ce6840fa801e8c2a960",
+  "note": "The four previously complete plates, in the original eight-case order. Names and gram values are copied from the official dish annotations. Only exact, separately annotated oil or sauce grams may enter the strict manual correction. An ingredient without its own row has no known weight.",
+  "cases": [
+    {
+      "id": "dish_1566851584",
+      "ingredients": {"caesar salad":137,"cheese pizza":85}
+    },
+    {
+      "id": "dish_1558030435",
+      "ingredients": {"honeydew melons":107,"potatoes":88,"bacon":26}
+    },
+    {
+      "id": "dish_1567007814",
+      "ingredients": {"pineapple":46,"berries":45,"raspberries":19,"cantaloupe":42}
+    },
+    {
+      "id": "dish_1562790775",
+      "ingredients": {"bell peppers":9.696970,"cucumbers":9.696970,"salt":0.242424,"mustard":0.484848,"garlic":0.484848,"olive oil":7.757576,"vinegar":3.878788,"radishes":7.757576},
+      "manualInputs": [{"annotation":"olive oil","kind":"oil","foodId":"usda-04053"}],
+      "omittedCondiments": ["mustard","vinegar"],
+      "omissionReason": "The labels give no type of mustard or vinegar. The strict comparison does not substitute a particular dressing, prepared mustard or rice vinegar."
+    }
+  ]
+}

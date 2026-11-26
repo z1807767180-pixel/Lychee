@@ -4,6 +4,8 @@
 
 开始改动前读[项目管理规范](docs/项目管理规范.md)。续做荔枝先读[当前计划](.planning/lychee/task_plan.md)和[当前进展](.planning/lychee/progress.md)，再查看与本事项有关的[关键发现](.planning/lychee/findings.md)，了解已有结论和已排除的做法。需要回查已完成阶段时，再读[阶段归档](.planning/lychee/阶段归档/)。
 
+阶段完成、暂停、换人或整批交付时，按[阶段记录约定](docs/项目管理规范.md#planning-三份文件怎么记)更新对应记录后再交接。
+
 1. 读 [README](README.md) 找使用入口；读[项目交接](docs/项目交接.md)确认版本和实测边界；读[源码接手说明](source/接手说明.md)选择本轮工程。
 2. 在新检出的仓库根目录，用 Python 3.10+ 运行 `python tools/check_handoff.py`（macOS、Linux 可用 `python3`）。它在临时目录重建共享客户端，核对仓库记录的文件摘要和四端源码入口。安卓、Windows 和 iOS 的编译与设备测试另行执行。
 3. 涉及换电脑、原机清理或签名时，读[迁移和恢复](docs/换电脑接手.md)。只读开发、测试与正式发布分别需要不同权限。私钥、口令和服务凭据由负责人在自己的受控环境使用。

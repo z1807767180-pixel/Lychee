@@ -21,6 +21,13 @@ node server/index.mjs
 
 ## 迁移、发布与恢复
 
+7.0.0 的饮食记录与设备推送都经过同一服务的 `/api/v7/`。候选部署时，先在隔离环境装入对应版本的服务模块及入口，再检查手机原网址的网页资源。只更新静态页不能启用这些接口。
+
+原 Render 手机站的部署命令以 Git 提交固定构建来源。运行 `source/mobile-web/build.py <准备目录>/www` 后，将 `source/mobile-web/start.mjs` 和 `install.mjs` 复制到同一准备目录，保留 `www/` 与其同级的私有 `server-v7/`。原启动器先解包既有代码分片，手机站启动脚本在临时解包目录验证原路由及三个被扩展的 6.4.7 模块，再装入七版服务及手机页面。原数据库、私有分片、旧版签名下载和主屏幕清单沿用原配置。校验不匹配时先核对发布日志，避免以更老的私有分片覆盖在线服务。代码回退使用上一次正常部署的完整构建命令和提交。
+
+- 拍照识别使用现有问答额度和园范围。在服务端启用 `LYCHEE_ENABLE_PROVIDER_CALLS=1`、`LYCHEE_ENABLE_DIET_VISION=1` 后，默认用现有 `DEEPSEEK_API_KEY` 调用支持图像理解的 `deepseek-flash`。已配置方舟的部署继续通过 `LYCHEE_DIET_VISION_MODEL` 指定方舟视觉理解模型或接入点，使用 `ARK_API_KEY`；切回 DeepSeek 时将该值设为 `deepseek-flash`。照片只交给本次选定的提供商，服务不可用时仍可手动记餐。真实照片与付费调用按当轮授权验收。[DeepSeek 图像理解](https://api-docs.deepseek.com/zh-cn/guides/vision/)
+- 移动网页的后台通知使用 Web Push。服务端需持有稳定的 `LYCHEE_VAPID_PRIVATE_KEY`（P-256 私钥标量的 base64url 编码）和 `LYCHEE_VAPID_SUBJECT`（服务方的 mailto 或 HTTPS 联系地址）。订阅由当前设备在园内发起。上线后需用对应浏览器或主屏幕应用实测锁屏、后台送达及点开目标；Android 原生壳另测。
+
 1. 选定维护窗口，确认现有服务和 Turso 的独立恢复点。保存原发布的代码分片、签名清单、原安装包以及数据库备份。将这些私有恢复物放在受限备份位置。
 2. 先在隔离数据库运行迁移检查和重复迁移测试。原账号使用原凭据映射，旧圈子保留原表。启用额外的导入或角色升级，需明确选择对应操作。数据库变更及哪些操作只读可直接核对 `turso-migrate.mjs`、`legacy-managers.mjs`。新加入成员沿用普通成员角色，园名、简介与园邀请码只对该园成员开放。
 3. 持有私有交接归档的维护者可用 `python server/package-overlay.py <原交接归档> <受限输出目录>` 离线生成候选、原版本回退分片及摘要。它会检查原包、原服务和原业务源的摘要；公开源等价重建前端无需这些分片。对照历史 SHA、以授权测试园核对注册、账号重登、业务读回与跨园隔离后，再决定是否部署。

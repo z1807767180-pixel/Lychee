@@ -1,6 +1,6 @@
-# 荔枝 iPhone 6.4.7
+# 荔枝 iPhone
 
-这个工程把归档中 6.4.7 的 146 个手机资源装入 iPhone 应用。首次启动从包内加载界面和字体，随后连接与 Windows 共用的荔枝服务。需要 iOS 17 或以上。
+这个工程从当前共享源码准备 7.0.0 的手机资源。首次启动从包内加载界面和字体，随后连接与 Windows 共用的荔枝服务。需要 iOS 17 或以上。供朋友使用的 iPhone 入口仍是主屏幕网页版。
 
 ## 构建与取包
 
@@ -11,7 +11,7 @@ python3 source/ios/build.py
 python3 source/ios/smoke.py
 ```
 
-构建脚本先从历史分片还原手机资源，核对原 ZIP 与包内文件，再用 Xcode 编译 iPhone 真机的 arm64 程序。输出是 `source/ios/out/export/Lychee-6.4.7-iPhone-unsigned.ipa` 和对应的 SHA-256。GitHub Actions 的 **Build Lychee for iPhone** 使用公开仓库标准 macOS 构建环境，成功后的 IPA 位于当次运行的 Artifacts 中，保留 14 天。模拟器检查使用隔离的未登录响应，无需生产账号。
+任何平台可先运行 `python source/ios/build.py --prepare-only` 核对共享资源。Mac 上再用 Xcode 编译 arm64 程序。输出是 `source/ios/out/export/Lychee-7.0.0-iPhone-unsigned.ipa` 和对应的 SHA-256。GitHub Actions 的 **Build Lychee for iPhone** 成功后的 IPA 位于当次运行的 Artifacts 中，保留 14 天。模拟器检查使用隔离的未登录响应。
 
 ## 在 iPhone 上运行
 

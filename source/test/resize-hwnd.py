@@ -122,7 +122,7 @@ def probe(d,pid):
         results.append(row)
     return results
 def emit(payload):print(json.dumps(payload,ensure_ascii=True),flush=True)
-def main():
+def main(probe_fn=probe, background_flags=True):
     exe,origin,debug=sys.argv[1:]
     if not origin.startswith('http://127.0.0.1:') or not origin[17:].isdigit():raise ValueError('Loopback required')
     fn(u,'SetProcessDpiAwarenessContext',w.BOOL,c.c_void_p)(c.c_void_p(-4))
@@ -134,13 +134,14 @@ def main():
     try:
         check(set_desktop(d));si=SI();si.cb=c.sizeof(si);si.lpDesktop=name
         os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']=(f'--remote-debugging-port={int(debug)} --no-sandbox --disable-gpu --no-proxy-server --disable-background-networking '
-            '--host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE 127.0.0.1" --disable-background-timer-throttling --disable-renderer-backgrounding '
-            '--disable-backgrounding-occluded-windows --disable-features=CalculateNativeWinOcclusion')
+            '--host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE 127.0.0.1"')
+        if background_flags:
+            os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']+=' --disable-background-timer-throttling --disable-renderer-backgrounding --disable-backgrounding-occluded-windows --disable-features=CalculateNativeWinOcclusion'
         argv=c.create_unicode_buffer(subprocess.list2cmdline([exe,'--test-local',origin]))
         check(create(exe,argv,None,None,False,0,None,str(Path(exe).parent),c.byref(si),c.byref(pi)))
         emit({'started':pi.pid,'privateDesktop':object_name(d),'inputDesktop':active_name})
         if sys.stdin.readline().strip()!='probe':return
-        result=probe(d,pi.pid);current=active_desktop_name()
+        result=probe_fn(d,pi.pid);current=active_desktop_name()
         if current==name:raise RuntimeError('Test desktop became the input desktop.')
         emit({'edges':result,'inputDesktopAfter':current})
     finally:

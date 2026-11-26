@@ -1,0 +1,15 @@
+{
+  "id": "no-05.062",
+  "name": "披萨饼底（烤熟、不含馅料）",
+  "aliases": ["披萨饼底", "披萨底", "披萨饼胚（熟）", "烤披萨饼底", "比萨饼底"],
+  "source": "Norwegian Food Composition Table, 05.062, Pizza crust, no filling. https://www.matvaretabellen.no/en/pizza-crust-no-filling/",
+  "basis": "cooked",
+  "cookingNote": "烤熟、无配料的小麦披萨底，采用挪威食物成分表的食谱计算值。按同库每100克可利用碳水45.1克和膳食纤维3.0克合计总碳水。",
+  "basisGrams": 100,
+  "portionGrams": null,
+  "portionUnit": "",
+  "kcal": 252,
+  "protein": 8.4,
+  "carbs": 48.1,
+  "fat": 3.4
+}

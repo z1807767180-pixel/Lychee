@@ -1,8 +1,8 @@
 {
-  "appId": "dev.lychee.pilot",
-  "appName": "荔枝",
+  "appId": "dev.lychee.friends",
+  "appName": "荔枝朋友版",
   "webDir": "www",
-  "server": {"hostname": "lychee-link-check.onrender.com", "androidScheme": "https", "cleartext": false},
+  "server": {"url":"https://lychee-link-check.onrender.com/mobile/", "hostname": "lychee-link-check.onrender.com", "androidScheme": "https", "cleartext": false},
   "android": {"allowMixedContent": false, "webContentsDebuggingEnabled": false},
   "plugins": {"CapacitorHttp": {"enabled": false}, "CapacitorCookies": {"enabled": false}}
 }

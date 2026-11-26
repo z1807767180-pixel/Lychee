@@ -17,6 +17,7 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 const problem=(status,error)=>Response.json({error},{status,headers:{'cache-control':'private, no-store'}});
 export const providerEndpoints=new Map([
   ['https://api.deepseek.com/chat/completions','chat'],
+  ['https://ark.cn-beijing.volces.com/api/v3/chat/completions','chat'],
   ['https://ark.cn-beijing.volces.com/api/v3/images/generations','image'],
 ]);
 

@@ -1,8 +1,15 @@
 'use strict';
 (() => {
   const bridge = window.chrome?.webview;
-  if (!window.lycheeNativeFrame || !bridge) return;
+  if (!window.lycheeDesktopHost || !bridge) return;
   document.documentElement.classList.add('lychee-native-window');
+  window.addEventListener('keydown', event => {
+    if (!event.ctrlKey || event.altKey || event.shiftKey || event.metaKey || event.key.toLowerCase() !== 'q') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (!event.repeat) bridge.postMessage('window:minimize');
+  }, true);
+  if (!window.lycheeNativeFrame) return;
   const controls = document.createElement('div');
   controls.className = 'lychee-window-controls';
   controls.setAttribute('role','group');
@@ -11,7 +18,8 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.command = command;
-    button.title = label;
+    button.title = command === 'minimize' ? '最小化（Ctrl+Q）' : label;
+    if (command === 'minimize') button.setAttribute('aria-keyshortcuts','Control+Q');
     button.setAttribute('aria-label',label);
     button.onclick = () => bridge.postMessage('window:' + command);
     controls.append(button);
