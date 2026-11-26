@@ -68,11 +68,13 @@ window.LycheeMobileChat = (() => {
   function useNearby(React,ref) {
     const [near,setNear]=React.useState(false);
     React.useEffect(()=>{
-      if (!ref.current || !('IntersectionObserver' in window)) {setNear(true);return;}
+      const root=ref.current?.closest('.room-log'), row=ref.current?.closest('.room-row')||ref.current;
+      if (!root || !row || !('IntersectionObserver' in window)) {setNear(true);return;}
       const observer=new IntersectionObserver(entries=>{
         if(entries.some(entry=>entry.isIntersecting)){setNear(true);observer.disconnect();}
-      },{root:ref.current.closest('.room-log'),rootMargin:'120px 0px'});
-      observer.observe(ref.current);
+      },{root,rootMargin:'120px 0px'});
+      // A pending photo or quote can have no pixels of its own. Its message row is always laid out.
+      observer.observe(row);
       return ()=>observer.disconnect();
     },[]);
     return near;
@@ -88,15 +90,33 @@ window.LycheeMobileChat = (() => {
       Array.from(name||'园')[0],image.src && !failed && h('img',{src:image.src,alt:'',onError:()=>setBroken(image.src)}));
   }
 
-  function Photo({React,src,open,onLoad,quoted=false}) {
+  function fitPhoto(element,width,height,quoted){
+    if(!element || !width || !height)return;
+    const log=element.closest('.room-log'),bounds=log?.getBoundingClientRect();
+    const pinned=log && log.scrollHeight-log.scrollTop-log.clientHeight<12;
+    const anchor=log && !pinned ? [...log.querySelectorAll('.room-row')].find(row=>row.getBoundingClientRect().bottom>bounds.top) : null;
+    const before=anchor?.getBoundingClientRect().top;
+    const limit=quoted?48:190,cap=quoted?50:250;
+    element.style.setProperty('--photo-width',Math.min(limit,width,cap*width/height)+'px');
+    element.style.aspectRatio=width+' / '+height;
+    element.dataset.sized='true';
+    // Preserve the reader's anchor even in browsers without scroll anchoring. At the bottom keep the latest message in view.
+    if(pinned)log.scrollTop=log.scrollHeight;
+    else if(anchor)log.scrollTop+=anchor.getBoundingClientRect().top-before;
+  }
+
+  function Photo({React,src,open,quoted=false}) {
     const h=React.createElement,ref=React.useRef(null);
     const [image,retry]=useMedia(React,previewUrl(src),useNearby(React,ref));
     const [broken,setBroken]=React.useState('');
     const failed=image.error || (image.src && broken===image.src);
-    if(quoted)return h('span',{ref},image.src&&!failed?h('img',{alt:'引用图片',src:image.src,onError:()=>setBroken(image.src)}):'［图片］');
-    return h('button',{type:'button',className:'room-thumb mobile-chat-photo',ref,
+    const img=image.src&&!failed?h('img',{alt:quoted?'引用图片':'聊天图片',src:image.src,
+      onLoad:e=>fitPhoto(ref.current,e.currentTarget.naturalWidth,e.currentTarget.naturalHeight,quoted),
+      onError:()=>setBroken(image.src)}):null;
+    if(quoted)return h('span',{ref,className:'mobile-chat-quote'},img);
+    return h('button',{type:'button',className:'mobile-chat-photo',ref,
       disabled:!failed&&!image.src,'aria-label':failed?'重新加载聊天图片':'打开聊天图片',onClick:failed?retry:open},
-      failed?'图片未加载 · 点此重试':image.src?h('img',{alt:'聊天图片',src:image.src,onLoad,onError:()=>setBroken(image.src)}):'图片加载中…');
+      failed?h('span',{className:'mobile-chat-retry'},'↻ 重试'):img);
   }
 
   function Viewer({React,Lightbox,src,log,close}) {

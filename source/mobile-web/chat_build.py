@@ -20,7 +20,7 @@ def phone(text):
     text = replace(text, text[start:end+2], 'X.jsx(Chat.Avatar,{React:je,name:R.name,src:' + avatar_source + '})')
     start = text.index('!!R.hasImage&&(0,X.jsx)("button",{className:"room-thumb"')
     end = text.index(',R.replyTo&&', start)
-    text = replace(text, text[start:end], 'R.hasImage&&X.jsx(Chat.Photo,{React:je,src:imageUrl(R.id),open:()=>B(R.id),onLoad:De})')
+    text = replace(text, text[start:end], '!!R.hasImage&&X.jsx(Chat.Photo,{React:je,src:imageUrl(R.id),open:()=>B(R.id)})')
     text = replace(text, 'N&&Xa.get(N)?.hasImage&&(0,X.jsx)(nc,{src:imageUrl(N),onClose:()=>B("")},N)',
                    'N&&Xa.get(N)?.hasImage&&X.jsx(Chat.Viewer,{React:je,Lightbox:nc,src:imageUrl(N),close:()=>B(""),log:k},N)')
     text = replace(text, 'autoFocus:!0,onClick:a,children:"\\u2039', 'onClick:a,children:"\\u2039')

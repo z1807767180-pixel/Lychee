@@ -3,11 +3,19 @@
   opacity: 1; padding: 0; border: 0; background: #eedecb; color: #66432f; font-weight: bold;
 }
 .mobile-chat-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.room-log .mobile-chat-photo {
-  width: min(42vw, 172px); height: min(34vw, 138px); display: grid; place-items: center;
-  overflow: hidden; padding: 0; color: #554b41; background: #f1ece4; font-size: 13px; opacity: 1;
+.room-log .mobile-chat-photo, .mobile-chat-quote {
+  position: relative; display: inline-block; flex: none; align-self: flex-start; vertical-align: middle;
+  width: min(48vw, var(--photo-width, 64px)); height: auto; aspect-ratio: 2 / 1;
+  padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; opacity: 1;
 }
-.room-log .mobile-chat-photo img { width: 100%; height: 100%; object-fit: contain; }
+.room-log .mine .mobile-chat-photo { align-self: flex-end; }
+.mobile-chat-quote { --photo-width: 28px; }
+.room-log .mobile-chat-photo img, .chat-quote .mobile-chat-quote img {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+  max-width: none; max-height: none; margin: 0; object-fit: contain; visibility: hidden;
+}
+.mobile-chat-photo[data-sized] img, .chat-quote .mobile-chat-quote[data-sized] img { visibility: visible; }
+.mobile-chat-retry { color: #664132; font-size: 13px; text-decoration: underline; }
 .mobile-chat-time { display: block; align-self: center; text-align: center; margin: 10px auto 4px; color: #70645c; font-size: 12px; }
 dialog.mobile-chat-viewer[open] {
   position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
