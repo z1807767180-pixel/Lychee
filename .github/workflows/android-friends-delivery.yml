@@ -2,7 +2,7 @@ name: Verify and publish friends APK
 on:
   push:
     branches: [android/friends-stable]
-    paths: ['distribution/android-friends/signature.json', '.github/workflows/android-friends-delivery.yml', 'source/test/android-friends-emulator.py']
+    paths: ['distribution/android-friends/signature.json', '.github/workflows/android-friends-delivery.yml', 'source/test/android-friends-emulator.py', 'source/test/FriendsFeedProbe.java']
   workflow_dispatch:
 permissions:
   contents: write
@@ -76,9 +76,17 @@ jobs:
           if gh release view android-friends > /dev/null 2>&1; then
             gh release download android-friends --pattern current.json --dir "$RUNNER_TEMP/old"
             python3 -c "import json,sys; a,b=[json.load(open(p)) for p in sys.argv[1:]]; v=lambda x:tuple(map(int,x['version'].split('.'))); assert v(a)<v(b) or a==b, 'Channel update would replace or downgrade a release'" "$RUNNER_TEMP/old/current.json" out/current.json
-            gh release upload android-friends out/current.json --clobber
+            if ! cmp -s "$RUNNER_TEMP/old/current.json" out/current.json; then
+              gh release upload android-friends out/current.json --clobber
+            fi
           else
             gh release create android-friends out/current.json --target "$GITHUB_SHA" --latest=false --title "荔枝朋友版 · 安卓更新通道" --notes "应用用此文件检查更新。首次安装请下载相应版本发布页的 APK。"
           fi
       - name: Check the live update channel from the installed app
-        run: python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"
+        run: |
+          mkdir "$RUNNER_TEMP/probe"
+          sdk="$ANDROID_HOME/platforms/android-36/android.jar"
+          javac --release 8 -cp "$sdk" -d "$RUNNER_TEMP/probe" source/test/FriendsFeedProbe.java
+          "$ANDROID_HOME/build-tools/36.0.0/d8" --min-api 24 --lib "$sdk" --output "$RUNNER_TEMP/friends-probe.jar" "$RUNNER_TEMP/probe/FriendsFeedProbe.class"
+          adb push "$RUNNER_TEMP/friends-probe.jar" /data/local/tmp/
+          python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"

@@ -49,6 +49,18 @@ def offline(enable):
     adb("shell","svc","wifi","disable" if enable else "enable")
     adb("shell","svc","data","disable" if enable else "enable")
 
+def wait_for_github(version):
+    # The device can retain an old VALIDATED entry after its default route disappears.
+    for _ in range(15):
+        try:
+            print(adb("shell", "CLASSPATH=/data/local/tmp/friends-probe.jar",
+                      "app_process", "/system/bin", "FriendsFeedProbe", version).strip(),flush=True)
+            return
+        except subprocess.CalledProcessError as error:
+            print(error.output.decode("utf8", "replace").strip()[:300], flush=True)
+            time.sleep(2)
+    raise RuntimeError("The Android device could not fetch the published update feed")
+
 
 if __name__ == "__main__":
     if sys.argv[1] == "first-install":
@@ -71,11 +83,10 @@ if __name__ == "__main__":
             launch()
             find("暂时打不开荔枝")
             offline(False)
-            for _ in range(20):
-                result=adb("shell","dumpsys","connectivity")
-                if "VALIDATED" in result:
-                    break
-                time.sleep(1)
+            wait_for_github(sys.argv[2])
+            # Allow the startup check made in airplane mode to complete, independently
+            # of the manual check a user makes after reconnecting.
+            time.sleep(12)
             find("检查安卓更新",click=True)
             find("没有更高版本",timeout=60)
             print("Verified the installed V"+sys.argv[2]+" app checks the published channel.")

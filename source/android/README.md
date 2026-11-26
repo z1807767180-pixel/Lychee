@@ -1,4 +1,8 @@
-# 荔枝 Android 6.4.7 试用工程
+# 荔枝 Android
+
+朋友版首装、应用内更新和签名恢复见[朋友版 Android](FRIENDS.md)。
+
+## 荔枝 Android 6.4.7 试用工程
 
 使用 Capacitor 8.6.1、Android Gradle Plugin 8.13.0 和 Gradle 8.14.3。原生包名为 `dev.lychee.pilot`。最低 Android 7.0（API 24），面向 API 36。构建机需要 Node 22+、Python 3.10+、JDK 21、Android SDK Platform 36 和 Build Tools 36.0.0。手机需要支持本版页面的 Android System WebView。
 
