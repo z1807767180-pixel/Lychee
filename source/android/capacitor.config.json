@@ -1,6 +1,6 @@
 {
   "appId": "dev.lychee.pilot",
-  "appName": "荔枝试用",
+  "appName": "荔枝",
   "webDir": "www",
   "server": {"hostname": "lychee-link-check.onrender.com", "androidScheme": "https", "cleartext": false},
   "android": {"allowMixedContent": false, "webContentsDebuggingEnabled": false},

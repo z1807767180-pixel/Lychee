@@ -1,0 +1,28 @@
+name: Build Lychee for iPhone
+on:
+  workflow_dispatch:
+  push:
+    branches: ['ios/6.4.7-pilot']
+    paths: ['source/ios/**', '.github/workflows/ios-647.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build and verify iPhone package
+        run: python3 source/ios/build.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Lychee-6.4.7-iPhone-unsigned
+          path: source/ios/out/export/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Start app on iPhone simulator with offline account fixture
+        run: python3 source/ios/smoke.py

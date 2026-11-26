@@ -2,26 +2,19 @@
 
 荔枝是给朋友和家人共用的小园。大家用自己的账号登录，凭邀请码加入圈子，可以聊天、记录园中事、约定倒计时、照料荔枝树，也可以使用 AI 和个人小工具。
 
-## 新会话从这里开始
+## 使用荔枝 6.4.7
 
-本次补齐范围与验证结果见[归档核对记录](docs/归档核对记录.md)。现有 5.x 移动归档和 Windows 6.4.7 简易还原入口仍保留在 [archive](archive/)，完整历史与原件索引见 [history](history/README.md)。
+| 设备 | 使用入口 | 开发入口 |
+| --- | --- | --- |
+| Windows 电脑 | [还原已发布的 EXE 和 MSI](archive/windows/6.4.7/README.md)。双击 EXE 可直接使用，MSI 可安装到开始菜单。需要 Windows x64 和 WebView2。 | [Windows 桌面工程](source/desktop/) |
+| 安卓手机 | [下载已签名 APK](https://github.com/z1807767180-pixel/Lychee/releases/download/android-v6.4.7/Lychee-6.4.7.apk)。支持 Android 7.0 及以上的兼容设备。 | [安卓工程](source/android/) |
+| iPhone 主屏幕网页版 | [打开荔枝园](https://lychee-link-check.onrender.com/mobile/)，在 Safari 点「分享」→「添加到主屏幕」。 | [手机网页发布脚本](source/mobile-web/) |
+| iOS 原生试验版 | 已构建未签名 IPA，真机安装需要 Apple 签名。当前供朋友使用的入口是上一行的网页版。 | [iOS 原生工程](source/ios/) |
 
-先读[项目交接](docs/项目交接.md)，再读[多端实施方案](docs/多端实施方案.md)。交接记录了方案定稿后实际发生的变化。Windows、移动端和服务端放在同一个仓库，共用一套账号、圈子和业务数据。
+## 从 main 接手
 
-| 想做什么 | 从哪里开始 |
-| --- | --- |
-| 接手开发、在本机重建当前版本 | [源码接手说明](source/接手说明.md)，含目录、依赖、命令与已有验证 |
-| 找回某一版的设计、代码、安装包 | [历史版本索引](history/README.md)，含原件、候选包、同内容别名和可恢复的历史工作源码 |
-| 确认朋友应该收到哪个包 | Windows 6.4.7 的朋友分发包完整 SHA-256 见[项目交接的验收记录](docs/项目交接.md)。仓库首页的绿色 Code 按钮下载整个工程。 |
+各端共用的功能、原生工程和发布脚本都在本仓库的 `main`。新功能从这里开始；在新分支修改、验证，再合回 `main`。
 
-| 平台 | 已做到哪里 |
-| --- | --- |
-| Windows | 6.4.7 已产出免安装 EXE 和 MSI。原 Windows 4.1.7 单独保留。|
-| Android | 已准备 Capacitor 8.6.1 原生工程、Gradle wrapper、构建脚本及对应的手机界面资源。下一步编译、签名并在真机上安装 APK。|
-| iPhone | 有共享手机页面；iOS 原生壳、签名、TestFlight 和真机验收仍待完成。|
-
-桌面现有用户升级 6.4.x 可以运行新版 MSI，使用免安装版可以解压到单独目录后打开「荔枝.exe」。程序需要 Windows x64 和 WebView2。通过系统安装程序实际覆盖安装的验证仍待完成。
-
-**复制给新会话**
-
-> 请接手 https://github.com/z1807767180-pixel/Lychee 的 main 分支。先读全局 AGENTS.md、仓库 README、docs/项目交接.md、docs/多端实施方案.md 和 source/接手说明.md。用自己的话说明三端进度、现有工程入口和本轮验收目标。先从 source/android 现有工程接着构建 Android APK。用独立测试账号验证与 Windows 6.4.7 跨端同步，记录 APK、校验值、真机验证结果和缺口。保留旧 Windows 4.1.7，iOS 排在 Android 之后。沿用同一后端与数据库，新一轮付费 AI 调用和生产变更需单独确认。按原协作约定由 Router 整合、Worker 执行，用中文汇报。
+- 搭建本地工程、查依赖和测试命令，请读[源码接手说明](source/接手说明.md)。
+- 查各端发布证据、尚待实测的项目和下一版发布步骤，请读[项目交接](docs/项目交接.md)。
+- 找 Windows 朋友分发 ZIP 或还原历史原件，请读[历史版本索引](history/README.md)。历次归档范围见[归档核对记录](docs/归档核对记录.md)，最初设计见[多端实施方案](docs/多端实施方案.md)。
