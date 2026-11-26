@@ -11,7 +11,7 @@
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
-            android:name=".MainActivity"
+            android:name="dev.lychee.pilot.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"
@@ -23,6 +23,9 @@
             </intent-filter>
 
         </activity>
+
+        <service android:name="dev.lychee.pilot.MessagePollJob"
+            android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -38,4 +41,7 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>

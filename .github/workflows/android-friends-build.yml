@@ -1,0 +1,45 @@
+name: Build friends Android shell
+on:
+  push:
+    branches: [android/friends-stable]
+    paths: ['source/android/**', '.github/workflows/android-friends-build.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.14.0'
+      - name: Compile independent online shell
+        shell: bash
+        run: |
+          set -euo pipefail
+          export JAVA_HOME="$JAVA_HOME_21_X64" PATH="$JAVA_HOME_21_X64/bin:$PATH"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-36' 'build-tools;36.0.0'
+          mkdir -p "$HOME/.gradle/init.d"
+          cat > "$HOME/.gradle/init.d/central-mirror.gradle" <<'GRADLE'
+          beforeProject { p ->
+              p.buildscript.repositories.maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+              p.repositories.maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+          }
+          GRADLE
+          python3 source/android/friends_build.py "$RUNNER_TEMP/unsigned.apk"
+          tools="$ANDROID_HOME/build-tools/36.0.0"
+          mkdir dist
+          "$tools/zipalign" -P 16 -f 4 "$RUNNER_TEMP/unsigned.apk" dist/friends-unsigned.apk
+          "$tools/aapt2" dump badging dist/friends-unsigned.apk > dist/badging.txt
+          grep -F "package: name='dev.lychee.friends'" dist/badging.txt
+          cp "$tools/lib/apksigner.jar" dist/
+          (cd dist && sha256sum friends-unsigned.apk apksigner.jar > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: friends-offline-signing
+          path: dist/
+          retention-days: 14
