@@ -12,8 +12,9 @@ const receiptDDL=`CREATE TABLE IF NOT EXISTS mc_push_receipts_v7(
 
 // execute returns {rows, rowsAffected} for both the existing SQLite and Turso account stores.
 export function createWebPush({execute,domains,env=process.env,fetcher=fetch,clock=Date.now,auto=true}){
-  let config;
-  try{config=vapidConfig(env);}catch{console.error('荔枝后台推送配置无效');}
+  // Emit only fixed labels. Operators can check readiness without opening service secrets.
+  const config=vapidConfig(env,field=>console.warn('Lychee Web Push unavailable: '+field));
+  if(config)console.info('Lychee Web Push ready');
   let ready,timer,stopped=false,run=null,liveLegacy=false;
   const pending=new Set();
   const pages=new Map();

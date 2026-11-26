@@ -23,14 +23,21 @@ export function subscriptionFields(sub){
   decode(sub.keys?.auth,16);
   return {endpoint:url.href,p256dh:sub.keys.p256dh,auth:sub.keys.auth};
 }
-export function vapidConfig(env){
-  if(!env.LYCHEE_VAPID_PRIVATE_KEY||!env.LYCHEE_VAPID_SUBJECT)return null;
-  const d=decode(env.LYCHEE_VAPID_PRIVATE_KEY,32), ec=createECDH(ecCurve);
-  ec.setPrivateKey(d);
-  const pub=ec.getPublicKey(),subject=new URL(env.LYCHEE_VAPID_SUBJECT);
-  if(!['mailto:','https:'].includes(subject.protocol))throw Error('推送服务联系地址无效');
-  const key=createPrivateKey({format:'jwk',key:{kty:'EC',crv:'P-256',d:encode(d),x:encode(pub.subarray(1,33)),y:encode(pub.subarray(33))}});
-  return {key,subject:subject.href,publicKey:encode(pub)};
+export function vapidConfig(env,reportInvalid=()=>{}){
+  let key,publicKey,subject;
+  try{
+    const d=decode(env.LYCHEE_VAPID_PRIVATE_KEY,32),ec=createECDH(ecCurve);
+    ec.setPrivateKey(d);
+    const pub=ec.getPublicKey();
+    key=createPrivateKey({format:'jwk',key:{kty:'EC',crv:'P-256',d:encode(d),x:encode(pub.subarray(1,33)),y:encode(pub.subarray(33))}});
+    publicKey=encode(pub);
+  }catch{reportInvalid('private-key');}
+  try{
+    const contact=new URL(env.LYCHEE_VAPID_SUBJECT);
+    if(!['mailto:','https:'].includes(contact.protocol))throw Error();
+    subject=contact.href;
+  }catch{reportInvalid('subject');}
+  return key&&subject?{key,subject,publicKey}:null;
 }
 // A single RFC 8291 aes128gcm record. Only an opaque event pointer goes to the push service.
 export function encryptPointer(subscription,notice){
