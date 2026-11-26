@@ -3,7 +3,11 @@ from hashlib import sha256
 from html.parser import HTMLParser
 from pathlib import Path
 import argparse
+import json
 import re
+import subprocess
+import sys
+import tempfile
 from urllib.parse import urlsplit
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
@@ -67,6 +71,20 @@ def pack(source, output, expected):
     return files
 
 
+def pack_checkout(output):
+    """Build the mobile package from this checkout, checking the shared release manifest."""
+    shared = Path(__file__).resolve().parents[1]
+    approved = json.loads((shared / 'public-build.json').read_text(encoding='utf8'))
+    with tempfile.TemporaryDirectory() as temporary:
+        work = Path(temporary)
+        subprocess.run([sys.executable, shared / 'build.py', '--out', work / 'public'], check=True)
+        actual = json.loads((work / 'public-build.json').read_text(encoding='utf8'))
+        if actual != approved:
+            raise ValueError('Shared build differs from the release manifest in this checkout')
+        subprocess.run([sys.executable, shared / 'launch/build.py', work / 'public', work / 'site'], check=True)
+        return pack(work / 'site', output, approved['version'])
+
+
 def unpack(path, digest, expected):
     if not re.fullmatch(r'[a-f0-9]{64}', digest) or sha256(path.read_bytes()).hexdigest() != digest:
         raise ValueError('Static asset ZIP digest differs from the approved input')
@@ -84,11 +102,16 @@ def unpack(path, digest, expected):
 
 if __name__ == '__main__':
     cli = argparse.ArgumentParser()
-    cli.add_argument('--site', required=True, type=Path)
+    source = cli.add_mutually_exclusive_group(required=True)
+    source.add_argument('--site', type=Path)
+    source.add_argument('--checkout', action='store_true')
     cli.add_argument('--out', required=True, type=Path)
     cli.add_argument('--expected-build', required=True)
     args = cli.parse_args()
-    pack(args.site, args.out, args.expected_build)
+    if args.checkout:
+        pack_checkout(args.out)
+    else:
+        pack(args.site, args.out, args.expected_build)
     digest = sha256(args.out.read_bytes()).hexdigest()
     files = unpack(args.out, digest, args.expected_build)
     print(f'{len(files)} verified mobile files, SHA-256 {digest}')

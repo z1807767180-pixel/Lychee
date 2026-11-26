@@ -20,6 +20,8 @@ def compose(source, out):
         html,count=re.subn(r'(<body\b[^>]*>)',r'\1<section id="lychee-launch" aria-label="启动荔枝"><img src="/mobile/icon.png" alt=""><h1>荔枝</h1><p role="status">正在打开荔枝…</p><button type="button" hidden>重试</button></section>',html,count=1)
         if count!=1: raise ValueError(entry)
         if entry.startswith('windows/'):
+            shutil.copyfile(Path(__file__).resolve().parents[1]/'desktop/lychee-window.png',path.parent/'lychee-window.png')
+            html=html.replace('/mobile/icon.png','/windows/lychee-window.png')
             html=html.replace('</head>','<link rel="stylesheet" href="/launch/windows-frame.css"><script defer src="/launch/windows-frame.js"></script></head>',1)
         path.write_text(html,encoding='utf8')
 if __name__=='__main__':

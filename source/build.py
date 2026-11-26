@@ -4,11 +4,17 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from notification_build import notification_journal, notification_phone, notification_v61, notification_yard
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "source/web"
-VERSION = "6.4.7"
-CLIENT_BUILD = "6.4.7"
+VERSION = "7.0.0"
+CLIENT_BUILD = VERSION
+TOOL_SCRIPTS = ("diet-foods-v7.js", "diet-recipes-v7.js", "diet-match-v7.js", "diet-estimate-v7.js", "diet-condiment-v7.js", "diet-v7.js", "wheel-v7.js",
+                "notify-push-v7.js", "notify-v7.js")
+TOOL_STYLES = ("diet-v7.css", "wheel-v7.css")
+TOOL_IMAGES = ("diet-banner-v7.webp", "wheel-banner-v7.webp", "wheel-hub-v7.webp",
+               "diet-card-v7.webp", "wheel-card-v7.webp")
 API_LITERAL = re.compile(r"""(?P<q>["'])(?P<path>/api/(?:camp|phone)[^"'\n]*?)(?P=q)""")
 
 
@@ -30,13 +36,15 @@ def ai_tool_bundle(text):
                       "btn('约定倒计时',()=>open('goal')),btn('园中事',()=>open('feed')),"
                       "btn('问一问',()=>open('question')))")
     cards = """h('div',{className:'toolbox-shortcuts'},[
-      ['tasks','提醒事项','ai-icon-write'],
-      ['goal','约定倒计时','tile-goal'],
-      ['question','问一问','garden-question'],
-      ['focus','番茄钟','ledger-clock'],
-      ['ledger','记账本','ledger-stall']
+      ['tasks','提醒事项','/mobile/ai-icon-write.webp'],
+      ['goal','约定倒计时','/mobile/tile-goal.webp'],
+      ['question','问一问','/mobile/garden-question.webp'],
+      ['focus','番茄钟','/mobile/ledger-clock.webp'],
+      ['ledger','记账本','/mobile/ledger-stall.webp'],
+      ['diet','照记饮食','/client/diet-card-v7.webp'],
+      ['wheel','交给命运','/client/wheel-card-v7.webp']
     ].map(([page,title,artwork])=>h('button',{key:page,type:'button',onClick:()=>open(page)},
-      h('img',{src:'/mobile/'+artwork+'.webp',alt:''}),h('b',null,title))))"""
+      h('img',{src:artwork,alt:''}),h('b',null,title))))"""
     text = once(text, original_links, cards)
     text = once(text, "const api=async(query='',body)=>{let r=",
                 "const api=(query='',body)=>window.LycheeBusiness.performAi(body,async body=>{let r=")
@@ -84,6 +92,12 @@ def ai_tool_bundle(text):
 
 
 def phone_bundle(text, mobile):
+    text = once(text, 'GS={"ai-chat":', 'GS={diet:"照记饮食",wheel:"交给命运","ai-chat":')
+    detail = 'else if(L==="ledger"||L==="focus")'
+    text = once(text, detail,
+                'else if(L==="diet"||L==="wheel")Ca=A.jsx("section",{className:"ph-scroll v7-tool",'
+                'children:A.jsx(L==="diet"?window.LycheeDietV7:window.LycheeWheelV7,'
+                '{React:Ee,accountId:window.LycheeAccess.scope.accountId},L)});' + detail)
     text = once(text, 'o&&!o.ready&&(0,H.jsx)("small",{role:"status"',
                 'o?.ready&&o.aiQuota&&(0,H.jsx)("small",{role:"status",children:window.LycheeBusiness.quotaLabel(o.aiQuota,"chat")}),'
                 'o&&!o.ready&&(0,H.jsx)("small",{role:"status"')
@@ -102,6 +116,8 @@ def phone_bundle(text, mobile):
                 '(0,X.jsxs)("div",{className:"room-empty",children:['+
                 ','.join('(0,X.jsx)("span",{children:"'+part+'"})' for part in (first,second))+']})')
     if mobile:
+        text = once(text, '!L&&(0,A.jsx)("nav",{className:"bottom"',
+                    '(!L||L==="diet"||L==="wheel")&&(0,A.jsx)("nav",{className:"bottom"')
         text = once(text, "window.renderLycheeWorkspaceNav({React:Ee,tab:m,detail:L,selectTab:Za,openDetail:De,restartDetail:()=>setWindowsVisit(n=>n+1)})", "null")
     original = 'A.jsx(CircleList,{unread:l,member:c,open:circle=>{setSelectedCircle(circle);De("circle")}})'
     integrated = ('window.LycheeAccess.renderCircles(Ee,{renderCover:options=>A.jsx(A62,{mode:"ImagePicker",...options}),open:()=>{'
@@ -114,10 +130,15 @@ def phone_bundle(text, mobile):
                 '      h("button",{type:"button",disabled:!!creating,onClick:()=>setCreating({id:crypto.randomUUID(),name:"",subtitle:"",isNew:true})},"＋ 新建圈子")),',
                 'h("div",{className:"circle-tools"},h("h2",null,"历史频道")),h("p",null,"原荔枝园成员共享的旧频道"),')
     text = once(text, 'useState)(()=>xc(g+"read","")!==co.version)', 'useState)(false)')
-    release = {"version": VERSION, "audience": "phone", "date": "2026-11-25", "required": False,
+    previous_release = {"version": "6.4.7", "audience": "phone", "date": "2026-11-25", "required": False,
                "title": "工具箱与生图", "items": [["工具箱", "在实用小工具里打开提醒事项、约定倒计时、问一问、番茄钟和记账本。园中事在荔枝园。"],
                                                ["生图", "可在生成记录查看原图。断线后可查询上次生图，确认没有可取回的图片时退回次数。"]]}
-    text = once(text, 'zf=[{"version":"6.3.3"', 'zf=[' + json.dumps(release,ensure_ascii=False) + ',{"version":"6.3.3"')
+    release = {"version": VERSION, "audience": "phone", "date": "2026-11-26", "required": False,
+               "title": "照记饮食与交给命运", "items": [
+                   ["照记饮食", "在工具箱拍照记录一餐，回看每天的食物和营养。"],
+                   ["交给命运", "填入自己的选项，转动转盘挑一个。"]]}
+    history = ",".join(json.dumps(item, ensure_ascii=False) for item in (release, previous_release))
+    text = once(text, 'zf=[{"version":"6.3.3"', 'zf=[' + history + ',{"version":"6.3.3"')
     text = once(text, '[4,1,6,0][a.members.find(pe=>pe.id===O)?.avatar??0]',
                 '[4,1,6,0,2,3,5,7,8,9,10,11,12,13,14,15][a.members.find(pe=>pe.id===O)?.avatar??0]??4')
     text = once(text, 'L==="settings"?(0,A.jsxs)(A.Fragment,{children:[',
@@ -127,6 +148,11 @@ def phone_bundle(text, mobile):
                 '(0,A.jsx)("p",{className:"settings-version",children:"当前版本 "+document.body.dataset.clientBuild}),')
     text = once(text, '()=>{Ba(async()=>{await Jn("/api/account",{mode:"logout"}),location.reload()})}',
                 '()=>window.LycheeAccess.logout()')
+    text = notification_phone(text, once)
+    if not mobile:
+        marker = 'ya("settings","管理我的圈子",()=>window.LycheeAccess.openGardens()),'
+        text = once(text, marker,
+                    'window.LycheeDesktopUpdate&&ya("settings","检查更新",()=>window.LycheeDesktopUpdate.check()),'+marker)
     return bind_business(text)
 
 
@@ -134,13 +160,18 @@ def entry(text, mobile):
     application = "/mobile/phone.js" if mobile else "/windows/phone.js"
     original = '<script src="/mobile/phone.js?v=6.3.3" defer></script>' if mobile else '<script defer src="/windows/phone.js"></script>'
     includes = '<script defer src="/client/business-scope.js"></script>'
+    includes += ''.join(f'<script defer src="/client/{name}"></script>' for name in TOOL_SCRIPTS)
+    styles = ''.join(f'<link rel="stylesheet" href="/client/{name}">' for name in TOOL_STYLES)
     if mobile:
         includes += '<script defer src="/windows/workspace-nav.js"></script><script defer src="/windows/team-share.js"></script>'
         text = text.replace('<link rel="manifest" href="/mobile/app.webmanifest">','<link rel="icon" href="/mobile/icon.png">')
+    else:
+        includes += '<script defer src="/windows/update-ui.js"></script>'
+        styles += '<link rel="stylesheet" href="/windows/update-ui.css">'
     text = once(text, original, includes + f'<script defer src="/client/garden.js" data-app="{application}"></script>')
     text = (text.replace('<body>', f'<body data-app="{application}" data-client-build="{CLIENT_BUILD}">')
             .replace('content="6.3.3"', f'content="{VERSION}"')
-            .replace('</head>', '<link rel="stylesheet" href="/client/garden.css">'
+            .replace('</head>', styles + '<link rel="stylesheet" href="/client/garden.css">'
                      '<link rel="stylesheet" href="/client/toolbox-cards.css">'
                      '<link rel="stylesheet" href="/client/responsive-text.css">'
                      '<link rel="stylesheet" href="/client/typography.css"></head>'))
@@ -160,6 +191,14 @@ def build(out):
             files[name] = phone_bundle(canonical_phone, name.startswith("mobile/")).encode()
         elif name in ("mobile/index.html", "windows/workspace.html"):
             files[name] = entry(files[name].decode(), name.startswith("mobile/")).encode()
+        elif name == "mobile/v61.js":
+            files[name] = bind_business(notification_v61(files[name].decode(), once)).encode()
+        elif name == "mobile/v61-sw.js":
+            files[name] = (ROOT / "client/notify-sw-v7.js").read_bytes()
+        elif name == "mobile/journal.js":
+            files[name] = bind_business(notification_journal(files[name].decode(), once)).encode()
+        elif name == "mobile/yard65.js":
+            files[name] = bind_business(notification_yard(files[name].decode(), once)).encode()
         elif name == "mobile/v62.js":
             files[name] = ai_tool_bundle(files[name].decode()).encode()
         elif name == "windows/workspace-nav.js":
@@ -167,12 +206,16 @@ def build(out):
             for item in ("['提醒事项与记事', 'tasks']", "['我的账本', 'ledger']", "['番茄钟', 'focus']"):
                 nav = once(nav, item + ", ", "")
             files[name] = once(nav, "['全部工具', ''], ",
-                               "['全部工具', ''], ['提醒事项', 'tasks'], ['番茄钟', 'focus'], ['记账本', 'ledger'], ").encode()
+                               "['全部工具', ''], ['照记饮食', 'diet'], ['交给命运', 'wheel'], "
+                               "['提醒事项', 'tasks'], ['番茄钟', 'focus'], ['记账本', 'ledger'], ").encode()
         elif name.endswith(".js"):
             files[name] = bind_business(files[name].decode()).encode()
     files["mobile/version.txt"] = (VERSION+"\n").encode()
+    for name in ("update-ui.js", "update-ui.css"):
+        files["windows/" + name] = (ROOT / "desktop" / name).read_bytes()
     files["index.html"] = b'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/mobile/">'
-    for name in ("business-scope.js", "garden.js", "garden.css", "toolbox-cards.css", "responsive-text.css", "typography.css"):
+    for name in ("business-scope.js", "garden.js", "garden.css", "toolbox-cards.css", "responsive-text.css", "typography.css",
+                 *TOOL_SCRIPTS, *TOOL_STYLES, *TOOL_IMAGES):
         files["client/" + name] = (ROOT / "client" / name).read_bytes()
     font_files = sorted((ROOT / "client/fonts").rglob("*"))
     if not any(path.suffix == ".woff2" for path in font_files):

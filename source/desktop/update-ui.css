@@ -1,0 +1,12 @@
+.lychee-update {
+  position: fixed; z-index: 99999; right: 16px; bottom: 16px;
+  width: min(320px, calc(100vw - 32px)); box-sizing: border-box;
+  padding: 16px; border: 1px solid #c7ae7f; border-radius: 14px;
+  background: #fff9eb; color: #214338; box-shadow: 0 5px 22px #372a192e;
+  font: inherit; text-align: left;
+}
+.lychee-update[hidden]{display:none}
+.lychee-update p{margin:6px 0 12px;font-size:14px}
+.lychee-update div{display:flex;gap:8px}
+.lychee-update button{padding:6px 12px;border:1px solid #c7ae7f;border-radius:8px;background:#fff9eb;color:inherit;font:inherit;cursor:pointer}
+.lychee-update button:first-child{background:#ffcf9c}

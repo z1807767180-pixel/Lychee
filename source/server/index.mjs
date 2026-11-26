@@ -7,6 +7,9 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createAccounts,LEGACY_GARDEN_ID} from './accounts.mjs';
 import {createDomains} from './domains.mjs';
 import {notices} from './notices.mjs';
+import {handleDietVision} from './diet-vision.mjs';
+import {handleDietEntries} from './diet-store.mjs';
+import {createWebPush} from './notify-push.mjs';
 
 const project=dirname(dirname(fileURLToPath(import.meta.url)));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8',
@@ -52,7 +55,8 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     try{
       const accounts=await createTursoAccounts(client,{notices});
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
-      return {accounts,domains,async close(){try{await domains.close();}finally{client.close();}}};
+      const push=createWebPush({execute:(sql,args)=>client.execute({sql,args}),domains});
+      return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{client.close();}}};
     }catch(error){client.close();throw error;}
   }
   if(storage!=='sqlite')throw Error('Unsupported LYCHEE_STORAGE');
@@ -64,7 +68,11 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
   await mkdir(data,{recursive:true,mode:0o700});
   const db=new DatabaseSync(join(data,'accounts.sqlite'));
   const accounts=createAccounts(db,{notices}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
-  return {accounts,domains,async close(){try{await domains.close();}finally{db.close();}}};
+  const push=createWebPush({domains,execute(sql,args){
+    const statement=db.prepare(sql);
+    return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
+  }});
+  return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{db.close();}}};
 }
 
 export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(project,'public'),legacyDir=join(project,'legacy'),legacyWebRoot,origin,testProviderOrigin}){
@@ -85,6 +93,21 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
       return accounts.handle(new Request(url,request),ctx);
     }
     if(path==='/api/account'||path==='/api/workspace')return accounts.handle(request,ctx);
+    if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'){
+      const session=await accounts.resolveSession(request);
+      if(!session)return deny(401,'请先登录');
+      if(url.searchParams.get('accountId')!==session.accountId)return deny(403,'账号已切换，请重新打开');
+      const gardenId=url.searchParams.get('gardenId');
+      const member=gardenId&&await accounts.resolveMember(session.accountId,gardenId);
+      if(!member)return deny(403,'需要先加入这个圈子');
+      if(path==='/api/v7/push')return stores.push.handle(request,session,member);
+      const config=storage==='turso'?{turso,legacyDir}:{quotaFile:join(dataDir,'accounts.sqlite')};
+      if(path.endsWith('/recognize')){
+        if(request.method!=='POST')return deny(405,'不支持此操作');
+        return handleDietVision(request,{accountId:session.accountId,gardenId,quotaConfig:config,env:process.env});
+      }
+      return handleDietEntries(request,{accountId:session.accountId,storageConfig:config});
+    }
     const scoped=/^\/g\/([a-zA-Z0-9-]{1,64})\/api\/(?:for\/([a-zA-Z0-9-]{1,64})\/)?(camp|phone(?:\/circles)?)$/.exec(path);
     if(scoped||business.has(path)){
       const session=await accounts.resolveSession(request);
@@ -98,6 +121,7 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
       const normalized=new Request(canonical,{method:request.method,headers,
         body:request.method==='POST'?await request.arrayBuffer():undefined});
       const response=await domains.handle(normalized,member);
+      if(response.ok&&request.method==='POST')void stores.push.signal(member.gardenId);
       const safe=new Headers(response.headers);safe.set('cache-control','private, no-store');safe.delete('set-cookie');safe.set('x-content-type-options','nosniff');
       return new Response(response.body,{status:response.status,headers:safe});
     }
