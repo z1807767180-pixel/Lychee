@@ -32,6 +32,14 @@ def verify(store, alias, password):
     keytool(["-certreq", *common, "-keypass:env", "LYCHEE_CHECK_PASSWORD"], env, capture=True)
 
 
+def windows_powershell(command, environment, **options):
+    # A calling PowerShell 7 or CI shell can supply module paths for another edition.
+    env = {k: v for k, v in os.environ.items() if k.upper() != "PSMODULEPATH"}
+    exe = shutil.which("pwsh.exe") or "powershell.exe"
+    return subprocess.run([exe, "-NoProfile", "-NonInteractive", "-Command", command],
+                          env={**env, **environment}, check=True, **options)
+
+
 def original_password(folder):
     if os.name != "nt":
         raise SystemExit("Export on the original Windows account; verification works on other systems.")
@@ -40,9 +48,8 @@ def original_password(folder):
         "$s=(Get-Content -Raw -LiteralPath $env:LYCHEE_DPAPI_PATH).Trim() | ConvertTo-SecureString; "
         "[Console]::Write([Net.NetworkCredential]::new('', $s).Password)"
     )
-    return subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
-                          env={**os.environ, "LYCHEE_DPAPI_PATH": str(folder / "password.dpapi")},
-                          check=True, stdout=subprocess.PIPE).stdout.decode("ascii")
+    return windows_powershell(command, {"LYCHEE_DPAPI_PATH": str(folder / "password.dpapi")},
+                              stdout=subprocess.PIPE).stdout.decode("ascii")
 
 
 def export(folder, target):

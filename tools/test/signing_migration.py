@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 import secrets
 import shutil
-import subprocess
 import sys
 import tempfile
 from unittest.mock import patch
@@ -40,8 +39,7 @@ def exercise(root):
             ps = ("$ErrorActionPreference='Stop'; "
                   "$s=ConvertTo-SecureString $env:FIXTURE_PASS -AsPlainText -Force; "
                   "$s | ConvertFrom-SecureString | Set-Content -Encoding ascii password.dpapi")
-            subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", ps],
-                           cwd=original, env={**os.environ, "FIXTURE_PASS": old}, check=True)
+            backup.windows_powershell(ps, {"FIXTURE_PASS": old}, cwd=original)
         else:
             stack.enter_context(patch.object(backup, "original_password", return_value=old))
         backup.export(original, target)
