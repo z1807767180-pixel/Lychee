@@ -2,7 +2,7 @@
 
 荔枝各端在同一个仓库。开发基线为最新的 `main`。项目状态以仓库证据为准，接手不需要上一段聊天。
 
-开始改动前读[项目管理规范](docs/项目管理规范.md)，按文件归属写入。续做已有任务，从 [Planning 在办区](.planning/) 找到对应任务，先读计划和最近进展。已收尾任务在同目录的 `.archive/`。
+开始改动前读[项目管理规范](docs/项目管理规范.md)。续做荔枝先读[当前计划](.planning/lychee/task_plan.md)和[当前进展](.planning/lychee/progress.md)。需要回查已完成阶段时，再读[阶段归档](.planning/lychee/阶段归档/)。
 
 1. 读 [README](README.md) 找使用入口；读[项目交接](docs/项目交接.md)确认版本和实测边界；读[源码接手说明](source/接手说明.md)选择本轮工程。
 2. 在新检出的仓库根目录，用 Python 3.10+ 运行 `python tools/check_handoff.py`（macOS、Linux 可用 `python3`）。它在临时目录重建共享客户端，核对仓库记录的文件摘要和四端源码入口。安卓、Windows 和 iOS 的编译与设备测试另行执行。
