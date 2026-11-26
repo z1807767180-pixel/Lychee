@@ -1,0 +1,10 @@
+# Private signing material and local credentials, including backups at the repository root
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.dpapi
+.env
+.env.*
+*.env
+__pycache__/
