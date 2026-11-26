@@ -16,6 +16,7 @@ export function createWebPush({execute,domains,env=process.env,fetcher=fetch,clo
   try{config=vapidConfig(env);}catch{console.error('荔枝后台推送配置无效');}
   let ready,timer,stopped=false,run=null,liveLegacy=false;
   const pending=new Set();
+  const pages=new Map();
   if(config&&auto){timer=setInterval(()=>signal(),60000);timer.unref?.();}
   function tables(){
     if(!ready)ready=(async()=>{
@@ -30,9 +31,29 @@ export function createWebPush({execute,domains,env=process.env,fetcher=fetch,clo
     if(request.method!=='POST')return json(405,{error:'请使用应用内操作'});
     if(request.headers.get('origin')!==new URL(request.url).origin)return json(403,{error:'请从荔枝操作'});
     const body=await request.json().catch(()=>null);
-    if(!body||!['status','subscribe','unsubscribe'].includes(body.action))return json(400,{error:'推送操作无效'});
+    if(!body||!['status','subscribe','unsubscribe','presence'].includes(body.action))return json(400,{error:'推送操作无效'});
     if(!config)return json(body.action==='subscribe'?503:200,{configured:false,enabled:false});
     await tables();
+    if(body.action==='presence'){
+      if(typeof body.endpoint!=='string'||body.endpoint.length>1600||!/^[-\w]{1,48}$/.test(body.page||'')||
+          typeof body.visible!=='boolean'||!Number.isSafeInteger(body.sequence)||body.sequence<1)return json(400,{error:'设备状态无效'});
+      const found=await execute('SELECT binding FROM mc_push_devices_v7 WHERE id=? AND account=? AND garden=? AND session_hash=?',
+        [keyOf(body.endpoint),member.accountId,member.gardenId,session.tokenHash]);
+      const binding=found.rows[0]?.binding;
+      if(!binding)return json(200,{enabled:false});
+      const now=clock();
+      const active=pages.get(binding)??new Map();
+      for(const [id,page] of active)if(page.until<=now)active.delete(id);
+      const previous=active.get(body.page);
+      if((active.size<16 || previous) && (!previous || previous.sequence<body.sequence)){
+        const through=Math.min(now,Number.isSafeInteger(body.through)?body.through:0);
+        active.set(body.page,{visible:body.visible,sequence:body.sequence,until:now+24000,through});
+        // A steady heartbeat extends the lease without re-reading every member's inbox.
+        if(previous?.visible!==body.visible || previous?.through!==through)void signal(member.gardenId);
+      }
+      if(active.size)pages.set(binding,active);else pages.delete(binding);
+      return json(200,{enabled:true});
+    }
     if(body.action==='status'){
       let enabled=false;
       if(typeof body.endpoint==='string'&&body.endpoint.length<=1600){
@@ -63,9 +84,20 @@ export function createWebPush({execute,domains,env=process.env,fetcher=fetch,clo
     return json(200,{configured:true,enabled:true});
   }
   async function deliver(device,rows,now){
+    const active=pages.get(device.binding);
+    if(active)for(const [id,page] of active)if(page.until<=now)active.delete(id);
+    if(active&&!active.size)pages.delete(device.binding);
+    const visible=active?[...active.values()].filter(page=>page.visible):[];
     for(const row of rows){
       if(stopped)break;
       if(row.read||!row.id||row.created<device.since||row.created<now-day)continue;
+      if(visible.length && (row.kind==='chat'||row.kind==='room-chat')){
+        if(visible.some(page=>page.through>=row.created)){
+          await execute('INSERT OR IGNORE INTO mc_push_receipts_v7(binding,event,lease,sent) VALUES(?,?,0,?)',
+            [device.binding,row.id,now]);
+        }
+        continue;
+      }
       const claim=await execute(`INSERT INTO mc_push_receipts_v7(binding,event,lease,sent) VALUES(?,?,?,0)
         ON CONFLICT(binding,event) DO UPDATE SET lease=excluded.lease
         WHERE sent=0 AND lease<=? RETURNING event`,[device.binding,row.id,now+60000,now]);
