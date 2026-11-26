@@ -57,6 +57,11 @@ jobs:
           timeout 220 adb wait-for-device
           for i in $(seq 1 100); do [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ] && break; sleep 2; done
           adb shell wm dismiss-keyguard; adb shell input keyevent 82
+          mkdir "$RUNNER_TEMP/probe"
+          sdk="$ANDROID_HOME/platforms/android-36/android.jar"
+          javac --release 8 -cp "$sdk" -d "$RUNNER_TEMP/probe" source/test/FriendsFeedProbe.java
+          "$ANDROID_HOME/build-tools/36.0.0/d8" --min-api 24 --lib "$sdk" --output "$RUNNER_TEMP/friends-probe.jar" "$RUNNER_TEMP/probe/FriendsFeedProbe.class"
+          adb push "$RUNNER_TEMP/friends-probe.jar" /data/local/tmp/
           python3 source/test/android-friends-emulator.py first-install "out/$FRIENDS_APK"
       - name: Publish verified APK, then advance friends update channel
         env:
@@ -83,10 +88,4 @@ jobs:
             gh release create android-friends out/current.json --target "$GITHUB_SHA" --latest=false --title "荔枝朋友版 · 安卓更新通道" --notes "应用用此文件检查更新。首次安装请下载相应版本发布页的 APK。"
           fi
       - name: Check the live update channel from the installed app
-        run: |
-          mkdir "$RUNNER_TEMP/probe"
-          sdk="$ANDROID_HOME/platforms/android-36/android.jar"
-          javac --release 8 -cp "$sdk" -d "$RUNNER_TEMP/probe" source/test/FriendsFeedProbe.java
-          "$ANDROID_HOME/build-tools/36.0.0/d8" --min-api 24 --lib "$sdk" --output "$RUNNER_TEMP/friends-probe.jar" "$RUNNER_TEMP/probe/FriendsFeedProbe.class"
-          adb push "$RUNNER_TEMP/friends-probe.jar" /data/local/tmp/
-          python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"
+        run: python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"

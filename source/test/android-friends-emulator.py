@@ -12,8 +12,9 @@ def adb(*args):
     return subprocess.check_output(["adb", *args], timeout=25, stderr=subprocess.STDOUT).decode("utf8", "replace")
 
 
-def find(label, click=False, timeout=100):
+def find(label, click=False, timeout=100, retry_landing=False):
     deadline = time.monotonic() + timeout
+    retry_at = time.monotonic() + 5
     visible = []
     while time.monotonic() < deadline:
         try:
@@ -33,6 +34,12 @@ def find(label, click=False, timeout=100):
                     a,b,c,d=map(int,re.findall(r"\d+",node.get("bounds")))
                     adb("shell","input","tap",str((a+c)//2),str((b+d)//2))
                     break
+                if retry_landing and text == "重试" and time.monotonic() >= retry_at:
+                    a,b,c,d=map(int,re.findall(r"\d+",node.get("bounds")))
+                    adb("shell","input","tap",str((a+c)//2),str((b+d)//2))
+                    retry_at = time.monotonic()+12
+                    print("Retried the official landing page after a transient connection failure.", flush=True)
+                    break
         except (ValueError,ET.ParseError,subprocess.SubprocessError):
             pass
         time.sleep(2)
@@ -49,24 +56,25 @@ def offline(enable):
     adb("shell","svc","wifi","disable" if enable else "enable")
     adb("shell","svc","data","disable" if enable else "enable")
 
-def wait_for_github(version):
+def wait_for_public_https(target):
     # The device can retain an old VALIDATED entry after its default route disappears.
     for _ in range(15):
         try:
             print(adb("shell", "CLASSPATH=/data/local/tmp/friends-probe.jar",
-                      "app_process", "/system/bin", "FriendsFeedProbe", version).strip(),flush=True)
+                      "app_process", "/system/bin", "FriendsFeedProbe", target).strip(),flush=True)
             return
         except subprocess.CalledProcessError as error:
             print(error.output.decode("utf8", "replace").strip()[:300], flush=True)
             time.sleep(2)
-    raise RuntimeError("The Android device could not fetch the published update feed")
+    raise RuntimeError(f"The Android device could not connect to {target}")
 
 
 if __name__ == "__main__":
     if sys.argv[1] == "first-install":
         adb("install",sys.argv[2])
+        wait_for_public_https("landing")
         launch()
-        find("登录荔枝园")
+        find("登录荔枝园",retry_landing=True)
         print("Verified first installation and official login screen.")
         try:
             offline(True)
@@ -83,7 +91,7 @@ if __name__ == "__main__":
             launch()
             find("暂时打不开荔枝")
             offline(False)
-            wait_for_github(sys.argv[2])
+            wait_for_public_https(sys.argv[2])
             # Allow the startup check made in airplane mode to complete, independently
             # of the manual check a user makes after reconnecting.
             time.sleep(12)
