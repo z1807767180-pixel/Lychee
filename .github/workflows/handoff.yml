@@ -1,0 +1,26 @@
+name: Verify clean handoff
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/check_handoff.py'
+      - 'tools/android_signing_backup.py'
+      - 'tools/test/signing_migration.py'
+      - '.github/workflows/handoff.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify source and published client file digests
+        run: python tools/check_handoff.py
+      - name: Recover an independently generated test signing key
+        run: python tools/test/signing_migration.py

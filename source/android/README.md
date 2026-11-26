@@ -13,7 +13,7 @@ python build.py --assets lychee-mobile-assets.zip --expected-build 6.4.7 --sha25
 
 加 `--prepare-only` 可以在安装 Android 工具前复核素材，然后生成 Capacitor 的 `www`。本次用冻结目录做了这个步骤，146 个移动文件通过验证。素材包含五张工具卡、共享界面脚本、字体和字体授权。
 
-首次构建先根据 2026-11-25 00:00 UTC 的 npm 发布截止时间生成完整 `package-lock.json`，核验三项 Capacitor 直接依赖的官方 SHA-512，再通过 `npm ci` 安装。后续将已验收的完整锁文件放回同目录，直接沿用。Gradle Wrapper JAR 和 Gradle 完整发行 ZIP 均有固定 SHA-256。首次仍需从 npm、Gradle 和 Android Maven 仓库取得依赖。6.4.7 正式构建在 GitHub Actions 中生成了 npm 锁和 APK。
+6.4.7 正式构建的完整 `package-lock.json` 已随源码归档。新机器沿用该锁文件；构建脚本先核对三项 Capacitor 直接依赖的 SHA-512，再运行 `npm ci`。Gradle wrapper 和发行 ZIP 有固定 SHA-256。首次构建需访问 npm、Gradle 和 Android Maven 仓库。
 
 构建调用 `cap sync android` 和 `:app:assembleDebug`。只有通过 Android SDK 的签名验证、ZIP 对齐、包名/入口/版本、应用字节码和每个冻结资源逐字节核对后，才复制最终 APK。命令行输出包括 APK 与调试签名证书摘要。
 
