@@ -1,5 +1,4 @@
 """Prepare the mobile web distribution from the checked-out release sources."""
-import json
 import re
 import shutil
 import sys
@@ -10,20 +9,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "source/android"))
 from mobile_assets import pack_checkout
-from chat_build import journal, notifications, phone as mobile_chat, replace
-
-RELEASE = {
-    "version": "7.0.1", "audience": "phone", "date": "2026-11-26", "required": False,
-    "title": "聊天图片与后台通知",
-    "items": [["聊天", "照片按原比例自动显示，退出大图可回到原来的位置。"],
-              ["后台通知", "从 iPhone 主屏幕打开荔枝，在通知中心开启后可接收系统提醒。"]],
-}
+from chat_build import journal, notifications, phone as mobile_chat
+from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
 
 SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:team-share|workspace-nav)\.js|(?:app\.css|camp\.webp|meadow\.webp)\b)""")
 
 SERVER_MODULES = (
     "index", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
-    "notification-source", "notify-push", "notify-push-transport",
+    "notification-source", "notify-push", "notify-push-transport", "notices",
 )
 
 
@@ -31,7 +24,8 @@ def build(out):
     with tempfile.TemporaryDirectory() as tmp:
         files = pack_checkout(Path(tmp) / "mobile.zip")
     shared_version = files["mobile/version.txt"].strip()
-    version = RELEASE["version"]
+    rows = releases()
+    version = rows[0]["version"]
     files["mobile/version.txt"] = (version + "\n").encode()
     prefix = f"/mobile/assets-{version}/"
     out.mkdir(parents=True, exist_ok=False)
@@ -45,9 +39,11 @@ def build(out):
             chat = f'<link rel="stylesheet" href="/mobile/chat.css?v={version}"><script defer src="/mobile/chat.js?v={version}"></script>\n'
             data = data.replace(marker, chat.encode() + marker)
         if name == "mobile/phone.js":
-            release = json.dumps(RELEASE, ensure_ascii=False)
-            data = replace(mobile_chat(data.decode()), 'zf=[{"version":',
-                           'zf=[' + release + ',{"version":').encode()
+            data = phone_history(mobile_chat(data.decode()), rows).encode()
+        if name == "client/garden.js":
+            data = workspace_gate(data.decode()).encode()
+        if name == "client/garden.css":
+            data += b"\n.ga-notice p{white-space:pre-line}\n"
         if name == "mobile/journal.js":
             data = journal(data.decode()).encode()
         if name == "client/notify-v7.js":
@@ -66,9 +62,17 @@ def build(out):
         services = out.parent / "server-v7"
         services.mkdir()
         for module in SERVER_MODULES:
-            shutil.copyfile(ROOT / "source/server" / (module + ".mjs"), services / (module + ".mjs"))
+            src = ROOT / "source/server" / (module + ".mjs")
+            target = services / src.name
+            if module == "notices":
+                target.write_text(account_catalog(src.read_text(encoding="utf8"), rows), encoding="utf8")
+            else:
+                shutil.copyfile(src, target)
     print(f"Prepared {sum(path.is_file() for path in out.rglob('*'))} mobile assets for {version}")
 
 
 if __name__ == "__main__":
-    build(Path(sys.argv[1]))
+    if sys.argv[1:2] == ["--check-release"]:
+        check_previous(ROOT, sys.argv[2])
+    else:
+        build(Path(sys.argv[1]))

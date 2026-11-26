@@ -6,7 +6,7 @@ import {dirname,extname,join,resolve,sep} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createAccounts,LEGACY_GARDEN_ID} from './accounts.mjs';
 import {createDomains} from './domains.mjs';
-import {notices} from './notices.mjs';
+import {notices,mobileNotices} from './notices.mjs';
 import {handleDietVision} from './diet-vision.mjs';
 import {handleDietEntries} from './diet-store.mjs';
 import {createWebPush} from './notify-push.mjs';
@@ -19,6 +19,17 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=u
 const deny=(status,error)=>Response.json({error},{status,headers:{'cache-control':'private, no-store'}});
 const business=new Set(['/api/camp','/api/phone','/api/phone/circles']);
 const publicInfo=Object.freeze({protocol:1,version:'6.4.0',accountApi:'v640',privateGardens:true,accountNotices:true});
+const accountCatalog=[...mobileNotices,...notices];
+const mobileNoticeIds=new Set(mobileNotices.map(n=>n.id));
+
+async function accountRequest(accounts,url,request,ctx){
+  const response=await accounts.handle(new Request(url,request),ctx);
+  if(!response.ok || !mobileNoticeIds.size || url.pathname!=='/api/workspace' ||
+      url.searchParams.get('client')==='mobile-web')return response;
+  const state=await response.json();
+  state.notices=state.notices.filter(n=>!mobileNoticeIds.has(n.id));
+  return Response.json(state,{status:response.status,headers:response.headers});
+}
 
 async function staticFile(root,path,method){
   if(!root)return null;
@@ -53,7 +64,7 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     const {createTursoDomains}=await import('./turso-domains.mjs');
     const client=await createTursoClient({...turso,legacyDir});
     try{
-      const accounts=await createTursoAccounts(client,{notices});
+      const accounts=await createTursoAccounts(client,{notices:accountCatalog});
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
       const push=createWebPush({execute:(sql,args)=>client.execute({sql,args}),domains});
       return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{client.close();}}};
@@ -67,7 +78,7 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
   }
   await mkdir(data,{recursive:true,mode:0o700});
   const db=new DatabaseSync(join(data,'accounts.sqlite'));
-  const accounts=createAccounts(db,{notices}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
+  const accounts=createAccounts(db,{notices:accountCatalog}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
   const push=createWebPush({domains,execute(sql,args){
     const statement=db.prepare(sql);
     return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
@@ -88,11 +99,9 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
     if(!['GET','HEAD','POST'].includes(request.method))return deny(405,'不支持此操作');
     if(request.method==='POST'&&request.headers.get('origin')!==url.origin)return deny(403,'请从荔枝应用操作');
     if(path==='/api/client-capabilities'&&request.method==='GET')return Response.json(publicInfo,{headers:{'cache-control':'no-store'}});
-    if(path==='/api/v640/account'||path==='/api/v640/workspace'){
+    if(path==='/api/v640/account'||path==='/api/v640/workspace')
       url.pathname=path.replace('/api/v640/','/api/');
-      return accounts.handle(new Request(url,request),ctx);
-    }
-    if(path==='/api/account'||path==='/api/workspace')return accounts.handle(request,ctx);
+    if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,url,request,ctx);
     if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'){
       const session=await accounts.resolveSession(request);
       if(!session)return deny(401,'请先登录');
