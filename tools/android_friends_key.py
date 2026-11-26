@@ -18,6 +18,8 @@ from cryptography.x509.oid import NameOID
 ALIAS = b"lychee-friends"
 ROOT = Path(__file__).resolve().parents[1]
 STORE = Path(os.environ["LOCALAPPDATA"]) / "LycheeSigning" / "FriendsAndroid"
+BACKUP = STORE.parent / "FriendsRecovery" / "friends-portable.p12"
+RECOVERY = Path.home() / ".lychee-private" / "friends-recovery-code.txt"
 
 
 class Blob(ctypes.Structure):
@@ -64,6 +66,8 @@ def main():
     parser = argparse.ArgumentParser()
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("init")
+    prepare = actions.add_parser("prepare-recovery")
+    prepare.add_argument("--certificate", required=True)
     for action in ("export", "restore"):
         sub = actions.add_parser(action)
         sub.add_argument("backup", type=Path)
@@ -92,6 +96,19 @@ def main():
     digest = cert.fingerprint(hashes.SHA256()).hex()
     if args.action != "init" and digest != args.certificate.lower():
         raise ValueError("Different certificate")
+    if args.action == "prepare-recovery":
+        if BACKUP.exists() != RECOVERY.exists():
+            raise ValueError("Incomplete recovery pair; preserve it and inspect before continuing")
+        if not BACKUP.exists():
+            BACKUP.parent.mkdir(parents=True, exist_ok=True)
+            RECOVERY.parent.mkdir(parents=True, exist_ok=True)
+            phrase = secrets.token_urlsafe(48).encode()
+            packed = pkcs12.serialize_key_and_certificates(ALIAS,key,cert,None,serialization.BestAvailableEncryption(phrase))
+            save_new(RECOVERY, phrase)
+            save_new(BACKUP, packed)
+        restored, certificate, _ = pkcs12.load_key_and_certificates(BACKUP.read_bytes(), RECOVERY.read_bytes())
+        if not restored or restored.public_key()!=cert.public_key() or certificate.fingerprint(hashes.SHA256()).hex()!=digest:
+            raise ValueError("Portable recovery verification failed")
     if args.action == "export":
         target = args.backup.resolve()
         if target.is_relative_to(ROOT) or target.is_relative_to(STORE):
@@ -107,7 +124,7 @@ def main():
         if args.output.exists():
             raise ValueError("Output already exists")
         subprocess.run([args.java, "-jar", args.jar, "sign", "--ks", STORE / "friends.p12", "--ks-key-alias", ALIAS.decode(),
-                        "--ks-pass", "env:LYCHEE_FRIENDS_SIGN_PASSWORD", "--v1-signing-enabled", "false",
+                        "--ks-pass", "env:LYCHEE_FRIENDS_SIGN_PASSWORD", "--alignment-preserved", "true", "--v1-signing-enabled", "false",
                         "--v2-signing-enabled", "true", "--v3-signing-enabled", "true", "--v4-signing-enabled", "false",
                         "--out", args.output, args.unsigned], check=True,
                        env={**os.environ, "LYCHEE_FRIENDS_SIGN_PASSWORD": password.decode()})

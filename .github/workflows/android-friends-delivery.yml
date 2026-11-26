@@ -1,0 +1,84 @@
+name: Verify and publish friends APK
+on:
+  push:
+    branches: [android/friends-stable]
+    paths: ['distribution/android-friends/signature.json', '.github/workflows/android-friends-delivery.yml', 'source/test/android-friends-emulator.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: android-friends-publication
+  cancel-in-progress: false
+jobs:
+  signed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Reconstruct the locally signed public artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(jq -er .version source/android/friends-release.json)
+          apk="Lychee-Friends-V$version.apk"
+          run=$(cat distribution/android-friends/build-run.txt)
+          gh run download "$run" --name friends-offline-signing --dir "$RUNNER_TEMP/input"
+          mkdir out
+          python3 distribution/android-6.4.7/restore.py "$RUNNER_TEMP/input/friends-unsigned.apk" distribution/android-friends/signature.json "out/$apk"
+          tools="$ANDROID_HOME/build-tools/36.0.0"
+          "$tools/apksigner" verify --verbose --print-certs "out/$apk" | tee "$RUNNER_TEMP/cert.txt"
+          grep -F '19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2' "$RUNNER_TEMP/cert.txt"
+          "$tools/zipalign" -c -P 16 4 "out/$apk"
+          "$tools/aapt2" dump badging "out/$apk" > "$RUNNER_TEMP/badging.txt"
+          grep -F "name='dev.lychee.friends'" "$RUNNER_TEMP/badging.txt" | grep -F "versionName='$version'"
+          if grep -q 'application-debuggable' "$RUNNER_TEMP/badging.txt"; then exit 1; fi
+          (cd out && sha256sum "$apk" > SHA256SUMS.txt)
+          jq --arg sha "$(cut -d' ' -f1 out/SHA256SUMS.txt)" '{version, note, sha256:$sha}' source/android/friends-release.json > out/current.json
+          echo "FRIENDS_VERSION=$version" >> "$GITHUB_ENV"
+          echo "FRIENDS_APK=$apk" >> "$GITHUB_ENV"
+      - name: First installation on Android 15
+        shell: bash
+        timeout-minutes: 18
+        run: |
+          set -euo pipefail
+          export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/friends-avd"; mkdir -p "$ANDROID_AVD_HOME"
+          sdkmanager 'system-images;android-35;google_apis;x86_64' emulator platform-tools
+          sudo chmod 666 /dev/kvm
+          avdmanager create avd -n friends -k 'system-images;android-35;google_apis;x86_64' --device pixel_5 --force </dev/null
+          printf '\ndisk.dataPartition.size=1200M\nhw.ramSize=2048\n' >> "$ANDROID_AVD_HOME/friends.avd/config.ini"
+          emulator -avd friends -no-window -no-audio -no-boot-anim -no-snapshot -no-metrics -gpu swiftshader -memory 2048 -cores 2 > "$RUNNER_TEMP/emu.log" 2>&1 &
+          timeout 220 adb wait-for-device
+          for i in $(seq 1 100); do [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ] && break; sleep 2; done
+          adb shell wm dismiss-keyguard; adb shell input keyevent 82
+          python3 source/test/android-friends-emulator.py first-install "out/$FRIENDS_APK"
+      - name: Publish verified APK, then advance friends update channel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="android-friends-v$FRIENDS_VERSION"
+          jq -r .note out/current.json > "$RUNNER_TEMP/notes.txt"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            gh release download "$tag" --pattern "$FRIENDS_APK" --dir "$RUNNER_TEMP/released"
+            cmp "$RUNNER_TEMP/released/$FRIENDS_APK" "out/$FRIENDS_APK"
+          else
+            gh release create "$tag" "out/$FRIENDS_APK" out/SHA256SUMS.txt --target "$GITHUB_SHA" --latest=false --title "荔枝朋友版 V$FRIENDS_VERSION" --notes-file "$RUNNER_TEMP/notes.txt"
+          fi
+          if gh release view android-friends > /dev/null 2>&1; then
+            gh release download android-friends --pattern current.json --dir "$RUNNER_TEMP/old"
+            python3 -c "import json,sys; a,b=[json.load(open(p)) for p in sys.argv[1:]]; v=lambda x:tuple(map(int,x['version'].split('.'))); assert v(a)<v(b) or a==b, 'Channel update would replace or downgrade a release'" "$RUNNER_TEMP/old/current.json" out/current.json
+            gh release upload android-friends out/current.json --clobber
+          else
+            gh release create android-friends out/current.json --target "$GITHUB_SHA" --latest=false --title "荔枝朋友版 · 安卓更新通道" --notes "应用用此文件检查更新。首次安装请下载相应版本发布页的 APK。"
+          fi
+      - name: Check the live update channel from the installed app
+        run: python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"
