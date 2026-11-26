@@ -1,0 +1,16 @@
+services:
+  - name: lychee-link-check
+    type: web
+    runtime: node
+    plan: free
+    region: singapore
+    repo: https://github.com/z1807767180-pixel/Lychee
+    branch: web/mobile-stable
+    autoDeployTrigger: commit
+    buildCommand: >-
+      python3 source/mobile-web/build.py lychee-mobile/www &&
+      cp source/mobile-web/start.mjs source/mobile-web/install.mjs lychee-mobile/
+    startCommand: node lychee-mobile/start.mjs
+    envVars:
+      - key: LYCHEE_ENABLE_DIET_VISION
+        value: "1"
