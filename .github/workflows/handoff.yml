@@ -1,6 +1,9 @@
 name: Verify clean handoff
 on:
   workflow_dispatch:
+  push:
+    branches: [maintenance/portable-handoff]
+    paths: ['tools/**', '.github/workflows/handoff.yml']
   pull_request:
     paths:
       - 'tools/check_handoff.py'
