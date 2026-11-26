@@ -14,3 +14,7 @@ services:
     envVars:
       - key: LYCHEE_ENABLE_DIET_VISION
         value: "1"
+      - key: LYCHEE_VAPID_SUBJECT
+        value: https://github.com/z1807767180-pixel/Lychee/issues
+      - key: LYCHEE_VAPID_RENDER_SEED
+        generateValue: true
