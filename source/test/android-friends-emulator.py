@@ -100,3 +100,24 @@ if __name__ == "__main__":
             print("Verified the installed V"+sys.argv[2]+" app checks the published channel.")
         finally:
             offline(False)
+    elif sys.argv[1] == "upgrade":
+        old, new, apk = sys.argv[2:]
+        adb("uninstall", PACKAGE)
+        adb("install", apk)
+        assert "versionName="+old in adb("shell","dumpsys","package",PACKAGE)
+        # Grant the emulator the same source permission a user grants in Settings.
+        # The system package installer still requires its own confirmation below.
+        adb("shell","appops","set",PACKAGE,"REQUEST_INSTALL_PACKAGES","allow")
+        wait_for_public_https(new)
+        launch()
+        find("可以更新到 V"+new)
+        find("下载更新",click=True)
+        find("Update",click=True,timeout=120)
+        deadline=time.monotonic()+60
+        while "versionName="+new not in adb("shell","dumpsys","package",PACKAGE):
+            if time.monotonic()>deadline:
+                raise RuntimeError("Android did not install the downloaded update")
+            time.sleep(1)
+        launch()
+        find("登录荔枝园",retry_landing=True)
+        print(f"Installed the public update from V{old} to V{new} through the old app and the system installer.")
