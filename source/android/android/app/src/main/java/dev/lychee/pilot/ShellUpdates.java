@@ -49,7 +49,11 @@ final class ShellUpdates {
         try{installed=activity.getPackageManager().getPackageInfo(activity.getPackageName(),0);}
         catch(PackageManager.NameNotFoundException e){throw new IllegalStateException(e);}
     }
-    String version(){return installed.versionName.replaceFirst("^V","");}
+    String version(){return installed.versionName;}
+    String versionLabel(){return label(version());}
+    private static String label(String version){
+        return (Integer.parseInt(version.split("\\.")[0])>=8?"A":"V")+version;
+    }
     @SuppressWarnings("deprecation")
     private static long code(PackageInfo info){return Build.VERSION.SDK_INT>=28?info.getLongVersionCode():info.versionCode;}
     private boolean active(){return !activity.isFinishing()&&!activity.isDestroyed();}
@@ -90,9 +94,9 @@ final class ShellUpdates {
                 if(release==null){
                     if(report)message("暂时查不到更新","无法连接更新服务或更新资料无效。请检查网络后重试。");
                 }else if(release.code<=code(installed)){
-                    if(report)message("没有更高版本","当前安卓应用 V"+version()+"。网页内容会在联网打开时更新。");
+                    if(report)message("没有更高版本","当前安卓应用 "+versionLabel()+"。网页内容会在联网打开时更新。");
                 }else{
-                    dialog=new AlertDialog.Builder(activity).setTitle("可以更新到 V"+release.version)
+                    dialog=new AlertDialog.Builder(activity).setTitle("可以更新到 "+label(release.version))
                         .setMessage(release.note+"\n\n下载后由安卓系统请你确认安装。")
                         .setNegativeButton("稍后",null).setPositiveButton("下载更新",(d,w)->download(release)).show();
                 }

@@ -60,9 +60,10 @@ public final class MainActivity extends BridgeActivity {
             private void installUpdateLinks(WebView web, String url) {
                 if (!entry(Uri.parse(url))) return;
                 web.evaluateJavascript("(()=>{if(window.lycheeShellSettings)return;window.lycheeShellSettings=true;"
+                    +"Object.defineProperty(window,'lycheeAndroidShellVersion',{value:"+org.json.JSONObject.quote(updates.version())+"});"
                     +"function link(id,label){const a=document.createElement('a');a.id=id;a.href='"+UPDATE+"';a.textContent=label;return a}"
                     +"function install(){const v=document.querySelector('.settings-version');if(v&&!document.getElementById('lychee-shell-update')){"
-                    +"const a=link('lychee-shell-update','检查安卓更新 · V'+ "+org.json.JSONObject.quote(updates.version())+");a.className='entry';v.before(a)}"
+                    +"const a=link('lychee-shell-update','检查安卓更新 · '+ "+org.json.JSONObject.quote(updates.versionLabel())+");a.className='entry';v.before(a)}"
                     +"const retry=document.querySelector('#lychee-launch button');if(!retry)return;"
                     +"let a=document.getElementById('lychee-launch-update');if(!a&&!retry.hidden){a=link('lychee-launch-update','检查安卓更新');"
                     +"a.style.cssText='display:block;padding:12px;color:inherit;text-decoration:underline';retry.after(a)}"
@@ -106,7 +107,8 @@ public final class MainActivity extends BridgeActivity {
                     boolean account = "/api/v640/account".equals(path) || "/api/v640/workspace".equals(path);
                     boolean post = "POST".equals(method);
                     if (post && "/api/v640/account".equals(path)) MessageAlerts.reset(MainActivity.this);
-                    boolean scopedTool = "/api/v7/diet/entries".equals(path) || "/api/v7/push".equals(path) || "/api/v7/quiz".equals(path);
+                    boolean scopedTool = "/api/v7/diet/entries".equals(path) || "/api/v7/push".equals(path)
+                        || "/api/v7/quiz".equals(path) || "/api/v8/social".equals(path);
                     if ((capability && get) || ("/api/v7/diet/recognize".equals(path) && post)
                         || ((scopedTool || account || SCOPED.matcher(path).matches()) && (get || post)))
                         return null; // Ordinary WebView HTTPS, with its own cookie jar, Origin and TLS checks.
