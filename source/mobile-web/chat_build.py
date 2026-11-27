@@ -1,5 +1,7 @@
 """Mobile-web-only adapters for the frozen React bundle."""
 
+from chat_inbox_build import inbox_phone, inbox_journal
+
 
 def replace(text, old, new):
     if text.count(old) != 1:
@@ -26,36 +28,11 @@ def phone(text):
     text = replace(text, 'autoFocus:!0,onClick:a,children:"\\u2039', 'onClick:a,children:"\\u2039')
     text = replace(text, 'L.slice().reverse().map(R=>R.recalled?', 'L.slice().reverse().map((R,index,rows)=>X.jsxs(je.Fragment,{children:[Chat.timeLabel(je,R,rows[index-1]),R.recalled?')
     text = replace(text, 'note:Xa.get(R.replyTo)})]})]},R.id))]}', 'note:Xa.get(R.replyTo)})]})]},R.id)]},R.id))]}')
-    text = replace(text, 'function so({imageUrl=sc,', 'function so({roomId="main",imageUrl=sc,')
-    text = replace(text, 'return h(so,{...chat,hideDaily:true,', 'return h(so,{...chat,roomId:circle.id,hideDaily:true,')
-    text = replace(text, 'className:"room-log",ref:k', '"data-chat-room":roomId,"data-chat-through":L[0]?.created||0,className:"room-log",ref:k')
-    text = replace(text, '"data-notice-item":R.id,className:"room-row"', '"data-notice-item":R.id,"data-chat-created":R.created,className:"room-row"')
-    text = replace(text, 'let c=a.me,p=a.members.find', 'const chatBadge=window.LycheeMobileChat.useInbox(Ee,fu,Kt);let c=a.me,p=a.members.find')
-    point = 'function De(O){O=window.lycheeWorkspaceDetail'
-    text = replace(text, point, '''function openChatBadge(){
-      const room=chatBadge.firstRoom;
-      if(!room||room==="main"){i(!v);return;}
-      circleRequest().then(data=>{
-        const match=data.circles.find(channel=>channel.id===room);
-        if(match){setSelectedCircle(match);De("circle");}else De("notifications");
-      }).catch(()=>De("notifications"));
-    }''' + point)
-    text = replace(text, 'chat:()=>i(true),unread:l,goal:', 'chat:openChatBadge,unread:chatBadge.count,goal:')
-    start = text.index('(It||L==="question"||L==="feed"||!L&&m===')
-    end = text.index(']})]}),(0,A.jsx)(Ic', start)
-    text = replace(text, text[start:end+3], '''((!v&&L!=="circle")||chatBadge.count>0)&&A.jsxs("button",{
-      type:"button",className:"bubble mobile-chat-badge","aria-label":"聊天，"+chatBadge.count+"条未读",
-      onClick:openChatBadge,
-      children:[A.jsx(Ta,{name:"聊"}),chatBadge.count>0&&A.jsx("em",{children:chatBadge.count>99?"99+":chatBadge.count})]})''')
-    # “我” originally hides the entire header; its chat shortcut must remain reachable.
-    text = replace(text, 'className:"appbar"+(!L&&m==="\\u6211"?" visually-hidden":"")', 'className:"appbar"')
-    return text
+    return inbox_phone(text, replace, 'window.LycheeMobileChat')
 
 
 def journal(text):
-    return replace(text, 'home&&!demo&&btn(h(Icon,{name:"聊",size:20}),chat,"",{"aria-label":"小队聊天"+(unread?"，有未读消息":"")})',
-                   '''!demo&&(home||unread>0)&&btn(h("span",{className:"mobile-journal-bubble"},
-                    h(Icon,{name:"聊",size:20}),unread>0&&h("em",null,unread>99?"99+":unread)),chat,"",{"aria-label":"聊天，"+unread+"条未读"})''')
+    return inbox_journal(text, replace)
 
 
 def notifications(text):

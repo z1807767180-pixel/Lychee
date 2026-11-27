@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from chat_inbox_build import inbox_phone, inbox_journal
 from notification_build import notification_journal, notification_phone, notification_v61, notification_yard
 
 ROOT = Path(__file__).resolve().parent
@@ -100,6 +101,10 @@ def soup_controls(text):
     first, last = text.index(start), text.index(end, text.index(start))
     text = once(text, text[first:last], 'H.jsx(SoupFilters,{genre:s,setGenre:f,data:o,busy:y,start:Q})')
     text = once(text, 'function u0({members:', (ROOT / 'client/soup-filters.js').read_text(encoding='utf8') + '\nfunction u0({members:')
+    text = once(text, 'h("p",null,result.solution),',
+                'h("p",null,result.solution),result.source&&h("details",null,h("summary",null,"题目出处"),'
+                'h("small",null,result.source.author," · ",result.source.license,"　",result.source.note),'
+                'h("p",null,h("a",{href:result.source.url,target:"_blank",rel:"noreferrer"},result.source.url))),')
     text = once(text, r'e.source.author," \xB7 Soupbase\u3000",e.source.note',
                 'e.source.author," · ",e.source.license,"　",e.source.note')
     return once(text, 'https://github.com/spoonnotfound/soupbase/blob/main/content/LICENSE.md',
@@ -166,6 +171,7 @@ def phone_bundle(text, mobile):
                 '()=>window.LycheeAccess.logout()')
     text = notification_phone(text, once)
     if not mobile:
+        text = inbox_phone(text, once, 'window.LycheeChatInbox', compact=False)
         marker = 'ya("settings","管理我的圈子",()=>window.LycheeAccess.openGardens()),'
         text = once(text, marker,
                     'window.LycheeDesktopUpdate&&ya("settings","检查更新",()=>window.LycheeDesktopUpdate.check()),'+marker)
@@ -182,7 +188,8 @@ def entry(text, mobile):
         includes += '<script defer src="/windows/workspace-nav.js"></script><script defer src="/windows/team-share.js"></script>'
         text = text.replace('<link rel="manifest" href="/mobile/app.webmanifest">','<link rel="icon" href="/mobile/icon.png">')
     else:
-        includes += '<script defer src="/windows/update-ui.js"></script>'
+        text = text.replace('/mobile/journal.js', '/windows/journal.js')
+        includes += '<script defer src="/windows/chat-inbox.js"></script><script defer src="/windows/update-ui.js"></script>'
         styles += '<link rel="stylesheet" href="/windows/update-ui.css">'
     text = once(text, original, includes + f'<script defer src="/client/garden.js" data-app="{application}"></script>')
     text = (text.replace('<body>', f'<body data-app="{application}" data-client-build="{CLIENT_BUILD}">')
@@ -226,6 +233,8 @@ def build(out):
                                "['提醒事项', 'tasks'], ['番茄钟', 'focus'], ['记账本', 'ledger'], ").encode()
         elif name.endswith(".js"):
             files[name] = bind_business(files[name].decode()).encode()
+    files["windows/chat-inbox.js"] = (ROOT / "client/chat-inbox.js").read_bytes()
+    files["windows/journal.js"] = inbox_journal(files["mobile/journal.js"].decode(), once, compact=False).encode()
     files["mobile/version.txt"] = (VERSION+"\n").encode()
     for name in ("update-ui.js", "update-ui.css"):
         files["windows/" + name] = (ROOT / "desktop" / name).read_bytes()
