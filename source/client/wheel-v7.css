@@ -20,7 +20,7 @@
 .v7-wheel :is(input,button):focus-visible { outline: 3px solid #1e6a4b; outline-offset: 1px; }
 .v7-wheel button:disabled { opacity: .6; cursor: default; }
 .v7-wheel-banner {
-  display: block; width: 100%; aspect-ratio: 4.36; object-fit: cover;
+  display: block; width: 100%; height: auto; aspect-ratio: 642 / 147; object-fit: cover;
   border-radius: clamp(12px, 2vw, 20px); background: #f6e7bc;
 }
 .v7-wheel-topic {

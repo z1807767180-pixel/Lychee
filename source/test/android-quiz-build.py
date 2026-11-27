@@ -63,7 +63,10 @@ def build(folder):
     lock_dependencies()
     run("node", qa / "node_modules/@capacitor/cli/bin/capacitor", "sync", "android")
     wrapper = qa / "android" / ("gradlew.bat" if os.name == "nt" else "gradlew")
-    run(*([] if os.name == "nt" else ["bash"]), wrapper, "-p", qa / "android", "--no-daemon", ":app:assembleDebug")
+    version = json.loads((qa / "friends-release.json").read_text(encoding="utf8"))["version"]
+    major, minor, patch = map(int, version.split("."))
+    run(*([] if os.name == "nt" else ["bash"]), wrapper, "-p", qa / "android", "--no-daemon",
+        f"-PlycheeVersion={version}", f"-PlycheeCode={major*10000+minor*100+patch}", ":app:assembleDebug")
     shutil.copyfile(app / "build/outputs/apk/debug/app-debug.apk", folder / "quiz-qa.apk")
 
 

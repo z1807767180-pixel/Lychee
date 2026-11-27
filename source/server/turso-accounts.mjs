@@ -1,7 +1,7 @@
 import {randomBytes, randomUUID, timingSafeEqual} from 'node:crypto';
 import {
   accountSchema, circleRoster, gardensForAccount, rosterResponse, cookie, derive, gardenText, hash, InputError, json, LEGACY_GARDEN_ID,
-  life, newCookie, oldCookie, publishedNotices, reject, textOK, tokens,
+  life, newCookie, oldCookie, publishedNotices, reject, textOK, tokens, joinMembership,
 } from './accounts.mjs';
 
 const stmt = (sql, ...args) => ({sql, args});
@@ -171,9 +171,7 @@ export async function createTursoAccounts(client, {notices = []} = {}) {
         if (typeof p.code !== 'string' || !/^LZ-[a-f0-9]{32}$/i.test(p.code.trim())) reject(400,'邀请码无效');
         const invite=await first(tx,'SELECT garden FROM mc_garden_codes WHERE code=?',p.code.trim().toUpperCase());
         if (!invite) reject(400,'邀请码无效');
-        await execute(tx,`INSERT INTO mc_members(account,garden,slot,role)
-          SELECT ?,?,MAX(COALESCE(MAX(slot),0),?)+1,'member' FROM mc_members WHERE garden=?
-          ON CONFLICT(account,garden) DO NOTHING`,s.accountId,invite.garden,invite.garden===LEGACY_GARDEN_ID?3:0,invite.garden);
+        await execute(tx,joinMembership,s.accountId,invite.garden);
         await activate(tx,s,invite.garden);
         break;
       }

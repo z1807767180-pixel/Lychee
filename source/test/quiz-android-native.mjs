@@ -9,6 +9,7 @@ import {join, resolve} from 'node:path';
 import {setTimeout as delay} from 'node:timers/promises';
 import {createApp, serveRequest} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
+import {verifySocial} from './android-social-ui.mjs';
 
 const [folderArg, webArg, evidenceArg, legacyProfile] = process.argv.slice(2);
 if (!folderArg || !webArg || !evidenceArg) throw Error('Pass QA build, prepared mobile directory and evidence directory');
@@ -19,6 +20,7 @@ const pkg = 'dev.lychee.quizqa', origin = 'https://127.0.0.1:18443';
 const adb = (...args) => execFileSync('adb', args, {encoding:'utf8',timeout:30000}).trim();
 const webview = adb('shell','dumpsys','webviewupdate').split('\n').find(line=>line.includes('Current WebView package'));
 const report = {platform:adb('shell','getprop','ro.build.version.release'),webview,rounds:[]};
+const v8 = Number((await readFile(join(webArg,'mobile/version.txt'),'utf8')).split('.')[0])>=8;
 const app = await createApp({origin, webRoot:resolve(webArg), dataDir:await mkdtemp(join(folder,'garden-'))});
 const quizResponses = [];
 const capabilityResponses = [];
@@ -26,6 +28,10 @@ const launchPath = '/mobile/assets-' + (await readFile(join(webArg,'mobile/versi
 const launch = await readFile(join(webArg,launchPath.slice(1)));
 const server = createServer({key:await readFile(join(folder,'server.key')),cert:await readFile(join(folder,'server.pem'))}, (req,res) => {
   const pathname = new URL(req.url,origin).pathname;
+  if (process.env.LYCHEE_TEST_MISSING_WHEEL_ART==='1' && /\/wheel-(banner|hub)-v7\.webp$/.test(pathname)) {
+    res.writeHead(404).end();
+    return;
+  }
   if (legacyProfile && pathname === launchPath) {
     const disable = "if(window.AbortSignal)Object.defineProperty(window.AbortSignal,'timeout',{value:undefined,configurable:true});" +
       (legacyProfile === 'missing-controller' ? "Object.defineProperty(window,'AbortController',{value:undefined,configurable:true});" : '');
@@ -45,6 +51,20 @@ const server = createServer({key:await readFile(join(folder,'server.key')),cert:
   serveRequest(app,req,res,origin);
 });
 const browser = new Browser();
+const mainPageJs = browser.js.bind(browser);
+async function enterToolFrame(){
+  if (!v8) return;
+  const target=await until(async()=>{
+    const {frameTree}=await browser.call('Page.getFrameTree');
+    return (frameTree.childFrames||[]).find(f=>f.frame.url.startsWith(origin+'/mobile/'));
+  },'工具页面');
+  const {executionContextId}=await browser.call('Page.createIsolatedWorld',{frameId:target.frame.id,worldName:'lychee-test-dom'});
+  browser.js=async expression=>{
+    const reply=await browser.call('Runtime.evaluate',{expression,contextId:executionContextId,returnByValue:true,awaitPromise:true});
+    if(reply.exceptionDetails)throw Error(reply.exceptionDetails.exception?.description||reply.exceptionDetails.text);
+    return reply.result.value;
+  };
+}
 async function api(user,path,body) {
   const response = await app.handle(new Request(origin+path,{method:body?'POST':'GET',
     headers:{cookie:user.cookie||'',origin,'content-type':'application/json'},body:body&&JSON.stringify(body)}));
@@ -80,14 +100,16 @@ try {
   ws.onmessage=({data})=>{
     const m=JSON.parse(data), pending=browser.pending.get(m.id);
     if (pending) {browser.pending.delete(m.id);clearTimeout(pending.timer);m.error?pending.fail(Error(m.error.message)):pending.resolve(m.result);}
-    if (m.method==='Runtime.exceptionThrown') browser.errors.push(m.params.exceptionDetails.text);
+    if (m.method==='Runtime.exceptionThrown') browser.errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);
+    if (m.method==='Network.responseReceived') browser.responses.push([m.params.response.status,new URL(m.params.response.url).pathname.slice(0,160)]);
+    if (m.method==='Network.loadingFailed') browser.urls.push([m.params.type,m.params.errorText]);
   };
   for (const domain of ['Network','Runtime','Page']) await browser.call(domain+'.enable');
   await until(()=>browser.js("document.body.innerText.includes('注册新账号') || document.body.innerText.includes('登录荔枝园')"),'friends sign-in');
   assert.ok(await browser.js('!!window.Capacitor && navigator.userAgent.includes("Android")'));
   if (legacyProfile) {
     report.profile = legacyProfile;
-    report.sessionStartup = await browser.js("({timeout: typeof window.AbortSignal?.timeout, controller:typeof window.AbortController,appVersion:document.body.dataset.clientBuild})");
+    report.sessionStartup = await browser.js("({timeout: typeof (window.AbortSignal||{}).timeout, controller:typeof window.AbortController,appVersion:document.body.dataset.clientBuild})");
     assert.equal(report.sessionStartup.timeout,'undefined');
     assert.equal(report.sessionStartup.controller,legacyProfile==='missing-controller'?'undefined':'function');
     assert.ok(capabilityResponses.includes(200));
@@ -101,8 +123,10 @@ try {
   for (const user of [player,friend]) for (const notice of (await api(user,workspace+'?client=mobile-web')).notices) await api(user,workspace,{action:'read',noticeId:notice.id});
   const [name,value]=player.cookie.split('=');
   assert.ok((await browser.call('Network.setCookie',{name,value,url:origin+'/',path:'/',secure:true,httpOnly:true})).success);
-  await browser.call('Page.navigate',{url:origin+'/mobile/?garden='+garden});
-  await until(()=>browser.js("!!document.querySelector('.ga-circle-list')?.offsetWidth"),'garden landing');
+  await browser.call('Page.navigate',{url:origin+'/mobile/'+(v8?'':'?garden='+garden)});
+  if (v8) {
+    report.social=await verifySocial({browser,click,until,screenshot,api,player,friend,joined,garden});
+  } else await until(()=>browser.js("!!(document.querySelector('.ga-circle-list')||{}).offsetWidth"),'garden landing');
   if (legacyProfile) {
     await screenshot('01-local-garden');
     report.gardenVisible=true;
@@ -110,7 +134,30 @@ try {
     report.launchSha256=createHash('sha256').update(launch).digest('hex');
   }
   if (!await browser.js("[...document.querySelectorAll('button')].some(x=>x.offsetWidth&&x.innerText.trim()==='头脑王者')")) await click('工具箱');
-  await click('头脑王者'); await until(()=>browser.js("document.querySelector('.qz-ranks')?.innerText.includes('小桂')"),'friend rank');
+  if (process.env.LYCHEE_TEST_MISSING_WHEEL_ART==='1') {
+    await click('交给命运');
+    await enterToolFrame();
+    await until(()=>browser.js("(document.querySelector('.v7-wheel-banner')||{}).naturalWidth===642"),'wheel illustration');
+    report.wheel = await browser.js(`(async()=>{
+      const b=document.querySelector('.v7-wheel-banner'), r=b.getBoundingClientRect();
+      const center=new Image(); center.src=getComputedStyle(document.querySelector('.v7-wheel-hub')).backgroundImage.slice(4,-1).replace(/^["']|["']$/g,'');
+      await new Promise((ok,fail)=>{if(center.complete&&center.naturalWidth)ok();else {center.onload=ok;center.onerror=fail;}});
+      return {banner:[b.naturalWidth,b.naturalHeight],ratio:r.width/r.height,center:[center.naturalWidth,center.naturalHeight],
+        embedded:b.currentSrc.startsWith('data:image/jpeg;')&&center.src.startsWith('data:image/png;')};
+    })()`);
+    assert.deepEqual(report.wheel.banner,[642,147]);
+    assert.deepEqual(report.wheel.center,[82,82]);
+    assert.ok(report.wheel.embedded && Math.abs(report.wheel.ratio-642/147)<.08);
+    await screenshot('wheel-before-spin');
+    await browser.js("document.querySelector('.v7-wheel-spin').click()");
+    await until(()=>browser.js("document.querySelector('.v7-wheel-result').textContent.includes('选中了')"),'wheel selection');
+    browser.js=mainPageJs;
+    await browser.call('Page.navigate',{url:origin+'/mobile/'+(v8?'':'?garden='+garden)});
+    await click('工具箱');
+  }
+  await click('头脑王者');
+  if(v8){await click('安卓问答验收园');await enterToolFrame();}
+  await until(()=>browser.js("(document.querySelector('.qz-ranks')||document.createElement('div')).innerText.includes('小桂')"),'friend rank');
   await screenshot('01-lobby');
   await click('挑战园友'); await click('挑战');
   const quiz='/api/v7/quiz?'+new URLSearchParams({accountId:joined.account.id,gardenId:garden});
@@ -118,7 +165,7 @@ try {
   await api(friend,quiz,{action:'accept',id:match});
   for(let round=0;round<5;round++) {
     const label='第 '+(round+1)+' / 5 题';
-    const prompt=await until(()=>browser.js(`document.querySelector('.qz-round')?.innerText.includes(${JSON.stringify(label)})&&document.querySelector('button.qz-option:not(:disabled)')&&document.querySelector('.qz-question h2')?.innerText`),label);
+    const prompt=await until(()=>browser.js(`(document.querySelector('.qz-round')||document.createElement('div')).innerText.includes(${JSON.stringify(label)})&&document.querySelector('button.qz-option:not(:disabled)')&&(document.querySelector('.qz-question h2')||{}).innerText`),label);
     assert.equal(await browser.js("document.querySelectorAll('.qz-option').length"),4);
     assert.ok(await browser.js('document.documentElement.scrollWidth<=innerWidth+1'));
     report.rounds.push(prompt);
@@ -137,6 +184,8 @@ try {
   report.webviewQuizRequests=quizResponses.length; report.pass=true;
 } catch(error) {
   report.error=error.message;
+  report.runtimeErrors=browser.errors;report.failedTransfers=browser.urls;
+  report.failedResponses=browser.responses.filter(([code])=>code>=400);
   if(browser.socket?.readyState===1) report.screen=await browser.js('document.body.innerText.slice(-1200)').catch(()=>undefined);
   await screenshot('failure').catch(()=>{});
   console.error(report); process.exitCode=1;

@@ -62,7 +62,7 @@
   let previous, pending = false;
   function update() {
     pending = false;
-    const header = document.querySelector('.garden-app > .appbar');
+    const header = document.querySelector('.s8 > .s8-header,.garden-app > .appbar');
     const rect = header?.getBoundingClientRect();
     // Full-screen activities, login and dialogs retain the compact native caption.
     const blocked = document.querySelector('#lychee-launch,.garden-access:not([hidden])');

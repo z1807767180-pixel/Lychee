@@ -35,6 +35,7 @@ export const accountSchema = `CREATE TABLE IF NOT EXISTS mc_accounts(id TEXT PRI
     CREATE TABLE IF NOT EXISTS mc_sessions(token_hash TEXT PRIMARY KEY,kind TEXT NOT NULL CHECK(kind IN ('legacy','account')),account TEXT NOT NULL REFERENCES mc_accounts(id),active_garden TEXT,expires INTEGER NOT NULL);
     CREATE INDEX IF NOT EXISTS mc_sessions_expiry ON mc_sessions(expires);
     CREATE TABLE IF NOT EXISTS mc_garden_codes(garden TEXT PRIMARY KEY REFERENCES mc_gardens(id),code TEXT UNIQUE NOT NULL);
+    CREATE TABLE IF NOT EXISTS mc_retired_slots(garden TEXT NOT NULL,account TEXT NOT NULL,slot INTEGER NOT NULL,PRIMARY KEY(garden,account),UNIQUE(garden,slot));
     CREATE TABLE IF NOT EXISTS mc_reads(account TEXT NOT NULL REFERENCES mc_accounts(id),notice TEXT NOT NULL,PRIMARY KEY(account,notice));
     CREATE TABLE IF NOT EXISTS mc_legacy_slots(slot INTEGER PRIMARY KEY,account TEXT UNIQUE NOT NULL REFERENCES mc_accounts(id),source_digest TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS mc_legacy_sessions(digest TEXT PRIMARY KEY);
@@ -46,6 +47,15 @@ export const circleRoster = `SELECT a.username AS name,m.role,m.slot FROM mc_mem
   JOIN mc_accounts a ON a.id=m.account WHERE m.garden=?
   AND EXISTS (SELECT 1 FROM mc_members mine WHERE mine.garden=m.garden AND mine.account=?)
   ORDER BY CASE m.role WHEN 'owner' THEN 0 ELSE 1 END,m.slot`;
+// A former member can reclaim only their own historical slot. New members
+// must never inherit somebody else's old profile, goals or private tools.
+export const joinMembership = `WITH candidate(account,garden) AS (VALUES(?,?))
+  INSERT INTO mc_members(account,garden,slot,role)
+  SELECT c.account,c.garden,COALESCE((SELECT slot FROM mc_retired_slots WHERE account=c.account AND garden=c.garden),
+    MAX(COALESCE((SELECT MAX(slot) FROM mc_members WHERE garden=c.garden),0),
+        COALESCE((SELECT MAX(slot) FROM mc_retired_slots WHERE garden=c.garden),0),
+        CASE WHEN c.garden='legacy' THEN 3 ELSE 0 END)+1),'member'
+  FROM candidate c WHERE NOT EXISTS(SELECT 1 FROM mc_members WHERE account=c.account AND garden=c.garden)`;
 export function rosterResponse(members) {
   if (!members.length) reject(403,'需要先加入这个圈子');
   return json({members:members.map(({name,role,slot})=>({name,role,slot:Number(slot)}))});
@@ -130,9 +140,7 @@ export function createAccounts(db,{notices=[]}={}){
       const invite=get('SELECT garden FROM mc_garden_codes WHERE code=?',p.code.trim().toUpperCase());
       if(!invite)reject(400,'邀请码无效');
       if(!resolveMember(s.accountId,invite.garden)){
-        const current=get('SELECT COALESCE(MAX(slot),0) AS last FROM mc_members WHERE garden=?',invite.garden).last;
-        const slot=Math.max(current,invite.garden===LEGACY_GARDEN_ID?3:0)+1;
-        run("INSERT INTO mc_members VALUES(?,?,?,'member')",s.accountId,invite.garden,slot);
+        run(joinMembership,s.accountId,invite.garden);
       }
       activate(s,invite.garden);
     }else if(['switch','invite','rotateInvite','edit'].includes(p.action)){

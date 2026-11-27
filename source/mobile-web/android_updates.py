@@ -108,6 +108,7 @@ def check_receipt(apk, receipt):
 
 
 def download_page(version, path):
+    prefix = 'A' if int(version.split('.')[0]) >= 8 else 'V'
     return f"""<!doctype html>
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>荔枝安卓朋友版下载</title>
@@ -116,7 +117,7 @@ body{{margin:0;background:#faf5e7;color:#244b41;font:17px/1.65 system-ui,sans-se
 main{{max-width:35em;margin:8vh auto;padding:1.5em}} h1{{line-height:1.2}}
 a{{display:inline-block;padding:.55em 1.15em;border-radius:9px;background:#245447;color:white;text-decoration:none}}
 a:focus-visible{{outline:3px solid #b95734;outline-offset:3px}}
-</style><main><h1>荔枝安卓朋友版</h1><p>正式版 V{version}</p>
+</style><main><h1>荔枝安卓朋友版</h1><p>正式版 {prefix}{version}</p>
 <a href="{path}" download>下载安卓安装包</a><p>下载完成后打开 APK，按手机提示安装。已安装朋友版的用户可以直接覆盖升级。</p></main></html>"""
 
 

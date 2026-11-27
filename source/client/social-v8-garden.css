@@ -1,0 +1,16 @@
+.s8 .s8-columns{padding-block:0}
+.s8 .s8-garden-row strong{flex:1}
+.s8 .s8-garden-row:last-child,.s8 .s8-columns .s8-row:last-child{border-bottom:0}
+.s8 .s8-garden-post{display:grid;gap:7px;width:100%;padding:14px;text-align:left;line-height:1.5}
+.s8 .s8-garden-post p{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical;white-space:pre-wrap}
+.s8 .s8-garden-by,.s8 .s8-gift-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.s8 .s8-garden-by small:first-of-type,.s8 .s8-gift-row small{margin-left:auto}
+.s8 .s8-garden-detail{display:grid;gap:8px}
+.s8 .s8-garden-detail p,.s8 .s8-replies-inbox p{white-space:pre-wrap;overflow-wrap:anywhere}
+.s8 .s8-garden-detail button{justify-self:start}
+.s8 .s8-reply-target{border-color:var(--green);box-shadow:inset 3px 0 var(--green)}
+.s8 .s8-tree-card{display:grid;grid-template-columns:minmax(78px,26%) 1fr;gap:10px 16px;align-items:center;background:#f7f5e5}
+.s8 .s8-tree-image{grid-row:span 2;display:block;width:100%;max-height:150px;object-fit:contain}
+.s8 .s8-tree-card button{justify-self:start}
+.s8 .s8-actions[hidden]{display:none}
+.s8 .s8-panel summary{cursor:pointer;font-weight:bold}

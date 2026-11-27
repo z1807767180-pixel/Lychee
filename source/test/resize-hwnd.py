@@ -124,7 +124,14 @@ def probe(d,pid):
 def emit(payload):print(json.dumps(payload,ensure_ascii=True),flush=True)
 def main(probe_fn=probe, background_flags=True):
     exe,origin,debug=sys.argv[1:]
-    if not origin.startswith('http://127.0.0.1:') or not origin[17:].isdigit():raise ValueError('Loopback required')
+    official=origin=='isolated-public-update'
+    if official:
+        profile=Path(os.environ.get('WEBVIEW2_USER_DATA_FOLDER','')).resolve()
+        run_root=Path(os.environ['TEMP']).resolve().parent
+        if (profile!=run_root/'profile' or Path(exe).resolve().parent!=run_root or
+                not run_root.name.startswith('lychee-social-wpf-') or profile.is_symlink()):
+            raise ValueError('Expected an isolated executable and WebView2 profile')
+    elif not origin.startswith('http://127.0.0.1:') or not origin[17:].isdigit():raise ValueError('Loopback required')
     fn(u,'SetProcessDpiAwarenessContext',w.BOOL,c.c_void_p)(c.c_void_p(-4))
     old=get_desktop(thread());name='LycheeResizeQA_'+uuid.uuid4().hex
     d=create_desktop(name,None,None,0,0x01ff,None);check(d)
@@ -137,7 +144,7 @@ def main(probe_fn=probe, background_flags=True):
             '--host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE 127.0.0.1"')
         if background_flags:
             os.environ['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']+=' --disable-background-timer-throttling --disable-renderer-backgrounding --disable-backgrounding-occluded-windows --disable-features=CalculateNativeWinOcclusion'
-        argv=c.create_unicode_buffer(subprocess.list2cmdline([exe,'--test-local',origin]))
+        argv=c.create_unicode_buffer(subprocess.list2cmdline([exe] if official else [exe,'--test-local',origin]))
         check(create(exe,argv,None,None,False,0,None,str(Path(exe).parent),c.byref(si),c.byref(pi)))
         emit({'started':pi.pid,'privateDesktop':object_name(d),'inputDesktop':active_name})
         if sys.stdin.readline().strip()!='probe':return

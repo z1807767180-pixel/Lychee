@@ -169,7 +169,9 @@ if __name__ == "__main__":
         adb("shell","appops","set",PACKAGE,"REQUEST_INSTALL_PACKAGES","allow")
         wait_for_public_https(new)
         launch()
-        find("可以更新到 V"+new)
+        # The update prompt is rendered by the installed shell, before Android replaces it.
+        prefix = "A" if int(old.split(".")[0]) >= 8 else "V"
+        find("可以更新到 "+prefix+new)
         find("下载更新",click=True)
         find("Update",click=True,timeout=120)
         deadline=time.monotonic()+60

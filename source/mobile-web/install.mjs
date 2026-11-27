@@ -13,16 +13,18 @@ const previous = {
   'ai-quota.mjs':'ea64213e2f3a334b65c8a7c24ccec4ce9361b07222ff25f837b1f505234cf0ec',
 };
 const additions = ['circle-puzzles.json','soup-categories.mjs','diet-store.mjs','diet-vision.mjs','diet-vision-result.mjs',
-  'notification-source.mjs','notify-push.mjs','notify-push-transport.mjs','quiz-game.mjs','quiz-rounds.mjs','quiz-bank.json'];
+  'notification-source.mjs','notify-push.mjs','notify-push-transport.mjs','quiz-game.mjs','quiz-rounds.mjs','quiz-bank.json',
+  'social.mjs','social-store.mjs','social-history.mjs'];
 const digest = data => createHash('sha256').update(data.toString('utf8').replace(/\r\n/g,'\n')).digest('hex');
 const oldRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/g/')";
-const newRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/api/v7/')||url.pathname.startsWith('/g/')";
+const v7Routes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/api/v7/')||url.pathname.startsWith('/g/')";
+const newRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/api/v7/')||url.pathname==='/api/v8/social'||url.pathname.startsWith('/g/')";
 
 export async function installService(folder) {
   const server = join(folder,'server.mjs');
   const entry = await readFile(server,'utf8');
-  const oldCount = entry.split(oldRoutes).length-1, newCount = entry.split(newRoutes).length-1;
-  if (oldCount+newCount!==1 || !entry.includes('lychee-v640/server/coexist.mjs')) {
+  const matches = [oldRoutes,v7Routes,newRoutes].filter(routes => entry.includes(routes));
+  if (matches.length!==1 || entry.split(matches[0]).length!==2 || !entry.includes('lychee-v640/server/coexist.mjs')) {
     throw Error('Mobile 7.0: unrecognized service router. Keep the prior release.');
   }
   const changes = [];
@@ -41,7 +43,7 @@ export async function installService(folder) {
   }
   // This folder is freshly extracted by the original bootstrap; the server is not yet listening.
   for (const {file,next} of changes) await writeFile(file,next);
-  if(oldCount===1)await writeFile(server,entry.replace(oldRoutes,newRoutes));
+  if(matches[0]!==newRoutes)await writeFile(server,entry.replace(matches[0],newRoutes));
 }
 
 async function installAndroidUpdates(webRoot) {
@@ -65,6 +67,7 @@ async function installAndroidUpdates(webRoot) {
   await mkdir(target);
   await mkdir(join(target,tag));
   await writeFile(join(target,tag,name),apk);
+  if (Number(version.split('.')[0])>=8) await writeFile(join(target,tag,'Lychee-Friends-A'+version+'.apk'),apk);
   await writeFile(join(target,'download.html'),page);
   await writeFile(join(target,'current.json'),manifest);
 }

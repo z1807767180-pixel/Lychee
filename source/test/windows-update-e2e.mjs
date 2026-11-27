@@ -137,8 +137,10 @@ async function click(browser, label, selector = 'button') {
   }, selector, label), 'click ' + label);
 }
 async function settings(browser) {
-  await deadline(() => browser.js("document.querySelector('.windows-nav [data-page=settings]')?.offsetWidth"), 'settings navigation');
-  await browser.js("document.querySelector('.windows-nav [data-page=settings]').click();true");
+  const route=await deadline(()=>browser.js("document.querySelector('.s8-nav [aria-label=我]')?.offsetWidth?'social':document.querySelector('.windows-nav [data-page=settings]')?.offsetWidth?'garden':null"),'settings navigation');
+  if(route==='social'){
+    await click(browser,'我');await click(browser,'设置');
+  }else await browser.js("document.querySelector('.windows-nav [data-page=settings]').click();true");
 }
 async function cookieMetadata(browser) {
   const {cookies} = await browser.call('Network.getCookies');
@@ -262,7 +264,7 @@ async function testWindow(kind, exe, other) {
     await deadline(() => browser.js(`(()=>{
       const notice=[...document.querySelectorAll('.garden-access button')].find(b=>b.offsetWidth&&b.textContent.trim()==='标为已读');
       if(notice){notice.click();return false;}
-      return !!document.querySelector('.windows-nav [data-page=settings], .garden-access input[name=username]');
+      return !!document.querySelector('.s8-nav [aria-label=我], .windows-nav [data-page=settings], .garden-access input[name=username]');
     })()`), 'new application finished opening');
     const after = await atPage(browser, async () => {
       const res = await fetch('/api/v640/workspace'), ws = await res.json();

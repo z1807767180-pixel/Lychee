@@ -1,5 +1,5 @@
 """Build one Windows EXE, its per-user MSI, and the matching independent mobile frontend."""
-import sys, shutil, subprocess, argparse, json, uuid
+import sys, shutil, subprocess, argparse, json, uuid, hashlib
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 from PIL import Image
@@ -36,15 +36,23 @@ def friend_package(out,version):
         stage.unlink(missing_ok=True)
         scratch.rmdir()
 
-def build(out,qa_version=None,qa_instance=None):
+def build(out,qa_version=None,qa_instance=None,client_dir=None):
     if bool(qa_version)!=bool(qa_instance):
         raise ValueError('Test packages require both --qa-version and --qa-instance')
     if qa_instance: qa_instance=str(uuid.UUID(qa_instance))
     out=out.resolve();out.mkdir(parents=True,exist_ok=True)
-    run(sys.executable,ROOT/'build.py')
+    if client_dir:
+        client_dir=client_dir.resolve()
+    else:
+        run(sys.executable,ROOT/'build.py')
+        client_dir=ROOT/'public'
     version=qa_version or WINDOWS_VERSION
-    run(sys.executable,ROOT/'launch/build.py',ROOT/'public',out/'site')
-    shared_version=json.loads((ROOT/'public-build.json').read_text())['version']
+    receipt=json.loads((client_dir.parent/(client_dir.name+'-build.json')).read_text('utf8'))
+    actual={file.relative_to(client_dir).as_posix() for file in client_dir.rglob('*') if file.is_file()}
+    if actual!=set(receipt['files']) or any(hashlib.sha256((client_dir/name).read_bytes()).hexdigest()!=digest for name,digest in receipt['files'].items()):
+        raise ValueError('Client files do not match their build receipt')
+    run(sys.executable,ROOT/'launch/build.py',client_dir,out/'site')
+    shared_version=receipt['version']
     if version!=shared_version:
         page=out/'site/windows/workspace.html'
         with page.open('rb') as f: html=f.read()
@@ -76,4 +84,5 @@ def build(out,qa_version=None,qa_instance=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('out',type=Path)
     p.add_argument('--qa-version');p.add_argument('--qa-instance')
-    args=p.parse_args();build(args.out,args.qa_version,args.qa_instance)
+    p.add_argument('--client-dir',type=Path,help='Use a separately built client and its adjacent build receipt')
+    args=p.parse_args();build(args.out,args.qa_version,args.qa_instance,args.client_dir)

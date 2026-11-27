@@ -72,6 +72,7 @@ def main():
     p.add_argument("official_apk", type=Path)
     p.add_argument("evidence", type=Path)
     p.add_argument("--updater-code-apk",type=Path,help="Official app whose executable code must match the baseline fixture")
+    p.add_argument("--prompt-prefix",choices=("V","A"),help="Prefix rendered by an older published updater")
     p.add_argument("--web-version",help="Verify the public /mobile/version.txt through the same HTTPS tunnel")
     a = p.parse_args()
     if not os.environ.get("ANDROID_SERIAL", "").startswith("emulator-") or adb("shell", "getprop", "ro.kernel.qemu").strip() != "1":
@@ -109,7 +110,8 @@ def main():
             assert "403 Forbidden" in denied and any(r["destination"] == "github.com:443" and not r["allowed"] for r in records), (denied,records[-5:])
             adb("shell","appops","set",device.PACKAGE,"REQUEST_INSTALL_PACKAGES","allow")
             device.launch()
-            find("可以更新到 V"+a.target_version,timeout=170)
+            prefix = a.prompt_prefix or ("A" if int(a.target_version.split(".")[0]) >= 8 else "V")
+            find("可以更新到 "+prefix+a.target_version,timeout=170)
             screenshot(a.evidence/"01-offer.png")
             find("下载更新",click=True)
             find("Update",timeout=300)
