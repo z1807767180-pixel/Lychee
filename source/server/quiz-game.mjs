@@ -28,7 +28,7 @@ const schema = [
 ];
 
 let bank;
-function loadBank() {
+export function loadBank() {
   return bank ??= readFile(new URL('./quiz-bank.json', import.meta.url),'utf8').then(JSON.parse)
     .catch(error => { bank = undefined; throw error; });
 }

@@ -48,7 +48,12 @@
       }catch{/* A missing picture never interferes with opening a conversation. */}finally{loading.delete(garden);}
     }
     function refresh(force=false){if(home){void load(home.accountToolsGardenId,force);if(scope)void load(scope,force);}}
-    return {apply,avatar,refresh};
+    function set(name,value){
+      if(!home||!['theme','chatWallpaper'].includes(name))return;
+      localStorage.setItem(field(account,home.accountToolsGardenId,1,name),value);
+      apply(home,room,shell.dataset.chat==='true');
+    }
+    return {apply,avatar,refresh,read,set};
   }
   window.LycheeSocialAppearance={make,endpoint};
 })();

@@ -2,6 +2,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {InputError,reject,json,joinMembership,gardenText} from './accounts.mjs';
 import {socialStore} from './social-store.mjs';
 import {socialHistory} from './social-history.mjs';
+import {getPlay,changePlay,playRoom} from './social-play.mjs';
 
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const day=()=>new Date(Date.now()+28800000).toISOString().slice(0,10);
@@ -19,7 +20,7 @@ export function accountToolsGarden(account){
   // UUID v5 format is disjoint from all UUID v4 gardens created by the product.
   return [hex.slice(0,8),hex.slice(8,12),'5'+hex.slice(13,16),'8'+hex.slice(17,20),hex.slice(20,32)].join('-');
 }
-const groupSelect="SELECT g.id,g.name,g.subtitle,m.role,(SELECT COUNT(*) FROM mc_members others WHERE others.garden=g.id) AS memberCount,"+
+const groupSelect="SELECT g.id,g.name,g.subtitle,m.role,m.slot AS selfSlot,(SELECT COUNT(*) FROM mc_members others WHERE others.garden=g.id) AS memberCount,"+
   "(SELECT COUNT(*) FROM mc_v8_entries e WHERE e.kind='group' AND e.scope=g.id AND e.author<>m.account AND e.seq>COALESCE((SELECT through FROM mc_v8_reads r WHERE r.account=m.account AND r.scope='group:'||g.id),0)) AS unread "+
   'FROM mc_members m JOIN mc_gardens g ON g.id=m.garden WHERE m.account=?';
 const groupFields=g=>({...g,cover:cover(g.id)});
@@ -47,8 +48,15 @@ async function roster(q,me,id){
     'FROM mc_members m JOIN mc_accounts a ON a.id=m.account LEFT JOIN mc_v8_friends f ON f.lo=MIN(a.id,?) AND f.hi=MAX(a.id,?) WHERE m.garden=? ORDER BY m.slot',me,me,me,me,id);
 }
 async function tree(q,me){
-  const r=await q.first('SELECT fruit,water_count AS waterCount,last_day AS lastDay FROM mc_v8_trees WHERE account=?',me)??{fruit:0,waterCount:0,lastDay:''};
-  return {...r,wateredToday:r.lastDay===day()};
+  const r=await q.first("SELECT COALESCE(t.fruit,0) AS fruit,COALESCE(t.water_count,0) AS waterCount,COALESCE(t.last_day,'') AS lastDay,COALESCE(g.progress,0) AS progress FROM (SELECT ? AS owner) p LEFT JOIN mc_v8_trees t ON t.account=p.owner LEFT JOIN mc_v8_tree_growth g ON g.account=p.owner",me);
+  return {...r,wateredToday:r.lastDay===day(),mature:r.progress===3};
+}
+async function planList(q,me,groups,personal,original,history){
+  const [sharedGoals,choice]=await Promise.all([history.sharedGoals(q,groups),q.first('SELECT goal FROM mc_v8_goal_choice WHERE account=?',me)]);
+  const goals=[...personal,...original].sort((a,b)=>a.due-b.due||a.id.localeCompare(b.id));
+  const bannerGoals=[...goals,...sharedGoals].sort((a,b)=>a.due-b.due||a.id.localeCompare(b.id));
+  const selectedGoalId=bannerGoals.length===1?bannerGoals[0].id:bannerGoals.find(g=>g.id===choice?.goal)?.id||null;
+  return {goals,sharedGoals,bannerGoals,selectedGoalId};
 }
 async function messages(q,kind,scope,before){
   const params=[kind,scope];
@@ -79,6 +87,7 @@ async function addPreviews(q,me,groups,friends,history){
 const fields='v.id,v.seq,v.author AS authorId,a.username AS name,v.title,v.body,v.created,v.postId,v.kind,v.reply_to AS replyTo';
 async function get(q,session,params,history){
   const me=session.accountId,id=params.get('id'),view=params.get('view')||'home';
+  if(view==='playLobby'||view==='playMatch')return getPlay(q,me,view,params);
   if(view==='home'){
     const [groupRows,friends,requests,goals,originalGoals,plant,feedState,questionState]=await Promise.all([
       q.all(groupSelect+' ORDER BY g.name,g.id',me),
@@ -87,11 +96,9 @@ async function get(q,session,params,history){
       q.all("SELECT id,title,body,due,created,'account' AS source FROM mc_v8_goals WHERE account=?",me),
       history.goals(q,me),tree(q,me),feedInfo(q,me,'feed'),feedInfo(q,me,'questions')]);
     const groups=groupRows.map(groupFields);
-    await addPreviews(q,me,groups,friends,history);
-    goals.push(...originalGoals);
-    goals.sort((a,b)=>a.due-b.due||a.id.localeCompare(b.id));
+    const [plans]=await Promise.all([planList(q,me,groups,goals,originalGoals,history),addPreviews(q,me,groups,friends,history)]);
     const feed=feedState.unread,questions=questionState.unread;
-    return {me:{id:me,name:session.username},accountToolsGardenId:accountToolsGarden(me),groups,friends,requests,goals,tree:plant,
+    return {me:{id:me,name:session.username},accountToolsGardenId:accountToolsGarden(me),groups,friends,requests,...plans,tree:plant,
       unread:{feed,questions,garden:feed+questions,groups:groups.reduce((n,g)=>n+g.unread,0),private:friends.reduce((n,f)=>n+f.unread,0)}};
   }
   if(view==='group'){
@@ -105,8 +112,15 @@ async function get(q,session,params,history){
   }
   if(view==='dm')return {friend:await friend(q,me,id),...await messages(q,'dm',pair(me,id).join(':'),params.get('before'))};
   if(view==='tree'){
-    const gifts=await q.all('SELECT g.id,g.sender AS fromId,g.recipient AS toId,a.username AS fromName,b.username AS toName,g.created,1 AS amount FROM mc_v8_gifts g JOIN mc_accounts a ON a.id=g.sender JOIN mc_accounts b ON b.id=g.recipient WHERE sender=? OR recipient=? ORDER BY g.created DESC,g.id LIMIT 100',me,me);
-    return {tree:await tree(q,me),gifts};
+    const mine=!id||id===me,owner=mine?{id:me,name:session.username}:await friend(q,me,id);
+    const [plant,notes,help,gifts]=await Promise.all([
+      tree(q,owner.id),
+      q.all('SELECT n.id,n.body,n.created,n.author AS authorId,a.username AS name FROM mc_v8_tree_notes n JOIN mc_accounts a ON a.id=n.author WHERE n.owner=? ORDER BY n.created DESC,n.id LIMIT 40',owner.id),
+      mine?null:q.first('SELECT 1 AS done FROM mc_v8_tree_help WHERE owner=? AND helper=? AND day=?',owner.id,me,day()),
+      mine?q.all('SELECT g.id,g.sender AS fromId,g.recipient AS toId,a.username AS fromName,b.username AS toName,g.created,1 AS amount FROM mc_v8_gifts g JOIN mc_accounts a ON a.id=g.sender JOIN mc_accounts b ON b.id=g.recipient WHERE sender=? OR recipient=? ORDER BY g.created DESC,g.id LIMIT 100',me,me):[]
+    ]);
+    if(!mine)delete plant.fruit;
+    return {owner,mine,tree:plant,helpedToday:!!help,notes,gifts};
   }
   if(view==='feed'){
     const kind=validKind(params.get('kind')),info=await feedInfo(q,me,kind);
@@ -139,7 +153,21 @@ async function invite(q,me,id,ids){
 }
 async function change(q,session,p,history){
   const me=session.accountId;
+  if(['playInvite','playRespond','playMove'].includes(p.action))return changePlay(q,me,p);
   switch(p.action){
+    case 'goalSelect': {
+      const value=text(p.id,200);
+      let allowed;
+      if(value.startsWith('shared:')){
+        const g=await group(q,me,value.slice(7));
+        allowed=(await history.sharedGoals(q,[g])).some(goal=>goal.id===value);
+      }else if(value.startsWith('legacy:')){
+        allowed=(await history.goals(q,me)).some(goal=>goal.id===value);
+      }else allowed=await q.first('SELECT 1 AS found FROM mc_v8_goals WHERE account=? AND id=?',me,assertUuid(value));
+      if(!allowed)reject(404,'这个约定已不在你的计划里');
+      await q.run('INSERT INTO mc_v8_goal_choice VALUES(?,?) ON CONFLICT(account) DO UPDATE SET goal=excluded.goal',me,value);
+      return {id:value};
+    }
     case 'goalSave': {
       const id=p.id===undefined?randomUUID():assertUuid(p.id);
       const title=text(p.title,80),body=text(p.body??'',300,true);
@@ -236,6 +264,36 @@ async function change(q,session,p,history){
     case 'water':
       await q.run('INSERT INTO mc_v8_trees VALUES(?,1,1,?) ON CONFLICT(account) DO UPDATE SET fruit=fruit+1,water_count=water_count+1,last_day=excluded.last_day WHERE last_day<>excluded.last_day',me,day());
       return {tree:await tree(q,me)};
+    case 'treeWater': {
+      const owner=p.friendId?(await friend(q,me,p.friendId)).id:me;
+      const today=day(),plant=await tree(q,owner);
+      if(plant.mature)return {mature:true,changed:false};
+      let marked;
+      if(owner===me){
+        marked=await q.run('INSERT INTO mc_v8_trees(account,water_count,last_day) VALUES(?,1,?) ON CONFLICT(account) DO UPDATE SET water_count=water_count+1,last_day=excluded.last_day WHERE last_day<>excluded.last_day',me,today);
+      }else{
+        marked=await q.run('INSERT INTO mc_v8_tree_help VALUES(?,?,?) ON CONFLICT DO NOTHING',owner,me,today);
+      }
+      if(marked.rowsAffected)await q.run('INSERT INTO mc_v8_tree_growth VALUES(?,1) ON CONFLICT(account) DO UPDATE SET progress=MIN(3,progress+1)',owner);
+      return {changed:!!marked.rowsAffected,mature:!!marked.rowsAffected&&plant.progress===2};
+    }
+    case 'treeHarvest': {
+      if(p.friendId&&p.friendId!==me)reject(403,'只有主人能采摘荔枝');
+      const key=assertUuid(p.clientId);
+      if(await q.first('SELECT 1 FROM mc_v8_tree_harvest WHERE account=? AND client_id=?',me,key))return {amount:3};
+      if(!(await q.run('UPDATE mc_v8_tree_growth SET progress=0 WHERE account=? AND progress=3',me)).rowsAffected)reject(409,'荔枝还没有熟');
+      await q.run('INSERT INTO mc_v8_tree_harvest VALUES(?,?)',me,key);
+      await q.run('INSERT INTO mc_v8_trees(account,fruit) VALUES(?,3) ON CONFLICT(account) DO UPDATE SET fruit=fruit+3',me);
+      return {amount:3};
+    }
+    case 'treeNote': {
+      const owner=p.friendId?(await friend(q,me,p.friendId)).id:me;
+      const key=assertUuid(p.clientId),body=text(p.body,240);
+      await q.run('INSERT INTO mc_v8_tree_notes VALUES(?,?,?,?,?,?) ON CONFLICT(author,client_id) DO NOTHING',randomUUID(),owner,me,body,Date.now(),key);
+      const note=await q.first('SELECT id,owner,body FROM mc_v8_tree_notes WHERE author=? AND client_id=?',me,key);
+      if(note.owner!==owner||note.body!==body)reject(409,'操作标识已使用');
+      return {id:note.id};
+    }
     case 'gift': {
       const other=(await friend(q,me,p.friendId)).id,key=assertUuid(p.clientId);
       const prior=await q.first('SELECT id,recipient FROM mc_v8_gifts WHERE sender=? AND client_id=?',me,key);
@@ -253,7 +311,8 @@ export async function createSocial(options){
     try{
       const params=new URL(request.url).searchParams;
       if(params.get('accountId')!==session.accountId)reject(403,'账号已切换，请重新打开');
-      if(request.method==='GET')return json(await store.transaction(false,q=>get(q,session,params,history)));
+      if(['playRoom','playPractice'].includes(params.get('view')))return await playRoom(request,session,store,options.domains);
+      if(request.method==='GET')return json(await store.transaction(['playLobby','playMatch'].includes(params.get('view')),q=>get(q,session,params,history)));
       if(request.method!=='POST')reject(405,'不支持此操作');
       const p=await request.json().catch(()=>null);
       if(!p||typeof p!=='object'||Array.isArray(p))reject(400,'请求内容无效');

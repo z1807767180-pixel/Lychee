@@ -15,12 +15,25 @@ export function socialHistory(dataDir){
       }
       const all=db?(sql,...args)=>db.prepare(sql).all(...args):q.all;
       const prefix=db||id==='legacy'?'':'g_'+id.replaceAll('-','')+'_';
-      const names={goals:prefix+'v61_goals',binding:!db&&id==='legacy'?'mc_legacy_member_bindings':prefix+'garden_member_bindings',notes:prefix+'notes',details:prefix+'chat_details',pictures:prefix+'chat_pictures'};
-      const found=new Set((await all("SELECT name FROM sqlite_master WHERE type='table' AND name IN (?,?,?,?,?)",...Object.values(names))).map(x=>x.name));
+      const names={goals:prefix+'v61_goals',binding:!db&&id==='legacy'?'mc_legacy_member_bindings':prefix+'garden_member_bindings',notes:prefix+'notes',details:prefix+'chat_details',pictures:prefix+'chat_pictures',shared:prefix+'goal',titles:prefix+'phone_garden'};
+      const tables=Object.values(names);
+      const found=new Set((await all("SELECT name FROM sqlite_master WHERE type='table' AND name IN ("+tables.map(()=>'?').join(',')+")",...tables)).map(x=>x.name));
       return await callback(all,Object.fromEntries(Object.entries(names).filter(([,name])=>found.has(name))));
     }finally{db?.close();}
   }
   return {
+    async sharedGoals(q,groups){
+      const plans=await Promise.all(groups.map(g=>withTables(q,g.id,async(all,t)=>{
+        if(!t.shared)return [];
+        const title=t.titles?'(SELECT title FROM '+t.titles+' WHERE id=1)':'NULL';
+        const [row]=await all('SELECT target,'+title+' AS title FROM '+t.shared+' WHERE id=1');
+        if(!row||!/^\d{4}-\d{2}-\d{2}$/.test(row.target))return [];
+        const due=Date.parse(row.target+'T00:00:00+08:00');
+        if(!Number.isFinite(due))return [];
+        return [{id:'shared:'+g.id,source:'shared',gardenId:g.id,groupName:g.name,title:row.title||'出发倒计时',date:row.target,due}];
+      })));
+      return plans.flat().sort((a,b)=>a.due-b.due||a.id.localeCompare(b.id));
+    },
     async goals(q,account){
       const ownership=await q.all('SELECT garden,slot FROM mc_members WHERE account=? UNION SELECT garden,slot FROM mc_retired_slots WHERE account=?',account,account);
       const result=await Promise.all(ownership.map(async({garden,slot})=>{

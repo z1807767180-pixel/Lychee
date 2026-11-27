@@ -5,7 +5,7 @@
   const rank = n => ranks[Math.min(5,Math.floor(n/3))];
   const invitation = /^【头脑王者】邀请 (.+) 答五题\n对局编号：([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})$/i;
 
-  async function request(id, body, signal) {
+  async function gardenRequest(id, body, signal) {
     const scope = window.LycheeAccess.scope;
     const query = new URLSearchParams({accountId:scope.accountId,gardenId:scope.gardenId});
     if (id) query.set('id',id);
@@ -18,7 +18,8 @@
     return data;
   }
 
-  function Quiz({React, initialId, avatarFor}) {
+  function Quiz({React, initialId, avatarFor, friendPlay}) {
+    const request=friendPlay?.request || gardenRequest;
     const h = React.createElement, {useState,useRef,useEffect} = React;
     const [id,select] = useState(initialId || '');
     const [game,setGame] = useState(null), [lobby,setLobby] = useState(null);
@@ -29,6 +30,7 @@
     const alive = useRef(true);
     useEffect(()=>{alive.current=true;return ()=>{alive.current=false;epoch.current++}},[]);
     function enter(next) {
+      if(!next&&friendPlay){friendPlay.back();return;}
       epoch.current++;setError('');setActionError('');setGame(null);setPanel('home');select(next);
       refresh(n=>n+1);
     }
@@ -150,8 +152,8 @@
             const delta=g.starChanges?.[i]??0;
             return h('div',{className:'qz-row',key:slot},h('span',null,name(slot)),h('b',null,(delta>0?'+':'')+delta+' 星'));
           }),draw&&h('p',{className:'qz-sub'},'双方同分，没有奖励。')),
-          button('再来一局',()=>act('invite',{guest:other}),'primary',busy),
-          button('查看本园排行',()=>{enter('');setPanel('ranks')},'plain',busy),
+          button('再来一局',()=>friendPlay?friendPlay.again():act('invite',{guest:other}),'primary',busy),
+          button(friendPlay?'查看好友排行':'查看本园排行',()=>{if(friendPlay){friendPlay.ranks();return;}enter('');setPanel('ranks')},'plain',busy),
           h('details',{className:'qz-card qz-review'},h('summary',null,'回看本局五道题'),
             g.review?.map((q,i)=>h('section',{key:i},h('b',null,(i+1)+'．'+q.prompt),h('p',null,'答案：'+q.answer),
               h('p',null,q.explanation),q.source&&reference('原始来源',q.source),

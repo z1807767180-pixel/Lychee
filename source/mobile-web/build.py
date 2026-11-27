@@ -11,7 +11,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "source/android"))
 from mobile_assets import pack_checkout
 sys.path.insert(0, str(ROOT / 'source'))
-from chat_build import journal, notifications, phone as mobile_chat
+from chat_build import journal, notifications, phone as mobile_chat, direct_runtime
 from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
 from windows_updates import prepare as prepare_windows_updates
 from android_updates import prepare as prepare_android_updates
@@ -23,13 +23,14 @@ SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:te
 SERVER_MODULES = (
     "soup-categories", "index", "accounts", "turso-accounts", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
     "notification-source", "notify-push", "notify-push-transport", "notices", "quiz-game", "quiz-rounds",
-    "social", "social-store", "social-history",
+    "social", "social-store", "social-history", "social-play",
 )
 
 
 def build(out):
     with tempfile.TemporaryDirectory() as tmp:
         files = pack_checkout(Path(tmp) / "mobile.zip")
+    files["client/social-tools-runtime.js"] = direct_runtime(files)
     shared_version = files["mobile/version.txt"].strip()
     rows = releases()
     version = rows[0]["version"]

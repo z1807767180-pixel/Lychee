@@ -1,0 +1,13 @@
+.s8 .s8-direct-tool{position:relative;min-width:0;color:var(--s8-ink)}
+.s8 .s8-direct-tool>.ph-scroll,.s8 .s8-direct-tool>.team-room,.s8 .s8-direct-tool>.game-host{position:relative;inset:auto;width:100%;height:auto;min-height:0;max-height:none;overflow:visible;box-sizing:border-box}
+.s8 .s8-direct-tool .room-nav>.game-back,.s8 .s8-direct-tool .room-nav .game-exit{display:none}
+.s8 .s8-play-hero{display:flex;align-items:center;gap:.9rem;padding:1rem;margin-bottom:.8rem;background:var(--s8-card);border:1px solid var(--s8-line);border-radius:18px}
+.s8 .s8-play-hero img{width:76px;height:76px;border-radius:15px;object-fit:cover}
+.s8 .s8-play-hero h2,.s8 .s8-play-hero p,.s8 .s8-play-panel h3{margin:.2rem 0}
+.s8 .s8-play-hero p,.s8 .s8-play-person small{color:var(--s8-muted)}
+.s8 .s8-play-panel{display:grid;gap:.65rem;margin-bottom:.85rem}
+.s8 .s8-play-person,.s8 .s8-play-footer{display:flex;align-items:center;gap:.65rem}
+.s8 .s8-play-person{padding:.45rem .2rem;text-align:left}
+.s8 .s8-play-person img{height:34px;width:34px;border-radius:50%;object-fit:cover}
+.s8 .s8-play-person b{flex:1}
+.s8 .s8-play-footer{flex-wrap:wrap;margin:1rem 0}
