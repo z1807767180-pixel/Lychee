@@ -1,0 +1,15 @@
+{
+  "pass": true,
+  "groupPrivateGroupOrder": true,
+  "emptyGroup": true,
+  "accounts": 3,
+  "groups": 2,
+  "sharedGardenMembershipDoesNotGrantPrivateAccess": true,
+  "priorToolReachable": true,
+  "fourVisibleThemesInBothWidths": true,
+  "customWallpaperAndOwnAvatarPersist": true,
+  "receivedWhileInputFocusedWithDraftIntact": true,
+  "groupPictureEmojiAndRecall": true,
+  "desktopErrors": [],
+  "mobileErrors": []
+}

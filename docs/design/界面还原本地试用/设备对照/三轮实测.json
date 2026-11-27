@@ -1,0 +1,1007 @@
+{
+  "基线": {
+    "mobileTreeSha256": "633f69110d1f9036ff5ecee5c220ad9fabd4b3140206effe778ebf9cd5243335",
+    "samples": [
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3306,
+          "enterLongRoom": 115,
+          "switchRoomViaHome": 116,
+          "resumeToNewMessage": 2984
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头像、主题与更多"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头像、主题与更多",
+              "frame": false
+            },
+            {
+              "text": "主题与头像",
+              "frame": true
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 60,
+            "api": 3
+          },
+          "homeCompletedResources": {
+            "count": 59,
+            "encodedBytes": 14297592
+          },
+          "enterRoom": {
+            "total": 3,
+            "api": 3
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "d74c7da0eded8a5503b49376c213a1bc14eb7aaaa460e82489b9013476fe1ce9"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 1,
+            "Nodes": 717,
+            "LayoutCount": 15,
+            "RecalcStyleCount": 39,
+            "TaskDuration": 0.771929,
+            "JSHeapUsedSize": 2146812,
+            "JSHeapTotalSize": 3829760
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 9333,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.800000000000182,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 1,
+            "Nodes": 717,
+            "LayoutCount": 15,
+            "RecalcStyleCount": 39,
+            "TaskDuration": 0.991674,
+            "JSHeapUsedSize": 2178108,
+            "JSHeapTotalSize": 3829760
+          },
+          "dom": {
+            "elements": 325,
+            "images": 4,
+            "uniqueImages": 4,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3326,
+          "enterLongRoom": 100,
+          "switchRoomViaHome": 110,
+          "resumeToNewMessage": 2968
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头像、主题与更多"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头像、主题与更多",
+              "frame": false
+            },
+            {
+              "text": "主题与头像",
+              "frame": true
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 60,
+            "api": 3
+          },
+          "homeCompletedResources": {
+            "count": 59,
+            "encodedBytes": 14236849
+          },
+          "enterRoom": {
+            "total": 3,
+            "api": 3
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "d74c7da0eded8a5503b49376c213a1bc14eb7aaaa460e82489b9013476fe1ce9"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 4,
+            "Nodes": 740,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 39,
+            "TaskDuration": 0.809668,
+            "JSHeapUsedSize": 2349768,
+            "JSHeapTotalSize": 4354048
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 9333,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.700000000000728,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 4,
+            "Nodes": 740,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 39,
+            "TaskDuration": 1.025919,
+            "JSHeapUsedSize": 2385136,
+            "JSHeapTotalSize": 4354048
+          },
+          "dom": {
+            "elements": 325,
+            "images": 4,
+            "uniqueImages": 4,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3260,
+          "enterLongRoom": 118,
+          "switchRoomViaHome": 124,
+          "resumeToNewMessage": 2990
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头像、主题与更多"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {},
+            "cls": "s8",
+            "vars": {
+              "--ink": "#263c31"
+            },
+            "images": [],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头像、主题与更多",
+              "frame": false
+            },
+            {
+              "text": "主题与头像",
+              "frame": true
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 60,
+            "api": 3
+          },
+          "homeCompletedResources": {
+            "count": 59,
+            "encodedBytes": 14262940
+          },
+          "enterRoom": {
+            "total": 3,
+            "api": 3
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "d74c7da0eded8a5503b49376c213a1bc14eb7aaaa460e82489b9013476fe1ce9"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 1,
+            "Nodes": 717,
+            "LayoutCount": 15,
+            "RecalcStyleCount": 38,
+            "TaskDuration": 0.86638,
+            "JSHeapUsedSize": 2145900,
+            "JSHeapTotalSize": 3567616
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 9333,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.800000000000182,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 1,
+            "Nodes": 717,
+            "LayoutCount": 15,
+            "RecalcStyleCount": 38,
+            "TaskDuration": 1.087144,
+            "JSHeapUsedSize": 2177876,
+            "JSHeapTotalSize": 3567616
+          },
+          "dom": {
+            "elements": 325,
+            "images": 4,
+            "uniqueImages": 4,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      }
+    ],
+    "repeatedSwitching": {
+      "roomEntries": 24,
+      "durationMs": 2482,
+      "collected": [
+        {
+          "cycles": 0,
+          "jsHeapBytes": 1836840,
+          "documents": 1,
+          "nodes": 640,
+          "activeElements": 324
+        },
+        {
+          "cycles": 6,
+          "jsHeapBytes": 1873372,
+          "documents": 1,
+          "nodes": 640,
+          "activeElements": 324
+        },
+        {
+          "cycles": 12,
+          "jsHeapBytes": 1890320,
+          "documents": 1,
+          "nodes": 640,
+          "activeElements": 324
+        }
+      ],
+      "composition": {
+        "preedit": "shu",
+        "committed": "树"
+      },
+      "decodedChatWall": null
+    }
+  },
+  "候选": {
+    "mobileTreeSha256": "e1dae33a38f34832538f3c875f06923383434e839efe5c43a70225d7094be988",
+    "samples": [
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3344,
+          "enterLongRoom": 166,
+          "switchRoomViaHome": 152,
+          "resumeToNewMessage": 2989
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "idleForeground": true,
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头\n头像与主题"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头头像与主题",
+              "frame": false
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 64,
+            "api": 4
+          },
+          "homeCompletedResources": {
+            "count": 63,
+            "encodedBytes": 13748395
+          },
+          "enterRoom": {
+            "total": 6,
+            "api": 4
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "c6412a6515956e6f245e3629b3ed30f0283e017926909cace7de00c6920caee5"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 10,
+            "Nodes": 871,
+            "LayoutCount": 17,
+            "RecalcStyleCount": 40,
+            "TaskDuration": 0.884101,
+            "JSHeapUsedSize": 2834348,
+            "JSHeapTotalSize": 4354048
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 10139,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.800000000000182,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 10,
+            "Nodes": 871,
+            "LayoutCount": 17,
+            "RecalcStyleCount": 40,
+            "TaskDuration": 1.136147,
+            "JSHeapUsedSize": 2561676,
+            "JSHeapTotalSize": 4091904
+          },
+          "dom": {
+            "elements": 429,
+            "images": 104,
+            "uniqueImages": 6,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3327,
+          "enterLongRoom": 274,
+          "switchRoomViaHome": 162,
+          "resumeToNewMessage": 2993
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "idleForeground": true,
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头\n头像与主题"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头头像与主题",
+              "frame": false
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 65,
+            "api": 4
+          },
+          "homeCompletedResources": {
+            "count": 64,
+            "encodedBytes": 13852594
+          },
+          "enterRoom": {
+            "total": 6,
+            "api": 4
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "c6412a6515956e6f245e3629b3ed30f0283e017926909cace7de00c6920caee5"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 4,
+            "Nodes": 834,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 41,
+            "TaskDuration": 1.009417,
+            "JSHeapUsedSize": 2508472,
+            "JSHeapTotalSize": 4091904
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 10139,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.799999999999272,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 4,
+            "Nodes": 834,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 41,
+            "TaskDuration": 1.425987,
+            "JSHeapUsedSize": 2539220,
+            "JSHeapTotalSize": 4091904
+          },
+          "dom": {
+            "elements": 429,
+            "images": 104,
+            "uniqueImages": 6,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "fixture": {
+          "groups": 2,
+          "messages": [
+            150,
+            12
+          ],
+          "viewport": [
+            360,
+            780
+          ],
+          "cpuThrottle": 4,
+          "missing": [
+            "AbortController",
+            "AbortSignal.timeout"
+          ]
+        },
+        "timingsMs": {
+          "coldHome": 3326,
+          "enterLongRoom": 163,
+          "switchRoomViaHome": 136,
+          "resumeToNewMessage": 2999
+        },
+        "steps": {
+          "apis": {
+            "abortController": "undefined",
+            "timeout": "undefined"
+          },
+          "idleForeground": true,
+          "shortViewport": {
+            "draft": "周末四点树下见。",
+            "focused": true,
+            "visible": true,
+            "viewport": 500
+          },
+          "sent": true,
+          "hiddenBeforeFreeze": true,
+          "visibleAfterResume": true,
+          "resumeKeptRoom": true,
+          "themeLabels": [
+            "头\n头像与主题"
+          ],
+          "settingsThemeLabels": [],
+          "miffyChoice": {
+            "text": "米菲采荔枝",
+            "frame": true
+          },
+          "roomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "reloadedRoomTheme": {
+            "dataset": {
+              "skin": "miffy",
+              "chat": "true",
+              "view": "group"
+            },
+            "cls": "s8",
+            "vars": {
+              "--ink": "#3d3c2e",
+              "--s8-ink": "#3d3c2e"
+            },
+            "images": [
+              "url(\"/mobile/assets-8.0.0/client/social-wall-miffy.webp\")"
+            ],
+            "saved": [
+              "1"
+            ]
+          },
+          "themeActions": [
+            {
+              "text": "头头像与主题",
+              "frame": false
+            }
+          ]
+        },
+        "resources": {
+          "toHome": {
+            "total": 65,
+            "api": 4
+          },
+          "homeCompletedResources": {
+            "count": 64,
+            "encodedBytes": 13817294
+          },
+          "enterRoom": {
+            "total": 6,
+            "api": 4
+          },
+          "idleFiveSeconds": {
+            "total": 0,
+            "api": 0
+          }
+        },
+        "build": {
+          "version": "8.0.0",
+          "socialJsSha256": "c6412a6515956e6f245e3629b3ed30f0283e017926909cace7de00c6920caee5"
+        },
+        "browser": "Edg/158.0.4370.33",
+        "room": {
+          "renderedMessages": 100,
+          "before": {
+            "Documents": 4,
+            "Nodes": 834,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 40,
+            "TaskDuration": 0.841511,
+            "JSHeapUsedSize": 2494088,
+            "JSHeapTotalSize": 4354048
+          },
+          "scroll": {
+            "frames": 120,
+            "spanPx": 10139,
+            "distinctPositions": 31,
+            "p50ms": 16.699999999999818,
+            "p95ms": 16.700000000000728,
+            "over33ms": 0
+          },
+          "after": {
+            "Documents": 4,
+            "Nodes": 834,
+            "LayoutCount": 16,
+            "RecalcStyleCount": 40,
+            "TaskDuration": 1.066264,
+            "JSHeapUsedSize": 2525172,
+            "JSHeapTotalSize": 4354048
+          },
+          "dom": {
+            "elements": 429,
+            "images": 104,
+            "uniqueImages": 6,
+            "failedImages": 0
+          }
+        },
+        "errors": [],
+        "externalRequests": [],
+        "httpErrors": [
+          [
+            403,
+            "/api/v7/push"
+          ]
+        ],
+        "complete": true
+      }
+    ],
+    "repeatedSwitching": {
+      "roomEntries": 24,
+      "durationMs": 3121,
+      "collected": [
+        {
+          "cycles": 0,
+          "jsHeapBytes": 1941940,
+          "documents": 4,
+          "nodes": 764,
+          "activeElements": 428
+        },
+        {
+          "cycles": 6,
+          "jsHeapBytes": 1987168,
+          "documents": 4,
+          "nodes": 764,
+          "activeElements": 428
+        },
+        {
+          "cycles": 12,
+          "jsHeapBytes": 1987100,
+          "documents": 4,
+          "nodes": 764,
+          "activeElements": 428
+        }
+      ],
+      "composition": {
+        "preedit": "shu",
+        "committed": "树"
+      },
+      "focusedIncoming": {
+        "visible": true,
+        "same": true,
+        "focused": true,
+        "draft": "树",
+        "selection": [
+          0,
+          1
+        ]
+      },
+      "decodedChatWall": {
+        "path": "/mobile/assets-8.0.0/client/social-wall-miffy.webp",
+        "width": 660,
+        "height": 1417
+      }
+    }
+  },
+  "baselineCommit": "cd6a198cceb26d47a5e76d337506591ee18910e6",
+  "candidateDirectory": "source/.local/ui-trial/trial-final"
+}

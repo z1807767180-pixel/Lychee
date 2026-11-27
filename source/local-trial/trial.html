@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>荔枝本地试用</title>
+<style>*,*:before,*:after{box-sizing:border-box}body{margin:0;background:#f6f2e6;color:#304b37;font:16px/1.6 system-ui,"Microsoft Yahei",sans-serif}main{width:min(390px,calc(100% - 32px));margin:11vh auto;background:#fffaf0;padding:26px 22px;border:1px solid #dcdac6;border-radius:19px}h1{font-size:26px;margin:0}p{margin:9px 0 17px;color:#576955}.people{display:grid;gap:8px}button{display:block;background:#edf1e4;color:#334f39;border:1px solid #d3ddca;text-align:left;padding:9px 14px;border-radius:11px;font:inherit;cursor:pointer}button:first-child{background:#43684b;color:#fff}button:disabled{opacity:.65}.error{color:#903f39}</style>
+<main><h1>荔枝本地试用</h1><p>选择一个试用账号进入小院。</p><div class="people"><button>青禾</button><button>阿青</button><button>小满</button><button>栗子</button></div><p class="error" role="status"></p></main>
+<script>
+const statusLine=document.querySelector('[role=status]'),buttons=[...document.querySelectorAll('button')];
+async function enter(name){
+ buttons.forEach(b=>b.disabled=true);
+ try{
+  const r=await fetch('/api/v640/account',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({mode:'login',name,password:'Lychee-Trial-8'})});
+  if(!r.ok)throw Error((await r.json()).error||'登录未成功，请重试。');
+  location.replace('/mobile/');
+ }catch(e){statusLine.textContent=e.message||'无法打开本地试用。';buttons.forEach(b=>b.disabled=false);}
+}
+buttons.forEach(b=>b.addEventListener('click',()=>enter(b.textContent)));
+if(new URLSearchParams(location.search).has('start')){
+ fetch('/api/v640/workspace',{cache:'no-store'}).then(r=>r.json()).then(data=>data.account?location.replace('/mobile/'):enter('青禾')).catch(()=>{statusLine.textContent='未连上本地服务，请重新运行启动文件。'});
+}
+</script></html>

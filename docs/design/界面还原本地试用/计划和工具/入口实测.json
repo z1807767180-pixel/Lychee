@@ -1,0 +1,129 @@
+{
+  "entry": "/mobile/",
+  "accounts": [
+    "青禾",
+    "阿青",
+    "小满"
+  ],
+  "screens": [
+    "01-我的计划.png",
+    "02-共同计划.png",
+    "03-工具箱.png",
+    "04-我.png"
+  ],
+  "build": {
+    "version": "8.0.0",
+    "sha256": {
+      "social-v8.js": "c6412a6515956e6f245e3629b3ed30f0283e017926909cace7de00c6920caee5",
+      "social-chat.js": "c7be2978d54d3631634d02ff24dd37c0eb4328c7a8ed432fb1e23ced334f9ded",
+      "social-v8.css": "4f6ebfb4e059e994ff1dc03305d9354dc9c9ad7c2dd0385c5614bdb33180fc6f"
+    }
+  },
+  "personal": {
+    "title": "去湖边写生",
+    "notes": "带好画纸和铅笔",
+    "localDate": "2026-12-13 16:00",
+    "reload": true,
+    "privateFromFriend": true
+  },
+  "shared": {
+    "group": "周末写生组",
+    "title": "湖边写生集合",
+    "date": "2026-12-14",
+    "memberReadViaUI": true,
+    "outsiderGroupResponse": 403,
+    "outsiderCampResponse": 403,
+    "outsiderPhoneResponse": 403
+  },
+  "groupDividers": [
+    [
+      "TIME",
+      "2026年11月21日 23:50"
+    ],
+    [
+      "ARTICLE",
+      "纸和画笔带齐了。"
+    ],
+    [
+      "ARTICLE",
+      "我带一块野餐垫。"
+    ],
+    [
+      "TIME",
+      "23:59"
+    ],
+    [
+      "ARTICLE",
+      "四点在树下见。"
+    ],
+    [
+      "TIME",
+      "2026年11月22日 00:01"
+    ],
+    [
+      "ARTICLE",
+      "今天再确认。"
+    ]
+  ],
+  "privateDividers": [
+    [
+      "TIME",
+      "2026年11月21日 23:50"
+    ],
+    [
+      "ARTICLE",
+      "纸和画笔带齐了。"
+    ],
+    [
+      "ARTICLE",
+      "我带一块野餐垫。"
+    ],
+    [
+      "TIME",
+      "23:59"
+    ],
+    [
+      "ARTICLE",
+      "四点在树下见。"
+    ],
+    [
+      "TIME",
+      "2026年11月22日 00:01"
+    ],
+    [
+      "ARTICLE",
+      "今天再确认。"
+    ]
+  ],
+  "toolCategories": [
+    [
+      "日常工具",
+      [
+        "交给命运",
+        "照记饮食",
+        "提醒事项",
+        "番茄钟",
+        "记账本"
+      ]
+    ],
+    [
+      "一起玩",
+      [
+        "头脑王者",
+        "五子棋",
+        "海龟汤",
+        "脑筋急转弯"
+      ]
+    ],
+    [
+      "AI 工具",
+      [
+        "AI 助手",
+        "AI 生图"
+      ]
+    ]
+  ],
+  "profileReached": true,
+  "settingsReached": true,
+  "passed": true
+}

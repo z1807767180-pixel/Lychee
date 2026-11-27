@@ -1,0 +1,29 @@
+{
+  "zip": "荔枝界面本地试用-Windows-x64-8b82dc99fb.zip",
+  "sha256": "985f9238041b9c2659f9b53758975e2be4d9b144532d2ed7309c82297dc11944",
+  "port": 48365,
+  "entry": "/trial.html?start=1",
+  "autoOpened": false,
+  "fromExtractedLauncher": true,
+  "role": "青禾",
+  "friends": [
+    "小满",
+    "栗子",
+    "阿青"
+  ],
+  "groups": [
+    "周末散步团",
+    "猪圈"
+  ],
+  "samplePhoto": true,
+  "providers": {
+    "chat": false,
+    "image": false,
+    "pushConfigured": false
+  },
+  "persistedReply": true,
+  "independentSqlite": true,
+  "switchRole": "阿青",
+  "pass": true,
+  "closed": true
+}

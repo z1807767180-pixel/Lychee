@@ -1,0 +1,59 @@
+{
+  "entry": "/mobile/",
+  "themes": [
+    {
+      "name": "原味荔枝园",
+      "skin": "orchard",
+      "corner": "social-corner-orchard.webp",
+      "requested": [
+        "social-corner-orchard.webp"
+      ]
+    },
+    {
+      "name": "凯蒂荔枝茶会",
+      "skin": "kitty",
+      "corner": "social-corner-kitty.webp",
+      "requested": [
+        "social-corner-kitty.webp"
+      ]
+    },
+    {
+      "name": "米菲采荔枝",
+      "skin": "miffy",
+      "corner": "social-corner-miffy.webp",
+      "requested": [
+        "social-corner-miffy.webp"
+      ]
+    },
+    {
+      "name": "图图树下",
+      "skin": "tutu",
+      "corner": "social-corner-tutu.webp",
+      "requested": [
+        "social-corner-tutu.webp"
+      ]
+    }
+  ],
+  "gardenJsSha256": "c2255ede8c9250176523447504d4bbfc9355d1e7394411b16930d3288c9e1e4d",
+  "themePersisted": true,
+  "personalAndSharedGoals": true,
+  "widths": [
+    390,
+    980
+  ],
+  "unread": [
+    2,
+    1,
+    0
+  ],
+  "postedQuestion": true,
+  "answered": true,
+  "directedReply": true,
+  "fruit": {
+    "before": 0,
+    "watered": 1,
+    "giverAfter": 0,
+    "receiverAfter": 1
+  },
+  "pass": true
+}
