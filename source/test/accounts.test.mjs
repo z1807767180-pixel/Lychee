@@ -39,7 +39,7 @@ test('公开注册、跨会话切园、四名成员、园级访问、公告已�
     const other=(await workspace(owner,{action:'create',name:'家里的园'})).activeGardenId;
     assert.equal((await workspace(owner,null)).gardens.length,2);
     const meta=(state)=>state.gardens.find(g=>g.id===garden);
-    assert.deepEqual(meta(await workspace(owner,null)),{id:garden,name:'周末的小园',subtitle:'',revision:1,role:'owner'});
+    assert.deepEqual(meta(await workspace(owner,null)),{id:garden,name:'周末的小园',subtitle:'',revision:1,role:'owner',memberCount:1});
     const invite=await workspace(owner,{action:'invite',gardenId:garden});
     assert.equal(Object.hasOwn(invite,'inviteExpires'),false);
     const otherCode=(await workspace(owner,{action:'invite',gardenId:other})).inviteCode;
@@ -117,7 +117,7 @@ test('旧版测试库升级保留园资料及成员；旧一次性码失效，�
     db.close();db=new DatabaseSync(file);
     let api=client(createAccounts(db));
     const {cookie}=await api('/api/account',{mode:'login',name:'OwnerV1',password});
-    assert.deepEqual((await api('/api/workspace',null,cookie)).result.gardens,[{id:garden,name:'保留旧圈名',subtitle:'',revision:1,role:'owner'}]);
+    assert.deepEqual((await api('/api/workspace',null,cookie)).result.gardens,[{id:garden,name:'保留旧圈名',subtitle:'',revision:1,role:'owner',memberCount:1}]);
     await api('/api/workspace',{action:'join',code},cookie,400);
     const fixed=(await api('/api/workspace',{action:'invite',gardenId:garden},cookie)).result.inviteCode;
     assert.notEqual(fixed,code);

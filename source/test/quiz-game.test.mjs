@@ -96,4 +96,22 @@ for (const storage of ['SQLite','libSQL HTTP']) test(storage+' 实际语句：�
   assert.deepEqual(finished.scores,[180,0]);assert.equal(finished.winner,0);
   assert.deepEqual((await call(1)).members.map(m=>[m.stars,m.played]),[[1,2],[0,2],[0,0]]);
   assert.deepEqual((await call(1,null,'',200,'other')).members.map(m=>m.played),[0]);
+
+  // Host leads by 200 before the last round; a 2.4-second correct answer scores 320.
+  const third=randomUUID();await call(1,{...invite,id:third});
+  let view=await call(2,{...accept,id:third});
+  for(let round=0;round<5;round++) {
+    now=round===0?view.start:view.next;
+    view=await call(1,null,'?id='+third);
+    const right=view.question.options.indexOf('对'),wrong=(right+1)%4;
+    if(round===4)now+=2400;
+    await call(1,{id:third,action:'answer',round,choice:round===0?right:wrong});
+    view=await call(2,{id:third,action:'answer',round,choice:round===4?right:wrong});
+  }
+  now=view.next;
+  const comeback=await call(1,null,'?id='+third);
+  assert.deepEqual(comeback.scores,[200,320]);assert.equal(comeback.winner,1);
+  assert.deepEqual(comeback.starChanges,[-1,1]);
+  assert.deepEqual((await call(2)).members.map(m=>[m.slot,m.stars]),[[2,1],[1,0],[3,0]]);
+
 });
