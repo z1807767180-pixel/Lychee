@@ -1,6 +1,9 @@
 """Exercise the signed friends shell at Android entry points without a production account."""
 import re
 import os
+import hashlib
+import json
+import tempfile
 from pathlib import Path
 import subprocess
 import sys
@@ -127,6 +130,30 @@ def wait_for_public_https(target):
     raise RuntimeError(f"The Android device could not connect to {target}")
 
 
+def verify_update_policy(apk):
+    version=json.loads(Path("source/android/friends-release.json").read_bytes())["version"]
+    if tuple(map(int,version.split(".")))<(8,1,2):
+        return
+    sdk=Path(os.environ["ANDROID_HOME"])
+    android=sdk/"platforms/android-36/android.jar"
+    sha=hashlib.sha256(apk.read_bytes()).hexdigest()
+    with tempfile.TemporaryDirectory() as temporary:
+        folder=Path(temporary)
+        subprocess.run(["javac","--release","8","-cp",str(android),"-d",str(folder),
+                        str(Path(__file__).with_name("AndroidUpdatePolicyProbe.java"))],check=True)
+        jar=folder/"update-policy.jar"
+        subprocess.run([str(sdk/"build-tools/36.0.0/d8"),"--min-api","24","--lib",str(android),
+                        "--output",str(jar),*map(str,folder.glob("*.class"))],check=True)
+        device_jar="/data/local/tmp/lychee-update-policy.jar"
+        device_apk="/data/local/tmp/lychee-update-policy.apk"
+        adb("push",str(jar),device_jar)
+        adb("push",str(apk),device_apk)
+        try:
+            print(adb("shell","CLASSPATH="+device_jar+":"+device_apk,"app_process","/system/bin",
+                  "AndroidUpdatePolicyProbe",device_apk,version,sha),flush=True)
+        finally:
+            adb("shell","rm","-f",device_jar,device_apk)
+
 if __name__ == "__main__":
     if sys.argv[1] == "first-install":
         adb("install",sys.argv[2])
@@ -134,6 +161,7 @@ if __name__ == "__main__":
         launch()
         find("登录荔枝园",retry_landing=True)
         print("Verified first installation and official login screen.")
+        verify_update_policy(Path(sys.argv[2]))
         try:
             offline(True)
             launch()
