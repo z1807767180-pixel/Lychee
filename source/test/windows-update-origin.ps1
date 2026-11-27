@@ -1,8 +1,9 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)][string]$Exe,
     [Parameter(Mandatory = $true)][string]$Manifest,
     [Parameter(Mandatory = $true)][string]$Evidence,
-    [switch]$ExpectBlocked
+    [switch]$ExpectBlocked,
+    [switch]$OfficialUnavailable
 )
 
 # Use powershell.exe -NoProfile -File so the packaged .NET Framework updater
@@ -22,13 +23,15 @@ using System.Threading;
 public sealed class LycheeOriginProxy : IWebProxy, IDisposable {
     const string Allowed = "lychee-link-check.onrender.com";
     readonly IWebProxy original;
+    readonly bool offline;
     readonly TcpListener listener;
     readonly Uri rejected;
     readonly Thread worker;
     volatile bool stopped;
     public readonly ConcurrentQueue<string> Decisions = new ConcurrentQueue<string>();
     public readonly ConcurrentQueue<string> Refused = new ConcurrentQueue<string>();
-    public LycheeOriginProxy(IWebProxy upstream) {
+    public LycheeOriginProxy(IWebProxy upstream, bool offline) {
+        this.offline=offline;
         original = upstream;
         listener = new TcpListener(IPAddress.Loopback, 0);
         listener.Start();
@@ -36,7 +39,7 @@ public sealed class LycheeOriginProxy : IWebProxy, IDisposable {
         worker = new Thread(Serve); worker.IsBackground = true; worker.Start();
     }
     bool Allow(Uri url) {
-        bool ok = url.Scheme == "https" && url.IsDefaultPort && url.Host == Allowed && url.UserInfo.Length == 0;
+        bool ok = !offline && url.Scheme == "https" && url.IsDefaultPort && url.Host == Allowed && url.UserInfo.Length == 0;
         Decisions.Enqueue((ok ? "ALLOW " : "DENY ") + url.GetLeftPart(UriPartial.Path));
         return ok;
     }
@@ -91,13 +94,13 @@ if ([IO.File]::Exists($reportPath)) { throw "Choose a new report path: $reportPa
 $assembly = [Reflection.Assembly]::LoadFrom($binary)
 $feed = $assembly.GetType('WindowsUpdateFeed', $true)
 $original = [Net.WebRequest]::DefaultWebProxy
-$proxy = New-Object LycheeOriginProxy -ArgumentList @(,$original)
+$proxy = [LycheeOriginProxy]::new($original,[bool]$OfficialUnavailable)
 $report = [ordered]@{
     utc = [datetime]::UtcNow.ToString('o')
     clientVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($binary).FileVersion
     clientSha256 = (Get-FileHash -LiteralPath $binary).Hash.ToLowerInvariant()
     expectedFeed = $expected.version
-    scenario = $(if ($ExpectBlocked) { 'legacy blocked' } else { 'production origin' })
+    scenario = $(if ($ExpectBlocked) { 'legacy blocked' } elseif ($OfficialUnavailable) { 'official unavailable' } else { 'production origin' })
     packages = @()
     passed = $false
 }
@@ -107,6 +110,13 @@ try {
     try {
         $release = $task.GetAwaiter().GetResult()
     } catch {
+        if ($OfficialUnavailable) {
+            $decisions=@($proxy.Decisions.ToArray() | Select-Object -Unique)
+            if ($decisions.Count -ne 1 -or $decisions[0] -ne 'DENY https://lychee-link-check.onrender.com/windows-update/stable.json') {throw}
+            $report.expectedFailure=$_.Exception.GetBaseException().Message
+            $report.passed=$true
+            return
+        }
         if (!$ExpectBlocked) { throw }
         $blocked = @($proxy.Refused.ToArray())
         if ($blocked -notcontains 'raw.githubusercontent.com:443' -or $blocked -notcontains 'api.github.com:443' -or
@@ -115,7 +125,7 @@ try {
         $report.passed = $true
         return
     }
-    if ($ExpectBlocked) { throw 'Legacy control unexpectedly obtained a manifest.' }
+    if ($ExpectBlocked -or $OfficialUnavailable) { throw 'Blocked control unexpectedly obtained a manifest.' }
     if ($null -eq $release) { throw 'Expected a production manifest.' }
     $releaseVersion = $release.GetType().GetProperty('Version').GetValue($release).ToString()
     if ($releaseVersion -ne $expected.version) { throw "Expected feed $($expected.version), got $releaseVersion" }
@@ -137,7 +147,7 @@ try {
         } finally { Remove-VerifiedDownload $filePath ("Lychee."+$kind) }
     }
     $blocked = @($proxy.Refused.ToArray())
-    if ($blocked -notcontains 'raw.githubusercontent.com:443') { throw 'No observed refusal of the primary manifest.' }
+    if ($blocked.Count -or @($proxy.Decisions.ToArray() | Where-Object { $_ -like 'DENY *' }).Count) {throw 'The updater attempted another destination.'}
     $allowed = @($proxy.Decisions.ToArray())
     $base = 'ALLOW https://lychee-link-check.onrender.com/windows-update/'
     if (@($allowed | Where-Object { $_ -like 'ALLOW *' -and !$_.StartsWith($base) }).Count) {

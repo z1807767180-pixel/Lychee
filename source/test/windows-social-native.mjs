@@ -137,7 +137,7 @@ try{
   await shot('02-群聊');await click('‹ 返回');
   await until(()=>browser.js("document.querySelector('.s8-content')?.innerText.includes('周末荔枝约定')"),'返回个人首页');
   assert.equal(await browser.js('performance.timeOrigin'),before.time);report.returnedWithoutPageReload=true;
-  if(build.version==='8.1.1'){
+  if(build.version.localeCompare('8.1.1','en',{numeric:true})>=0){
     await click('工具箱');
     const tools=[['交给命运','.v7-wheel'],['照记饮食','.diet-v7'],['提醒事项','.s81-task-actions'],['番茄钟','.focus-dial'],['记账本','.ledger-header'],['头脑王者','[data-game="quiz"]'],['五子棋','[data-game="gomoku"]'],['海龟汤','[data-game="soup"]'],['脑筋急转弯','[data-game="riddles"]'],['AI 助手','.s81-chat-compose'],['AI 生图','.s81-atelier']];
     report.toolScreens=[];
@@ -161,7 +161,8 @@ try{
   report.persistentAccountCookie=cookies.some(c=>c.name==='__Host-lychee-account'&&c.httpOnly&&c.secure&&!c.session);
   assert.ok(report.profile&&report.persistentAccountCookie);report.artifactSha256=await digest(exe);assert.equal(report.artifactSha256,wanted);
   if(websiteOnly){
-    assert.ok(report.connections.some(c=>!c.allowed&&c.host==='raw.githubusercontent.com:443'));
+    if(report.from.localeCompare('8.1.2','en',{numeric:true})>=0)assert.ok(report.connections.every(c=>c.allowed));
+    else assert.ok(report.connections.some(c=>!c.allowed&&c.host==='raw.githubusercontent.com:443'));
     assert.ok(report.connections.some(c=>c.allowed&&c.host===new URL(origin).hostname+':443'));
   }
   report.localAccountRequests=requests;report.pass=true;

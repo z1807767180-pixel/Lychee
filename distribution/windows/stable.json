@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "8.1.1",
+  "version": "8.1.2",
   "assets": [
     {
       "kind": "exe",
       "name": "Lychee.exe",
-      "length": 21828096,
-      "sha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa"
+      "length": 21816320,
+      "sha256": "53a8c69ba9244f336886028fe23b08215c87a247829edf89c788342a0983961e"
     },
     {
       "kind": "msi",
       "name": "Lychee.msi",
-      "length": 21372928,
-      "sha256": "eb54056357a19915a9cc4fb8648f0fd3ebdc8bad30bbc45208d3636d6b16aa16"
+      "length": 21368832,
+      "sha256": "f9587797b2ae6e4be77bc650400e7a6fdd5764c5365d89985856138c2a7542b1"
     }
   ]
 }
