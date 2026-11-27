@@ -197,8 +197,10 @@ final class ShellUpdates {
     @SuppressWarnings("deprecation")
     private boolean authentic(File apk,Release release) throws Exception {
         PackageManager pm=activity.getPackageManager();
-        PackageInfo info=pm.getPackageArchiveInfo(apk.getAbsolutePath(),Build.VERSION.SDK_INT>=28?
-            PackageManager.GET_SIGNING_CERTIFICATES:PackageManager.GET_SIGNATURES);
+        int flags=Build.VERSION.SDK_INT>=28?PackageManager.GET_SIGNING_CERTIFICATES:PackageManager.GET_SIGNATURES;
+        // Android 9 only collects archive certificates when the legacy flag is also present.
+        if(Build.VERSION.SDK_INT==28)flags|=PackageManager.GET_SIGNATURES;
+        PackageInfo info=pm.getPackageArchiveInfo(apk.getAbsolutePath(),flags);
         if(info==null||!activity.getPackageName().equals(info.packageName)||code(info)!=release.code||
            code(info)<=code(installed)||!release.version.equals(info.versionName))return false;
         Signature[] signatures=Build.VERSION.SDK_INT>=28?
