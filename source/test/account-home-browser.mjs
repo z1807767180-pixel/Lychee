@@ -1,12 +1,13 @@
 // Two browser surfaces, real SQLite accounts, an existing garden and a new empty group.
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import {cp,mkdir,mkdtemp,rm,writeFile} from 'node:fs/promises';
+import {cp,mkdir,mkdtemp,readFile,rm,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {listen} from '../server/index.mjs';
 import {Browser,until} from './browser.mjs';
 const [mobileRoot,evidencePath]=process.argv.slice(2),evidence=resolve(evidencePath);
+const mobileVersion=(await readFile(resolve(mobileRoot,'mobile/version.txt'),'utf8')).trim();
 const temp=await mkdtemp(join(tmpdir(),'lychee-account-home-')),web=join(temp,'www');
 await mkdir(evidence,{recursive:true});await cp(resolve('source/public'),web,{recursive:true});
 await cp(resolve(mobileRoot,'mobile'),join(web,'mobile'),{recursive:true});
@@ -106,7 +107,7 @@ try{
   await choose(desktop,'工具箱');await tap(desktop,'交给命运');
   await until(()=>desktop.js("!!document.querySelector('iframe')?.contentDocument.querySelector('.v7-wheel')"),'原转盘');
   await choose(desktop,'我');await tap(desktop,'设置');await visible(desktop,'Windows W');
-  await choose(phone,'我');await tap(phone,'设置');await visible(phone,'手机网页 V8.0.0');
+  await choose(phone,'我');await tap(phone,'设置');await visible(phone,'手机网页 V'+mobileVersion);
   await checkThemes(phone,'窄屏');await checkThemes(desktop,'宽窗');
   await tap(phone,'周末约饭');await visible(phone,'再发群消息');
   await phone.js("(()=>{const f=document.querySelector('.s8-composer textarea');f.focus();f.value='尚未发出的草稿';f.dataset.sameEditor='yes';f.dispatchEvent(new Event('input'));})()");
