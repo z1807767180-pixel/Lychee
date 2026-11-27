@@ -15,7 +15,9 @@
       const slot=room?.members?.find(m=>m.id===account)?.slot;
       const personal=localStorage.getItem(field(account,home.accountToolsGardenId,1,name));
       if(personal!==null)return personal;
-      return slot?localStorage.getItem(field(account,scope,slot,name)):null;
+      const legacy=slot?localStorage.getItem(field(account,scope,slot,name)):null;
+      if(legacy!==null){try{localStorage.setItem(field(account,home.accountToolsGardenId,1,name),legacy);}catch{/* Storage may be full. */}}
+      return legacy;
     }
     function apply(latest,group,chat){
       home=latest;room=group;scope=group?.group?.id;

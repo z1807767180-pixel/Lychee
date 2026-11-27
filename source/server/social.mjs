@@ -69,6 +69,13 @@ function legacyCursor(rows){
   const last=rows.at(-1);
   return last?last.created+':'+last.ordinal:'0:0';
 }
+async function pinMessage(q,history,me,scope,id){
+  if(!id)return null;
+  const item=id.startsWith('chat.')
+    ?(await history.chat(q,scope,me,id))[0]
+    :await q.first("SELECT e.id,e.seq,e.body,e.created,e.author AS authorId,a.username AS name FROM mc_v8_entries e JOIN mc_accounts a ON a.id=e.author WHERE e.id=? AND e.kind='group' AND e.scope=?",id,scope);
+  return item&&item.body!=='消息已撤回'?item:null;
+}
 async function addPreviews(q,me,groups,friends,history){
   const [received,readRows,old]=await Promise.all([
     q.all("SELECT scope,kind,name,body,created FROM (SELECT e.scope,e.kind,a.username AS name,e.body,e.created,ROW_NUMBER() OVER(PARTITION BY kind,scope ORDER BY seq DESC) AS place FROM mc_v8_entries e JOIN mc_accounts a ON a.id=e.author WHERE (kind='group' AND scope IN (SELECT garden FROM mc_members WHERE account=?)) OR (kind='dm' AND scope IN (SELECT lo||':'||hi FROM mc_v8_friends WHERE accepted=1 AND (lo=? OR hi=?)))) WHERE place=1",me,me,me),
@@ -85,9 +92,41 @@ async function addPreviews(q,me,groups,friends,history){
   for(const f of friends)f.lastMessage=recents.get('dm'+pair(me,f.id).join(':'))??null;
 }
 const fields='v.id,v.seq,v.author AS authorId,a.username AS name,v.title,v.body,v.created,v.postId,v.kind,v.reply_to AS replyTo';
+const gardenEmoji=new Set(['⭐','❤️','👍','✈️']);
+async function rootFor(q,me,id){
+  const row=await q.first(friendsCte+"SELECT e.kind FROM mc_v8_entries e,viewer WHERE e.id=? AND e.kind IN ('feed','questions') AND (author=me OR author IN peers)",me,assertUuid(id));
+  if(!row)reject(404,'内容不可见');return row;
+}
+async function enrichGarden(q,me,kind,items){
+  if(!items.length)return;
+  // Join each attachment and response through the viewer's allowed root/peer set.
+  const [previews,counts,pictures]=await Promise.all([
+    q.all(feedCte+"SELECT * FROM (SELECT "+fields+",ROW_NUMBER() OVER(PARTITION BY postId ORDER BY seq) AS pos FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind='reply' AND (?='feed' OR v.reply_to IS NULL OR NOT EXISTS(SELECT 1 FROM visible parent WHERE parent.id=v.reply_to AND parent.kind='reply'))) WHERE pos<=2 ORDER BY seq",me,kind,kind),
+    kind==='feed'?q.all(feedCte+"SELECT x.post,x.emoji,COUNT(*) AS total,MAX(x.account=me) AS mine FROM mc_v81_post_reaction x JOIN roots r ON r.id=x.post,viewer WHERE x.account=me OR x.account IN peers GROUP BY x.post,x.emoji ORDER BY x.emoji",me,kind):[],
+    kind==='feed'?q.all(feedCte+"SELECT x.post FROM mc_v81_post_photo x JOIN roots r ON r.id=x.post",me,kind):[]
+  ]);
+  const map=new Map(items.map(item=>[item.id,item]));
+  for(const row of previews){const it=map.get(row.postId);if(it)(it.preview??=[]).push(row);}
+  for(const row of counts){const it=map.get(row.post);if(it)(it.reactions??=[]).push({emoji:row.emoji,count:row.total,mine:!!row.mine});}
+  for(const row of pictures){const it=map.get(row.post);if(it)it.hasPhoto=true;}
+}
 async function get(q,session,params,history){
   const me=session.accountId,id=params.get('id'),view=params.get('view')||'home';
   if(view==='playLobby'||view==='playMatch')return getPlay(q,me,view,params);
+  if(view==='friendLookup'){
+    const name=text(params.get('name'),14);
+    const match=await q.first('SELECT id,username AS name FROM mc_accounts WHERE username=? AND id<>?',name,me);
+    return {match:match||null};
+  }
+  if(view==='myStatus'){
+    const saved=await q.first('SELECT status FROM mc_v81_my_status WHERE account=?',me);
+    return {status:saved?.status??null};
+  }
+  if(view==='friendProfile'){
+    const person=await friend(q,me,id);
+    const groups=await q.all("SELECT g.id,g.name,other.slot FROM mc_members mine JOIN mc_members other ON other.garden=mine.garden JOIN mc_gardens g ON g.id=mine.garden WHERE mine.account=? AND other.account=? ORDER BY g.name,g.id",me,person.id);
+    return {person,groups};
+  }
   if(view==='home'){
     const [groupRows,friends,requests,goals,originalGoals,plant,feedState,questionState]=await Promise.all([
       q.all(groupSelect+' ORDER BY g.name,g.id',me),
@@ -108,7 +147,9 @@ async function get(q,session,params,history){
       page.messages.push(...old.slice(-100));page.legacyThrough=legacyCursor(old);
     }
     page.messages.sort((a,b)=>a.created-b.created||(a.seq??0)-(b.seq??0));
-    return {group:g,members:await roster(q,me,id),...page};
+    const saved=await q.first('SELECT message FROM mc_v81_group_pin WHERE garden=?',id);
+    const pin=saved?await pinMessage(q,history,me,id,saved.message):null;
+    return {group:g,members:await roster(q,me,id),pin,...page};
   }
   if(view==='dm')return {friend:await friend(q,me,id),...await messages(q,'dm',pair(me,id).join(':'),params.get('before'))};
   if(view==='tree'){
@@ -124,8 +165,9 @@ async function get(q,session,params,history){
   }
   if(view==='feed'){
     const kind=validKind(params.get('kind')),info=await feedInfo(q,me,kind);
-    const items=await q.all(feedCte+'SELECT '+fields+",(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply') AS replyCount,EXISTS(SELECT 1 FROM visible c WHERE c.postId=v.id AND c.author<>? AND c.seq>COALESCE((SELECT through FROM mc_v8_reads WHERE account=? AND scope=?),0)) AS unread FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind<> 'reply' ORDER BY v.seq DESC",me,kind,me,me,kind);
+    const items=await q.all(feedCte+'SELECT '+fields+",(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply') AS replyCount,(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply' AND (c.reply_to IS NULL OR NOT EXISTS(SELECT 1 FROM visible pr WHERE pr.id=c.reply_to AND pr.kind='reply'))) AS answerCount,EXISTS(SELECT 1 FROM visible c WHERE c.postId=v.id AND c.author<>? AND c.seq>COALESCE((SELECT through FROM mc_v8_reads WHERE account=? AND scope=?),0)) AS unread FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind<> 'reply' ORDER BY v.seq DESC",me,kind,me,me,kind);
     const repliesToMe=await q.all(feedCte+'SELECT '+fields+" FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind='reply' AND v.author<>? AND ((v.reply_to IS NULL AND v.owner=?) OR v.reply_to IN (SELECT id FROM visible WHERE author=?)) ORDER BY v.seq DESC",me,kind,me,me,me);
+    await enrichGarden(q,me,kind,items);
     return {items:items.map(r=>({...r,unread:!!r.unread})),repliesToMe,through:info.through};
   }
   if(view==='post'){
@@ -133,6 +175,7 @@ async function get(q,session,params,history){
     const root=await q.first(friendsCte+"SELECT e.kind FROM mc_v8_entries e,viewer WHERE e.id=? AND e.kind IN ('feed','questions') AND (author=me OR author IN peers)",me,id);
     if(!root)reject(404,'内容不可见');
     const result=await q.all(feedCte+'SELECT '+fields+' FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.postId=? ORDER BY v.seq',me,root.kind,id);
+    if(root.kind==='feed')await enrichGarden(q,me,'feed',[result[0]]);
     return {post:result[0],replies:result.slice(1)};
   }
   reject(400,'未知页面');
@@ -155,6 +198,20 @@ async function change(q,session,p,history){
   const me=session.accountId;
   if(['playInvite','playRespond','playMove'].includes(p.action))return changePlay(q,me,p);
   switch(p.action){
+    case 'myStatus': {
+      if(!['去采风','看书中','喝茶中','忙一会','听音乐','休息','喝咖啡','挥手','犯困','疲惫',''].includes(p.status))reject(400,'请选择趣味状态');
+      await q.run('INSERT INTO mc_v81_my_status VALUES(?,?) ON CONFLICT(account) DO UPDATE SET status=excluded.status',me,p.status);
+      return {};
+    }
+    case 'pinGroupMessage': {
+      const g=await group(q,me,p.groupId);
+      if(g.role!=='owner')reject(403,'只有群主可以管理置顶');
+      const id=text(p.messageId,160);
+      if(p.remove===true){await q.run('DELETE FROM mc_v81_group_pin WHERE garden=? AND message=?',g.id,id);return {};}
+      if(!await pinMessage(q,history,me,g.id,id))reject(404,'本群没有这条可置顶的消息');
+      await q.run('INSERT INTO mc_v81_group_pin(garden,message) VALUES(?,?) ON CONFLICT(garden) DO UPDATE SET message=excluded.message',g.id,id);
+      return {};
+    }
     case 'goalSelect': {
       const value=text(p.id,200);
       let allowed;
@@ -252,7 +309,21 @@ async function change(q,session,p,history){
     }
     case 'post': {
       const kind=validKind(p.kind),title=text(p.title??'',120,true);
-      return append(q,me,p,kind,'',title,text(p.body??'',4000,kind==='questions'&&!!title));
+      const jpeg=p.photo||'';
+      if(jpeg&&(kind!=='feed'||typeof jpeg!=='string'||jpeg.length>384000||!/^\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(jpeg)||!Buffer.from(jpeg,'base64').subarray(-2).equals(Buffer.from([255,217]))))reject(400,'请选择有效的手机图片');
+      if(kind==='questions'&&!title)reject(400,'请填写问题');
+      const prior=await q.first('SELECT e.id,p.jpeg FROM mc_v8_entries e LEFT JOIN mc_v81_post_photo p ON p.post=e.id WHERE e.author=? AND e.client_id=?',me,assertUuid(p.clientId));
+      if(prior&&(prior.jpeg||'')!==jpeg)reject(409,'此操作标识已使用');
+      const result=await append(q,me,p,kind,'',title,text(p.body??'',4000,!!(title||jpeg)));
+      if(jpeg)await q.run('INSERT INTO mc_v81_post_photo(post,jpeg) VALUES(?,?) ON CONFLICT(post) DO NOTHING',result.id,jpeg);
+      return result;
+    }
+    case 'postReact': {
+      const post=await rootFor(q,me,p.postId);
+      if(post.kind!=='feed'||!gardenEmoji.has(p.emoji)||typeof p.active!=='boolean')reject(400,'回应无效');
+      if(p.active)await q.run('INSERT INTO mc_v81_post_reaction(post,account,emoji) VALUES(?,?,?) ON CONFLICT DO NOTHING',p.postId,me,p.emoji);
+      else await q.run('DELETE FROM mc_v81_post_reaction WHERE post=? AND account=? AND emoji=?',p.postId,me,p.emoji);
+      return {};
     }
     case 'reply': {
       const id=assertUuid(p.postId);
@@ -311,6 +382,15 @@ export async function createSocial(options){
     try{
       const params=new URL(request.url).searchParams;
       if(params.get('accountId')!==session.accountId)reject(403,'账号已切换，请重新打开');
+      if(request.method==='GET'&&params.get('view')==='postPhoto'){
+        const id=params.get('id');
+        const picture=await store.transaction(false,async q=>{
+          await rootFor(q,session.accountId,id);
+          return q.first('SELECT jpeg FROM mc_v81_post_photo WHERE post=?',id);
+        });
+        if(!picture)reject(404,'图片不可见');
+        return new Response(Buffer.from(picture.jpeg,'base64'),{headers:{'content-type':'image/jpeg','cache-control':'private, no-store','x-content-type-options':'nosniff'}});
+      }
       if(['playRoom','playPractice'].includes(params.get('view')))return await playRoom(request,session,store,options.domains);
       if(request.method==='GET')return json(await store.transaction(['playLobby','playMatch'].includes(params.get('view')),q=>get(q,session,params,history)));
       if(request.method!=='POST')reject(405,'不支持此操作');

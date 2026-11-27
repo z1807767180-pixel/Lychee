@@ -22,7 +22,8 @@
     const meInGroup=group&&data.members.find(m=>m.id===me),key=view+':'+id;
     const endpoint=window.LycheeSocialAppearance.endpoint(me,id,'camp');
     const title=group?data.group.name:data.friend.name;
-    header(title,group?btn('群成员',()=>ui.go('members',{id})):null);
+    const details=btn('•••',()=>ui.go(group?'members':'friendProfile',{id}),'s8-room-details');
+    details.setAttribute('aria-label',group?'群详情':'好友资料');header(title,details);
     const top=document.createElement('small');top.className='s8-room-meta';top.textContent=group?'群聊 · '+data.members.length+' 位成员':'私聊';
     main.closest('.s8').querySelector('.s8-header h1').append(top);
     const log=h('section',null,'s8-log');log.setAttribute('aria-label','聊天记录');main.append(log);
@@ -32,7 +33,11 @@
     function closeMenu(){if(menu)menu.remove();menu=null;}
     function showImage(src){const overlay=h('div',null,'s8-image-preview');overlay.setAttribute('role','dialog');overlay.setAttribute('aria-label','群聊原图');const photo=h('img');photo.alt='群聊原图';photo.src=src;const close=btn('关闭',()=>overlay.remove());overlay.append(photo,close);main.append(overlay);close.focus();}
     let previous;const messages=new Map();
-    for(const msg of data.messages){
+    const items=data.messages.slice();
+    const outside=group&&data.pin&&!items.some(m=>m.id===data.pin.id);
+    if(outside)items.push(data.pin);
+    if(outside)items.sort((a,b)=>a.created-b.created||(a.seq||0)-(b.seq||0));
+    for(const msg of items){
       const divider=window.LycheeSocialApi.chatDivider(previous,msg.created,300000);previous=msg.created;if(divider)log.append(h('time',divider,'s8-time'));
       const mine=msg.authorId===me,row=h('article',null,'s8-msg'+(mine?' mine':''));
       row.dataset.message=msg.id;messages.set(msg.id,msg);row.append(avatar(msg));row.append(h('small',(msg.name||'园友')+(mine?' · 我':''),'s8-sender'));
@@ -45,9 +50,20 @@
       if(group&&/^【头脑王者】/.test(msg.body||''))row.append(btn('查看对局',()=>ui.legacyGame(id,(msg.body.match(/对局编号：([\da-f-]{36})/i)||[])[1])));
       row.tabIndex=0;log.append(row);
     }
+    if(group&&data.pin){
+      const pin=btn('',locate,'s8-room-pin'),target=Array.from(log.querySelectorAll('.s8-msg')).find(el=>el.dataset.message===data.pin.id);
+      pin.append(h('b','置顶'),h('span',(data.pin.name?data.pin.name+'：':'')+data.pin.body),h('i','›'));
+      main.closest('.s8').querySelector('.s8-header').after(pin);
+      function locate(){if(!target)return;target.classList.add('s8-highlight');target.scrollIntoView({block:'center'});target.focus({preventScroll:true});setTimeout(()=>target.classList.remove('s8-highlight'),1800);}
+      if(ui.route.params.locate){delete ui.route.params.locate;requestAnimationFrame(locate);}
+    }
     function actions(row){
       if(!row)return;const msg=messages.get(row.dataset.message);if(!msg)return;
       closeMenu();menu=h('div',null,'s8-message-menu');
+      if(group&&data.group.role==='owner'&&msg.body!=='消息已撤回'){
+        const remove=msg.id===data.pin?.id;
+        menu.append(btn(remove?'取消置顶':'置顶这条消息',async()=>{try{await ui.mutate('pinGroupMessage',{groupId:id,messageId:msg.id,remove});await ui.repaint();}catch(e){notice(e.message);}}));
+      }
       if(msg.body&&navigator.clipboard)menu.append(btn('复制',async()=>{try{await navigator.clipboard.writeText(msg.body);closeMenu();}catch{notice('未能复制，可以选中文字复制。');}}));
       if(group&&msg.authorId===me&&meInGroup&&msg.body!=='消息已撤回')menu.append(btn('撤回',async()=>{try{await scoped({type:'recall',id:msg.source==='legacy'?msg.id:'chat.'+meInGroup.slot+'.'+msg.id});await ui.repaint();}catch(e){notice(e.message);}}));
       if(menu.childElementCount){menu.append(btn('关闭',closeMenu));row.append(menu);}
@@ -73,7 +89,7 @@
     const plus=btn('＋',()=>toggle('more'),'s8-compose-icon');plus.setAttribute('aria-label','更多聊天操作');
     function toggle(tab){const next=tray.dataset.open===tab?'':tab;tray.dataset.open=next;tray.replaceChildren();
       if(next==='emoji')for(const symbol of emoji)tray.append(btn(symbol,()=>{const start=area.selectionStart,end=area.selectionEnd;area.setRangeText(symbol,start,end,'end');area.dispatchEvent(new Event('input'));tray.replaceChildren();tray.dataset.open='';area.focus();}));
-      if(next==='more'&&group){tray.append(btn('发图片',()=>file.click()),btn('一起玩',()=>ui.legacyGame(id)),btn('原群聊与照片',()=>ui.legacy(id,'circle')));}
+      if(next==='more'&&group){tray.append(btn('发图片',()=>file.click()),btn('表情',()=>toggle('emoji')),btn('一起玩',()=>ui.legacyGame(id)));}
     }
     composer.addEventListener('submit',async e=>{e.preventDefault();if(send.disabled)return;const text=area.value.trim();if(!text&&!draft.picture)return;
       if(draft.picture&&text.length>200){notice('带图片的消息说明限 200 字');return;}
@@ -84,5 +100,5 @@
       }catch(error){notice(error.message);}finally{send.disabled=false;area.readOnly=false;}});
     bar.append(area,palette);if(group)bar.append(plus);bar.append(send);composer.append(attachment,tray,bar,file);const shell=main.closest('.s8');shell.insertBefore(composer,shell.querySelector('.s8-nav'));update();
   }
-  window.LycheeSocialChat={display};
+  window.LycheeSocialChat={display,compress:jpeg};
 })();

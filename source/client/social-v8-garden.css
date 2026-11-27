@@ -79,3 +79,35 @@
 .s8 .is-watering .s8-yard-water img{animation:s8-water-tilt .55s ease}.s8 .is-watering .s8-yard-drops{animation:s8-water-fall .5s ease-in}.s8 .is-picking .s8-yard-fruit img{animation:s8-fruit-pick .36s ease-in both}
 @media(min-width:700px){.s8 .s8-yard-scene{max-width:570px;margin:0 auto 20px}.s8 .s8-yard-landscape{object-position:center 54%}}
 @media(prefers-reduced-motion:reduce){.s8 .is-watering .s8-yard-water img,.s8 .is-watering .s8-yard-drops,.s8 .is-picking .s8-yard-fruit img{animation:none}}
+/* Measurements follow the 390px garden review screens; all controls remain live. */
+.s8:is([data-view=feed],[data-view=post],[data-view=feedCompose],[data-view=garden]) .s8-content{max-width:650px;margin:0 auto;padding:8px clamp(14px,4.6vw,24px) 26px}
+.s8 .g81-title{display:flex;justify-content:space-between;align-items:center;min-height:72px;padding:4px 0 10px;margin:0 0 16px;border-bottom:1px solid var(--s8-line,#dedbc8)}
+.s8 .g81-title h1{font-size:32px;letter-spacing:-1px;margin:0}.s8 .g81-title img{width:64px;height:47px;object-fit:contain;border-radius:8px}
+.s8 .g81-subhead{display:flex;align-items:center;gap:14px;font-size:20px;margin:24px 0 18px}.g81-subhead:after{content:'';height:1px;flex:1;background:var(--s8-line,#dedbc8)}
+.s8 .g81-prompt{border-radius:13px;padding:19px 16px 15px;min-height:180px;aspect-ratio:354/190;max-height:230px;background:#f5e6cc right center/cover no-repeat;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between}
+.s8 .g81-prompt h2{font-size:clamp(22px,6.6vw,29px);max-width:63%;line-height:1.2;margin:2px 0 12px;color:#253e33;text-shadow:0 1px 3px #fff9}
+.s8 .g81-prompt .s8-primary{border-radius:24px;padding:7px 21px}.s8 .g81-link{color:var(--s8-brand,#2e6951);border:0;background:transparent;padding:5px 0;font-weight:650;font-size:13px;text-align:left}
+.s8 .g81-question,.s8 .g81-detail{border:1px solid var(--s8-line,#dedbc8);border-radius:12px;padding:14px;background:var(--s8-card,#fffcf4);margin:0 0 13px}
+.s8 .g81-author{display:flex;gap:7px;align-items:center;color:var(--s8-ink,#253e33);min-width:0}.g81-author>b{font-size:14px;overflow-wrap:anywhere}.g81-author small,.g81-author time{font-size:12px;color:var(--s8-muted,#64705f)}.g81-author time{margin-left:auto}
+.s8 .g81-author .g81-face{width:30px;height:30px;object-fit:cover;border-radius:50%}
+.s8 .g81-qtitle{display:block;text-align:left;border:0;background:none;padding:0;margin:16px 0;font-weight:700;font-size:17px;color:inherit;line-height:1.5}
+.s8 .g81-answer-peek,.s8 .g81-follow{width:100%;display:flex;gap:8px;align-items:baseline;border:0;border-radius:6px;padding:8px 10px;background:var(--s8-soft,#edf0e1);text-align:left;color:inherit;font-size:13px}
+.g81-answer-peek b,.g81-follow b{color:var(--s8-brand,#2e6951);flex:none}.g81-answer-peek span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s8 .g81-qfoot,.s8 .g81-compose-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}.g81-qfoot small,.g81-empty p{color:var(--s8-muted,#64705f)}
+.s8 .g81-detail{background:var(--s8-soft,#e9efdf);padding:17px 15px}.g81-detail h2{font-size:19px;margin:0 0 16px}.g81-detail p,.g81-answer>p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55}
+.s8 .g81-answer,.s8 .g81-feed{padding:12px 2px 18px;border-bottom:1px solid var(--s8-line,#dedbc8);margin-bottom:12px}.s8 .g81-follow{display:grid;margin:7px 0;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.s8 .g81-body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;margin:13px 0;line-height:1.55}
+.s8 .g81-photo{display:block;width:100%;height:auto;max-height:380px;object-fit:cover;border-radius:12px}.g81-feed>a{display:block}
+.s8 .g81-reactions{display:flex;align-items:center;gap:7px;position:relative;flex-wrap:wrap;margin:14px 0 8px}
+.s8 .g81-reaction{display:inline-flex;gap:3px;min-height:31px;align-items:center;justify-content:center;border-radius:20px;background:var(--s8-card,#fff9ee);border:1px solid var(--s8-line,#dedbc8);color:inherit;padding:3px 10px;font-size:14px;font-weight:700}
+.s8 .g81-reaction.mine{background:var(--s8-soft,#dcebd7);color:var(--s8-brand,#2e6951);border-color:var(--s8-brand,#2e6951)}.s8 .g81-emoji{width:21px;height:21px;object-fit:contain}.g81-unicode{font-size:18px}
+.s8 .g81-picker{position:absolute;bottom:calc(100% + 4px);left:8px;z-index:2;display:flex;padding:5px;background:var(--s8-card,#fffcf4);border:1px solid var(--s8-line,#dedbc8);border-radius:18px;box-shadow:0 3px 12px #283b2522}.g81-picker[hidden],.g81-comments[hidden],.g81-compose-tools[hidden]{display:none!important}
+.s8 .g81-picker .g81-reaction{border:0}.s8 .g81-facebutton{font:20px/1 system-ui}.s8 .g81-commentlink{margin-left:auto}.s8 .g81-comments{background:var(--s8-soft,#f1f1e4);padding:8px 12px;border-radius:9px}
+.s8 .g81-comment{display:block;width:100%;border:0;background:transparent;padding:6px 0;text-align:left;font:inherit;font-size:14px;color:inherit;overflow-wrap:anywhere}.g81-comment b{color:var(--s8-brand,#2e6951)}
+.s8 .g81-empty,.s8 .g81-empty-answer{display:grid;justify-items:center;gap:13px;text-align:center;padding:24px 16px;margin:22px 0}.s8 .g81-empty.is-feed{background:var(--s8-soft,#f6eddb);border-radius:19px}.g81-empty img{width:min(75%,250px);border-radius:12px}.g81-empty.is-question img,.g81-empty-answer img{width:96px;border-radius:7px}.s8 .g81-empty h2{font-size:20px;margin:6px 0}.s8 .g81-empty p{margin:0 0 7px}
+.s8 .g81-compose,.s8 .g81-compose-reply{display:grid;gap:12px}.s8 .g81-compose{padding:4px 1px}.s8 .g81-compose>button{justify-self:end}.s8 .g81-compose-reply{position:sticky;bottom:0;padding:10px 3px;background:var(--s8-card,#fffdf6);border-top:1px solid var(--s8-line,#dedbc8)}
+.s8 .g81-compose-reply>div{display:flex;gap:8px;align-items:center}.g81-compose-reply textarea{flex:1;min-height:38px;max-height:100px}.g81-compose-reply blockquote{margin:0;padding:5px 9px;background:var(--s8-soft,#f2f0e3);max-height:66px;overflow:auto}
+.g81-inbox{margin:8px 0 15px;font-size:13px}.g81-inbox summary{cursor:pointer;color:var(--s8-brand,#2e6951)}
+.s8[data-view=garden] .s8-garden-row{min-height:78px;margin-bottom:14px;box-shadow:none}.s8[data-view=garden] .s8-garden-copy small{font-size:13px}
+.s8[data-view=feed] .s8-header h1,.s8[data-view=post] .s8-header h1,.s8[data-view=feedCompose] .s8-header h1{visibility:hidden;width:0;min-width:0;overflow:hidden}
+.s8[data-view=garden] .s8-content{padding-top:18px}.s8[data-view=garden] .s8-header h1{font-size:30px;text-align:left}

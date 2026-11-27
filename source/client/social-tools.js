@@ -6,7 +6,8 @@
     circle:'群聊与照片',album:'原圈相册',profile:'个人资料',style:'头像与主题',notifications:'提醒与通知',
     feed:'原圈园中事',question:'原圈问一问',goal:'原圈约定',tree:'原圈荔枝树',garden:'原荔枝园',me:'原圈个人资料',tools:'原圈工具箱',notice:'公告',settings:'设置',scene:'人物场景'};
   const art={quiz:'/client/quiz-card-v7.webp',gomoku:'/mobile/tile-gomoku.webp',soup:'/mobile/tile-soup.webp',riddles:'/mobile/tile-riddles.webp'};
-  const intros={quiz:'5 道题 · 每题 10 秒 · 末题双倍',gomoku:'两人轮流落子，先连成五子获胜。',soup:'读汤面，一起用提问还原真相。',riddles:'和好友互相出题，也可以独自练习。'};
+  // These editorial previews refer to two existing cards in circle-puzzles.json.
+  const previews={"soup": {"label": "题库汤面 · 寓言", "title": "被搬走的第九户", "text": "我出发送件时，整条街有九户。九年半后，我终于到了最远那户：屋子还在，住户也没搬，却不能再算第九户。我给她拍了张近照，寄回第三户。第三户等这张照片等了好多年。"}, "riddles": {"label": "题库一瞥 · 常规", "text": "小夏只翻开一本书的最后几页，就知道「荔枝」这个词在书里哪五页出现过。她翻到了什么？"}};
   const ranks=['青铜','白银','黄金','铂金','钻石','王者'];
   const runtimeUrl=new URL('social-tools-runtime.js',document.currentScript.src);
   runtimeUrl.search=new URL(document.currentScript.src).search;
@@ -71,7 +72,7 @@
       const split=path.indexOf('?');
       return '/api/v8/social?'+query+(split<0?'':'&'+path.slice(split+1));
     }
-    async function direct(match=null,practice=false){
+    async function direct(match=null,practice=false,deck='warmup'){
       clear();stage='component';const token=generation;
       const box=h('div',null,'s8-direct-tool garden-app');box.dataset.dest=dest;box.dataset.skin=main.closest('.s8')?.dataset.skin||'orchard';main.append(box);
       try{
@@ -81,7 +82,7 @@
         const scope={accountId:me.id,gardenId,gardenName:garden?.name||me.name};
         const runtime=await loadRuntime();
         if(!alive(token))return;
-        const ctx={dest,node:box,scope,window:scopedWindow(scope),avatar,history,open,oldMatch:history?params.match:null,groupName:scope.gardenName,
+        const ctx={dest,wallpaperMode:params.wallpaper===true,node:box,scope,window:scopedWindow(scope),avatar,history,open,oldMatch:history?params.match:null,groupName:scope.gardenName,
           day:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Shanghai'}).format(new Date()),openNotice:row=>{
             if(!row)return open('notifications');
             window.LycheeNotifications?.open(row,{page:open,chat:()=>ui.go('home'),refresh:()=>{}});
@@ -102,11 +103,11 @@
             if(!alive(token)||selected!==scopeMatch)throw Error('对局已关闭');
             return roomPath(path);
           });
-          ctx.slot=me.id===row.host?'1':'2';ctx.gameMode=practice?'solo':'team';ctx.match=match;
+          ctx.deck=deck;ctx.slot=me.id===row.host?'1':'2';ctx.gameMode=practice?'solo':'team';ctx.match=match;
           ctx.members=[{id:'1',accountId:row.host,name:row.hostName},...(match?[{id:'2',accountId:row.guest,name:row.guestName}]:[])];
           const tutorial='lychee.soup.tutorial.'+me.id;
           ctx.tutorialSeen=localStorage.getItem(tutorial)==='1';
-          ctx.onTutorialSeen=()=>{localStorage.setItem(tutorial,'1');if(alive(token))direct(match,practice);};
+          ctx.onTutorialSeen=()=>{localStorage.setItem(tutorial,'1');if(alive(token))direct(match,practice,deck);};
           if(dest==='quiz')ctx.friendPlay={
             back:()=>lobby(),ranks:()=>lobby('ranks'),again:()=>sendInvite(row.host===me.id?row.guest:row.host),
             async request(id,body){
@@ -123,7 +124,7 @@
           footer.append(button('回到游戏大厅',()=>lobby()),button('结束这场对局',()=>{if(confirm('结束双方的这场对局？'))respond('leave');}));
           main.append(footer);monitorRoom(match.id,token);
         }else if(practice)main.append(button('返回游戏大厅',()=>lobby()));
-      }catch(error){if(alive(token))fail(error,()=>direct(match,practice));}
+      }catch(error){if(alive(token))fail(error,()=>direct(match,practice,deck));}
     }
     function monitorRoom(id,token){
       poll=setTimeout(async()=>{
@@ -136,8 +137,37 @@
       },6500);
     }
     function hero(){
-      const box=h('div',null,'s8-play-hero'),img=h('img');img.src=art[dest];img.alt='';
-      const body=h('div');body.append(h('h2',titles[dest]),h('p',intros[dest]));box.append(img,body);return box;
+      const box=h('div',null,'s81-game-hero s81-hero-'+dest);
+      if(dest==='gomoku'){
+        const heading=h('div',null,'s81-line-head');heading.append(h('h2','好友棋室'),h('small','双人对弈'));
+        const tray=h('div',null,'s81-chess-tray'),board=h('div',null,'s81-chess-board');board.setAttribute('aria-hidden','true');
+        for(const [x,y] of [[3,3],[11,3],[7,7],[3,11],[11,11]]){
+          const star=h('i');star.style.left=(100*x/14)+'%';star.style.top=(100*y/14)+'%';board.append(star);
+        }
+        tray.append(board);const seats=h('div',null,'s81-game-seats');
+        seats.append(h('b','●　黑棋先手'),h('span','对'),h('b','白棋后手　○'));box.append(heading,tray,seats);return box;
+      }
+      const img=h('img');img.src=dest==='riddles'?'/mobile/riddle-picnic.webp':art[dest];img.alt='';box.append(img);
+      if(dest==='riddles')return box;
+      const body=h('div',null,'s81-game-caption');
+      if(dest==='quiz')body.append(h('small','好友问答对战'),h('h2','来答五道题'));
+      else body.append(h('small','海龟汤推理室'),h('h2','从汤面里找真相'));
+      box.append(body);return box;
+    }
+    function preview(){
+      const q=previews[dest],box=h('article',null,'s81-game-paper');
+      box.append(h('small',q.label));if(q.title)box.append(h('h3',q.title));
+      box.append(h('p',q.text));return box;
+    }
+    function lobbyActions(){
+      const modes=h('div',null,'s81-game-actions');
+      if(previews[dest]){
+        const solo=button('',()=>direct(null,true)),invite=button('',()=>lobby('friends'),true);
+        solo.append(h('b','自己玩'),h('small',dest==='soup'?'独自问主持':'答题库里的题'));
+        invite.append(h('b','邀请好友'),h('small',dest==='soup'?'一起猜汤底':'和好友互相出题'));
+        modes.append(solo,invite);
+      }else modes.append(button(dest==='quiz'?'邀请好友对战':'邀请好友入局',()=>lobby('friends'),true));
+      return modes;
     }
     function showRanks(ranking){
       const box=section();box.append(h('h3','好友排行'));
@@ -156,15 +186,35 @@
         if(!ui.home.friends.length)box.append(panel('暂无可邀请好友','s8-muted'));
         box.append(button('返回大厅',()=>lobby()));main.replaceChildren(hero(),box);return;
       }
-      box.append(button('邀请好友',()=>lobby('friends'),true));
-      if(!ui.home.friends.length)box.append(panel('暂无可邀请好友','s8-muted'));
-      for(const row of data.matches){
-        const other=row.host===me.id?row.guestName:row.hostName;
-        box.append(button((row.status==='active'?'正在进行':row.side?'收到邀请':'等待接受')+' · '+other,()=>enter(row.id)));
+      const layout=h('section',null,'s81-game-lobby');layout.dataset.game=dest;layout.append(hero());
+      if(dest==='quiz'){
+        const rules=h('div',null,'s81-game-rules');
+        for(const [n,label] of [['5','道题'],['10','秒 / 题'],['×2','末题分数']]){
+          const item=h('div');item.append(h('b',n),h('small',label));rules.append(item);
+        }
+        layout.append(rules);
       }
-      main.replaceChildren(hero(),box);
-      if(['soup','riddles'].includes(dest))main.append(button(dest==='soup'?'自己玩':'题库练习',()=>direct(null,true)));
-      if(dest==='quiz')main.append(showRanks(data.ranking));
+      if(dest==='riddles')layout.append(preview());
+      layout.append(lobbyActions());
+      if(!ui.home.friends.length)layout.append(panel('暂无可邀请好友','s8-muted'));
+      if(data.matches.length){
+        for(const row of data.matches){
+          const other=row.host===me.id?row.guestName:row.hostName;
+          box.append(button((row.status==='active'?'正在进行':row.side?'收到邀请':'等待接受')+' · '+other,()=>enter(row.id)));
+        }
+        layout.append(box);
+      }
+      if(dest==='quiz')layout.append(showRanks(data.ranking));
+      if(dest==='soup')layout.append(preview(),panel('邀请好友后，一起向主持提问，猜出汤底。','s81-game-note'));
+      if(dest==='gomoku')layout.append(h('h3','对弈规则'),panel('两人轮流落子，横、竖或斜线先连成五子的玩家获胜。好友接受邀请后，双方就座。','s81-game-note'));
+      if(dest==='riddles'){
+        const decks=h('div',null,'s81-game-decks');
+        for(const [key,title,sub] of [['warmup','常规','换个角度'],['advanced','进阶','情境思考'],['hard','困难','逻辑推理']]){
+          const pick=button('',()=>direct(null,true,key));pick.append(h('b',title),h('small',sub));decks.append(pick);
+        }
+        layout.append(h('h3','练习题库'),decks);
+      }
+      main.replaceChildren(layout);
     }
     async function sendInvite(friendId){
       if(writing)return;writing=true;const token=generation;

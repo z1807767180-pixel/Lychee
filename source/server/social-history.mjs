@@ -48,14 +48,15 @@ export function socialHistory(dataDir){
       }));
       return result.flat();
     },
-    async chat(q,garden,me){
+    async chat(q,garden,me,messageId){
       return withTables(q,garden,async(all,t)=>{
         if(!t.notes)return [];
         const since=Math.floor((Date.now()+28800000)/86400000)*86400000-28800000;
         const details=t.details?' LEFT JOIN '+t.details+' d ON d.note_id=n.id':'';
         const body=t.details?"CASE WHEN d.recalled=1 THEN '消息已撤回' ELSE n.body END":'n.body';
         const photo=t.pictures?'EXISTS(SELECT 1 FROM '+t.pictures+' p WHERE p.note_id=n.id)':'0';
-        const rows=await all('SELECT n.id,n.name,n.rowid AS ordinal,'+photo+' AS photo,'+body+" AS body,n.created FROM "+t.notes+" n"+details+" WHERE n.id GLOB 'chat.*' AND n.created>=? ORDER BY n.created,n.rowid",since);
+        const filter=messageId?'n.id=?':'n.created>=?';
+        const rows=await all('SELECT n.id,n.name,n.rowid AS ordinal,'+photo+' AS photo,'+body+" AS body,n.created FROM "+t.notes+" n"+details+" WHERE n.id GLOB 'chat.*' AND "+filter+" ORDER BY n.created,n.rowid",messageId||since);
         if(!rows.length)return [];
         const mapped=await q.all('SELECT account,slot FROM mc_members WHERE garden=? UNION SELECT account,slot FROM mc_retired_slots WHERE garden=?',garden,garden);
         const members=new Map(mapped.map(r=>[String(r.slot),r.account]));
@@ -64,7 +65,7 @@ export function socialHistory(dataDir){
         return rows.flatMap(r=>{
           const [,slot,id]=r.id.split('.'),authorId=members.get(slot)??null;
           if(authorId&&native.get(id)===authorId)return [];
-          const imageUrl=r.photo?'/g/'+garden+'/api/for/'+me+'/camp?image='+encodeURIComponent(r.id):null;
+          const imageUrl=r.photo&&r.body!=='消息已撤回'?'/g/'+garden+'/api/for/'+me+'/camp?image='+encodeURIComponent(r.id):null;
           return [{...r,body:r.body||(r.photo?'[图片]':'[群消息]'),authorId,imageUrl,source:'legacy'}];
         });
       });
