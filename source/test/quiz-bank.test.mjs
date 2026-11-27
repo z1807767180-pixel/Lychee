@@ -37,13 +37,27 @@ test('每题有四个不同选项、有效答案、解释、难度和逐题出�
     assert.equal(new URL(source).protocol, 'https:', id);
     assert.ok(['adapted', 'fact', 'worked'].includes(question.sourceType), id);
     if (question.sourceType === 'adapted') {
-      assert.equal(question.license, 'CC BY-SA 4.0', id);
       assert.ok(question.sourceAuthor.trim(), id);
       if (new URL(source).hostname === 'opentdb.com') {
+        assert.equal(question.license, 'CC BY-SA 4.0', id);
         assert.match(question.sourceId, /^\d+$/, id);
         assert.ok(new URL(source).searchParams.get('query'), id);
-      } else {
+      } else if (source.includes('/uberspot/OpenTriviaQA/')) {
+        assert.equal(question.license, 'CC BY-SA 4.0', id);
         assert.match(source, /^https:\/\/github\.com\/uberspot\/OpenTriviaQA\/blob\/[a-f\d]{40}\/categories\/[\w-]+#L\d+$/, id);
+      } else {
+        const url = new URL(source);
+        const [, author, repo, refType, commit] = url.pathname.split('/');
+        const licenses = {'apple/ml-mkqa':'CC BY-SA 3.0','tamino-martinius/node-open-quiz-bank':'CC0 1.0','Pluxia-GmbH/learnclash-open-trivia':'CC BY 4.0'};
+        const expected = licenses[author+'/'+repo];
+        assert.ok(expected, id);
+        assert.equal(question.license, expected, id);
+        assert.equal(url.hostname, 'github.com', id);
+        assert.equal(refType, 'blob', id);
+        assert.match(commit, /^[a-f\d]{40}$/, id);
+        assert.ok(question.sourceLocator.trim(), id);
+        assert.equal(new URL(question.factSource).protocol, 'https:', id);
+        assert.equal(new URL(question.sourceLicense).hostname, 'github.com', id);
       }
     }
   }
