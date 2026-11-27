@@ -118,6 +118,7 @@ if __name__ == "__main__":
             if time.monotonic()>deadline:
                 raise RuntimeError("Android did not install the downloaded update")
             time.sleep(1)
-        launch()
+        print(f"Android reports V{new} installed over V{old}.", flush=True)
+        find("Open",click=True,timeout=45)
         find("登录荔枝园",retry_landing=True)
         print(f"Installed the public update from V{old} to V{new} through the old app and the system installer.")
