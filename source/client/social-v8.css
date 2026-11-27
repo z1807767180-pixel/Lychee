@@ -31,8 +31,16 @@
 .s8[data-skin=kitty]{--s8-paper:#fff4f3;--s8-ink:#56323a;--s8-brand:#a5485c;--s8-muted:#805f69;--s8-line:#e5c4c7;--s8-card:#fff9f7;--s8-tint:#f7dbe0;--s8-bubble:#f8d9dd;--s8-radius:23px;--s8-hero:url('/mobile/hd-theme-3.webp');--s8-pattern:repeating-linear-gradient(90deg,transparent 0 18px,#b7496609 18px 30px),repeating-linear-gradient(0deg,transparent 0 18px,#b7496608 18px 30px)}
 .s8[data-skin=miffy]{--s8-paper:#ffedb1;--s8-ink:#32352d;--s8-brand:#385646;--s8-muted:#676541;--s8-line:#a7a277;--s8-card:#fff9e8;--s8-tint:#ffcd71;--s8-bubble:#ffe5a1;--s8-radius:9px;--s8-hero:url('/mobile/hd-theme-1.webp');--s8-pattern:repeating-linear-gradient(90deg,transparent 0 3px,#916f320c 4px 5px,transparent 5px 10px)}
 .s8[data-skin=tutu]{--s8-paper:#edf8f4;--s8-ink:#25464a;--s8-brand:#356a77;--s8-muted:#527278;--s8-line:#b7d4cf;--s8-card:#f6fcf8;--s8-tint:#d0e7e3;--s8-bubble:#d3ebe6;--s8-radius:10px 25px 10px 25px;--s8-hero:url('/mobile/hd-theme-2.webp');--s8-pattern:radial-gradient(#488b9630 .7px,transparent .9px)}
-.s8:not([data-chat=true]){background-color:var(--s8-paper);background-image:var(--s8-pattern);color:var(--s8-ink)}
-.s8[data-skin=tutu]:not([data-chat=true]){background-size:12px 12px}
+.s8[data-skin=orchard]{--scene:url('/client/social-wall-orchard.webp');--scene-wide:url('/client/social-wide-orchard.webp');--scene-veil:251,246,234}
+.s8[data-skin=kitty]{--scene:url('/client/social-wall-kitty.webp');--scene-wide:url('/client/social-wide-kitty.webp');--scene-veil:255,242,241}
+.s8[data-skin=miffy]{--scene:url('/client/social-wall-miffy.webp');--scene-wide:url('/client/social-wide-miffy.webp');--scene-veil:255,244,212}
+.s8[data-skin=tutu]{--scene:url('/client/social-wall-tutu.webp');--scene-wide:url('/client/social-wide-tutu.webp');--scene-veil:238,248,244}
+.s8:not([data-chat=true]){--page-wash:linear-gradient(180deg,rgba(var(--scene-veil),.90) 0%,rgba(var(--scene-veil),.78) 26%,rgba(var(--scene-veil),.64) 59%,rgba(var(--scene-veil),.38) 100%);background:var(--page-wash),var(--scene) center 56%/cover no-repeat var(--s8-paper);color:var(--s8-ink)}
+@media(min-width:760px){.s8:not([data-chat=true]){background-image:var(--page-wash),var(--scene-wide);background-size:cover}}
+.s8 .s8-hero .s8-banner-clock{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;font-variant-numeric:tabular-nums}
+.s8 .s8-hero .s8-banner-clock>span{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap}
+.s8 .s8-card.s8-hero .s8-banner-clock b{font:650 16px/1.35 system-ui,sans-serif;color:var(--s8-brand)}
+.s8 .s8-card.s8-hero .s8-banner-clock small{font-size:12px}
 .s8 .s8-panel,.s8 .s8-primary,.s8 .s8-thread-list,.s8 .s8-hero{border-radius:var(--s8-radius)}
 .s8 .s8-primary{background:var(--s8-brand);color:#fff}
 .s8[data-skin=kitty] .s8-primary{border-radius:27px;outline:1px dashed #f8c6d1;outline-offset:-4px}
@@ -122,10 +130,12 @@
 .s8[data-chat=true] .s8-emoji-tabs button{background:none;border:0;padding:4px 7px;white-space:nowrap;color:var(--s8-muted);min-height:28px;font-size:12px}
 .s8[data-chat=true] .s8-emoji-tabs button[aria-pressed=true]{background:var(--s8-tint);color:var(--s8-brand)}
 @media(max-width:759px){
-  .s8[data-chat=true]{background-position:top center;background-size:100% calc(110% - 64px - var(--chat-safe))}
+  .s8[data-chat=true][data-skin=orchard]{background-position:top center;background-size:100% calc(110% - 64px - var(--chat-safe))}
 }
 @media(max-height:510px){.s8-symbols{max-height:95px}}
 
 .s8[data-chat=true].s8-keyboard{top:var(--s8-vv-top);height:var(--s8-vv-height);bottom:auto;--chat-safe:0px}
 
+.s8[data-chat=true]:not([data-custom-wall=true]):not([data-skin=orchard]){--chat-wash:linear-gradient(rgba(var(--scene-veil),.34),rgba(var(--scene-veil),.18));background-image:var(--chat-wash),var(--s8-chat-wall);background-size:cover;background-position:center}
+@media(min-width:760px){.s8[data-chat=true]:not([data-custom-wall=true]):not([data-skin=orchard]){background-image:var(--chat-wash),var(--s8-chat-wide)}}
 .s8[data-chat=true][data-custom-wall=true]{background-size:cover;background-position:center}
