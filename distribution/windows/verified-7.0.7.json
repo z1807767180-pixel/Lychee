@@ -1,0 +1,195 @@
+{
+  "version": "7.0.7",
+  "date": "2026-11-27",
+  "checks": {
+    "productionPortableUpgrade": {
+      "from": "7.0.3",
+      "to": "7.0.7",
+      "initialHash": "8029659e55c4e5a4d41304912829437c2a228ff2528b3822204fc0479d3c2ccb",
+      "automaticOffer": "发现新版本 7.0.7",
+      "manualOffer": "发现新版本 7.0.7",
+      "reopenedVersion": "7.0.7",
+      "visible": "荔枝 7.0.7\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "finalHash": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+      "statusAfterUpgrade": "current",
+      "localAccountTraffic": 18,
+      "pass": true,
+      "isolatedWebViewProfile": true
+    },
+    "productionSettingsOfficialOriginOnly": {
+      "from": "7.0.7",
+      "to": "7.0.7",
+      "initialHash": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+      "visible": "荔枝 7.0.7\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "proxyEvents": [
+        [
+          "refused",
+          "raw.githubusercontent.com:443"
+        ],
+        [
+          "allowed",
+          "lychee-link-check.onrender.com:443"
+        ],
+        [
+          "refused",
+          "raw.githubusercontent.com:443"
+        ],
+        [
+          "allowed",
+          "lychee-link-check.onrender.com:443"
+        ]
+      ],
+      "pass": true,
+      "isolatedWebViewProfile": true
+    },
+    "productionDownloadOfficialOriginOnly": {
+      "utc": "2026-11-27T06:47:12.4997431Z",
+      "clientVersion": "7.0.7.0",
+      "clientSha256": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+      "expectedFeed": "7.0.7",
+      "scenario": "production origin",
+      "packages": [
+        {
+          "kind": "exe",
+          "file": "Lychee.exe",
+          "bytes": 20467712,
+          "sha256": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+          "updaterVerified": true
+        },
+        {
+          "kind": "msi",
+          "file": "Lychee.msi",
+          "bytes": 20013056,
+          "sha256": "4f9c14d867ebd107558e0f0f164ce2dca0378527f2f4d8d0de6af9bde51a48b6",
+          "updaterVerified": true
+        }
+      ],
+      "passed": true,
+      "manifestVersion": "7.0.7",
+      "proxyDecisions": [
+        "DENY https://raw.githubusercontent.com/z1807767180-pixel/Lychee/main/distribution/windows/stable.json",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/stable.json",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v7.0.7/Lychee.exe",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v7.0.7/Lychee.msi"
+      ],
+      "blockedConnect": [
+        "raw.githubusercontent.com:443"
+      ]
+    },
+    "previousClientControl": {
+      "utc": "2026-11-27T06:34:06.9901141Z",
+      "clientVersion": "7.0.6.0",
+      "clientSha256": "5b3d2859fe2dda9e188efd5d9090dc413c4e53d423a893b4bc6a670a93c79081",
+      "expectedFeed": "7.0.6",
+      "scenario": "legacy blocked",
+      "packages": [],
+      "passed": true,
+      "expectedFailure": "远程服务器返回错误: (502) 错误的网关。",
+      "proxyDecisions": [
+        "DENY https://raw.githubusercontent.com/z1807767180-pixel/Lychee/main/distribution/windows/stable.json",
+        "DENY https://api.github.com/repos/z1807767180-pixel/Lychee/contents/distribution/windows/stable.json"
+      ],
+      "blockedConnect": [
+        "raw.githubusercontent.com:443",
+        "api.github.com:443"
+      ]
+    },
+    "publishedManifests": [
+      {
+        "name": "raw",
+        "utc": "2026-11-27T06:53:58.9959506Z",
+        "url": "https://raw.githubusercontent.com/z1807767180-pixel/Lychee/main/distribution/windows/stable.json",
+        "version": "7.0.7",
+        "status": 200,
+        "bytes": 400,
+        "sha256": "65586e446db152770343afefe27962a6c19e250cca7273700251cf9e2929c922",
+        "etag": "\"45914eddf513a9d607115aba7def02ba8551ef95e859ec9509f4ef3114f89e30\""
+      },
+      {
+        "name": "contents",
+        "utc": "2026-11-27T06:53:59.7142278Z",
+        "url": "https://api.github.com/repos/z1807767180-pixel/Lychee/contents/distribution/windows/stable.json?ref=main",
+        "version": "7.0.7",
+        "status": 200,
+        "bytes": 400,
+        "sha256": "65586e446db152770343afefe27962a6c19e250cca7273700251cf9e2929c922",
+        "etag": "\"67576783610d67f7cc851c353f4da509b68bf876\""
+      },
+      {
+        "name": "origin",
+        "utc": "2026-11-27T06:54:00.2832240Z",
+        "url": "https://lychee-link-check.onrender.com/windows-update/stable.json",
+        "version": "7.0.7",
+        "status": 200,
+        "bytes": 400,
+        "sha256": "65586e446db152770343afefe27962a6c19e250cca7273700251cf9e2929c922",
+        "etag": null
+      }
+    ],
+    "publicDownloadPage": {
+      "windows": "7.0.7",
+      "directOfficialOrigin": "https://lychee-link-check.onrender.com",
+      "packages": {
+        "Lychee.exe": {
+          "length": 20467712,
+          "sha256": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0"
+        },
+        "Lychee.msi": {
+          "length": 20013056,
+          "sha256": "4f9c14d867ebd107558e0f0f164ce2dca0378527f2f4d8d0de6af9bde51a48b6"
+        }
+      },
+      "mobile": "7.0.5",
+      "checkedMobilePaths": [
+        "mobile/version.txt",
+        "mobile/index.html",
+        "mobile/phone.js",
+        "mobile/assets-7.0.5/launch/start.js",
+        "mobile/assets-7.0.5/client/quiz-v7.js"
+      ],
+      "healthyCapabilities": true,
+      "landingPaths": [
+        "windows-v7.0.7/Lychee.msi",
+        "windows-v7.0.7/Lychee.exe"
+      ]
+    },
+    "isolatedPreviousClientUpgrade": {
+      "from": "7.0.3",
+      "to": "7.0.7",
+      "isolatedPackageIdentity": true,
+      "scenarios": {
+        "exe": {
+          "passed": true,
+          "relaunchedVersion": "7.0.7",
+          "accountRetained": true,
+          "userDataRetained": true
+        },
+        "msi": {
+          "passed": true,
+          "relaunchedVersion": "7.0.7",
+          "accountRetained": true,
+          "userDataRetained": true
+        }
+      }
+    },
+    "isolatedNextUpdateUsingOnlyOrigin": {
+      "from": "7.0.7",
+      "to": "7.0.8",
+      "isolatedPackageIdentity": true,
+      "scenarios": {
+        "exe": {
+          "passed": true,
+          "relaunchedVersion": "7.0.8",
+          "accountRetained": true,
+          "userDataRetained": true
+        },
+        "msi": {
+          "passed": true,
+          "relaunchedVersion": "7.0.8",
+          "accountRetained": true,
+          "userDataRetained": true
+        }
+      }
+    }
+  }
+}

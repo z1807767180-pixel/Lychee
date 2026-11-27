@@ -41,8 +41,11 @@ class WindowsReleaseFiles(unittest.TestCase):
     def test_serves_both_verified_packages_and_the_exact_manifest(self):
         self.prepare()
         self.assertEqual((self.target / "stable.json").read_bytes(), self.manifest.read_bytes())
+        landing = (self.target / "download.html").read_text(encoding="utf8")
         for name, data in self.body.items():
             self.assertEqual((self.target / "windows-v7.0.7" / name).read_bytes(), data)
+            self.assertIn(f'href="windows-v7.0.7/{name}"', landing)
+        self.assertNotIn("https://", landing)
 
     def test_partial_corrupt_and_oversized_packages_never_publish_a_feed(self):
         for invalid in [b"inst", b"incorrect", b"installer-extra"]:
