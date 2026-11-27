@@ -154,6 +154,15 @@ def prepare(release_path, packages, output):
         if major >= 8:
             link_name = f"Lychee-Friends-A{version}.apk"
             (directory/link_name).write_bytes(apk)
+        if (major, minor, patch) > (8, 0, 0):
+            # These two URLs were shared before the Android 9 compatibility patch.
+            old = (packages / "Lychee-Friends-V8.0.0.apk").read_bytes()
+            if hashlib.sha256(old).hexdigest() != "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42":
+                raise ValueError("Unexpected archived A8.0.0 APK")
+            archived = root / "android-friends-v8.0.0"
+            archived.mkdir()
+            for prefix in ("A", "V"):
+                (archived / f"Lychee-Friends-{prefix}8.0.0.apk").write_bytes(old)
         (root/"current.json").write_text(json.dumps(feed, ensure_ascii=False, indent=2)+"\n", encoding="utf8")
         (root/"download.html").write_text(download_page(version,tag+"/"+link_name), encoding="utf8")
         root.rename(output)
