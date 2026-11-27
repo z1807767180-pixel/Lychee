@@ -52,7 +52,7 @@ export async function runServerAcceptance({mode,env=process.env,origin,loopbackO
       const {preparation}=await ledger.status();
       requireThat(preparation.state==='ready' && preparation.gardenId===env.LYCHEE_RELEASE_SMOKE_GARDEN_ID,'album-pilot');
       await verifyStoredPicture({session,owner:users[0],garden:preparation.gardenId,ownerId:preparation.ownerAccountId});
-      output.status='verified';output.savedImageReadable=true;output.imageLimit=10;
+      output.status='verified';output.savedImageReadable=true;output.imageLimit=15;
     }else if(mode==='members'){
       const {preparation}=await ledger.status();
       const gardenId=env.LYCHEE_RELEASE_SMOKE_GARDEN_ID;

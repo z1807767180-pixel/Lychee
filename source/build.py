@@ -55,6 +55,7 @@ def ai_tool_bundle(text):
     text = once(text, "if(!r.ok)throw Error(x.error||'暂时无法连接，请稍后重试');",
                 "if(!r.ok){const error=Error(x.error||'暂时无法连接，请稍后重试');"
                 "error.status=r.status;error.aiState=x.state;error.newAiRequest=r.headers.get('X-Lychee-AI-Retry')==='new';throw error;}")
+    text = once(text, "function Quota({status,kind}){return status?", "function Quota({status,kind}){return status && (kind==='image'||!status[kind])?")
     text = once(text, "'今日剩余 '+Math.max(0,status.limits[kind]-(status.used[kind]||0))+' '+(kind==='image'?'张':'次')",
                 "window.LycheeBusiness.quotaLabel(status,kind)")
     text = once(text, "},body,\n    status && !status.image && h('small',null,'服务暂未配置'),",
@@ -150,9 +151,6 @@ def phone_bundle(text, mobile):
                 'else if(L==="diet"||L==="wheel")Ca=A.jsx("section",{className:"ph-scroll v7-tool",'
                 'children:A.jsx(L==="diet"?window.LycheeDietV7:window.LycheeWheelV7,'
                 '{React:Ee,accountId:window.LycheeAccess.scope.accountId},L)});' + detail)
-    text = once(text, 'o&&!o.ready&&(0,H.jsx)("small",{role:"status"',
-                'o?.ready&&o.aiQuota&&(0,H.jsx)("small",{role:"status",children:window.LycheeBusiness.quotaLabel(o.aiQuota,"chat")}),'
-                'o&&!o.ready&&(0,H.jsx)("small",{role:"status"')
     portrait = 'className:"profile-id","aria-label":"编辑个人资料和头像",onClick:()=>De("profile"),children:['
     text = once(text, portrait, portrait + '(0,A.jsx)("span",{className:"profile-edit-label","aria-hidden":true,children:"编辑资料"}),')
     reminder_row = 'ya("focus","提醒事项",()=>De("tasks")),'

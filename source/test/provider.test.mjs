@@ -186,5 +186,5 @@ test('loopback provider returns a persisted chat answer, an image and a turtle-s
   assert.equal((await call(room)).round.turns[0].reply,'是');
   assert.deepEqual(calls,['chat','image','soup']);
   assert.deepEqual((await call('phone?v62=status')).used,{chat:2,image:1});
-  assert.deepEqual((await call(room)).aiQuota.remaining,{chat:18,image:9});
+  assert.deepEqual((await call(room)).aiQuota.remaining,{image:14});
 });

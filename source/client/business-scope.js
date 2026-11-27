@@ -42,11 +42,11 @@ window.LycheeBusiness = (() => {
     }
   }
   function quotaLabel(status,kind){
-    const name=kind==='image'?'生图':'问答',unit=kind==='image'?'张':'次';
-    const limit=Number(status?.limits?.[kind]);
-    if(!Number.isFinite(limit))return '正在读取额度…';
-    const remaining=status.remaining?.[kind]??Math.max(0,limit-(status.used?.[kind]||0));
-    return remaining?'今日'+name+'剩余 '+remaining+' / '+limit+' '+unit:'今日'+name+'额度已用完，北京时间零点恢复';
+    if(kind!=='image')return '';
+    const limit=status?.limits?.image;
+    if(!Number.isFinite(limit))return '正在读取生图额度…';
+    const remaining=status.remaining?.image??Math.max(0,limit-(status.used?.image||0));
+    return remaining?'今日生图剩余 '+remaining+' / '+limit+' 张':'今日生图额度已用完，北京时间零点恢复';
   }
 
   // Each submitted job has its own marker. Separate tabs never overwrite one another.

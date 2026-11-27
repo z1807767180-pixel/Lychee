@@ -154,15 +154,20 @@ def prepare(release_path, packages, output):
         if major >= 8:
             link_name = f"Lychee-Friends-A{version}.apk"
             (directory/link_name).write_bytes(apk)
-        if (major, minor, patch) > (8, 0, 0):
-            # These two URLs were shared before the Android 9 compatibility patch.
-            old = (packages / "Lychee-Friends-V8.0.0.apk").read_bytes()
-            if hashlib.sha256(old).hexdigest() != "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42":
-                raise ValueError("Unexpected archived A8.0.0 APK")
-            archived = root / "android-friends-v8.0.0"
+        historical = {
+            "8.0.0": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+            "8.0.1": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+        }
+        for old_version, expected in historical.items():
+            if (major, minor, patch) <= tuple(map(int, old_version.split("."))):
+                continue
+            old = (packages / f"Lychee-Friends-V{old_version}.apk").read_bytes()
+            if hashlib.sha256(old).hexdigest() != expected:
+                raise ValueError(f"Unexpected archived A{old_version} APK")
+            archived = root / f"android-friends-v{old_version}"
             archived.mkdir()
             for prefix in ("A", "V"):
-                (archived / f"Lychee-Friends-{prefix}8.0.0.apk").write_bytes(old)
+                (archived / f"Lychee-Friends-{prefix}{old_version}.apk").write_bytes(old)
         (root/"current.json").write_text(json.dumps(feed, ensure_ascii=False, indent=2)+"\n", encoding="utf8")
         (root/"download.html").write_text(download_page(version,tag+"/"+link_name), encoding="utf8")
         root.rename(output)

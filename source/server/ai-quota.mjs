@@ -4,7 +4,7 @@ import {createTursoClient} from './turso-client.mjs';
 import {imageSchema,imageReceipts,imageReply,legacyImageEvidence,isProvenLegacyImageFailure} from './image-receipts.mjs';
 export {quotaImageId} from './image-receipts.mjs';
 
-const limits=Object.freeze({chat:20,image:10});
+const limits=Object.freeze({image:15});
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const table='mc_ai_quota_requests';
 const schema=[
@@ -54,7 +54,7 @@ function existingReply(row,op){
       ...(Number(row.consumed)===0?{'x-lychee-ai-retry':'new'}:{})}});
   return problem(409,'这次操作已提交，暂时无法确认结果，请查看历史记录。');
 }
-function exhausted(kind){return problem(429,kind==='chat'?'今日问答 20 次已用完，北京时间零点恢复。':'今日生图 10 次已用完，北京时间零点恢复。');}
+function imageLimitReached(){return problem(429,`今日生图 ${limits.image} 次已用完，北京时间零点恢复。`);}
 
 export async function openAiQuota({quotaFile,turso,legacyDir,clock=Date.now}){
   const db=turso?await createTursoClient({...turso,legacyDir}):sqliteConnection(quotaFile);
@@ -71,7 +71,7 @@ export async function openAiQuota({quotaFile,turso,legacyDir,clock=Date.now}){
       result=await exec(`SELECT kind,count(*) AS n FROM ${table} WHERE account=? AND day=? AND consumed=1 GROUP BY kind`,account,day);
     }
     const used=Object.fromEntries(result.rows.map(r=>[r.kind,Number(r.n)]));
-    return {used,limits,remaining:{chat:Math.max(0,limits.chat-(used.chat||0)),image:Math.max(0,limits.image-(used.image||0))},
+    return {used,limits,remaining:{image:Math.max(0,limits.image-(used.image||0))},
       resetAt:Date.parse(day+'T16:00:00Z')};
   }
   async function find(account,op){
@@ -80,8 +80,8 @@ export async function openAiQuota({quotaFile,turso,legacyDir,clock=Date.now}){
   async function reserve(account,op,day){
     if(op.kind==='image')return images.reserve(account,op,day,limits.image);
     const result=await exec(`INSERT INTO ${table}(account,request_key,signature,day,kind)
-      SELECT ?,?,?,?,? WHERE (SELECT count(*) FROM ${table} WHERE account=? AND day=? AND kind=? AND consumed=1)<?
-      ON CONFLICT(account,request_key) DO NOTHING`,account,op.key,op.signature,day,op.kind,account,day,op.kind,limits[op.kind]);
+      VALUES(?,?,?,?,?)
+      ON CONFLICT(account,request_key) DO NOTHING`,account,op.key,op.signature,day,op.kind);
     return Number(result.rowsAffected)===1;
   }
   async function replay(account,op,row,probe){
@@ -100,10 +100,9 @@ export async function openAiQuota({quotaFile,turso,legacyDir,clock=Date.now}){
     const existing=await find(account,op);
     if(existing)return replay(account,op,existing,getImageInGarden);
     if(op.kind==='image'&&typeof getImageInGarden!=='function')return problem(503,'图片相册尚未就绪，请稍后再试。');
-    // Reject a full day before an original soup handler can create a turn.
-    if(!(await status(account,{gardenId:op.gardenId,getImageInGarden})).remaining[op.kind]){
+    if(op.kind==='image' && !(await status(account,{gardenId:op.gardenId,getImageInGarden})).remaining.image){
       const concurrent=await find(account,op);
-      return concurrent?replay(account,op,concurrent,getImageInGarden):exhausted(op.kind);
+      return concurrent?replay(account,op,concurrent,getImageInGarden):imageLimitReached();
     }
     let sent=false,refundable=false,override=null;
     async function meter(url,options,send){
@@ -114,7 +113,8 @@ export async function openAiQuota({quotaFile,turso,legacyDir,clock=Date.now}){
       const reserved=await reserve(account,op,day);
       if(!reserved){
         const duplicate=await find(account,op);
-        override=duplicate?await replay(account,op,duplicate,getImageInGarden):exhausted(op.kind);
+        if(!duplicate && op.kind!=='image')throw Error('Missing request receipt');
+        override=duplicate?await replay(account,op,duplicate,getImageInGarden):imageLimitReached();
         throw Error('AI request was not reserved');
       }
       sent=true;
