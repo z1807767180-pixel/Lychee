@@ -23,6 +23,8 @@ node server/index.mjs
 
 7.0.0 的饮食记录与设备推送都经过同一服务的 `/api/v7/`。候选部署时，先在隔离环境装入对应版本的服务模块及入口，再检查手机原网址的网页资源。只更新静态页不能启用这些接口。
 
+头脑王者由同一服务的 `/api/v7/quiz` 校验账号与园成员。部署一并携带 `quiz-game.mjs`、`quiz-rounds.mjs` 和服务端题库 `quiz-bank.json`。首次获准访问时创建对局表 `mc_quiz_game`、园内排行表 `mc_quiz_rank` 与结算触发器；对局和星数一起纳入原数据库备份。恢复或回退使用同版本的客户端、服务端模块和题库。
+
 原 Render 手机站的部署命令以 Git 提交固定构建来源。运行 `source/mobile-web/build.py <准备目录>/www` 后，将 `source/mobile-web/start.mjs` 和 `install.mjs` 复制到同一准备目录，保留 `www/` 与其同级的私有 `server-v7/`。原启动器先解包既有代码分片，手机站启动脚本在临时解包目录验证原路由及三个被扩展的 6.4.7 模块，再装入七版服务及手机页面。原数据库、私有分片、旧版签名下载和主屏幕清单沿用原配置。校验不匹配时先核对发布日志，避免以更老的私有分片覆盖在线服务。代码回退使用上一次正常部署的完整构建命令和提交。
 
 - 拍照识别使用现有问答额度和园范围。在服务端启用 `LYCHEE_ENABLE_PROVIDER_CALLS=1`、`LYCHEE_ENABLE_DIET_VISION=1` 后，默认用现有 `DEEPSEEK_API_KEY` 调用支持图像理解的 `deepseek-flash`。已配置方舟的部署继续通过 `LYCHEE_DIET_VISION_MODEL` 指定方舟视觉理解模型或接入点，使用 `ARK_API_KEY`；切回 DeepSeek 时将该值设为 `deepseek-flash`。照片只交给本次选定的提供商，服务不可用时仍可手动记餐。真实照片与付费调用按当轮授权验收。[DeepSeek 图像理解](https://api-docs.deepseek.com/zh-cn/guides/vision/)
