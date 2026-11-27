@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "version": "7.0.4",
+  "assets": [
+    {
+      "kind": "exe",
+      "name": "Lychee.exe",
+      "length": 20372480,
+      "sha256": "d7acd650fba05e1d031932d66e185b3c07bf0fccfb0858890bc79628ad84056f"
+    },
+    {
+      "kind": "msi",
+      "name": "Lychee.msi",
+      "length": 19922944,
+      "sha256": "d93c403d1cb8adc99f48236d5fbe7ba74ca901c430d5cb4279865848e0f385e7"
+    }
+  ]
+}

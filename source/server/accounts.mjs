@@ -39,6 +39,17 @@ export const accountSchema = `CREATE TABLE IF NOT EXISTS mc_accounts(id TEXT PRI
     CREATE TABLE IF NOT EXISTS mc_legacy_slots(slot INTEGER PRIMARY KEY,account TEXT UNIQUE NOT NULL REFERENCES mc_accounts(id),source_digest TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS mc_legacy_sessions(digest TEXT PRIMARY KEY);
     CREATE TABLE IF NOT EXISTS mc_attempts(bucket TEXT PRIMARY KEY,hits INTEGER NOT NULL,until INTEGER NOT NULL);`.split(';').map(sql=>sql.trim()).filter(Boolean);
+export const gardensForAccount = `SELECT g.id,g.name,g.subtitle,g.revision,m.role,
+  (SELECT COUNT(*) FROM mc_members AS other WHERE other.garden=g.id) AS memberCount
+  FROM mc_members m JOIN mc_gardens g ON g.id=m.garden WHERE m.account=? ORDER BY g.name COLLATE NOCASE,g.id`;
+export const circleRoster = `SELECT a.username AS name,m.role,m.slot FROM mc_members m
+  JOIN mc_accounts a ON a.id=m.account WHERE m.garden=?
+  AND EXISTS (SELECT 1 FROM mc_members mine WHERE mine.garden=m.garden AND mine.account=?)
+  ORDER BY CASE m.role WHEN 'owner' THEN 0 ELSE 1 END,m.slot`;
+export function rosterResponse(members) {
+  if (!members.length) reject(403,'需要先加入这个圈子');
+  return json({members:members.map(({name,role,slot})=>({name,role,slot:Number(slot)}))});
+}
 export function publishedNotices(notices) {
   const published=notices.map(({id,title,body})=>{
     if(!textOK(id,128)||!textOK(title,250)||typeof body!=='string')throw Error('Invalid notice.');
@@ -71,7 +82,7 @@ export function createAccounts(db,{notices=[]}={}){
     return s?{...s,tokenHash}:null;
   }
   function state(s){
-    const gardens=all('SELECT g.id,g.name,g.subtitle,g.revision,m.role FROM mc_members m JOIN mc_gardens g ON g.id=m.garden WHERE m.account=? ORDER BY g.name COLLATE NOCASE,g.id',s.accountId);
+    const gardens=all(gardensForAccount,s.accountId);
     const reads=new Set(all('SELECT notice FROM mc_reads WHERE account=?',s.accountId).map(r=>r.notice));
     return {account:{id:s.accountId,username:s.username},gardens,activeGardenId:gardens.some(g=>g.id===s.gardenId)?s.gardenId:null,notices:published.map(n=>({...n,read:reads.has(n.id)}))};
   }
@@ -153,7 +164,9 @@ export function createAccounts(db,{notices=[]}={}){
       const url=new URL(request.url);
       if(!['/api/account','/api/workspace'].includes(url.pathname))return json({error:'未找到'},404);
       if(request.method==='GET'&&url.pathname==='/api/workspace'){
-        const s=resolveSession(request);if(!s)reject(401,'请先登录');return json(state(s));
+        const s=resolveSession(request);if(!s)reject(401,'请先登录');
+        if(url.searchParams.has('members'))return rosterResponse(all(circleRoster,url.searchParams.get('members'),s.accountId));
+        return json(state(s));
       }
       if(request.method!=='POST')return json({error:'不支持此方法'},405);
       if(request.headers.get('origin')!==url.origin)reject(403,'请从应用内操作');

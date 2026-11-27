@@ -91,7 +91,23 @@ def ai_tool_bundle(text):
     return bind_business(text)
 
 
+
+def soup_controls(text):
+    start = '(0,H.jsx)("select",{value:s,"aria-label":'
+    end = ',(0,H.jsx)("a",{href:"https://github.com/spoonnotfound/soupbase'
+    if text.count(start) != 1 or text.count(end) != 1:
+        raise ValueError("Expected one soup draw form")
+    first, last = text.index(start), text.index(end, text.index(start))
+    text = once(text, text[first:last], 'H.jsx(SoupFilters,{genre:s,setGenre:f,data:o,busy:y,start:Q})')
+    text = once(text, 'function u0({members:', (ROOT / 'client/soup-filters.js').read_text(encoding='utf8') + '\nfunction u0({members:')
+    text = once(text, r'e.source.author," \xB7 Soupbase\u3000",e.source.note',
+                'e.source.author," · ",e.source.license,"　",e.source.note')
+    return once(text, 'https://github.com/spoonnotfound/soupbase/blob/main/content/LICENSE.md',
+                'https://github.com/z1807767180-pixel/Lychee/blob/main/source/third-party/README.md')
+
+
 def phone_bundle(text, mobile):
+    text = soup_controls(text)
     text = once(text, 'GS={"ai-chat":', 'GS={diet:"照记饮食",wheel:"交给命运","ai-chat":')
     detail = 'else if(L==="ledger"||L==="focus")'
     text = once(text, detail,

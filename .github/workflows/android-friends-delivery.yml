@@ -89,3 +89,14 @@ jobs:
           fi
       - name: Check the live update channel from the installed app
         run: python3 source/test/android-friends-emulator.py channel "$FRIENDS_VERSION"
+      - name: Upgrade the previous public APK through Android's installer
+        run: |
+          set -euo pipefail
+          previous=$(jq -er .upgradeFrom source/android/friends-release.json)
+          name="Lychee-Friends-V$previous.apk"
+          base="https://github.com/$GITHUB_REPOSITORY/releases/download/android-friends-v$previous"
+          mkdir -p "$RUNNER_TEMP/previous"
+          curl -fsSL --retry 2 "$base/$name" -o "$RUNNER_TEMP/previous/$name"
+          curl -fsSL --retry 2 "$base/SHA256SUMS.txt" -o "$RUNNER_TEMP/previous/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/previous" && sha256sum -c SHA256SUMS.txt)
+          python3 source/test/android-friends-emulator.py upgrade "$previous" "$FRIENDS_VERSION" "$RUNNER_TEMP/previous/$name"

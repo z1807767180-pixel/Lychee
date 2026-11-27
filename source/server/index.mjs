@@ -22,12 +22,27 @@ const publicInfo=Object.freeze({protocol:1,version:'6.4.0',accountApi:'v640',pri
 const accountCatalog=[...mobileNotices,...notices];
 const mobileNoticeIds=new Set(mobileNotices.map(n=>n.id));
 
-async function accountRequest(accounts,url,request,ctx){
+async function accountRequest(accounts,domains,url,request,ctx){
   const response=await accounts.handle(new Request(url,request),ctx);
-  if(!response.ok || !mobileNoticeIds.size || url.pathname!=='/api/workspace' ||
-      url.searchParams.get('client')==='mobile-web')return response;
+  if(response.ok && request.method==='GET' && url.pathname==='/api/workspace' && url.searchParams.has('members')){
+    const session=await accounts.resolveSession(request);
+    const garden=url.searchParams.get('members');
+    const viewer=session && await accounts.resolveMember(session.accountId,garden);
+    if(!viewer)return deny(403,'需要先加入这个圈子');
+    const roster=await response.json();
+    const names=await domains.handle(new Request(new URL('/api/camp?roster=circle-names',url)),viewer);
+    if(!names.ok)return deny(503,'圈内昵称暂时无法读取，请重试');
+    const profiles=new Map((await names.json()).profiles.map(p=>[p.slot,p.name]));
+    return Response.json({members:roster.members.map(({slot,name,role})=>({name:profiles.get(slot)||name,role}))},
+      {headers:response.headers});
+  }
+  if(!response.ok || url.pathname!=='/api/workspace')return response;
+  const audience=url.searchParams.get('client');
   const state=await response.json();
-  state.notices=state.notices.filter(n=>!mobileNoticeIds.has(n.id));
+  state.notices=state.notices.filter(n=>{
+    if(n.id.startsWith('windows-'))return audience===n.id;
+    return !mobileNoticeIds.has(n.id) || audience==='mobile-web';
+  });
   return Response.json(state,{status:response.status,headers:response.headers});
 }
 
@@ -101,7 +116,7 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
     if(path==='/api/client-capabilities'&&request.method==='GET')return Response.json(publicInfo,{headers:{'cache-control':'no-store'}});
     if(path==='/api/v640/account'||path==='/api/v640/workspace')
       url.pathname=path.replace('/api/v640/','/api/');
-    if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,url,request,ctx);
+    if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,domains,url,request,ctx);
     if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'){
       const session=await accounts.resolveSession(request);
       if(!session)return deny(401,'请先登录');

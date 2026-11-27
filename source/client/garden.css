@@ -126,3 +126,5 @@ html .garden-app .ga-circle-entry .ga-photo .circle-banner {display:block;width:
 @container (min-width: 960px) {
   .ga-cards:has(> :nth-child(2)) {grid-template-columns:repeat(2,minmax(0,1fr));}
 }
+
+.ga-roster{list-style:none;padding:0;margin:12px 0}.ga-roster li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #dfd9c9}.ga-roster small{color:#625f52}

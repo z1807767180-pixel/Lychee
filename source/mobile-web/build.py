@@ -15,7 +15,7 @@ from release_notices import account_catalog, check_previous, phone_history, rele
 SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:team-share|workspace-nav)\.js|(?:app\.css|camp\.webp|meadow\.webp)\b)""")
 
 SERVER_MODULES = (
-    "index", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
+    "soup-categories", "index", "accounts", "turso-accounts", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
     "notification-source", "notify-push", "notify-push-transport", "notices",
 )
 
@@ -61,6 +61,7 @@ def build(out):
         # Render copies the complete prepared/ directory. Keep service code outside www/.
         services = out.parent / "server-v7"
         services.mkdir()
+        shutil.copyfile(ROOT / "source/server/circle-puzzles.json", services / "circle-puzzles.json")
         for module in SERVER_MODULES:
             src = ROOT / "source/server" / (module + ".mjs")
             target = services / src.name

@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 import uuid
 
-WINDOWS_VERSION = '7.0.3'
+WINDOWS_VERSION = '7.0.4'
 
 
 def guid(name, instance=None):

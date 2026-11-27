@@ -8,6 +8,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { inflateSync } from 'node:zlib';
 import { createDomains, importLegacyDatabase } from '../server/domains.mjs';
+import puzzlePack from '../server/circle-puzzles.json' with {type:'json'};
 
 const legacyDir = fileURLToPath(new URL('../legacy/', import.meta.url));
 const jpeg = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAABv/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIoAaD3/2Q==';
@@ -35,6 +36,63 @@ async function photo(response, picture) {
   assert.equal(r.headers.get('cache-control'), 'private, no-store');
   assert.deepEqual(Buffer.from(await r.arrayBuffer()), Buffer.from(picture, 'base64'));
 }
+
+test('new soups and riddles can be drawn, played and revealed through the garden API', async t => {
+  const dataDir = await mkdtemp(join(tmpdir(), 'lychee-puzzles-'));
+  const domains = createDomains({dataDir, legacyDir});
+  t.after(async () => { await domains.close(); await rm(dataDir, {recursive:true}); });
+  const player = member('puzzles',1);
+  const get = query => json(api(domains,player,'/api/camp?'+query));
+  const post = payload => json(api(domains,player,'/api/camp',payload));
+  const soupByTitle = new Map(puzzlePack.soups.map(card => [card.title,card]));
+  let soup = await get('soup=1&room=solo'), foundSoup = false;
+  assert.equal(soup.counts['全部'].all,soup.count);
+  assert.equal(soup.counts['全部'].easy+soup.counts['全部'].medium+soup.counts['全部'].hard,soup.count);
+  const empty=Object.entries(soup.counts).flatMap(([genre,row])=>
+    ['easy','medium','hard'].filter(level=>row[level]===0).map(level=>({genre,level})))[0];
+  if(empty){
+    await json(api(domains,player,'/api/camp',{type:'soup',act:'start',room:'solo',round:0,
+      filter:empty.genre,difficulty:empty.level}),409);
+    assert.equal((await get('soup=1&room=solo')).round,null);
+  }
+  for(let draw=0;draw<soup.count && !foundSoup;draw++){
+    await post({type:'soup',act:'start',filter:'全部',room:'solo',round:soup.round?.id || 0});
+    soup=await get('soup=1&room=solo');
+    const card=soupByTitle.get(soup.round.title);
+    assert.equal(soup.round.solution,null);
+    if(card){
+      assert.equal(soup.round.surface,card.surface);
+      assert.equal(soup.round.difficulty,card.difficulty);
+      assert.ok(soup.round.tags.every(name=>soup.filters.includes(name)));
+      await post({type:'soup',act:'hint',room:'solo',round:soup.round.id,hints:0});
+      assert.deepEqual((await get('soup=1&room=solo')).round.hints,[card.hints[0]]);
+    }
+    await post({type:'soup',act:'reveal',room:'solo',round:soup.round.id});
+    soup=await get('soup=1&room=solo');
+    if(card){assert.equal(soup.round.solution,card.solution);foundSoup=true;}
+  }
+  assert.ok(foundSoup,'A new soup must be reachable in the ordinary draw');
+  const riddles=new Map(puzzlePack.riddles.map(card=>[card.id,card]));
+  const deck=puzzlePack.riddles[0].deck;
+  let previous='',foundRiddle=false;
+  for(let draw=0;;draw++){
+    const next=await get('riddles=challenge&format=written&deck='+deck+'&previous='+encodeURIComponent(previous));
+    assert.equal(next.options,undefined);
+    assert.equal(next.solution,undefined);
+    assert.ok(draw<next.total,'A fresh riddle must be available before the deck repeats');
+    previous=next.id;
+    const card=riddles.get(next.id);
+    const payload=card?{guess:card.aliases?.[0] || card.options[card.correct]}:{reveal:true};
+    const answer=await post({type:'riddle-answer',format:'written',question:next.id,practice:next.practice,...payload});
+    if(card){
+      assert.equal(next.prompt,card.prompt);
+      assert.equal(answer.matched,true);
+      assert.equal(answer.solution,card.solution);
+      foundRiddle=true;break;
+    }
+  }
+  assert.ok(foundRiddle);
+});
 
 test('two gardens keep the same local IDs independent, including member 4, images, work and personal reminders', async t => {
   const dataDir = await mkdtemp(join(tmpdir(), 'lychee-domain-test-'));

@@ -15,6 +15,9 @@
   const owner = g => g.role === 'owner';
 
   async function request(path, payload) {
+    if (bundle==='/windows/phone.js' && path.endsWith('/workspace')) {
+      path+='?client=windows-'+encodeURIComponent(document.body.dataset.clientBuild);
+    }
     const opts = {credentials:'same-origin', cache:'no-store', headers:{Accept:'application/json'}};
     if (payload) Object.assign(opts, {method:'POST',headers:{...opts.headers,'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const r = await fetch(path, opts), data = await r.json().catch(() => ({}));
@@ -146,6 +149,27 @@
     });
     box.append(form);actions(box,button('返回园子列表',()=>gardens(fromApp)));
   }
+  const rosterLabel = g => Number.isInteger(g.memberCount) ? '圈成员 · '+g.memberCount+'人' : '圈成员';
+  async function roster(g,fromApp) {
+    const box=frame('圈成员',fromApp),content=el('div');
+    box.append(content);
+    actions(box,button(fromApp?'返回':'返回园子列表',fromApp?dismiss:()=>gardens(false)));
+    try {
+      const {members}=await request('/api/v640/workspace?members='+encodeURIComponent(g.id));
+      if(box!==card)return;
+      if(!Array.isArray(members))throw Error('成员名单暂时无法读取，请重试。');
+      const owners=members.filter(m=>m.role==='owner');
+      content.append(el('h2',g.name+' · '+members.length+'人'),
+        el('p',owners.length?(owners.length>1?'共同圈主：':'圈主：')+owners.map(m=>m.name).join('、'):'圈主暂未登记'));
+      const list=el('ul',null,'ga-roster');
+      for(const m of members){
+        const row=el('li');row.append(el('span',m.name),el('small',m.role==='owner'?'圈主':'成员'));list.append(row);
+      }
+      content.append(list);
+    } catch(error) {
+      if(box===card){say(error.message,true);actions(content,button('重试',()=>roster(g,fromApp)));}
+    }
+  }
   async function invite(g,fromApp) {
     const box=frame('邀请成员',fromApp),info=el('div');
     box.append(el('p',g.name),info);
@@ -176,7 +200,7 @@
       name.append(el('small',owner(g)?'园主':'成员'));line.append(name);
       if(started&&idOf(g.id)===routeId())line.append(button('返回当前园',dismiss));
       else line.append(button('进入',()=>select(g)));
-      line.append(button('邀请成员',()=>invite(g,fromApp)));
+      line.append(button(rosterLabel(g),()=>roster(g,fromApp)),button('邀请成员',()=>invite(g,fromApp)));
       box.append(line);
     }
     actions(box,button('创建私密园',()=>gardenForm('create',fromApp),true),button('加入私密园',()=>gardenForm('join',fromApp)));
@@ -262,6 +286,7 @@
         g.subtitle&&h('p',{className:'circle-sub-line'},g.subtitle),
         h('div',{className:'ga-card-actions'},
           h('button',{type:'button',className:'ga-enter-room',onClick:enterRoom},'进入圈子',h('span',{'aria-hidden':true},'→')),
+          h('button',{type:'button',className:'ga-quiet',onClick:()=>roster(g,true)},rosterLabel(g)),
           h('button',{type:'button',className:'ga-invite',onClick:()=>invite(g,true)},'邀请成员')));
 
     return h('article',{className:'ga-circle-entry','aria-label':g.name},

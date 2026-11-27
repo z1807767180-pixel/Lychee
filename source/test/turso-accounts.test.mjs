@@ -49,6 +49,11 @@ test('原 libSQL HTTP 客户端：并发入园、版本冲突、共享码、账�
     const members=await Promise.all([owner,a,b].map(u=>svc.accounts.resolveMember(u.id,g)));
     assert.deepEqual(members.map(m=>m.slot).sort(),[1,2,3]);assert.equal(members[0].role,'owner');
     assert.equal(await svc.accounts.resolveMember(c.id,g),null);
+    const roster=(await api(svc,'workspace?members='+g,null,a.cookie)).data.members;
+    assert.equal(roster.length,3);
+    assert.deepEqual(roster.filter(user=>user.role==='owner').map(user=>user.name),['owner']);
+    assert.equal((await api(svc,'workspace',null,b.cookie)).data.gardens[0].memberCount,3);
+    await api(svc,'workspace?members='+g,null,c.cookie,403);
     assert.equal(await invite(a),first);
     for(const action of ['invite','rotateInvite','edit']){
       await act(svc,c.cookie,action,{gardenId:g,name:'圈外操作',subtitle:'',revision:1},403);

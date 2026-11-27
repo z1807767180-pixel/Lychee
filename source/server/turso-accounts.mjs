@@ -1,6 +1,6 @@
 import {randomBytes, randomUUID, timingSafeEqual} from 'node:crypto';
 import {
-  accountSchema, cookie, derive, gardenText, hash, InputError, json, LEGACY_GARDEN_ID,
+  accountSchema, circleRoster, gardensForAccount, rosterResponse, cookie, derive, gardenText, hash, InputError, json, LEGACY_GARDEN_ID,
   life, newCookie, oldCookie, publishedNotices, reject, textOK, tokens,
 } from './accounts.mjs';
 
@@ -73,8 +73,7 @@ export async function createTursoAccounts(client, {notices = []} = {}) {
   }
 
   async function state(db, session) {
-    const gardens = await rows(db, `SELECT g.id,g.name,g.subtitle,g.revision,m.role FROM mc_members m
-      JOIN mc_gardens g ON g.id=m.garden WHERE m.account=? ORDER BY g.name COLLATE NOCASE,g.id`, session.accountId);
+    const gardens = await rows(db, gardensForAccount, session.accountId);
     const seen = new Set((await rows(db,'SELECT notice FROM mc_reads WHERE account=?',session.accountId)).map(r => r.notice));
     return {account:{id:session.accountId,username:session.username}, gardens,
       activeGardenId:gardens.some(g => g.id === session.gardenId) ? session.gardenId : null,
@@ -218,7 +217,11 @@ export async function createTursoAccounts(client, {notices = []} = {}) {
       const path=url.pathname.replace(/^\/api\/v640\/(account|workspace)$/,'/api/$1');
       if (!['/api/account','/api/workspace'].includes(path)) return json({error:'未找到'},404);
       if (path==='/api/workspace' && request.method==='GET') {
-        return await transaction(client,'read',async tx => json(await state(tx,await mustAuthenticate(tx,request))));
+        return await transaction(client,'read',async tx => {
+          const session=await mustAuthenticate(tx,request);
+          if(url.searchParams.has('members'))return rosterResponse(await rows(tx,circleRoster,url.searchParams.get('members'),session.accountId));
+          return json(await state(tx,session));
+        });
       }
       if (request.method!=='POST') return json({error:'不支持此方法'},405);
       if (request.headers.get('origin')!==url.origin) reject(403,'请从应用内操作');
