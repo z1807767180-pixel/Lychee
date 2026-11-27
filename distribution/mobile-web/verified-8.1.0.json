@@ -1,0 +1,82 @@
+{
+  "website": "V8.1.0",
+  "origin": "https://lychee-link-check.onrender.com/mobile/",
+  "deployedCommit": "02d498c1a80c32bbb2116db54e772342748d29d2",
+  "deploymentId": "dep-dc4rep6i0phs73bbjeqg",
+  "verifiedAt": "2026-11-27T17:04:36+00:00",
+  "publicReadOnly": true,
+  "releaseWebsiteFiles": 197,
+  "checks": [
+    {
+      "path": "/mobile/",
+      "code": 200,
+      "bytes": 5114,
+      "comparison": "text identical after Windows/Linux newline normalization",
+      "sha256": "a642dec7d5593a10f113d072a8f3be4bad16a79a9042dc019a7854977179b8c7"
+    },
+    {
+      "path": "/mobile/version.txt",
+      "code": 200,
+      "bytes": 6,
+      "comparison": "identical",
+      "sha256": "14e6eb17bfb2bed74871b7ae972ad0ef1a6fdf08966bf35ec7ef279ad87dff57"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-garden-posts.js",
+      "code": 200,
+      "bytes": 12658,
+      "comparison": "identical",
+      "sha256": "003a4ba9753af7523b6107193e0316ff2569463daa74878dd2ece747e42d7e8f"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-v8.js",
+      "code": 200,
+      "bytes": 24279,
+      "comparison": "identical",
+      "sha256": "721997d4eab7bf462de6c86a02a063f97b346db1ec3aa3e5d9936cfa919c8c15"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-v8-garden.css",
+      "code": 200,
+      "bytes": 16672,
+      "comparison": "identical",
+      "sha256": "20da21ce474cfcd9d06596ac84ae01b6ee8617b89e88433baa1f017ed4aba727"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-tools-runtime.js",
+      "code": 200,
+      "bytes": 499533,
+      "comparison": "identical",
+      "sha256": "6befdede7f11489fc8f4ee3a17031640b0b045be1f7802293138714b8c3fac65"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-tools.css",
+      "code": 200,
+      "bytes": 21738,
+      "comparison": "identical",
+      "sha256": "1c94e65d929849b55c208a0ae4a9477a7b11b2154f13a7e2fcd5d292b1b50a63"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-personal.js",
+      "code": 200,
+      "bytes": 14131,
+      "comparison": "identical",
+      "sha256": "f475c77c95a775b4381c38cb4d0415ff33faebd45b9fe702be4de3277a7cfe16"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/social-chat.js",
+      "code": 200,
+      "bytes": 9083,
+      "comparison": "identical",
+      "sha256": "3c6c0110255c96f72767b4c36dce5d718924d1da60b63f6d4e09ce7f1b9591dd"
+    },
+    {
+      "path": "/mobile/assets-8.1.0/client/garden-question-supper.webp",
+      "code": 200,
+      "bytes": 26528,
+      "comparison": "identical",
+      "sha256": "3edcd416c69db19c1cc02fd7ca09b2b23ddd9500e39f37d200c62efffd5da8b5"
+    }
+  ],
+  "liveAt": "2026-11-27T17:03:04.688892Z"
+}
