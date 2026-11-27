@@ -31,6 +31,9 @@
     nav.setAttribute('aria-label','主导航');alert.setAttribute('role','status');scroll.append(main);shell.append(bar,alert,scroll,nav);root.replaceChildren(shell);
     let home=null,route={view:'home',params:{}},sequence=0,timer,snapshot='',busy=false,activeData;
     const stack=[],drafts=new Map(),unreadPositions=new Map();
+    const bridge=document.body.dataset.app==='/windows/phone.js'?window.chrome?.webview:null;
+    let nativeActive=false,refreshing=false;
+    const foreground=()=>!document.hidden&&(!bridge||nativeActive);
     const calling=fn=>async(...args)=>{try{return await fn(...args);}catch(error){if(error.status===401){location.reload();return;}notice(error.message||'暂时无法连接，请重试。');}};
     function notice(msg){alert.textContent=msg||'';}
     async function mutate(action,fields){return api.write(action,fields);}
@@ -70,7 +73,7 @@
       return null;
     }
     async function mark(view,params,data){
-      if(!data||!['group','dm','feed'].includes(view))return;
+      if(!foreground()||!data||!['group','dm','feed'].includes(view))return;
       const key=view+':'+(params.id||params.kind),marker=String(data.through||0)+'/'+String(data.legacyThrough||0);
       if(unreadPositions.get(key)===marker||marker==='0/0')return;
       const scope=view==='group'?{groupId:params.id}:view==='dm'?{friendId:params.id}:{kind:params.kind};
@@ -80,13 +83,17 @@
     const ui={h,btn,go,api,main,mutate,formField,notice,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),repaint:()=>refresh(true)};
     Object.defineProperties(ui,{home:{get:()=>home},route:{get:()=>route}});
     async function refresh(force=false){
-      const token=++sequence,{view,params}=route,key=JSON.stringify(route);
+      const token=++sequence,{view,params}=route,key=JSON.stringify(route);refreshing=true;
       try{
         const details=await loadData(view,params);
         if(token!==sequence||!shell.isConnected)return;
         await mark(view,params,details);
         const latest=await api.read('home');
         if(token!==sequence||!shell.isConnected)return;
+        if(bridge&&home&&!foreground()){
+          const previous=new Map([...home.groups,...home.friends].map(c=>[c.id,c.unread]));
+          if([...latest.groups,...latest.friends].some(c=>c.unread>(previous.get(c.id)||0)))bridge.postMessage('notify:attention');
+        }
         home=latest;activeData=details;drawNav();
         const signature=JSON.stringify([key,home,details]);
         if(!force&&(signature===snapshot||main.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select')||view==='legacy'))return;
@@ -102,7 +109,7 @@
           const a=h('a','检查安卓更新','s8-upgrade');a.href='lychee-android://settings/update';main.append(h('p','此安卓版本需要升级才能打开新版荔圈。'),a);
         }
       }finally{
-        if(token===sequence){clearTimeout(timer);if(shell.isConnected)timer=setTimeout(()=>document.hidden||busy?refreshDeferred():refresh(false),['group','dm'].includes(view)?4000:12000);}
+        if(token===sequence){refreshing=false;clearTimeout(timer);if(shell.isConnected)timer=setTimeout(()=>document.hidden||busy?refreshDeferred():refresh(false),['group','dm'].includes(view)?4000:12000);}
       }
     }
     function refreshDeferred(){clearTimeout(timer);if(shell.isConnected)timer=setTimeout(()=>document.hidden||busy?refreshDeferred():refresh(false),4000);}
@@ -278,6 +285,16 @@
       }
       if(dest==='quiz')return go('selectGroup',{dest});
     });
+    if(bridge){
+      bridge.addEventListener('message',event=>{
+        if(!shell.isConnected)return;
+        if(event.data==='notify:active')nativeActive=true;
+        else if(event.data==='notify:inactive')nativeActive=false;
+        else if(event.data!=='notify:poll')return;
+        if(!busy&&!refreshing&&home)void refresh();
+      });
+      bridge.postMessage('notify:state');
+    }
     if(initialGroup)route={view:'group',params:{id:initialGroup}};
     refresh(true);
     return {go,home:()=>tab('home')};
