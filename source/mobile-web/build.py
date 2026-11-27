@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / 'source'))
 from chat_build import journal, notifications, phone as mobile_chat
 from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
 from windows_updates import prepare as prepare_windows_updates
+from android_updates import prepare as prepare_android_updates
 
 SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:team-share|workspace-nav)\.js|(?:app\.css|camp\.webp|meadow\.webp)\b)""")
 
@@ -65,6 +66,8 @@ def build(out):
     if out.name == "www":
         if os.environ.get("RENDER") == "true":
             prepare_windows_updates(ROOT / "distribution/windows/stable.json", out / "windows-update")
+            prepare_android_updates(ROOT / "source/android/friends-release.json",
+                                   ROOT / "distribution/android-friends", out / "android-update")
         # Render copies the complete prepared/ directory. Keep service code outside www/.
         services = out.parent / "server-v7"
         services.mkdir()

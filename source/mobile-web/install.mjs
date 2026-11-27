@@ -44,6 +44,28 @@ export async function installService(folder) {
   if(oldCount===1)await writeFile(server,entry.replace(oldRoutes,newRoutes));
 }
 
+async function installAndroidUpdates(webRoot) {
+  const source = new URL('./www/android-update/', import.meta.url);
+  const manifest = await readFile(new URL('current.json', source));
+  const {version, sha256} = JSON.parse(manifest);
+  if (!/^(?:0|[1-9][0-9]?)(?:\.(?:0|[1-9][0-9]?)){2}$/.test(version)) {
+    throw Error('Invalid Android friends release version');
+  }
+  const tag = 'android-friends-v'+version;
+  const name = 'Lychee-Friends-V'+version+'.apk';
+  const apk = await readFile(new URL(tag+'/'+name, source));
+  if (createHash('sha256').update(apk).digest('hex') !== sha256) {
+    throw Error('Prepared Android friends APK does not match its release manifest');
+  }
+  const page = await readFile(new URL('download.html', source));
+  const target = join(webRoot, 'android-update');
+  await mkdir(target);
+  await mkdir(join(target,tag));
+  await writeFile(join(target,tag,name),apk);
+  await writeFile(join(target,'download.html'),page);
+  await writeFile(join(target,'current.json'),manifest);
+}
+
 export async function install(webRoot) {
   const mobile = new URL('./www/mobile/', import.meta.url);
   const version = (await readFile(new URL('version.txt', mobile), 'utf8')).trim();
@@ -66,5 +88,6 @@ export async function install(webRoot) {
     await cp(new URL('./www/windows-update/', import.meta.url), join(webRoot, 'windows-update'), {
       recursive: true, errorOnExist: true, force: false,
     });
+    await installAndroidUpdates(webRoot);
   }
 }
