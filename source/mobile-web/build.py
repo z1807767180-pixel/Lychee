@@ -1,5 +1,6 @@
 """Prepare the mobile web distribution from the checked-out release sources."""
 import re
+import os
 import shutil
 import sys
 import tempfile
@@ -12,6 +13,7 @@ from mobile_assets import pack_checkout
 sys.path.insert(0, str(ROOT / 'source'))
 from chat_build import journal, notifications, phone as mobile_chat
 from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
+from windows_updates import prepare as prepare_windows_updates
 
 SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:team-share|workspace-nav)\.js|(?:app\.css|camp\.webp|meadow\.webp)\b)""")
 
@@ -61,6 +63,8 @@ def build(out):
     chat = out / "mobile/chat.js"
     chat.write_bytes((ROOT / "source/client/chat-inbox.js").read_bytes() + b"\n" + chat.read_bytes())
     if out.name == "www":
+        if os.environ.get("RENDER") == "true":
+            prepare_windows_updates(ROOT / "distribution/windows/stable.json", out / "windows-update")
         # Render copies the complete prepared/ directory. Keep service code outside www/.
         services = out.parent / "server-v7"
         services.mkdir()

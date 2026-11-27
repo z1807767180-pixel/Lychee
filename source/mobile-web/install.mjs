@@ -62,4 +62,9 @@ export async function install(webRoot) {
     if (error.code !== 'EEXIST') throw error;
   }
   await cp(mobile, target, { recursive: true, filter: source => !source.endsWith('app.webmanifest') });
+  if (process.env.RENDER === 'true') {
+    await cp(new URL('./www/windows-update/', import.meta.url), join(webRoot, 'windows-update'), {
+      recursive: true, errorOnExist: true, force: false,
+    });
+  }
 }
