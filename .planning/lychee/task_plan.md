@@ -18,7 +18,7 @@
 
 ## 安卓软件内更新
 
-跟进朋友在厂商真机上的覆盖升级反馈。现行 A8.1.2 只从荔枝官网更新。首次从旧版过渡且要求全程只连官网时，可从[安卓官网下载页](https://lychee-link-check.onrender.com/android-update/download.html)取得原签名包，按系统确认覆盖。[项目交接](../../docs/项目交接.md)
+跟进朋友在厂商真机上的覆盖升级反馈。现行 A8.1.3 只从荔枝官网更新。首次从旧版过渡且要求全程只连官网时，可从[安卓官网下载页](https://lychee-link-check.onrender.com/android-update/download.html)取得原签名包，按系统确认覆盖。[项目交接](../../docs/项目交接.md)
 
 ## Windows 软件内自动更新
 
