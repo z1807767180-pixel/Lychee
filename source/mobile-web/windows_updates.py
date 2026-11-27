@@ -41,7 +41,7 @@ class RepositoryRedirect(HTTPRedirectHandler):
         return super().redirect_request(request, response, code, message, headers, new_url)
 
 
-def prepare(manifest, output):
+def prepare_packages(manifest, root):
     data = manifest.read_bytes()
     if len(data) > 16384:
         raise ValueError("Windows manifest too large")
@@ -54,33 +54,44 @@ def prepare(manifest, output):
             or len(release["assets"]) != 2):
         raise ValueError("Invalid Windows stable release")
     assets = {row["kind"]: row for row in release["assets"]}
-    if set(assets) != {"exe", "msi"} or output.exists():
+    if set(assets) != {"exe", "msi"}:
         raise ValueError("Need both Windows packages and a new output directory")
     opener = build_opener(RepositoryRedirect())
+    tag = "windows-v" + version
+    package_dir = root / tag
+    package_dir.mkdir(parents=True)
+    for kind, asset in assets.items():
+        name = "Lychee." + kind
+        length = asset["length"]
+        if (asset["name"] != name or type(length) is not int or not 0 < length <= MAX_PACKAGE
+                or not re.fullmatch(r"[0-9a-f]{64}", asset["sha256"])):
+            raise ValueError("Invalid Windows package metadata")
+        request = Request(RELEASES + tag + "/" + name, headers={"User-Agent": "Lychee-release"})
+        actual, digest = 0, hashlib.sha256()
+        with opener.open(request, timeout=65) as response, (package_dir / name).open("xb") as package:
+            if response.status != 200:
+                raise ValueError("Windows package is unavailable")
+            while block := response.read(256 * 1024):
+                actual += len(block)
+                if actual > length:
+                    raise ValueError("Windows package too large")
+                digest.update(block)
+                package.write(block)
+        if actual != length or digest.hexdigest() != asset["sha256"]:
+            raise ValueError("Windows package did not match the pinned release manifest")
+    return version, data
+
+
+def prepare(manifest, output):
+    if output.exists():
+        raise ValueError("Windows update output directory already exists")
     with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
         root = Path(tmp) / "windows-update"
-        tag = "windows-v" + version
-        package_dir = root / tag
-        package_dir.mkdir(parents=True)
-        for kind, asset in assets.items():
-            name = "Lychee." + kind
-            length = asset["length"]
-            if (asset["name"] != name or type(length) is not int or not 0 < length <= MAX_PACKAGE
-                    or not re.fullmatch(r"[0-9a-f]{64}", asset["sha256"])):
-                raise ValueError("Invalid Windows package metadata")
-            request = Request(RELEASES + tag + "/" + name, headers={"User-Agent": "Lychee-release"})
-            actual, digest = 0, hashlib.sha256()
-            with opener.open(request, timeout=65) as response, (package_dir / name).open("xb") as package:
-                if response.status != 200:
-                    raise ValueError("Windows package is unavailable")
-                while block := response.read(256 * 1024):
-                    actual += len(block)
-                    if actual > length:
-                        raise ValueError("Windows package too large")
-                    digest.update(block)
-                    package.write(block)
-            if actual != length or digest.hexdigest() != asset["sha256"]:
-                raise ValueError("Windows package did not match the pinned release manifest")
+        version, data = prepare_packages(manifest, root)
+        if version != "8.1.1":
+            previous = manifest.with_name("stable-8.1.1.json")
+            if previous.is_file():
+                prepare_packages(previous, root)
         (root / "stable.json").write_bytes(data)
         (root / "download.html").write_text(download_page(version), encoding="utf8")
         root.rename(output)
