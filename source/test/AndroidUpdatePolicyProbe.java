@@ -190,7 +190,9 @@ public final class AndroidUpdatePolicyProbe {
         // This local PackageInfo models an earlier friends installation without changing guest registration.
         Field installed=shell.getDeclaredField("installed");installed.setAccessible(true);
         PackageInfo current=(PackageInfo)installed.get(instance);
-        PackageInfo target=pm.getPackageArchiveInfo(official.getPath(),PackageManager.GET_SIGNING_CERTIFICATES);
+        int archiveFlags=PackageManager.GET_SIGNING_CERTIFICATES;
+        if(android.os.Build.VERSION.SDK_INT==28)archiveFlags|=PackageManager.GET_SIGNATURES;
+        PackageInfo target=pm.getPackageArchiveInfo(official.getPath(),archiveFlags);
         require(target!=null && version.equals(target.versionName),"bad Android test input");
         activity.packageName="dev.lychee.friends";
         current.setLongVersionCode(target.getLongVersionCode()-1);
@@ -208,7 +210,7 @@ public final class AndroidUpdatePolicyProbe {
         require(!(Boolean)invoke(trusted,null,(Object)platform),"unrelated Android certificate trusted");
         done("actualSystemCertificateRejected");
         if(wrongSigner!=null){
-            PackageInfo wrong=pm.getPackageArchiveInfo(wrongSigner.getPath(),PackageManager.GET_SIGNING_CERTIFICATES);
+            PackageInfo wrong=pm.getPackageArchiveInfo(wrongSigner.getPath(),archiveFlags);
             require(wrong!=null&&wrong.packageName.equals(target.packageName)&&wrong.versionName.equals(version)&&
                     wrong.getLongVersionCode()==target.getLongVersionCode(),"wrong-signer control must have the same package and version");
             require(!(Boolean)invoke(trusted,null,(Object)wrong.signingInfo.getApkContentsSigners()),"invalid control signer");

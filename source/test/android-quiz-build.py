@@ -15,8 +15,7 @@ def replace_once(path, original, replacement):
     path.write_text(text.replace(original, replacement), encoding="utf-8")
 
 
-def build(folder):
-    src = Path(__file__).resolve().parents[1] / "android"
+def build(folder,src,public_updater=False):
     folder.mkdir(exist_ok=False)
     qa = folder / "shell"
     shutil.copytree(src, qa, ignore=shutil.ignore_patterns("node_modules", "build", ".gradle", "www", "__pycache__"))
@@ -29,10 +28,11 @@ def build(folder):
     main = app / "src/main"
     java = main / "java/dev/lychee/pilot"
     replace_once(java / "MainActivity.java", '"lychee-link-check.onrender.com"', f'"{authority}"')
-    replace_once(java / "ShellUpdates.java", '"https://lychee-link-check.onrender.com/android-update/"',
-                 f'"https://{authority}/qa-update/"')
-    replace_once(java / "ShellUpdates.java", '"https://github.com/"+REPO+"/releases/download/"',
-                 f'"https://{authority}/qa-fallback/"')
+    if not public_updater:
+        replace_once(java / "ShellUpdates.java", '"https://lychee-link-check.onrender.com/android-update/"',
+                     f'"https://{authority}/qa-update/"')
+        replace_once(java / "ShellUpdates.java", '"https://github.com/"+REPO+"/releases/download/"',
+                     f'"https://{authority}/qa-fallback/"')
     replace_once(app / "build.gradle", 'applicationId "dev.lychee.friends"', 'applicationId "dev.lychee.quizqa"')
     conf = qa / "capacitor.config.json"
     config = json.loads(conf.read_text(encoding="utf-8"))
@@ -53,10 +53,12 @@ def build(folder):
                     "-CAcreateserial", "-in", "server.csr", "-extfile", "server.ext", "-out", "server.pem"],
                    cwd=folder, check=True)
     shutil.copyfile(folder / "ca.pem", resources / "raw/quiz_test_ca.pem")
-    (resources / "xml/quiz_network.xml").write_text(
-        '<network-security-config><base-config cleartextTrafficPermitted="false"><trust-anchors>'
-        '<certificates src="@raw/quiz_test_ca"/></trust-anchors></base-config></network-security-config>',
-        encoding="utf-8")
+    test_trust='<trust-anchors><certificates src="@raw/quiz_test_ca"/></trust-anchors>'
+    network=('<base-config cleartextTrafficPermitted="false">'+test_trust+'</base-config>')
+    if public_updater:
+        network=('<base-config cleartextTrafficPermitted="false"><trust-anchors><certificates src="system"/>'
+                 '</trust-anchors></base-config><domain-config><domain>127.0.0.1</domain>'+test_trust+'</domain-config>')
+    (resources / "xml/quiz_network.xml").write_text('<network-security-config>'+network+'</network-security-config>',encoding="utf-8")
     replace_once(main / "AndroidManifest.xml", "<application", '<application android:networkSecurityConfig="@xml/quiz_network"')
     (qa / "www").mkdir()
     (qa / "www/index.html").write_bytes(BOOT)
@@ -73,4 +75,7 @@ def build(folder):
 if __name__ == "__main__":
     cli = argparse.ArgumentParser()
     cli.add_argument("new_directory", type=Path)
-    build(cli.parse_args().new_directory.resolve())
+    cli.add_argument("--source",type=Path,default=Path(__file__).resolve().parents[1]/"android")
+    cli.add_argument("--public-updater",action="store_true",help="In this isolated application ID, preserve the released shell's read-only HTTPS update check")
+    args=cli.parse_args()
+    build(args.new_directory.resolve(),args.source.resolve(),args.public_updater)

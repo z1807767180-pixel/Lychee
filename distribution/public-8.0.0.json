@@ -1,5 +1,11 @@
 {
-  "timestamp": "2026-11-27T09:38:19Z",
+  "website": "V8.0.0",
+  "android": "A8.0.1",
+  "windows": "W8.0.0",
+  "websiteSourceCommit": "a8a2cfa9b770e4a7e4ba59e531b8506c42012de6",
+  "deployedCommit": "f2a8a536407507a5738d6205154abf0210ed1d9d",
+  "deploymentId": "dep-dc4l9nh5efls739pkdjg",
+  "timestamp": "2026-11-27T10:04:29Z",
   "origin": "https://lychee-link-check.onrender.com",
   "publicReadOnly": true,
   "checks": [
@@ -42,14 +48,35 @@
       "path": "/android-update/download.html",
       "status": 200,
       "bytes": 824,
-      "sha256": "3307514bb73ea007a1ad6b0d1ba4d9d8d4771a843137ec6f669053399a3522d2",
+      "sha256": "285a82b190ba779ea94240fd1e191a210a21921275c2a49fef0c68e3a63fe34e",
       "etag": null
     },
     {
       "path": "/android-update/current.json",
       "status": 200,
-      "bytes": 269,
-      "sha256": "eda991f151394fa91ab3738c98171ffd382a69d3bab67e9ffc5bf7bd89b095ac",
+      "bytes": 281,
+      "sha256": "af6e313bd50581af90b6d693ed306bbc445e9a253199a406230f9e8b4e792ace",
+      "etag": null
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.1/Lychee-Friends-A8.0.1.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "etag": null
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.1/Lychee-Friends-V8.0.1.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "etag": null
+    },
+    {
+      "path": "/windows-update/stable.json",
+      "status": 200,
+      "bytes": 400,
+      "sha256": "6a990a8d719b48f2f0c5f4846206af0f6dda1001e0deb9097124ffc082d3f9c6",
       "etag": null
     },
     {
@@ -64,13 +91,6 @@
       "status": 200,
       "bytes": 3007817,
       "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
-      "etag": null
-    },
-    {
-      "path": "/windows-update/stable.json",
-      "status": 200,
-      "bytes": 400,
-      "sha256": "6a990a8d719b48f2f0c5f4846206af0f6dda1001e0deb9097124ffc082d3f9c6",
       "etag": null
     },
     {

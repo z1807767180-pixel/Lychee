@@ -1,0 +1,261 @@
+{
+  "verifiedAtUtc": "2026-11-27T10:14:57+00:00",
+  "package": "dev.lychee.friends",
+  "version": "8.0.1",
+  "versionCode": 80001,
+  "title": "荔枝朋友版 A8.0.1",
+  "apkBytes": 3007817,
+  "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45976367587",
+  "officialDelivery": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45978928209",
+  "deliveryCommit": "978c58996c2dece6342b9e9b45b521d7b57e37d1",
+  "deliveryJob": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45978928209/job/140437589806",
+  "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/android-friends-v8.0.1",
+  "githubFiles": {
+    "Lychee-Friends-A8.0.1.apk": "sha256:a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+    "Lychee-Friends-V8.0.1.apk": "sha256:a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c"
+  },
+  "githubFeedMatchesOfficial": true,
+  "websiteRelease": {
+    "parent": "a8a2cfa9b770e4a7e4ba59e531b8506c42012de6",
+    "commit": "f2a8a536407507a5738d6205154abf0210ed1d9d",
+    "deploy": "dep-dc4l9nh5efls739pkdjg",
+    "verified": {
+      "officialFeed": {
+        "version": "8.0.1",
+        "note": "修复安卓 9 对正式更新包签名的读取。安卓 9 用户若仍在旧版，请从荔枝官网下载本版并覆盖安装一次，原有资料会保留。",
+        "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c"
+      },
+      "manifestSha256": "af6e313bd50581af90b6d693ed306bbc445e9a253199a406230f9e8b4e792ace",
+      "publicFiles": {
+        "/android-update/android-friends-v8.0.0/Lychee-Friends-A8.0.0.apk": {
+          "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+          "bytes": 3007817,
+          "status": 200,
+          "redirects": 0
+        },
+        "/android-update/android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk": {
+          "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+          "bytes": 3007817,
+          "status": 200,
+          "redirects": 0
+        },
+        "/android-update/android-friends-v8.0.1/Lychee-Friends-A8.0.1.apk": {
+          "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+          "bytes": 3007817,
+          "status": 200,
+          "redirects": 0
+        },
+        "/android-update/android-friends-v8.0.1/Lychee-Friends-V8.0.1.apk": {
+          "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+          "bytes": 3007817,
+          "status": 200,
+          "redirects": 0
+        }
+      },
+      "downloadPage": "/android-update/download.html",
+      "mobile": "8.0.0",
+      "windows": "8.0.0"
+    }
+  },
+  "browserSavedName": {
+    "browser": "Edge 158.0.4370.33",
+    "profile": "iPhone 13 viewport",
+    "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.0.1/Lychee-Friends-A8.0.1.apk",
+    "savedName": "Lychee-Friends-A8.0.1.apk",
+    "filenameChosenByBrowser": true,
+    "actualDownloadDirectory": true,
+    "verifiedPublicAssetRelay": true,
+    "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c"
+  },
+  "previousPublicA8InAppOnAndroid15": {
+    "from": "8.0.0",
+    "to": "8.0.1",
+    "installedSha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+    "platform": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "appUid": "10210",
+    "testedUpdaterDex": {
+      "classes.dex": "5fe9c9a02f99b67fd30b4c90a3edfdbc438f77f8a2b42e7dcd20c96bc0f6f846"
+    },
+    "directIPv4AndIPv6Rejected": true,
+    "systemConfirmationRequired": true,
+    "officialLoginVisible": true,
+    "officialColdLaunchLoginVisible": true,
+    "officialWebVersionViaTunnel": "8.0.0"
+  },
+  "previousPublicA8InAppRejectedOnAndroid9": {
+    "oldApp": "8.0.0",
+    "offered": "8.0.1",
+    "completeReceivedBytes": 3007817,
+    "oldUpdaterCachedFileSha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+    "packageManagerFlags": [
+      {
+        "flags": 134217728,
+        "package": "dev.lychee.friends",
+        "version": "8.0.1",
+        "code": 80001,
+        "legacySignatures": [],
+        "signingInfo": false
+      },
+      {
+        "flags": 64,
+        "package": "dev.lychee.friends",
+        "version": "8.0.1",
+        "code": 80001,
+        "legacySignatures": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ],
+        "signingInfo": false
+      },
+      {
+        "flags": 134217792,
+        "package": "dev.lychee.friends",
+        "version": "8.0.1",
+        "code": 80001,
+        "legacySignatures": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ],
+        "signingInfo": true,
+        "signers": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ]
+      }
+    ],
+    "manualOfficialUrl": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.0.1/Lychee-Friends-A8.0.1.apk",
+    "manualDownloadSha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c"
+  },
+  "manualUpdateOnAndroid9": {
+    "from": "8.0.0",
+    "to": "8.0.1",
+    "android": "9",
+    "webView": "69.0.3497.100",
+    "installedSha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+    "androidReceivedOfficialAAsset": true,
+    "systemConfirmationRequired": true,
+    "usedFilesDownloads": true,
+    "officialColdLaunchLoginVisible": true
+  },
+  "correctedUpdaterInAppOnAndroid9": {
+    "from": "8.0.0",
+    "to": "8.0.1",
+    "installedSha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+    "platform": "google/sdk_gphone_x86_64/generic_x86_64:9/PSR1.180720.122/6736742:userdebug/dev-keys",
+    "appUid": "10091",
+    "testedUpdaterDex": {
+      "classes.dex": "0046bf0ab83c7da3eb8a761e1e182560964bcafccc9183708351ea1f62a49e4b"
+    },
+    "directIPv4AndIPv6Rejected": true,
+    "systemConfirmationRequired": true,
+    "reopenFrom": "launcher",
+    "officialLoginVisible": true,
+    "officialColdLaunchLoginVisible": true,
+    "officialWebVersionViaTunnel": "8.0.0"
+  },
+  "correctedUpdaterFixture": "Unpublished release-signed baseline with only versionName 8.0.0 / versionCode 80000 substituted for 8.0.1 / 80001. Two bytes changed in AndroidManifest.xml; all 408 other ZIP entries, including executable code, are identical to the official APK. Update obtained from the real official site via the in-app update and installed by the Android package installer.",
+  "signedPolicyProbes": [
+    {
+      "apkVersion": "8.0.1",
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "passedCases": {
+        "officialManifestOnly": true,
+        "unavailableOriginUsesApprovedGithubCdn": true,
+        "coldOriginRetriedAfterGithubUnavailable": true,
+        "originRedirectRejected": true,
+        "malformedManifestStopsAtOrigin": true,
+        "unexpectedEncodingRejected": true,
+        "oversizedManifestRejected": true,
+        "untrustedFallbackRedirectRejected": true,
+        "zeroByteEofAndTimeoutRetryCleanly": true,
+        "partialEofAndPartialTimeoutDoNotSwitchSource": true,
+        "partialHttpStatusRejected": true,
+        "correctAndIncorrectFullApkDigest": true,
+        "validFriendsArchiveAndWrongPackageOrVersion": true,
+        "actualSystemCertificateRejected": true,
+        "samePackageAndVersionDifferentSignerRejected": true
+      },
+      "passed": true,
+      "api": 28,
+      "alternateApkSha256": "da368ad5680d9cd6e8246efde74448e50ff099b4e795d85c9ecd833d1bebeb23"
+    },
+    {
+      "apkVersion": "8.0.1",
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "passedCases": {
+        "officialManifestOnly": true,
+        "unavailableOriginUsesApprovedGithubCdn": true,
+        "coldOriginRetriedAfterGithubUnavailable": true,
+        "originRedirectRejected": true,
+        "malformedManifestStopsAtOrigin": true,
+        "unexpectedEncodingRejected": true,
+        "oversizedManifestRejected": true,
+        "untrustedFallbackRedirectRejected": true,
+        "zeroByteEofAndTimeoutRetryCleanly": true,
+        "partialEofAndPartialTimeoutDoNotSwitchSource": true,
+        "partialHttpStatusRejected": true,
+        "correctAndIncorrectFullApkDigest": true,
+        "validFriendsArchiveAndWrongPackageOrVersion": true,
+        "actualSystemCertificateRejected": true,
+        "samePackageAndVersionDifferentSignerRejected": true
+      },
+      "passed": true,
+      "api": 35,
+      "alternateApkSha256": "da368ad5680d9cd6e8246efde74448e50ff099b4e795d85c9ecd833d1bebeb23"
+    }
+  ],
+  "isolatedSocialAcceptance": [
+    {
+      "system": "9",
+      "webView": "Current WebView package (name, version): (com.android.chrome, 69.0.3497.100)",
+      "qaApkSha256": "51f2b7e28c73a79fe1553812b8c29a6cc926f6882eca79909927d6c76fe37ee4",
+      "social": {
+        "privateMessage": true,
+        "groupMessage": true,
+        "friendConfirmation": true,
+        "homeRetained": true,
+        "updateLabel": "检查安卓更新 · A8.0.1",
+        "versionLabel": "安卓 A8.0.1"
+      },
+      "wheel": {
+        "banner": [
+          642,
+          147
+        ],
+        "ratio": 4.367873491468997,
+        "center": [
+          82,
+          82
+        ],
+        "embedded": true
+      },
+      "quizRounds": 5
+    },
+    {
+      "system": "15",
+      "webView": "Current WebView package (name, version): (com.google.android.webview, 124.0.6367.219)",
+      "qaApkSha256": "51f2b7e28c73a79fe1553812b8c29a6cc926f6882eca79909927d6c76fe37ee4",
+      "social": {
+        "privateMessage": true,
+        "groupMessage": true,
+        "friendConfirmation": true,
+        "homeRetained": true,
+        "updateLabel": "检查安卓更新 · A8.0.1",
+        "versionLabel": "安卓 A8.0.1"
+      },
+      "wheel": {
+        "banner": [
+          642,
+          147
+        ],
+        "ratio": 4.367480777928539,
+        "center": [
+          82,
+          82
+        ],
+        "embedded": true
+      },
+      "quizRounds": 5
+    }
+  ],
+  "limits": "Android 9 and 15 emulators used their real package installers and WebViews. No physical owner device or production account was used. There was no public future version during this test."
+}

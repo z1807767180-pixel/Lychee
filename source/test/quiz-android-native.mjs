@@ -11,7 +11,9 @@ import {createApp, serveRequest} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 import {verifySocial} from './android-social-ui.mjs';
 
-const [folderArg, webArg, evidenceArg, legacyProfile] = process.argv.slice(2);
+const [folderArg, webArg, evidenceArg, inputProfile] = process.argv.slice(2);
+const oldShell=inputProfile==='old-shell';
+const legacyProfile=oldShell?null:inputProfile;
 if (!folderArg || !webArg || !evidenceArg) throw Error('Pass QA build, prepared mobile directory and evidence directory');
 if (legacyProfile && !['missing-timeout', 'missing-controller'].includes(legacyProfile)) throw Error('Unknown WebView profile');
 const folder = resolve(folderArg), evidence = resolve(evidenceArg);
@@ -124,8 +126,26 @@ try {
   const [name,value]=player.cookie.split('=');
   assert.ok((await browser.call('Network.setCookie',{name,value,url:origin+'/',path:'/',secure:true,httpOnly:true})).success);
   await browser.call('Page.navigate',{url:origin+'/mobile/'+(v8?'':'?garden='+garden)});
+  if(oldShell){
+    await until(()=>browser.js("!!document.querySelector('.s8-upgrade')"),'旧版安卓检查更新入口',55000);
+    assert.equal(await browser.js("window.lycheeShellSettings&&!window.lycheeAndroidShellVersion"),true);
+    assert.ok(browser.responses.some(([s,path])=>s===403&&path==='/api/v8/social'));
+    await screenshot('old-shell-update-link');
+    const ui=()=>{
+      adb('shell','uiautomator','dump','/sdcard/lychee-old-update.xml');
+      return adb('exec-out','cat','/sdcard/lychee-old-update.xml');
+    };
+    const dismiss=ui().match(/<node\b[^>]*text="稍后"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]/);
+    if(dismiss)adb('shell','input','tap',String((+dismiss[1]+ +dismiss[3])>>1),String((+dismiss[2]+ +dismiss[4])>>1));
+    const point=await browser.js("(()=>{const a=document.querySelector('.s8-upgrade');a.scrollIntoView();const b=a.getBoundingClientRect();return{x:b.left+b.width/2,y:b.top+b.height/2}})()");
+    for(const type of ['mousePressed','mouseReleased'])await browser.call('Input.dispatchMouseEvent',{type,...point,button:'left',clickCount:1});
+    const offer=await until(()=>ui().match(/可以更新到 (V\d+\.\d+\.\d+)/)?.[1],'旧版原生更新对话框',180000);
+    await screenshot('old-shell-native-offer');
+    report.oldShell={socialBlocked:403,recoveryLink:true,nativeOffer:offer};report.pass=true;
+  }else{
   if (v8) {
-    report.social=await verifySocial({browser,click,until,screenshot,api,player,friend,joined,garden});
+    const shellVersion=adb('shell','dumpsys','package',pkg).match(/\bversionName=(\d+\.\d+\.\d+)/)[1];
+    report.social=await verifySocial({browser,click,until,screenshot,api,player,friend,joined,garden,shellVersion});
   } else await until(()=>browser.js("!!(document.querySelector('.ga-circle-list')||{}).offsetWidth"),'garden landing');
   if (legacyProfile) {
     await screenshot('01-local-garden');
@@ -182,6 +202,7 @@ try {
   for(const method of ['GET','POST'])assert.ok(quizResponses.some(([m,status])=>m===method&&status===200),'Android WebView '+method);
   assert.ok(quizResponses.every(([,status])=>status<400));
   report.webviewQuizRequests=quizResponses.length; report.pass=true;
+  }
 } catch(error) {
   report.error=error.message;
   report.runtimeErrors=browser.errors;report.failedTransfers=browser.urls;

@@ -63,11 +63,25 @@ async function installAndroidUpdates(webRoot) {
     throw Error('Prepared Android friends APK does not match its release manifest');
   }
   const page = await readFile(new URL('download.html', source));
+  let archive;
+  if (Number(version.split('.')[0])>=8 && version!=='8.0.0') {
+    const old = new URL('android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk',source);
+    if ((await stat(old)).size !== 3007817) throw Error('Invalid archived A8.0.0 APK size');
+    archive=await readFile(old);
+    if (createHash('sha256').update(archive).digest('hex') !== '3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42') {
+      throw Error('Archived A8.0.0 APK differs from the signed release');
+    }
+  }
   const target = join(webRoot, 'android-update');
   await mkdir(target);
   await mkdir(join(target,tag));
   await writeFile(join(target,tag,name),apk);
   if (Number(version.split('.')[0])>=8) await writeFile(join(target,tag,'Lychee-Friends-A'+version+'.apk'),apk);
+  if (archive) {
+    const oldFolder=join(target,'android-friends-v8.0.0');
+    await mkdir(oldFolder);
+    for (const prefix of ['A','V']) await writeFile(join(oldFolder,'Lychee-Friends-'+prefix+'8.0.0.apk'),archive);
+  }
   await writeFile(join(target,'download.html'),page);
   await writeFile(join(target,'current.json'),manifest);
 }

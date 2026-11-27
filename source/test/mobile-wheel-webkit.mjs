@@ -13,6 +13,18 @@ const {webkit,devices}=createRequire(import.meta.url)(resolve(playwright));
 const origin='https://lychee-link-check.onrender.com';
 const dataDir=await mkdtemp(join(tmpdir(),'lychee-wheel-webkit-'));
 const app=await createApp({dataDir,webRoot:resolve(root),origin});
+async function publicAsset(url) {
+  const options={redirect:'error',headers:{'cache-control':'no-cache','accept-encoding':'identity'}};
+  for(let attempt=0;;attempt++) {
+    try {
+      const response=await fetch(url,{...options,signal:AbortSignal.timeout(30000)});
+      return {status:response.status,headers:Object.fromEntries(response.headers),body:Buffer.from(await response.arrayBuffer())};
+    } catch(error) {
+      if(attempt>=3)throw error;
+      await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));
+    }
+  }
+}
 let cookie='';
 const read=async(path,body)=>{
   const r=await app.handle(new Request(origin+path,{method:body?'POST':'GET',headers:{cookie,origin,'content-type':'application/json'},body:body&&JSON.stringify(body)}));
@@ -34,8 +46,12 @@ try{
     const business=url.pathname.startsWith('/g/')||url.pathname.startsWith('/api/');
     if(!business&&mode==='public'){
       if(req.method()!=='GET'||!url.pathname.startsWith('/mobile/')||req.headers().cookie)throw Error('Expected anonymous public static asset');
+      // Fetch anonymous static bytes through the host TLS trust store. Synthetic accounts stay in the test service.
+      const response=await publicAsset(url);
+      const remoteHeaders=response.headers;
+      delete remoteHeaders['content-encoding'];delete remoteHeaders['content-length'];delete remoteHeaders['set-cookie'];
       artifacts.push(url.pathname);
-      return route.continue();
+      return route.fulfill({status:response.status,headers:remoteHeaders,body:response.body});
     }
     const headers={...req.headers(),cookie,origin};
     const r=await app.handle(new Request(req.url(),{method:req.method(),headers,body:req.postData()||undefined}));
@@ -43,7 +59,7 @@ try{
     await route.fulfill({status:r.status,headers:safeHeaders,body:Buffer.from(await r.arrayBuffer())});
   });
   const page=await context.newPage();
-  await page.goto(origin+'/mobile/');
+  await page.goto(origin+'/mobile/',{waitUntil:'domcontentloaded',timeout:90000});
   await page.getByRole('button',{name:'工具箱',exact:true}).click();
   await page.getByRole('button',{name:'交给命运',exact:true}).click();
   const frame=mode==='baseline'?page:page.frameLocator('iframe');

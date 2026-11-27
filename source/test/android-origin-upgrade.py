@@ -13,6 +13,7 @@ import socketserver
 import subprocess
 import threading
 import time
+import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 
 ORIGIN = "lychee-link-check.onrender.com"
@@ -64,6 +65,29 @@ def screenshot(path):
 def installed_version():
     return re.search(r"\bversionName=(\S+)", adb("shell", "dumpsys", "package", device.PACKAGE))[1]
 
+def installer_button(labels, click=False, timeout=150, allow_home=False):
+    deadline=time.monotonic()+timeout
+    while time.monotonic()<deadline:
+        if allow_home and re.search(r"mCurrentFocus=.*(?:launcher|Launcher)",adb("shell","dumpsys","window")):
+            return "launcher"
+        try:
+            nodes=list(device.hierarchy().iter("node"))
+        except (ValueError,ET.ParseError,subprocess.SubprocessError):
+            time.sleep(1)
+            continue
+        for node in nodes:
+            package=node.get("package","")
+            if node.get("text")=="未能安装更新":
+                raise RuntimeError("The installed app rejected the update before the Android package installer opened")
+            if (package.endswith((".packageinstaller",".permissioncontroller")) and node.get("class")=="android.widget.Button"
+                    and node.get("text","").casefold() in labels and node.get("enabled")=="true"):
+                if click:
+                    left,top,right,bottom=map(int,re.findall(r"\d+",node.get("bounds")))
+                    adb("shell","input","tap",str((left+right)//2),str((top+bottom)//2))
+                return "installer"
+        time.sleep(1)
+    raise RuntimeError(f"Android package installer did not offer {labels}")
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
@@ -114,10 +138,11 @@ def main():
             find("可以更新到 "+prefix+a.target_version,timeout=170)
             screenshot(a.evidence/"01-offer.png")
             find("下载更新",click=True)
-            find("Update",timeout=300)
+            installer_update = {"update","install","更新","安装"}
+            installer_button(installer_update,timeout=300)
             assert installed_version() == old
             screenshot(a.evidence/"02-system-confirmation.png")
-            find("Update",click=True)
+            installer_button(installer_update,click=True)
             deadline = time.monotonic()+90
             while installed_version() != a.target_version:
                 if time.monotonic() > deadline:
@@ -127,7 +152,13 @@ def main():
             actual=adb("shell","sha256sum",path).split()[0]
             expected=hashlib.sha256(a.official_apk.read_bytes()).hexdigest()
             assert actual == expected
-            find("Open",click=True)
+            reopen=installer_button({"open","打开"},click=True,allow_home=True)
+            if reopen=="launcher":
+                intent=["-a","android.intent.action.MAIN","-c","android.intent.category.LAUNCHER"]
+                component=adb("shell","cmd","package","resolve-activity","--brief",*intent,"-p",device.PACKAGE).strip().splitlines()[-1]
+                assert component.startswith(device.PACKAGE+"/")
+                result=adb("shell","am","start","-W",*intent,"-n",component)
+                assert "Status: ok" in result,result
             find("登录荔枝园",retry_landing=True)
             screenshot(a.evidence/"03-updated.png")
             device.launch()
@@ -137,7 +168,7 @@ def main():
             report={"from":old, "to":a.target_version,"installedSha256":actual,
                     "platform":adb("shell","getprop","ro.build.fingerprint").strip(),
                     "appUid":uid,"testedUpdaterDex":code,"directIPv4AndIPv6Rejected":True,"systemConfirmationRequired":True,
-                    "officialLoginVisible":True,"officialColdLaunchLoginVisible":True}
+                    "reopenFrom":reopen,"officialLoginVisible":True,"officialColdLaunchLoginVisible":True}
             if a.web_version:
                 conn=http.client.HTTPSConnection("127.0.0.1",HOST_PORT,timeout=90)
                 try:

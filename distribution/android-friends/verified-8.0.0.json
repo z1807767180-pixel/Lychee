@@ -1,0 +1,286 @@
+{
+  "verifiedAtUtc": "2026-11-27T09:52:04+00:00",
+  "package": "dev.lychee.friends",
+  "version": "8.0.0",
+  "label": "A8.0.0",
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "bytes": 3007817,
+  "signedSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45968655547",
+  "officialInstallPublishAndOldAppUpgrade": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45971154308",
+  "androidReleaseCommit": "34ecee911ae61b9520a1b86f2468efcc3f8c6968",
+  "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/android-friends-v8.0.0",
+  "websiteTransitionBeforeMobile8": "40cac8ec801aecc808d50bc4f1a37cfee91bebff",
+  "mobileReleaseCommit": "a8a2cfa9b770e4a7e4ba59e531b8506c42012de6",
+  "publicDownload": {
+    "browser": "Edge 158.0.4370.33",
+    "profile": "iPhone 13 viewport",
+    "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.0.0/Lychee-Friends-A8.0.0.apk",
+    "savedName": "Lychee-Friends-A8.0.0.apk",
+    "filenameChosenByBrowser": true,
+    "actualDownloadDirectory": true,
+    "verifiedPublicAssetRelay": true,
+    "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42"
+  },
+  "legacyChannelFilename": "Lychee-Friends-V8.0.0.apk",
+  "officialOnlyInAppUpdate": {
+    "from": "7.0.6",
+    "to": "8.0.0",
+    "installedSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+    "platform": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "appUid": "10210",
+    "testedUpdaterDex": {
+      "classes.dex": "828190c14bab8b4222d59d536078f5a97657440e940ffe9c4bb2884d27a0c8be"
+    },
+    "directIPv4AndIPv6Rejected": true,
+    "systemConfirmationRequired": true,
+    "officialLoginVisible": true,
+    "officialColdLaunchLoginVisible": true,
+    "officialWebVersionViaTunnel": "7.0.6"
+  },
+  "officialV8ColdLaunch": {
+    "apkSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+    "android": "15",
+    "webView": "Current WebView package (name, version): (com.google.android.webview, 124.0.6367.219)",
+    "publicMobileVersion": "8.0.0",
+    "publicMainDocumentSha256": "6cf7ec96e3f29b1c2554fba16197a342ecb73aeeadc422d1016486d21cce2543",
+    "officialColdLaunchLoginVisible": true,
+    "appNetworkRestrictedToOfficialSite": true
+  },
+  "android9InAppRejection": {
+    "oldApp": "7.0.6",
+    "offered": "8.0.0",
+    "completeReceivedBytes": 3007817,
+    "oldUpdaterCachedFileSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+    "packageManagerFlags": [
+      {
+        "flags": 134217728,
+        "package": "dev.lychee.friends",
+        "version": "8.0.0",
+        "code": 80000,
+        "legacySignatures": [],
+        "signingInfo": false
+      },
+      {
+        "flags": 64,
+        "package": "dev.lychee.friends",
+        "version": "8.0.0",
+        "code": 80000,
+        "legacySignatures": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ],
+        "signingInfo": false
+      },
+      {
+        "flags": 134217792,
+        "package": "dev.lychee.friends",
+        "version": "8.0.0",
+        "code": 80000,
+        "legacySignatures": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ],
+        "signingInfo": true,
+        "signers": [
+          "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2"
+        ]
+      }
+    ],
+    "manualOfficialUrl": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.0.0/Lychee-Friends-A8.0.0.apk",
+    "manualDownloadSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42"
+  },
+  "android9ManualSameSignatureUpdate": {
+    "from": "7.0.6",
+    "to": "8.0.0",
+    "android": "9",
+    "webView": "69.0.3497.100",
+    "installedSha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+    "androidReceivedOfficialAAsset": true,
+    "systemConfirmationRequired": true,
+    "usedFilesDownloads": true,
+    "officialColdLaunchLoginVisible": true
+  },
+  "legacyShellRecovery": {
+    "socialBlocked": 403,
+    "recoveryLink": true,
+    "nativeOffer": "V8.0.0"
+  },
+  "isolatedSocialAndQuiz": [
+    {
+      "android": "9",
+      "webView": "Current WebView package (name, version): (com.android.chrome, 69.0.3497.100)",
+      "social": {
+        "privateMessage": true,
+        "groupMessage": true,
+        "friendConfirmation": true,
+        "homeRetained": true,
+        "updateLabel": "检查安卓更新 · A8.0.0",
+        "versionLabel": "安卓 A8.0.0"
+      },
+      "wheel": {
+        "banner": [
+          642,
+          147
+        ],
+        "ratio": 4.367873491468997,
+        "center": [
+          82,
+          82
+        ],
+        "embedded": true
+      },
+      "quizRounds": 5,
+      "quizHttpRequests": 26
+    },
+    {
+      "android": "15",
+      "webView": "Current WebView package (name, version): (com.google.android.webview, 124.0.6367.219)",
+      "social": {
+        "privateMessage": true,
+        "groupMessage": true,
+        "friendConfirmation": true,
+        "homeRetained": true,
+        "updateLabel": "检查安卓更新 · A8.0.0",
+        "versionLabel": "安卓 A8.0.0"
+      },
+      "wheel": {
+        "banner": [
+          642,
+          147
+        ],
+        "ratio": 4.367480777928539,
+        "center": [
+          82,
+          82
+        ],
+        "embedded": true
+      },
+      "quizRounds": 5,
+      "quizHttpRequests": 29
+    }
+  ],
+  "startupVisibleUntilReady": [
+    {
+      "beforeInteractive": "blank",
+      "afterInteractive": "ready"
+    },
+    {
+      "beforeInteractive": "launch-visible",
+      "afterInteractive": "ready"
+    }
+  ],
+  "wheelMissingArtBaseline": {
+    "banner": [
+      0,
+      0
+    ],
+    "hub": [
+      0,
+      0
+    ],
+    "visibleRatio": 1,
+    "builtIn": false
+  },
+  "wheelPublicSite": {
+    "mode": "public",
+    "engine": "WebKit",
+    "engineVersion": "26.0",
+    "viewport": {
+      "width": 390,
+      "height": 664
+    },
+    "origin": "https://lychee-link-check.onrender.com",
+    "clientVersion": "8.0.0",
+    "art": {
+      "banner": [
+        642,
+        147
+      ],
+      "hub": [
+        82,
+        82
+      ],
+      "visibleRatio": 4.368006630750104,
+      "builtIn": true
+    },
+    "result": "选中了「逛书店」",
+    "publicAssets": [
+      "/mobile/",
+      "/mobile/ai-chat-hero.webp",
+      "/mobile/ai-icon-write.webp",
+      "/mobile/ai-image-hero.webp",
+      "/mobile/app.webmanifest",
+      "/mobile/assets-8.0.0/app.css",
+      "/mobile/assets-8.0.0/client/business-scope.js",
+      "/mobile/assets-8.0.0/client/diet-card-v7.webp",
+      "/mobile/assets-8.0.0/client/diet-condiment-v7.js",
+      "/mobile/assets-8.0.0/client/diet-estimate-v7.js",
+      "/mobile/assets-8.0.0/client/diet-foods-v7.js",
+      "/mobile/assets-8.0.0/client/diet-match-v7.js",
+      "/mobile/assets-8.0.0/client/diet-recipes-v7.js",
+      "/mobile/assets-8.0.0/client/diet-v7.css",
+      "/mobile/assets-8.0.0/client/diet-v7.js",
+      "/mobile/assets-8.0.0/client/fonts/LXGW975YuanSC-500W.woff2",
+      "/mobile/assets-8.0.0/client/fonts/LXGW975YuanSC-700W.woff2",
+      "/mobile/assets-8.0.0/client/garden.css",
+      "/mobile/assets-8.0.0/client/garden.js",
+      "/mobile/assets-8.0.0/client/notify-push-v7.js",
+      "/mobile/assets-8.0.0/client/notify-v7.js",
+      "/mobile/assets-8.0.0/client/quiz-card-v7.webp",
+      "/mobile/assets-8.0.0/client/quiz-v7.css",
+      "/mobile/assets-8.0.0/client/quiz-v7.js",
+      "/mobile/assets-8.0.0/client/responsive-text.css",
+      "/mobile/assets-8.0.0/client/social-v8-api.js",
+      "/mobile/assets-8.0.0/client/social-v8-garden.css",
+      "/mobile/assets-8.0.0/client/social-v8-garden.js",
+      "/mobile/assets-8.0.0/client/social-v8.css",
+      "/mobile/assets-8.0.0/client/social-v8.js",
+      "/mobile/assets-8.0.0/client/toolbox-cards.css",
+      "/mobile/assets-8.0.0/client/typography.css",
+      "/mobile/assets-8.0.0/client/wheel-card-v7.webp",
+      "/mobile/assets-8.0.0/client/wheel-v7.css",
+      "/mobile/assets-8.0.0/client/wheel-v7.js",
+      "/mobile/assets-8.0.0/launch/start.css",
+      "/mobile/assets-8.0.0/launch/start.js",
+      "/mobile/assets-8.0.0/windows/team-share.js",
+      "/mobile/assets-8.0.0/windows/workspace-nav.js",
+      "/mobile/break-room.webp",
+      "/mobile/chat.css",
+      "/mobile/chat.js",
+      "/mobile/garden-question.webp",
+      "/mobile/garden-tools.css",
+      "/mobile/icon.png",
+      "/mobile/journal.css",
+      "/mobile/journal.js",
+      "/mobile/ledger-clock.webp",
+      "/mobile/ledger-stall.webp",
+      "/mobile/nav-chat-line.svg",
+      "/mobile/nav-chat-on.webp",
+      "/mobile/nav-garden-line.svg",
+      "/mobile/nav-garden-on.webp",
+      "/mobile/nav-me-line.svg",
+      "/mobile/nav-me-on.webp",
+      "/mobile/nav-tools-line.svg",
+      "/mobile/nav-tools-on.webp",
+      "/mobile/orchard-courtyard.jpg",
+      "/mobile/phone.css",
+      "/mobile/phone.js",
+      "/mobile/themes.css",
+      "/mobile/tile-garden.webp",
+      "/mobile/tile-goal.webp",
+      "/mobile/tile-gomoku.webp",
+      "/mobile/tile-riddles.webp",
+      "/mobile/tile-soup.webp",
+      "/mobile/tile-tree.webp",
+      "/mobile/v61-sw.js",
+      "/mobile/v61.css",
+      "/mobile/v61.js",
+      "/mobile/v62.css",
+      "/mobile/v62.js",
+      "/mobile/version.txt",
+      "/mobile/viewport.js",
+      "/mobile/yard65.css",
+      "/mobile/yard65.js"
+    ]
+  },
+  "limits": "Android 9 and 15 are emulators with their real system WebViews. Social, quiz and wheel interactions used isolated accounts. WebKit runs on Windows with an iPhone 13 viewport. The reported physical Android phone and iPhone have not been retested."
+}

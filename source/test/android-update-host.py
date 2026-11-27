@@ -33,6 +33,9 @@ class AndroidReleaseFiles(unittest.TestCase):
         shutil.copyfile(release,self.release)
         for name in [self.name, "signature.json"]:
             shutil.copyfile(root/"distribution/android-friends"/name, self.packages/name)
+        self.archive = tuple(map(int, version.split('.'))) > (8,0,0)
+        if self.archive:
+            shutil.copyfile(root/"distribution/android-friends/Lychee-Friends-V8.0.0.apk",self.packages/"Lychee-Friends-V8.0.0.apk")
 
     def prepare(self):
         host.prepare(self.release,self.packages,self.output)
@@ -40,7 +43,14 @@ class AndroidReleaseFiles(unittest.TestCase):
     def test_only_current_signed_apk_and_same_origin_download_are_exposed(self):
         self.prepare()
         files = {f.relative_to(self.output).as_posix() for f in self.output.rglob("*") if f.is_file()}
-        self.assertEqual(files, {"current.json","download.html",self.relative,self.visible})
+        expected_files={"current.json","download.html",self.relative,self.visible}
+        if self.archive:
+            for prefix in ("A","V"):
+                old=f"android-friends-v8.0.0/Lychee-Friends-{prefix}8.0.0.apk"
+                expected_files.add(old)
+                self.assertEqual(hashlib.sha256((self.output/old).read_bytes()).hexdigest(),
+                    "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42")
+        self.assertEqual(files, expected_files)
         actual = (self.output/self.relative).read_bytes()
         self.assertEqual(actual,(self.packages/self.name).read_bytes())
         expected = {k:self.metadata[k] for k in ["version","note"]}
@@ -116,6 +126,13 @@ class AndroidReleaseFiles(unittest.TestCase):
         self.assertFalse((target/"android-update/internal.json").exists())
         self.assertEqual((target/"windows-update/stable.json").read_bytes(),b"existing Windows route")
         self.assertEqual((target/"mobile/index.html").read_bytes(),(mobile/"index.html").read_bytes())
+        if self.archive:
+            for prefix in ("A","V"):
+                old=f"android-friends-v8.0.0/Lychee-Friends-{prefix}8.0.0.apk"
+                self.assertEqual((target/"android-update"/old).read_bytes(),(self.output/old).read_bytes())
+            (staged/"android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk").write_bytes(b"altered archive")
+            self.assertNotEqual(install(stage/"rejected-archive").returncode,0)
+            shutil.copyfile(self.packages/"Lychee-Friends-V8.0.0.apk",staged/"android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk")
         for index,problem in enumerate(["damaged","oversized","missing"]):
             package=staged/self.relative
             if problem == "missing": package.unlink()

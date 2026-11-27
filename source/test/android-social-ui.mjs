@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-export async function verifySocial({browser, click, until, screenshot, api, player, friend, joined, garden}) {
+export async function verifySocial({browser, click, until, screenshot, api, player, friend, joined, garden, shellVersion}) {
   const visible = text => until(()=>browser.js('document.body.innerText.includes('+JSON.stringify(text)+')'),text);
   const heading = label => until(()=>browser.js("(document.querySelector('.s8-header h1')||{}).textContent==="+JSON.stringify(label)),label);
   async function message(body) {
@@ -10,7 +10,7 @@ export async function verifySocial({browser, click, until, screenshot, api, play
   }
   await heading('青荔的首页');
   const start = await browser.js('performance.timeOrigin');
-  assert.equal(await browser.js('window.lycheeAndroidShellVersion'),'8.0.0');
+  assert.equal(await browser.js('window.lycheeAndroidShellVersion'),shellVersion);
   assert.equal(await browser.js('Object.getOwnPropertyDescriptor(window,"lycheeAndroidShellVersion").writable'),false);
   await screenshot('social-home');
   await click('安卓问答验收园');
@@ -43,7 +43,10 @@ export async function verifySocial({browser, click, until, screenshot, api, play
   await click('设置');
   await until(()=>browser.js("!!document.querySelector('#lychee-shell-update')"),'安卓壳内更新');
   const updateLabel=await browser.js("document.querySelector('#lychee-shell-update').textContent");
-  assert.match(updateLabel,/A8\.0\.0/);
+  assert.equal(updateLabel,'检查安卓更新 · A'+shellVersion);
+  const versionLabel=await browser.js("document.querySelector('.settings-version').textContent");
+  assert.equal(versionLabel,'安卓 A'+shellVersion);
+  await visible('手机网页 V'+await browser.js('document.body.dataset.clientBuild'));
   assert.equal(await browser.js('performance.timeOrigin'),start);
-  return {privateMessage:true,groupMessage:true,friendConfirmation:true,homeRetained:true,updateLabel};
+  return {privateMessage:true,groupMessage:true,friendConfirmation:true,homeRetained:true,updateLabel,versionLabel};
 }
