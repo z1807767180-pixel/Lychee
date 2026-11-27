@@ -208,18 +208,21 @@ internal sealed class GardenWindow : Window {
         if(!updatesEnabled||closing)return;
         if(manual)updateView=true;
         if(installing){if(manual)UpdateStatus("downloading","正在下载并校验更新包…");return;}
-        if(manual)UpdateStatus("checking","正在检查新版本…");
+        if(manual)UpdateStatus("checking","当前 W"+WindowsInstallationIdentity.Version+"，正在连接官方更新服务…");
         if(checking)return;
         checking=true;
         try {
-            var release=await WindowsUpdateFeed.CheckAsync(testFeed);
+            var progress=new Progress<string>(text=>{
+                if(checking&&updateView&&!closing)UpdateStatus("checking","当前 W"+WindowsInstallationIdentity.Version+"，"+text);
+            });
+            var release=await WindowsUpdateFeed.CheckWithProgress(testFeed,progress);
             if(closing)return;
             offered=release!=null&&release.Version.CompareTo(new Version(WindowsInstallationIdentity.Version))>0?release:null;
             if(offered!=null){updateView=true;UpdateStatus("available","更新完成后会重新打开荔枝。");}
             else if(updateView)UpdateStatus("current","已是最新版本，暂时无需更新。");
         } catch(Exception err) {
             offered=null;
-            if(updateView&&!closing)UpdateStatus("check-error",WindowsUpdateFeed.CheckErrorMessage(err));
+            if(updateView&&!closing)UpdateStatus("check-error","当前 W"+WindowsInstallationIdentity.Version+"。"+WindowsUpdateFeed.CheckErrorMessage(err));
         } finally {checking=false;}
     }
     async Task InstallUpdate() {
@@ -229,7 +232,8 @@ internal sealed class GardenWindow : Window {
         try {
             string exe=Process.GetCurrentProcess().MainModule.FileName;
             string kind=WindowsUpdateApply.DetectKind(exe);
-            var package=await WindowsUpdateFeed.DownloadAsync(release,kind,testFeed);
+            var progress=new Progress<string>(text=>{if(installing&&!closing)UpdateStatus("downloading",text);});
+            var package=await WindowsUpdateFeed.DownloadWithProgress(release,kind,testFeed,progress);
             try {
                 if(closing)return;
                 WindowsUpdateApply.Start(package.Path,package.Sha256,release.Version.ToString(),kind,exe,testFeed!=null,
@@ -243,7 +247,10 @@ internal sealed class GardenWindow : Window {
             Close();
         } catch(Exception err) {
             if(testFeed!=null)Console.Error.WriteLine(err);
-            if(!closing)UpdateStatus("error","无法完成更新。你可以继续使用当前版本，或重试。");
+            if(!closing)UpdateStatus("error","当前 W"+WindowsInstallationIdentity.Version+"。"+
+                (err is InvalidDataException?"更新包未通过校验，请重试。":
+                err is System.Net.Http.HttpRequestException||err is OperationCanceledException||err is IOException?
+                WindowsUpdateFeed.CheckErrorMessage(err):"无法完成安装。你可以继续使用当前版本，或重试。"));
         } finally {installing=false;}
     }
     void SetIntegrated(bool integrated) {

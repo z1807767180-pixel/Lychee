@@ -17,7 +17,8 @@ import {Browser} from './edge.mjs';
 const [baseDir, nextDir, instance, variant] = process.argv.slice(2);
 const control = variant === '--restart-control';
 const checksOnly = variant === '--check-only';
-assert.ok(!variant || control || checksOnly, 'Unknown test mode');
+const mirrorOnly = variant === '--mirror-only';
+assert.ok(!variant || control || checksOnly || mirrorOnly, 'Unknown test mode');
 if (process.platform !== 'win32' || !baseDir || !nextDir || !instance) throw Error('Pass two Windows QA build paths and their QA UUID.');
 const python = process.env.LYCHEE_QA_PYTHON || 'python';
 const scriptPath = file => fileURLToPath(new URL(file, import.meta.url));
@@ -33,7 +34,7 @@ if (!checksOnly) {
   assert.notEqual(oldInfo.product,nextInfo.product);
 }
 const root = await mkdtemp(join(tmpdir(), 'lychee-update-e2e-'));
-const report = {root, instance, mode:checksOnly?'settings check':control?'ordinary restart':'in-app update', from: oldInfo.version, to: nextInfo.version, scenarios: {}};
+const report = {root, instance, mode:checksOnly?'settings check':control?'ordinary restart':mirrorOnly?'mirror-only in-app update':'in-app update', from: oldInfo.version, to: nextInfo.version, scenarios: {}};
 report.currentUserDpapi = await msiInfo('dpapi');
 const digest = value => createHash('sha256').update(value).digest('hex');
 const hashFile = async file => digest(await readFile(file));
@@ -61,6 +62,7 @@ const deadline = async (fn, label, ms = 35000) => {
   throw Error(label + ' timeout' + (last ? ' (' + last + ')' : ''));
 };
 const contentsPath = '/windows-update/repository/contents/distribution/windows/stable.json?ref=main';
+const mirrorManifest='/windows-update/origin/stable.json';
 async function localServer(kind) {
   const app = await createApp({dataDir: join(root, 'server-' + kind), webRoot: join(base, 'site')});
   const fixture = {mode: 'current', requests: []};
@@ -69,15 +71,16 @@ async function localServer(kind) {
       if (req.url.startsWith('/windows-update/')) {
         fixture.requests.push({path: req.url, mode: fixture.mode});
         if (fixture.mode==='unpublished') {
-          if (req.url==='/windows-update/stable.json') {res.writeHead(404).end();return;}
+          if (['/windows-update/stable.json',contentsPath,mirrorManifest].includes(req.url)) {res.writeHead(404).end();return;}
           if (req.url==='/windows-update/repository') {
             res.end(JSON.stringify({id:1471636015,full_name:'z1807767180-pixel/Lychee',private:false,default_branch:'main'}));return;
           }
           if (req.url.startsWith('/windows-update/repository/releases?')) {res.end('[]');return;}
         }
-        if (req.url === '/windows-update/stable.json' || req.url === contentsPath) {
-          if (req.url === contentsPath && fixture.mode === 'offline') {res.writeHead(403).end(); return;}
-          if (req.url === '/windows-update/stable.json' && ['offline','alternate'].includes(fixture.mode)) {req.socket.destroy(); return;}
+        if (['/windows-update/stable.json',contentsPath,mirrorManifest].includes(req.url)) {
+          if (req.url === contentsPath && ['offline','mirror'].includes(fixture.mode)) {res.writeHead(403).end(); return;}
+          if (req.url === mirrorManifest && ['offline','alternate'].includes(fixture.mode)) {res.writeHead(503).end(); return;}
+          if (req.url === '/windows-update/stable.json' && ['offline','alternate','mirror'].includes(fixture.mode)) {req.socket.destroy(); return;}
           const version = fixture.mode === 'current' ? oldInfo.version : checksOnly ? '8.0.0' : nextInfo.version;
           const entries = assets.map(a => fixture.mode === 'bad' ? {...a, sha256: '0'.repeat(64)} : a);
           res.writeHead(200, {'content-type':'application/json', 'cache-control':'no-store'});
@@ -85,7 +88,8 @@ async function localServer(kind) {
         }
         const name = req.url.split('/').pop();
         const body = assetData[name];
-        if (body && req.url === '/windows-update/windows-v' + nextInfo.version + '/' + name) {
+        const assetPath=(fixture.mode==='mirror'?'/windows-update/origin/':'/windows-update/')+'windows-v'+nextInfo.version+'/'+name;
+        if (body && req.url === assetPath) {
           res.writeHead(200, {'content-type':'application/octet-stream', 'content-length':body.length});
           res.end(body); return;
         }
@@ -200,6 +204,7 @@ async function testWindow(kind, exe, other) {
         ['unpublished','current','已是最新版本，暂时无需更新'],
         ['offline','check-error','HTTP 403'],
         ['alternate','available','发现新版本 8.0.0'],
+        ['mirror','available','发现新版本 8.0.0'],
         ['good','available','发现新版本 8.0.0'],
       ]) {
         fixture.mode=mode;
@@ -210,6 +215,8 @@ async function testWindow(kind, exe, other) {
       }
       assert.ok(fixture.requests.some(r=>r.path.startsWith('/windows-update/repository/releases?')));
       assert.ok(fixture.requests.some(r=>r.mode==='alternate' && r.path===contentsPath));
+      assert.ok(fixture.requests.some(r=>r.mode==='mirror' && r.path===mirrorManifest));
+      assert.ok(!fixture.requests.some(r=>r.mode==='mirror' && r.path===contentsPath));
       outcome.passed=true;
       return;
     }
@@ -234,9 +241,14 @@ async function testWindow(kind, exe, other) {
       await click(browser,'立即更新'); await panel(browser,'重试');
       assert.ok(fixture.requests.some(r => r.mode === 'bad' && r.path.endsWith('Lychee.' + kind)));
       assert.equal(await hashFile(exe), oldHash); outcome.badHashPreservedOld = true;
-      fixture.mode = 'good'; await click(browser,'重试');
+      fixture.mode = mirrorOnly?'mirror':'good'; await click(browser,'重试');
       await panel(browser,'立即更新'); await click(browser,'立即更新');
       await deadline(async () => await hashFile(exe) === newHash, 'running path updated', 90000);
+      if(mirrorOnly){
+        assert.ok(fixture.requests.some(r=>r.mode==='mirror' && r.path==='/windows-update/origin/windows-v'+nextInfo.version+'/Lychee.'+kind));
+        assert.ok(!fixture.requests.some(r=>r.mode==='mirror' && (r.path===contentsPath || r.path.startsWith('/windows-update/windows-v'))));
+        outcome.mirrorManifestAndFullPackageApplied=true;
+      }
     }
     browser.socket.close(); browser = (await connect(port, fixture.origin, initial.id)).browser;
     if (control) {
@@ -281,7 +293,7 @@ async function testWindow(kind, exe, other) {
     outcome.userDataRetained = after.hasData === true || outcome.userDataAfterFreshLogin === true;
     outcome.relaunchedVersion = after.version;
     if (!control) {
-      assert.ok(fixture.requests.some(r => r.mode === 'good' && r.path.endsWith('Lychee.' + kind)));
+      assert.ok(fixture.requests.some(r => r.mode === (mirrorOnly?'mirror':'good') && r.path.endsWith('Lychee.' + kind)));
       assert.ok(!fixture.requests.some(r => r.path.endsWith('Lychee.' + (kind === 'exe'?'msi':'exe'))));
       if (outcome.userDataAfterFreshLogin) await browser.call('Page.reload');
       await settings(browser); await click(browser,'检查更新'); await panel(browser,'已是最新版本，暂时无需更新');

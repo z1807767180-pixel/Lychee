@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import unittest
 import uuid
 
@@ -18,6 +19,8 @@ import uuid
 DESKTOP = Path(__file__).resolve().parents[1] / "desktop"
 PAYLOAD = {}
 CONTENTS = "/windows-update/repository/contents/distribution/windows/stable.json?ref=main"
+RAW = "/windows-update/stable.json"
+MIRROR = "/windows-update/origin/"
 MANIFEST = {"schema": 1, "version": "7.0.1", "assets": []}
 HARNESS = """
 using System;
@@ -40,7 +43,9 @@ internal static class Fixture {
           return 0;
         }
         var check=feed.GetMethod("RedirectAllowed",hidden);
-        Console.WriteLine((bool)check.Invoke(null,new object[]{origin,new Uri(op.Substring(7)),null}));
+        var mirror=op.StartsWith("policy mirror ");
+        var initial=mirror ? new Uri("https://lychee-link-check.onrender.com/windows-update/windows-v7.0.1/Lychee.exe") : origin;
+        Console.WriteLine((bool)check.Invoke(null,new object[]{initial,new Uri(op.Substring(mirror?14:7)),null}));
         return 0;
       }
       string[] words=op.Split(' ');
@@ -78,6 +83,12 @@ class Handler(BaseHTTPRequestHandler):
                 body = json.dumps(body).encode()
             headers = cfg.get("manifest_headers", {})
             status = cfg.get("manifest_status", 200)
+        elif self.path == MIRROR+"stable.json":
+            body = cfg.get("mirror_manifest", MANIFEST)
+            if isinstance(body,dict):
+                body=json.dumps(body).encode()
+            status=cfg.get("mirror_status",404)
+            headers=cfg.get("mirror_headers",{})
         elif self.path == CONTENTS:
             body = json.dumps(cfg.get("contents", MANIFEST)).encode()
             headers = {}
@@ -96,19 +107,24 @@ class Handler(BaseHTTPRequestHandler):
             status = cfg.get("page_status",{}).get(page,200)
         else:
             kind = self.path.partition("?")[0].rsplit(".", 1)[-1]
-            if kind not in PAYLOAD or self.path.partition("?")[0] != "/windows-update/windows-v"+cfg.get("expected_version","7.0.1")+"/Lychee."+kind:
+            mirror = self.path.startswith(MIRROR)
+            prefix = MIRROR if mirror else "/windows-update/"
+            if kind not in PAYLOAD or self.path.partition("?")[0] != prefix+"windows-v"+cfg.get("expected_version","7.0.1")+"/Lychee."+kind:
                 self.send_error(404)
                 return
-            body = cfg.get("body", PAYLOAD[kind])
-            headers = cfg.get("headers", {})
-            status = cfg.get("status", 200)
-            if cfg.get("redirect") and "?" not in self.path:
+            body = cfg.get("mirror_body" if mirror else "body", PAYLOAD[kind])
+            headers = cfg.get("mirror_asset_headers" if mirror else "headers", {})
+            status = cfg.get("mirror_asset_status",503) if mirror else cfg.get("status",200)
+            if not mirror and cfg.get("redirect") and "?" not in self.path:
                 headers = {"Location": cfg["redirect"]}
                 status, body = 302, b""
+        delayed = cfg.get("stall") if self.path == "/windows-update/windows-v7.0.1/Lychee.exe" else None
+        if delayed == "headers": time.sleep(18)
         self.send_response(status)
         for key, value in headers.items():
             self.send_header(key, value)
         self.end_headers()
+        if delayed == "first byte": time.sleep(18)
         try:
             self.wfile.write(body)
         except (BrokenPipeError, ConnectionResetError):
@@ -178,6 +194,7 @@ class WindowsFeedTests(unittest.TestCase):
         import base64
         path = "https://release-assets.githubusercontent.com/github-production-release-asset/1471636015/"+str(uuid.uuid4())
         self.assertEqual(self.request("policy "+path+"?signed=test"),"True")
+        self.assertEqual(self.request("policy mirror "+path+"?signed=test"),"False")
         for bad in [path.replace("1471636015","7"),path.replace("https:","http:"),path.replace(".com/",".com.invalid/"),
                     path.replace(".com/",".com:1443/"),path+"#fragment",path.replace("https://","https://user@")]:
             self.assertEqual(self.request("policy "+bad),"False")
@@ -197,8 +214,9 @@ class WindowsFeedTests(unittest.TestCase):
         for cfg in [{"body": b"x"*len(PAYLOAD["exe"])}, {"body": PAYLOAD["exe"][:-1]},
                     {"body": PAYLOAD["exe"]+b"!"}, {"headers": {"Content-Length":"9999999999"}},
                     {"status": 206}, {"headers": {"Content-Encoding":"gzip"}}]:
-            self.http.model = {"paths":[], "manifests":[MANIFEST], **cfg}
+            self.http.model = {"paths":[], "manifests":[MANIFEST], "mirror_asset_status":200, **cfg}
             self.request("exe", ok=False)
+            self.assertFalse(any(p.startswith(MIRROR) for p in self.http.model["paths"]))
         self.assertFalse(list(self.work.rglob("*.partial")))
 
     def test_hash_correct_but_version_or_file_type_wrong(self):
@@ -243,7 +261,7 @@ class WindowsFeedTests(unittest.TestCase):
         cfg = self.http.model
         cfg.update(manifest_status=404)
         self.assertEqual(self.request(),"current")
-        self.assertEqual(cfg["paths"],["/windows-update/stable.json","/windows-update/repository",
+        self.assertEqual(cfg["paths"],[RAW,MIRROR+"stable.json",CONTENTS,"/windows-update/repository",
                                        "/windows-update/repository/releases?per_page=20&page=1"])
         cfg["pages"]={1:[release(1,"windows-v6.4.7"),release(2,"v7.0.0",["Lychee.msi"]),
                          release(3,"android-v9.0.0",["Lychee.apk"]),release(4,"windows-v8.0.0",prerelease=True)]}
@@ -269,7 +287,7 @@ class WindowsFeedTests(unittest.TestCase):
         cfg = self.http.model
         cfg.update(manifest_status=503,contents_status=200)
         self.assertEqual(self.request(),"7.0.1 2")
-        self.assertEqual(cfg["paths"],["/windows-update/stable.json",CONTENTS])
+        self.assertEqual(cfg["paths"],[RAW,MIRROR+"stable.json",CONTENTS])
         self.request("exe")
         cfg.update(disconnect="/windows-update/stable.json")
         self.assertEqual(self.request(),"7.0.1 2")
@@ -281,16 +299,61 @@ class WindowsFeedTests(unittest.TestCase):
         for status,body in [(500,b""),(403,b""),(200,b"bad JSON")]:
             cfg.update(paths=[],manifest_status=status,manifests=[body])
             self.request(ok=False)
-            self.assertEqual(cfg["paths"],["/windows-update/stable.json"] + ([CONTENTS] if status!=200 else []))
+            self.assertEqual(cfg["paths"],[RAW] + ([MIRROR+"stable.json",CONTENTS] if status!=200 else []))
         cfg.update(manifest_status=404,pages={1:[{"id":1,"tag_name":"windows-vNext","draft":False,"prerelease":False,"assets":[]}]})
         self.request(ok=False)
         cfg["pages"]={1:{"message":"not available"}}
         self.request(ok=False)
         cfg.update(paths=[],disconnect="/windows-update/stable.json")
         self.request(ok=False)
-        self.assertEqual(set(cfg["paths"]),{"/windows-update/stable.json",CONTENTS})
+        self.assertEqual(set(cfg["paths"]),{RAW,MIRROR+"stable.json",CONTENTS})
         cfg.update(disconnect="/windows-update/repository/releases?per_page=20&page=1",pages={})
         self.request(ok=False)
+
+    def test_mirror_manifest_rechecked_and_both_assets_work_without_github(self):
+        cfg=self.http.model
+        for kind in PAYLOAD:
+            cfg.update(paths=[],manifest_status=503,contents_status=403,mirror_status=200,
+                       status=503,mirror_asset_status=200)
+            self.request(kind+" tamper")
+            self.assertEqual(cfg["paths"],[RAW,MIRROR+"stable.json",MIRROR+"stable.json",
+                                           MIRROR+"windows-v7.0.1/Lychee."+kind])
+
+    def test_release_asset_cdn_outage_uses_verified_mirror(self):
+        cfg=self.http.model
+        for kind in PAYLOAD:
+            file="windows-v7.0.1/Lychee."+kind
+            github="/windows-update/"+file
+            cfg.update(paths=[],redirect=github+"?cdn=1",status=503,mirror_asset_status=200)
+            self.request(kind)
+            self.assertEqual(cfg["paths"],[RAW,RAW,github,github+"?cdn=1",MIRROR+file])
+
+    def test_stalled_github_headers_and_stalled_first_byte_use_mirror(self):
+        file="windows-v7.0.1/Lychee.exe"
+        for stall in ["headers","first byte"]:
+            with self.subTest(stall=stall):
+                self.http.model.update(paths=[],stall=stall,mirror_asset_status=200)
+                started=time.monotonic()
+                self.request("exe")
+                self.assertLess(time.monotonic()-started,15)
+                self.assertEqual(self.http.model["paths"],[RAW,RAW,"/windows-update/"+file,MIRROR+file])
+
+    def test_mirror_fails_closed_on_invalid_manifest_package_and_redirect(self):
+        cfg=self.http.model
+        for body in [b"invalid", {**MANIFEST,"url":"https://example.invalid/"}]:
+            cfg.update(paths=[],manifest_status=503,mirror_status=200,mirror_manifest=body,contents_status=200)
+            self.request(ok=False)
+            self.assertEqual(cfg["paths"],[RAW,MIRROR+"stable.json"])
+        mirror_file=MIRROR+"windows-v7.0.1/Lychee.exe"
+        for overrides in [{"mirror_asset_status":302,"mirror_asset_headers":{"Location":mirror_file+"?cdn=1"}},
+                          {"mirror_asset_status":206},{"mirror_body":PAYLOAD["exe"][:-5]},
+                          {"mirror_body":b"" ,"mirror_asset_headers":{"Content-Length":str(len(PAYLOAD["exe"]))}},
+                          {"mirror_body":b"?"*len(PAYLOAD["exe"])}]:
+            self.http.model={"paths":[],"manifests":[MANIFEST],"manifest_status":404,
+                             "mirror_status":200,"mirror_asset_status":200,**overrides}
+            self.request("exe",ok=False)
+            self.assertEqual(self.http.model["paths"],[RAW,MIRROR+"stable.json",MIRROR+"stable.json",mirror_file])
+        self.assertFalse(list(self.work.rglob("*.partial")))
 
     def test_generator_checks_both_versions_and_payload_before_atomic_replace(self):
         output = self.work / "staged" / "stable.json"

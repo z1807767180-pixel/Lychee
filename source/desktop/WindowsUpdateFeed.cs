@@ -18,10 +18,15 @@ using System.Xml;
 internal static class WindowsUpdateFeed {
     const string Repository = "z1807767180-pixel/Lychee";
     const string RepositoryId = "1471636015";
+    const string MirrorRoot = "https://lychee-link-check.onrender.com/windows-update/";
     const int ManifestLimit = 16 * 1024;
     const long PackageLimit = 256L * 1024 * 1024;
     const int ReleasesPerPage = 20;
+    const int GithubPackageWaitSeconds = 8;
     sealed class MissingManifest : IOException {}
+    sealed class FirstByteTimeout : IOException {
+        internal FirstByteTimeout(Exception cause) : base("下载入口未及时返回数据。",cause) {}
+    }
     sealed class HttpFailure : IOException {
         internal readonly int Status;
         internal HttpFailure(int status) : base("更新服务返回 HTTP " + status + "。") { Status = status; }
@@ -41,6 +46,7 @@ internal static class WindowsUpdateFeed {
         public IList<Asset> Assets { get; private set; }
         internal Uri Origin { get; private set; }
         internal string QaInstance { get; private set; }
+        internal Uri ManifestAddress;
         internal Release(Version version, List<Asset> assets, Uri origin, string qaInstance) {
             Version = version; Assets = assets.AsReadOnly(); Origin = origin; QaInstance = qaInstance;
         }
@@ -87,7 +93,11 @@ internal static class WindowsUpdateFeed {
         return local == null ? new Uri("https://github.com/" + Repository + "/releases/download/" + path)
             : new Uri(local, "windows-update/" + path);
     }
+    static Uri Mirror(Uri local, string file) {
+        return local == null ? new Uri(MirrorRoot + file) : new Uri(local, "windows-update/origin/" + file);
+    }
     static bool RedirectAllowed(Uri initial, Uri target, Uri local) {
+        if (Mirror(local,"").IsBaseOf(initial)) return false;
         if (!target.IsAbsoluteUri || target.UserInfo.Length != 0 || target.Fragment.Length != 0) return false;
         if (local != null) return target.Scheme == local.Scheme && target.Authority == local.Authority &&
             target.AbsolutePath == initial.AbsolutePath;
@@ -95,11 +105,33 @@ internal static class WindowsUpdateFeed {
             target.Host.Equals("release-assets.githubusercontent.com", StringComparison.OrdinalIgnoreCase) &&
             Regex.IsMatch(target.AbsolutePath, @"\A/github-production-release-asset/" + RepositoryId + @"/[a-fA-F0-9-]{36}\z");
     }
+    static async Task<int> FirstPackageRead(Stream input,byte[] buffer,CancellationToken token,int seconds) {
+        using (var first=new CancellationTokenSource(TimeSpan.FromSeconds(seconds)))
+        using (first.Token.Register(()=>input.Dispose())) {
+            int count;
+            try {
+                count=await input.ReadAsync(buffer,0,buffer.Length,token).ConfigureAwait(false);
+            } catch (Exception ex) {
+                if (first.IsCancellationRequested && !token.IsCancellationRequested)
+                    throw new FirstByteTimeout(ex);
+                throw;
+            }
+            if (count==0 && first.IsCancellationRequested && !token.IsCancellationRequested)
+                throw new FirstByteTimeout(null);
+            return count;
+        }
+    }
     static async Task<string> Copy(HttpClient client, Uri initial, bool asset, Uri local, Stream dest, long limit,
                            CancellationToken token) {
         Uri uri = initial;
+        int connectSeconds=Mirror(local,"").IsBaseOf(initial)?75:GithubPackageWaitSeconds;
         for (int hop = 0; hop <= 3; hop++) {
-            using (var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, token).ConfigureAwait(false)) {
+            HttpResponseMessage reply;
+            using (var connect=CancellationTokenSource.CreateLinkedTokenSource(token)) {
+                if (asset) connect.CancelAfter(TimeSpan.FromSeconds(connectSeconds));
+                reply=await client.GetAsync(uri,HttpCompletionOption.ResponseHeadersRead,connect.Token).ConfigureAwait(false);
+            }
+            using (var response=reply) {
                 int status = (int)response.StatusCode;
                 if (status == 301 || status == 302 || status == 303 || status == 307 || status == 308) {
                     Uri next;
@@ -109,6 +141,7 @@ internal static class WindowsUpdateFeed {
                     continue;
                 }
                 if (status == 404 && initial == Feed(local)) throw new MissingManifest();
+                if (status >= 200 && status < 300 && status != 200) throw new InvalidDataException("更新服务未提供完整数据。");
                 if (status != 200) throw new HttpFailure(status);
                 var headers = response.Content.Headers;
                 if (headers.ContentEncoding.Any(x => !x.Equals("identity",StringComparison.OrdinalIgnoreCase)) ||
@@ -119,7 +152,19 @@ internal static class WindowsUpdateFeed {
                     byte[] buffer = new byte[65536];
                     long total = 0;
                     int n;
-                    while ((n = await input.ReadAsync(buffer,0,buffer.Length,token).ConfigureAwait(false)) != 0) {
+                    while (true) {
+                        try {
+                            n=asset && total==0
+                                ? await FirstPackageRead(input,buffer,token,connectSeconds).ConfigureAwait(false)
+                                : await input.ReadAsync(buffer,0,buffer.Length,token).ConfigureAwait(false);
+                        }
+                        catch (FirstByteTimeout) { throw; }
+                        catch (Exception e) {
+                            if (e is IOException || e is HttpRequestException || e is OperationCanceledException || e is ObjectDisposedException)
+                                throw new InvalidDataException("更新数据未下载完整。",e);
+                            throw;
+                        }
+                        if (n==0) break;
                         total += n;
                         if (total > limit) throw new InvalidDataException("更新数据超出限定大小。");
                         await dest.WriteAsync(buffer,0,n,token).ConfigureAwait(false);
@@ -243,38 +288,49 @@ internal static class WindowsUpdateFeed {
         }
         throw new InvalidDataException("官方发行记录尚未核查完整。");
     }
-    static async Task<Release> ReadManifest(HttpClient client, Uri address, Uri local) {
-        using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
+    static async Task<Release> ReadManifest(HttpClient client, Uri address, Uri local, int seconds) {
+        using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(seconds)))
         using (var bytes = new MemoryStream()) {
             try { await Copy(client,address,false,local,bytes,ManifestLimit,timeout.Token).ConfigureAwait(false); }
+            catch (InvalidDataException) { throw; }
             catch (Exception) {
+                if (bytes.Length != 0) throw new InvalidDataException("更新清单未下载完整。");
                 timeout.Token.ThrowIfCancellationRequested();
                 throw;
             }
-            return Parse(bytes.ToArray(),local);
+            var release=Parse(bytes.ToArray(),local);
+            release.ManifestAddress=address;
+            return release;
         }
     }
     static bool TransportFailed(Exception ex) {
         return !(ex is InvalidDataException) && (ex is HttpRequestException || ex is IOException || ex is OperationCanceledException);
     }
-    public static async Task<Release> CheckAsync(Uri localOriginOrNull) {
-        ValidateOrigin(localOriginOrNull);
-        using (var client = Client(localOriginOrNull)) {
-            bool missing=false;
-            try { return await ReadManifest(client,Feed(localOriginOrNull),localOriginOrNull).ConfigureAwait(false); }
-            catch (MissingManifest) { missing=true; }
-            catch (Exception ex) {
-                if (!TransportFailed(ex)) throw;
+    public static Task<Release> CheckAsync(Uri local) { return ReadLatest(local,null,null); }
+    internal static Task<Release> CheckWithProgress(Uri local,IProgress<string> progress) { return ReadLatest(local,null,progress); }
+    static async Task<Release> ReadLatest(Uri local,Uri preferred,IProgress<string> progress) {
+        ValidateOrigin(local);
+        var raw=Feed(local);
+        var mirror=Mirror(local,"stable.json");
+        var contents=Api(local,"/contents/distribution/windows/stable.json?ref=main");
+        var sources=new[] {raw,mirror,contents}.OrderByDescending(uri=>uri==preferred).ToArray();
+        bool rawMissing=false, mirrorMissing=false;
+        using (var client=Client(local)) {
+            foreach (var uri in sources) {
+                if (uri==contents) client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.raw+json");
+                if (progress!=null) progress.Report(uri==mirror?"正在连接荔枝备用更新服务…":uri==contents?"正在通过 GitHub 备用入口检查…":"正在连接官方更新服务…");
+                try { return await ReadManifest(client,uri,local,uri==mirror?75:uri==raw?5:12).ConfigureAwait(false); }
+                catch (Exception e) {
+                    if (!TransportFailed(e)) throw;
+                    if (uri==raw && e is MissingManifest) rawMissing=true;
+                    var http=e as HttpFailure;
+                    if (uri==mirror && http!=null && http.Status==404) mirrorMissing=true;
+                    if (uri==sources.Last() && !(rawMissing && mirrorMissing)) throw;
+                } finally { client.DefaultRequestHeaders.Accept.Clear(); }
             }
-            if (missing) {
-                using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
-                    await ConfirmNoNewRelease(client,localOriginOrNull,timeout.Token).ConfigureAwait(false);
-                return null;
-            }
-            // Same repository, branch and file via GitHub's Contents service; same manifest validation.
-            client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.raw+json");
-            return await ReadManifest(client,Api(localOriginOrNull,"/contents/distribution/windows/stable.json?ref=main"),
-                localOriginOrNull).ConfigureAwait(false);
+            using (var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(20)))
+                await ConfirmNoNewRelease(client,local,timeout.Token).ConfigureAwait(false);
+            return null;
         }
     }
     public static string CheckErrorMessage(Exception error) {
@@ -332,11 +388,27 @@ internal static class WindowsUpdateFeed {
         if (package == null || !File.Exists(package.Path) || new FileInfo(package.Path).Length != package.Length) return false;
         return Hash(package.Path) == package.Sha256;
     }
+    static async Task DownloadTo(HttpClient client, Uri address, Uri local, Asset asset, Stream output) {
+        using (var timeout=new CancellationTokenSource(TimeSpan.FromMinutes(5))) {
+            try {
+                await Copy(client,address,true,local,output,asset.Length,timeout.Token).ConfigureAwait(false);
+            } catch (InvalidDataException) { throw; }
+            catch (Exception) {
+                if (output.Length!=0) throw new InvalidDataException("更新包未下载完整。");
+                timeout.Token.ThrowIfCancellationRequested();
+                throw;
+            }
+        }
+    }
     public static async Task<DownloadedPackage> DownloadAsync(Release release, string kind, Uri localOriginOrNull) {
+        return await DownloadWithProgress(release,kind,localOriginOrNull,null).ConfigureAwait(false);
+    }
+    internal static async Task<DownloadedPackage> DownloadWithProgress(Release release,string kind,Uri localOriginOrNull,IProgress<string> progress) {
         ValidateOrigin(localOriginOrNull);
         if (release == null || release.Origin != localOriginOrNull || (kind != "exe" && kind != "msi"))
             throw new InvalidDataException("更新来源或包类型无效。");
-        var latest = await CheckAsync(localOriginOrNull).ConfigureAwait(false);
+        if (progress!=null) progress.Report("正在重新核对更新清单…");
+        var latest = await ReadLatest(localOriginOrNull,release.ManifestAddress,null).ConfigureAwait(false);
         if (latest == null || latest.Version != release.Version || latest.QaInstance != release.QaInstance || latest.Assets.Any(a => !release.Assets.Any(previous =>
             a.Kind == previous.Kind && a.Length == previous.Length && a.Sha256 == previous.Sha256)))
             throw new InvalidDataException("更新清单已变化，请重新检查。");
@@ -347,10 +419,23 @@ internal static class WindowsUpdateFeed {
         Directory.CreateDirectory(dir);
         string pending = Path.Combine(dir,"download.partial");
         try {
+            var github=Package(localOriginOrNull,latest.Version,asset);
+            var mirror=Mirror(localOriginOrNull,"windows-v"+latest.Version+"/"+asset.Name);
+            bool onMirror=latest.ManifestAddress==Mirror(localOriginOrNull,"stable.json");
             using (var client = Client(localOriginOrNull))
-            using (var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(5)))
-            using (var output = new FileStream(pending,FileMode.CreateNew,FileAccess.Write,FileShare.None)) {
-                await Copy(client,Package(localOriginOrNull,latest.Version,asset),true,localOriginOrNull,output,asset.Length,timeout.Token).ConfigureAwait(false);
+            using (var output=new FileStream(pending,FileMode.CreateNew,FileAccess.Write,FileShare.None)) {
+                bool retry=false;
+                try {
+                    if (progress!=null) progress.Report(onMirror?"正在从荔枝备用服务下载安装包…":"正在下载安装包…");
+                    await DownloadTo(client,onMirror?mirror:github,localOriginOrNull,asset,output).ConfigureAwait(false);
+                } catch (Exception ex) {
+                    if (!TransportFailed(ex)) throw;
+                    retry=true;
+                }
+                if (retry) {
+                    if (progress!=null) progress.Report(onMirror?"正在从 GitHub 下载安装包…":"正在从荔枝备用服务下载安装包…");
+                    await DownloadTo(client,onMirror?github:mirror,localOriginOrNull,asset,output).ConfigureAwait(false);
+                }
             }
             if (Hash(pending) != asset.Sha256) throw new InvalidDataException("更新包摘要校验失败，请重新检查。");
             if (!MatchesVersion(pending,kind,latest.Version)) throw new InvalidDataException("更新包内部版本与清单不符。");
