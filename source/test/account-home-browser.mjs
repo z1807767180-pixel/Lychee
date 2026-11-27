@@ -36,11 +36,33 @@ async function shot(browser,name){
   await writeFile(join(evidence,name+'.png'),Buffer.from((await browser.call('Page.captureScreenshot',{format:'png'})).data,'base64'));
 }
 async function choose(browser,tab){await tap(browser,tab);}
-async function refreshHome(browser){await choose(browser,'荔圈');await until(()=>browser.js("!!document.querySelector('.s8-card')"),'首页列表');}
+async function refreshHome(browser){if(await browser.js("!!document.querySelector('.s8[data-chat=true]') && !document.querySelector('.s8-nav').offsetHeight"))await tap(browser,'‹ 返回');await choose(browser,'荔圈');await until(()=>browser.js("!!document.querySelector('.s8-card')"),'首页列表');}
 async function sendText(browser,body){
   await until(()=>browser.js("!!document.querySelector('.s8-composer textarea')"),'消息输入');
   await browser.js("(()=>{const f=document.querySelector('.s8-composer textarea');f.value="+JSON.stringify(body)+";f.dispatchEvent(new Event('input'));f.form.requestSubmit()})()");
   await visible(browser,body);
+}
+async function checkThemes(browser,surface){
+  const names=['原味荔枝园','米菲采荔枝','图图树下','凯蒂荔枝茶会'],skins=['orchard','miffy','tutu','kitty'];
+  async function style(){await refreshHome(browser);await tap(browser,'我');await tap(browser,'头像与主题');await until(()=>browser.js("document.querySelector('iframe')?.contentDocument.querySelectorAll('.theme-grid button').length===4"),'原主题设置');}
+  for(const [index,name] of names.entries()){
+    await style();await browser.js(`document.querySelector('iframe').contentDocument.querySelectorAll('.theme-grid button')[${index}].click()`);
+    await tap(browser,'‹ 返回');await refreshHome(browser);await tap(browser,'周末约饭');await visible(browser,'再发群消息');
+    const expected='social-'+(surface==='窄屏'?'wall':'wide')+'-'+skins[index]+'.webp';
+    await until(()=>browser.js(`(async()=>{const shell=document.querySelector('.s8'),s=getComputedStyle(shell),url=s.backgroundImage.match(/url\\(["']?([^"')]+)/)?.[1];if(!url||!url.includes('${expected}'))return false;const img=new Image();img.src=url;await img.decode();return s.backgroundSize===${JSON.stringify(surface==='窄屏'?'100% 100%':'cover')}&&document.querySelector('.s8-msg .s8-person')?.naturalWidth>0})()`),surface+'实际壁纸 '+name);
+    await shot(browser,surface+'-'+name+'-群聊');
+  }
+  await browser.call('Page.reload');await until(()=>browser.js("!document.getElementById('lychee-launch')&&!!document.querySelector('.s8-card')"),'主题重开');
+  assert.equal(await browser.js("document.querySelector('.s8').dataset.skin"),'kitty');
+  // The legacy palette belongs to the signed-in account's private tools garden.
+  await style();await browser.js("document.querySelector('iframe').contentDocument.querySelectorAll('.face-grid button')[5].click()");
+  await until(()=>browser.js("document.querySelector('iframe').contentDocument.querySelectorAll('.face-grid button')[5].getAttribute('aria-pressed')==='true'"),'已选个人头像');
+  await browser.js("(async()=>{const doc=document.querySelector('iframe').contentDocument,c=doc.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');ctx.fillStyle='#70866a';ctx.fillRect(0,0,64,64);const blob=await new Promise(r=>c.toBlob(r,'image/jpeg'));const dt=new DataTransfer();dt.items.add(new File([blob],'trial.jpg',{type:'image/jpeg'}));const field=doc.querySelector('.wallpaper-controls input[type=file]');field.files=dt.files;field.dispatchEvent(new Event('change',{bubbles:true}));})()");
+  await until(()=>browser.js("!![...document.querySelector('iframe').contentDocument.querySelectorAll('button')].find(b=>b.textContent.includes('恢复主题背景'))"),'保存个人壁纸');
+  await tap(browser,'‹ 返回');await refreshHome(browser);await tap(browser,'周末约饭');await visible(browser,'再发群消息');
+  await until(()=>browser.js("getComputedStyle(document.querySelector('.s8')).backgroundImage.includes('data:image/jpeg;base64,')&&document.querySelector('.s8-msg.mine .s8-person')?.src.includes('face-5.webp')"),'自选壁纸和本人头像');
+  await style();await browser.js("[...document.querySelector('iframe').contentDocument.querySelectorAll('button')].find(b=>b.textContent.includes('恢复主题背景')).click()");
+  await tap(browser,'‹ 返回');await refreshHome(browser);
 }
 try{
   for(const [user,name] of [[a,'小荔'],[b,'阿青'],[c,'小栗']]){
@@ -68,33 +90,35 @@ try{
   assert.equal(rows[0],g);assert.equal(rows.length,new Set(rows).size);assert.ok(rows.includes(empty));
   await shot(desktop,'Windows-统一首页');await refreshHome(phone);await shot(phone,'手机-统一首页');
   await tap(desktop,'周末约饭');await visible(desktop,'再发群消息');await shot(desktop,'Windows-群聊');
-  await tap(desktop,'图片、表情与撤回');
-  await until(()=>desktop.js("!!document.querySelector('iframe')?.contentDocument.querySelector('.room-compose [type=file]')"),'原群发图');
-  const inside=code=>desktop.js("(()=>{const doc=document.querySelector('iframe').contentDocument;return "+code+"})()");
-  await inside("doc.querySelector('[aria-label=选表情]').click()");
-  await until(()=>inside("!!doc.querySelector('.emoji-grid button')"),'群表情面板');
-  await inside("doc.querySelector('.emoji-grid button').click()");
-  await inside("(async()=>{const canvas=doc.createElement('canvas');canvas.width=128;canvas.height=64;const ctx=canvas.getContext('2d');ctx.fillStyle='red';ctx.fillRect(0,0,128,64);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg'));const transfer=new DataTransfer();transfer.items.add(new File([blob],'test.jpg',{type:'image/jpeg'}));const field=doc.querySelector('.room-compose [type=file]');field.files=transfer.files;field.dispatchEvent(new Event('change',{bubbles:true}));})()");
-  await until(()=>inside("!!doc.querySelector('.room-draft img')&&!doc.querySelector('.room-send').disabled"),'图片草稿');
-  await inside("doc.querySelector('.room-send').click()");
-  await until(()=>inside("!!doc.querySelector('.room-row.mine img:not(.room-avatar)')"),'自己发的群图片');
-  await shot(desktop,'Windows-原群图片与表情');
+  await tap(desktop,'选表情');await tap(desktop,'😀');
+  await tap(desktop,'更多聊天操作');await visible(desktop,'发图片');
+  await desktop.js("(async()=>{const canvas=document.createElement('canvas');canvas.width=128;canvas.height=64;const ctx=canvas.getContext('2d');ctx.fillStyle='red';ctx.fillRect(0,0,128,64);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg'));const transfer=new DataTransfer();transfer.items.add(new File([blob],'test.jpg',{type:'image/jpeg'}));const field=document.querySelector('.s8-composer [type=file]');field.files=transfer.files;field.dispatchEvent(new Event('change',{bubbles:true}));})()");
+  await until(()=>desktop.js("!!document.querySelector('.s8-draft-photo img')"),'图片草稿');await tap(desktop,'发送');
+  await until(()=>desktop.js("!!document.querySelector('.s8-msg.mine .s8-photo-button img')?.naturalWidth"),'自己发的群图片');
+  await desktop.js("document.querySelector('.s8-photo-button').click()");await until(()=>desktop.js("!!document.querySelector('.s8-image-preview img')?.naturalWidth"),'查看图片');await tap(desktop,'关闭');
+  await shot(desktop,'Windows-群聊图片与表情');
   const sentPhoto=(await social(b,null,'&view=group&id='+g)).messages.find(m=>m.imageUrl&&m.name==='小荔');
   assert.ok(sentPhoto?.imageUrl);assert.match(sentPhoto.body,/😀/u);
-  await inside("Array.from(doc.querySelectorAll('.room-row.mine')).at(-1).dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))");
-  await until(()=>inside("!!Array.from(doc.querySelectorAll('button')).find(b=>b.textContent.trim()==='撤回')"),'显示撤回操作');
-  await inside("Array.from(doc.querySelectorAll('button')).find(b=>b.textContent.trim()==='撤回').click()");
+  await desktop.js("document.querySelector('.s8-msg.mine .s8-photo-button').dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))");await tap(desktop,'撤回');
   await until(async()=>(await social(b,null,'&view=group&id='+g)).messages.find(m=>m.id===sentPhoto.id)?.body==='消息已撤回','对方看到已撤回');
+  await visible(desktop,'消息已撤回');
+  await tap(desktop,'更多聊天操作');await tap(desktop,'原群聊与照片');await until(()=>desktop.js("!!document.querySelector('iframe')?.contentDocument.querySelector('.room-compose [type=file]')"),'原群已有操作保留');
   await choose(desktop,'工具箱');await tap(desktop,'交给命运');
   await until(()=>desktop.js("!!document.querySelector('iframe')?.contentDocument.querySelector('.v7-wheel')"),'原转盘');
   await choose(desktop,'我');await tap(desktop,'设置');await visible(desktop,'Windows W');
   await choose(phone,'我');await tap(phone,'设置');await visible(phone,'手机网页 V8.0.0');
+  await checkThemes(phone,'窄屏');await checkThemes(desktop,'宽窗');
+  await tap(phone,'周末约饭');await visible(phone,'再发群消息');
+  await phone.js("(()=>{const f=document.querySelector('.s8-composer textarea');f.focus();f.value='尚未发出的草稿';f.dataset.sameEditor='yes';f.dispatchEvent(new Event('input'));})()");
+  await social(a,{action:'message',groupId:g,body:'输入期间收到的新消息',clientId:randomUUID()});
+  await visible(phone,'输入期间收到的新消息');
+  assert.equal(await phone.js("document.activeElement.dataset.sameEditor==='yes'&&document.activeElement.value==='尚未发出的草稿'"),true);
   await social(c,{action:'message',friendId:a.id,body:'不应允许',clientId:randomUUID()},'',403);
   const post=await social(a,{action:'post',kind:'feed',body:'仅好友',clientId:randomUUID()});
   await social(c,null,'&view=post&id='+post.id,404);
   await social(b,{action:'groupLeave',groupId:g});await social(b,{action:'message',friendId:a.id,body:'退群后仍是好友',clientId:randomUUID()});
   assert.ok(!(await social(b,null)).groups.some(x=>x.id===g));
-  await writeFile(join(evidence,'account-home.json'),JSON.stringify({pass:true,groupPrivateGroupOrder:true,emptyGroup:true,accounts:3,groups:2,sharedGardenMembershipDoesNotGrantPrivateAccess:true,priorToolReachable:true,desktopErrors:desktop.errors,mobileErrors:phone.errors},null,2));
+  await writeFile(join(evidence,'account-home.json'),JSON.stringify({pass:true,groupPrivateGroupOrder:true,emptyGroup:true,accounts:3,groups:2,sharedGardenMembershipDoesNotGrantPrivateAccess:true,priorToolReachable:true,fourVisibleThemesInBothWidths:true,customWallpaperAndOwnAvatarPersist:true,receivedWhileInputFocusedWithDraftIntact:true,groupPictureEmojiAndRecall:true,desktopErrors:desktop.errors,mobileErrors:phone.errors},null,2));
   assert.deepEqual(desktop.errors,[]);assert.deepEqual(phone.errors,[]);console.log('Three accounts, two groups, mixed recency, stable account, private scope and retained tool passed.');
 }catch(error){for(const browser of [desktop,phone])if(browser.socket)console.error(await browser.js('document.body.innerText.slice(-700)'),browser.errors,browser.responses.filter(x=>x[0]>=400).slice(-10),await browser.js('document.querySelector("iframe")?.contentDocument.body.innerText.slice(-500)'));throw error;}
 finally{await Promise.allSettled([desktop.close(),phone.close()]);await service.close();await rm(temp,{recursive:true,force:true});}

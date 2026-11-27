@@ -1,5 +1,7 @@
 # 荔枝当前进展
 
+**手机网页界面发布与手机试用。** V8.0.1 已上线。保留旧缓存与登录、公告已读、进群进园已在隔离账号验证；公网原网址实到登录页。待负责人实际手机及老安卓设备体验。[发布与验收](../../docs/项目交接.md)
+
 **安卓软件内更新。** A8.0.1 已正式发布。仅官网网络的覆盖、旧安卓过渡与验收边界见[安卓回执](../../distribution/android-friends/verified-8.0.1.json)。厂商真机待朋友反馈。
 
 **Windows 软件内自动更新。** W8.0.0 已发布。正式 W7.0.7 便携版已实际从软件内升级、自动重开，登录与设置保留；W7.0.3 的旧更新入口在朋友的网络连不上 GitHub，仍需从[官网固定下载页](https://lychee-link-check.onrender.com/windows-update/download.html)选相同类型覆盖一次。该机实际结果待反馈。[验收记录](../../distribution/windows/verified-8.0.0.json)

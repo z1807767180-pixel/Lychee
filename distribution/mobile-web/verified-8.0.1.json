@@ -1,0 +1,1530 @@
+{
+  "website": "V8.0.1",
+  "origin": "https://lychee-link-check.onrender.com",
+  "deployedCommit": "4e18256e1f1bc0bce2f32bb0bf4402ab9689ce3e",
+  "verifiedAt": "2026-11-27T13:27:54+00:00",
+  "publicReadOnly": true,
+  "matchedWebsiteFiles": 187,
+  "preservedPwaManifest": "/mobile/app.webmanifest",
+  "unchangedEndpointsAndNativeDownloads": 12,
+  "checks": [
+    {
+      "path": "/mobile/ai-chat-hero.webp",
+      "status": 200,
+      "bytes": 23274,
+      "sha256": "74861af610127321cb60e991ff2ed144391d1fff974a2080ed1854d7d1747a3b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-chat-tile.webp",
+      "status": 200,
+      "bytes": 7044,
+      "sha256": "4627f30ee67e009539f70f35cc099814185a7ca3fd020426a806ac18117360ae",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-icon-chat.webp",
+      "status": 200,
+      "bytes": 1548,
+      "sha256": "eaed719a274cc07cc5152180d3ef3fade9ae24785eb92b7ca024cea6c13686d0",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-icon-knowledge.webp",
+      "status": 200,
+      "bytes": 2086,
+      "sha256": "4f529caabc97dc84ade2f5abea486b035f1a80fc49623a803166e2444b73b6db",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-icon-life.webp",
+      "status": 200,
+      "bytes": 1800,
+      "sha256": "808ec08a7b64dc7e97a3115d89a6ab4eca96cd963595031cc7937838c670e25d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-icon-study.webp",
+      "status": 200,
+      "bytes": 2288,
+      "sha256": "980bfd1a09e99472c7a0c23afb52c098bf8de508cd8a45ede9d1aeda19f500ff",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-icon-write.webp",
+      "status": 200,
+      "bytes": 1850,
+      "sha256": "b2660c3c53d5cf37591fcb3eb6762a42fc348007d977e737dd6c47cb4c9ea964",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-image-hero.webp",
+      "status": 200,
+      "bytes": 33596,
+      "sha256": "01697183da3ed21ea488543a99464e67f452a61a9aea5c46934e96314b576c37",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-image-tile.webp",
+      "status": 200,
+      "bytes": 9946,
+      "sha256": "6522332d0e412c3bf28d62777fe36493271c858cca272021f366eb0167da2ee5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-style-0.webp",
+      "status": 200,
+      "bytes": 3200,
+      "sha256": "a526f5d934ee32d2827224c33fe8e112e5f38e2c160bb2f0aa943f0011635419",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-style-1.webp",
+      "status": 200,
+      "bytes": 1432,
+      "sha256": "ea67a06947de9a01bbbc7b7e2dc7120ae22bb083db80f4af98d7042119d1b0c9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-style-2.webp",
+      "status": 200,
+      "bytes": 3724,
+      "sha256": "0034bfe398ede1cd4244f5d6f9e6b2e533eb41931bf8d23bb1bc4abdfd9e8020",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-style-3.webp",
+      "status": 200,
+      "bytes": 1986,
+      "sha256": "470a00de9172168164ed3455e792d2a2301bbe21feacc363766d9a8c774c5f82",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ai-tools-hero.webp",
+      "status": 200,
+      "bytes": 39116,
+      "sha256": "d1ed53050ef5d97226dbb5b30b02f06de414571137424afcf59cbd97fdcc7597",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/app.webmanifest",
+      "status": 200,
+      "bytes": 269,
+      "sha256": "176d22be4182cb3d020cccdb8072076238dfd6f76a54668ff7051d4f6749a40f",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/app.css",
+      "status": 200,
+      "bytes": 50184,
+      "sha256": "a069aea6a67767c15a1c677a75b94ac0ca0c638c0c37f3f7330cbb47220af132",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/camp.webp",
+      "status": 200,
+      "bytes": 270412,
+      "sha256": "bdc76727c8380be48630bdf8e7f006a05b6685aca8b1d0d8d6c554dedc6d8264",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/business-scope.js",
+      "status": 200,
+      "bytes": 7672,
+      "sha256": "d9b0b60e13a2b6e09f40cecbdabe5a65c25e761e540dc08a6e07c126e9acba83",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-banner-v7.webp",
+      "status": 200,
+      "bytes": 45318,
+      "sha256": "a39614bbbeae2ecdd08bcc554df948b8a1a5c78d1c9ef4790bfa340617230934",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-card-v7.webp",
+      "status": 200,
+      "bytes": 33812,
+      "sha256": "f83d3ef7ffa64b129024496d9503d02c189795bf3c328e25ca14ce71d5213c40",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-condiment-v7.js",
+      "status": 200,
+      "bytes": 5628,
+      "sha256": "83e6ed9e127bc4a2e7f398a87de1e95e0d6e6918d3e0b0b8230d7fbcb5c7b3af",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-estimate-v7.js",
+      "status": 200,
+      "bytes": 9168,
+      "sha256": "9b99688fd5e28d754cfbc612d5d611f988a08d973d54ac24ebb585d93bb06532",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-foods-v7.js",
+      "status": 200,
+      "bytes": 479813,
+      "sha256": "74798b9b63b973dc1c60fa80d1b29d335620ec8ff7e8d498cab153cff689135b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-match-v7.js",
+      "status": 200,
+      "bytes": 12909,
+      "sha256": "4c46ebd640c7ff3b6922b63e13f0b73bee8d42b9a921b689b7bd5c7af87910f6",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-recipes-v7.js",
+      "status": 200,
+      "bytes": 5210,
+      "sha256": "2cbd6eb7ca1c92ec5e49a0996c885274b828b645d5cd5863a56cb9d09af2310e",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-v7.css",
+      "status": 200,
+      "bytes": 6623,
+      "sha256": "7d5adfb5cd57b9b94899378b1e05fc05ab6bf95a1db8dae751cdeb04be4684d9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/diet-v7.js",
+      "status": 200,
+      "bytes": 25336,
+      "sha256": "1913e9820420b9a411fb4a1e44ca32bff6f94921d2ce23b2189d0ae951da85df",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/fonts/LXGW975YuanSC-500W.woff2",
+      "status": 200,
+      "bytes": 6309636,
+      "sha256": "2b84a1c9211091e411a2fffd5b8e287d271ec49fad9f5fbd3c83a371bc5b37f5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/fonts/LXGW975YuanSC-700W.woff2",
+      "status": 200,
+      "bytes": 6224540,
+      "sha256": "9be5caad20b11a61e61a014b9089499b57c867f488bee578cc837ced770549b4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/fonts/OFL.txt",
+      "status": 200,
+      "bytes": 5560,
+      "sha256": "e9c4c62582807c250061e07ede99f4c0c7e1a7d536e621ec68d049f1f7ee0d81",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/garden.css",
+      "status": 200,
+      "bytes": 8813,
+      "sha256": "d883f995478258f41f7ce85c9b947d081dc302a27d2975b918bd5ca3fcb23503",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/garden.js",
+      "status": 200,
+      "bytes": 20522,
+      "sha256": "a3ff70e8eb4060a396b43e2716cb0878492a39cfe7573e88dd508d6dcc92c0d9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/notify-push-v7.js",
+      "status": 200,
+      "bytes": 3252,
+      "sha256": "fba89f12351f97ec805736ab3d13cd4987710f167aaca7ce2febaaf7532fc51d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/notify-v7.js",
+      "status": 200,
+      "bytes": 10593,
+      "sha256": "80de8d1081e145ab836849b63d0a37f0f476b1cd2931c934d71a849c49cce675",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/quiz-card-v7.webp",
+      "status": 200,
+      "bytes": 45760,
+      "sha256": "88272140b613133833a661abd4fe22d80468c837ae3b2bcddf2a8e64183902fb",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/quiz-result-v7.webp",
+      "status": 200,
+      "bytes": 23482,
+      "sha256": "40267be4a7481c5231390eca8c0a08efd63a6a1fd5230047930080011fe773b4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/quiz-v7.css",
+      "status": 200,
+      "bytes": 4350,
+      "sha256": "6759ced804de94288ab836650afd41793339ca5729153837cce3b04ca715450e",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/quiz-v7.js",
+      "status": 200,
+      "bytes": 10642,
+      "sha256": "140eb4975b14be259184ad0e15d02b4217a3631b25d36521f4b88d7332fed55d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/responsive-text.css",
+      "status": 200,
+      "bytes": 714,
+      "sha256": "7cb2cbad0ecd6f5a725a70a4ad09f46d9a4cb5fb9770b96e30f29ac96a85219b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-appearance.js",
+      "status": 200,
+      "bytes": 3307,
+      "sha256": "6a4c35b51329634397ba3289d76ac6bf7b46c546915a268ba4e3720049fc8fec",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-chat.js",
+      "status": 200,
+      "bytes": 7655,
+      "sha256": "c7be2978d54d3631634d02ff24dd37c0eb4328c7a8ed432fb1e23ced334f9ded",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-corner-kitty.webp",
+      "status": 200,
+      "bytes": 11896,
+      "sha256": "849c78a529f19787d10b8164e8ada442a0f4404f0a5ee1feb42cb776836a6590",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-corner-miffy.webp",
+      "status": 200,
+      "bytes": 7386,
+      "sha256": "6d5737eeb6c4a374a6b7d9fd33872cb201f42c300ca36b18518901d9ff19971b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-corner-orchard.webp",
+      "status": 200,
+      "bytes": 16132,
+      "sha256": "bb0082730877b43e3c9d03996289f65fa65afbf02270951c3f0d7ee9f3decc32",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-corner-tutu.webp",
+      "status": 200,
+      "bytes": 11594,
+      "sha256": "76e3b623e2f3f1c09d4e2ea1e4f4dcd3982796641c2ee8aba5f7d5535d789902",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-v8-api.js",
+      "status": 200,
+      "bytes": 1748,
+      "sha256": "7c914e0d9bef9db1df3990b4c54a86b5ba60aa4707743cf31c961a644b3f9876",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-v8-garden.css",
+      "status": 200,
+      "bytes": 5451,
+      "sha256": "52ed732959fbf4b9c5821162e768028611c1cbef0d0ec8f623dd4fff82bf9b7b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-v8-garden.js",
+      "status": 200,
+      "bytes": 10068,
+      "sha256": "c2255ede8c9250176523447504d4bbfc9355d1e7394411b16930d3288c9e1e4d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-v8.css",
+      "status": 200,
+      "bytes": 12157,
+      "sha256": "d927146e1f3e78cc3b0fabd79df416f70610de3399b5870fdcb7d6e58338901d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-v8.js",
+      "status": 200,
+      "bytes": 21261,
+      "sha256": "b9e64b2e4567517f9da821631013da80e868bf6896fd7eed10e03d04ae801905",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wall-kitty.webp",
+      "status": 200,
+      "bytes": 74258,
+      "sha256": "7f03c32ec6b555b41b07cb613eceda33b18e63f99bb87b86df7f9916338ac151",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wall-miffy.webp",
+      "status": 200,
+      "bytes": 45802,
+      "sha256": "6898c8b5e3df2e8f5627ea40adfd67dba9d9a5cbf1790459c0e210616e39b3cc",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wall-orchard.webp",
+      "status": 200,
+      "bytes": 164824,
+      "sha256": "155e8fdb56790a1230b5c06d0ff5812c63400640a0ffa7732020b9b269dd5c13",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wall-tutu.webp",
+      "status": 200,
+      "bytes": 87372,
+      "sha256": "ee1d72810e049aace11dceb8d418fda2f3e320430fe1dc15cab2e08a82b6688c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wide-kitty.webp",
+      "status": 200,
+      "bytes": 156652,
+      "sha256": "96f1683224e4fdfabb748ac0df4f6376fae835a4832cce67948318b6cca9f8fc",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wide-miffy.webp",
+      "status": 200,
+      "bytes": 138178,
+      "sha256": "4c352995ad8b8328db2fae1399f89ece0b80025e1f2d2af31a8838154ad9a5a9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wide-orchard.webp",
+      "status": 200,
+      "bytes": 241286,
+      "sha256": "18c11f3178eba9dd5bdd742b0665cc121c3a73e679a6716a741554287876b655",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/social-wide-tutu.webp",
+      "status": 200,
+      "bytes": 142964,
+      "sha256": "7b1b0735b9d729e284ef90f2c0393d77c19c47341c4b1cbc453661a88ca8af12",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/toolbox-cards.css",
+      "status": 200,
+      "bytes": 1805,
+      "sha256": "844ca32d9a345daec3e83834985d95d0c1ba8361075591b59c85ee245a482bb7",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/typography.css",
+      "status": 200,
+      "bytes": 1414,
+      "sha256": "f3ef28aedbae1196c1e37062ad9bd09a4b6af8312a876fa7a2f457433c4c7ee5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/wheel-banner-v7.webp",
+      "status": 200,
+      "bytes": 46484,
+      "sha256": "ddc013e216809f194bc948f6dafa0faf2df310c900b379be50de1d5434afcb62",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/wheel-card-v7.webp",
+      "status": 200,
+      "bytes": 29046,
+      "sha256": "b27df239f3523ce083622c940a291d5d0268183aea317c5b858bd0f8e6775432",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/wheel-hub-v7.webp",
+      "status": 200,
+      "bytes": 3616,
+      "sha256": "d082a6fdcafb669f3b6340aa315d436d066ace33aa73c13df1f2e85ffb2f6f1d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/wheel-v7.css",
+      "status": 200,
+      "bytes": 24964,
+      "sha256": "76842e571ee50b22282e19c9e58abdbbc1ca9f2569f77401be43f9e205a18a85",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/client/wheel-v7.js",
+      "status": 200,
+      "bytes": 51867,
+      "sha256": "03dc0c9e5ede456d44814195d4156f3386cba38778fb4b8d3a41ca05606f2265",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/launch/start.css",
+      "status": 200,
+      "bytes": 1600,
+      "sha256": "a6eafed41245d4309e496ecc6d6f757b76a1c127f508f27bf3e89d688455afff",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/launch/start.js",
+      "status": 200,
+      "bytes": 39495,
+      "sha256": "e65de1cca134704c0f5e045fb0d6e0e2cdf59e4ba55a6d2d716a5e68681ac15a",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/launch/windows-frame.css",
+      "status": 200,
+      "bytes": 4349,
+      "sha256": "fdd05fc54d88bb972dc7616ab7db4a3467c2f04fa1aada1d5b6a6416b9c37113",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/launch/windows-frame.js",
+      "status": 200,
+      "bytes": 3375,
+      "sha256": "ce2926710976b9b2bbe8674b884b3f5b4cd6db3f248c8f8887279c393c50ba83",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/meadow.webp",
+      "status": 200,
+      "bytes": 474976,
+      "sha256": "8663c8511ee7a3049afa37fb47c68b3351c05329cc155e2fe22ed685c3317385",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/meadow-stage.webp",
+      "status": 200,
+      "bytes": 169388,
+      "sha256": "d3a8b526e65de477b2a8f6d314d42390d9c41f25ee8e4f286d8b4477a16632c2",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/portrait-0.webp",
+      "status": 200,
+      "bytes": 12346,
+      "sha256": "5f7b352da2f46fc7c775f4ee773a9c44760598607e27626f617e9eba5afbb7a1",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/portrait-1.webp",
+      "status": 200,
+      "bytes": 13192,
+      "sha256": "29504cfc30df1b3dad5b0588c6250a7fca98f4653354d1462163b528d4cbe3d3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/portrait-2.webp",
+      "status": 200,
+      "bytes": 12876,
+      "sha256": "b1931419799ca51db8491a272bee7a17a968f2f10708cf9b803b313652bdf73c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/portrait-3.webp",
+      "status": 200,
+      "bytes": 12248,
+      "sha256": "9401c6ea2b5d8f86e3ddbd75ec87f6307e50292e7138d8870788f0b81e7c7fe1",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/scenes/travellers-motion.webp",
+      "status": 200,
+      "bytes": 430640,
+      "sha256": "79413cb034a1a6e1644f634468b4423661e94eb46617b9948ab15c301a16e5c1",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/windows/team-share.js",
+      "status": 200,
+      "bytes": 700,
+      "sha256": "107b363cab750ebdbbf51677816be3e699536e1e36992bb64c3e0ea4cec60074",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/assets-8.0.1/windows/workspace-nav.js",
+      "status": 200,
+      "bytes": 1394,
+      "sha256": "924fde7bbbb5599250cb58c7fde93059aeca70805c4a9128daa25cbd70d2149d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/break-room.webp",
+      "status": 200,
+      "bytes": 71604,
+      "sha256": "05751b54db1a67ba4db3d0ab1ddd5d9d9836e56e22a853aac4d3b635dec74fc4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/case-night.webp",
+      "status": 200,
+      "bytes": 21502,
+      "sha256": "d6cc6eb4d1a0cc45e7630e221e6b98f932c3343f5179cc55cb74809ae6defc47",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/chat.css",
+      "status": 200,
+      "bytes": 2616,
+      "sha256": "3170e146aa0097ea1eb608192279937ae26a7a38bdb92dd1fcac1953dc3e5fa5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/chat.js",
+      "status": 200,
+      "bytes": 13951,
+      "sha256": "c850b97c6b7e277c9f5974142dae733ffc522e11b791e9d3382ad9412041af23",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/chess-branch.webp",
+      "status": 200,
+      "bytes": 3210,
+      "sha256": "e04f763063ee0a7fcc30c7e0731688f74e1df3336af78d9d7aafc446c4958482",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-0.webp",
+      "status": 200,
+      "bytes": 5834,
+      "sha256": "cb79750843c4026b383d5d7138c08316896064a94e9f3349fef825d3b9a502d5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-1.webp",
+      "status": 200,
+      "bytes": 6082,
+      "sha256": "5515a591da16f7b99718bea238f3811e373a46ca3e3d40b076164a1e7e3cca8f",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-10.webp",
+      "status": 200,
+      "bytes": 5744,
+      "sha256": "6613c533b9a67187ed8437b2469bc372ff718d63472eea0211575f3bdd965c9d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-11.webp",
+      "status": 200,
+      "bytes": 4672,
+      "sha256": "be851e8147c79f10ab504943bed0900d7efde3d8f27216157bc0fc69049bc6a7",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-12.webp",
+      "status": 200,
+      "bytes": 5092,
+      "sha256": "d79c5023259a1967cccdc3cedbd4042c22960805225865dea6c32056e46b4599",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-13.webp",
+      "status": 200,
+      "bytes": 6988,
+      "sha256": "b0fae2fad6a84362c964596c70037bd35854607221353ea429e916a3a4ffb458",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-14.webp",
+      "status": 200,
+      "bytes": 3718,
+      "sha256": "f33d05765c37d5de25f33e3cb1824d61a9e2c71c3600286eb8bbdb3d7078326c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-15.webp",
+      "status": 200,
+      "bytes": 4982,
+      "sha256": "e513d60fb4eb24bc6aa29db5d1761ab649208483873cbff74321b88a6f3816b2",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-2.webp",
+      "status": 200,
+      "bytes": 5490,
+      "sha256": "8698d591c185a466abfd6a9984a6d3cd4fd4899987ec95409ada9bfc04eecc23",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-3.webp",
+      "status": 200,
+      "bytes": 5476,
+      "sha256": "4f897b5c2ef59c6deb1d380b97b6874f31f8d786cc935b8ad037fc11eed03cdc",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-4.webp",
+      "status": 200,
+      "bytes": 6728,
+      "sha256": "312240ef8ac3e5b686e172ad5a6f0327d190e33f965638b61b9347d76cc9e3f9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-5.webp",
+      "status": 200,
+      "bytes": 6302,
+      "sha256": "8a38407d1751bf7e7d3d118551dce449edb1389abcf3639b99fa2e60249bf8ec",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-6.webp",
+      "status": 200,
+      "bytes": 6862,
+      "sha256": "7280b36931eaa9909609fd5e96109012591a42da3bb08b25784ea92efd7c7953",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-7.webp",
+      "status": 200,
+      "bytes": 6700,
+      "sha256": "bb401cf6a8bb6b4f5964e48ae5fd35d5cffdaba61eb833ffc11531d129e68627",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-8.webp",
+      "status": 200,
+      "bytes": 4024,
+      "sha256": "dc710a131d2891253907920ad59af9890685397f316871d4ec80f5f5f17bebe2",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/face-9.webp",
+      "status": 200,
+      "bytes": 5204,
+      "sha256": "9ad50d4d0f3a06672d2ab9148eedc963652aca69324a92c18156c1afeef03516",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/game-paper.webp",
+      "status": 200,
+      "bytes": 108,
+      "sha256": "1919af2c0212cd1a0bdf8617ecd8774581a1f857d84f9a142e48fb7111679684",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/garden-feed.webp",
+      "status": 200,
+      "bytes": 10860,
+      "sha256": "bad3a513e61cc22cec105401dc41460be96d14b083eb2cf45ed486d850d0e52b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/garden-question.webp",
+      "status": 200,
+      "bytes": 4340,
+      "sha256": "f69eb5a123fcf0876a22ba6b14cf1f8aca34f07c5c9b9cd91ea43d4ec2a94831",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/garden-tools.css",
+      "status": 200,
+      "bytes": 27631,
+      "sha256": "3e8300674b2749e02aab65c784ac1f4867c05e63f50d1ccb8013d56cb9cf230c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/goal-newyear.jpg",
+      "status": 200,
+      "bytes": 99925,
+      "sha256": "e439f304ade05e8d7aaa5f9a0735d84e236fd2a0def5f74c98108b2e97470e5b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/gomoku-court.webp",
+      "status": 200,
+      "bytes": 14816,
+      "sha256": "ffa4839c6de2de32255178adc7e24db3ccefa0c0ba73d5243dc278d57f35cac8",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/gomoku-shelf.webp",
+      "status": 200,
+      "bytes": 12384,
+      "sha256": "3608ca5069d3393750b8909fe273b595fc92b5545a0877c249e47f9f443cfa67",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-theme-1.webp",
+      "status": 200,
+      "bytes": 465702,
+      "sha256": "4e618a3e3cee5e068a436f4db042fa32dcb6da2d2216f6979c54e030f27f4b33",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-theme-2.webp",
+      "status": 200,
+      "bytes": 538688,
+      "sha256": "9a2ff59a8b418d390dcd5a8ebc329b48bf2f51c595849f494b3a657565cdb519",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-theme-3.webp",
+      "status": 200,
+      "bytes": 569312,
+      "sha256": "c8ea2edc3c138f78aa9183e4307f9fd2dde8863a74962b54aca63fd5b1a1beb2",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-wall-1.webp",
+      "status": 200,
+      "bytes": 108802,
+      "sha256": "3748f6e2557aefdc848ba98fb94ff5e7e7cc2dfa8160c555485c4839a0c29ff4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-wall-2.webp",
+      "status": 200,
+      "bytes": 271652,
+      "sha256": "36e028370bdccf4ba520fd80ad89c42a968a5953b5b1e5281e5c45d7b62bb299",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/hd-wall-3.webp",
+      "status": 200,
+      "bytes": 198614,
+      "sha256": "e79f6952215588d386c0bf58e12853733b370f416412ef37db04291ffd9fe1c1",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/icon.png",
+      "status": 200,
+      "bytes": 23108,
+      "sha256": "c366ab432a1d3293dc58b8a113362dbf1d169d74aa143df5069548c29f4d1965",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/",
+      "status": 200,
+      "bytes": 4694,
+      "sha256": "30f0bd77151bf127561936060a42911e16d37f12d8208aabe49447211b8aa51b",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/mobile/journal-clap.webp",
+      "status": 200,
+      "bytes": 4776,
+      "sha256": "f9162dcb267d3f1f6dbb50626f0eebcd206864f66f5f663f2b44ed0df80f3283",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-coffee.webp",
+      "status": 200,
+      "bytes": 9220,
+      "sha256": "5179e9308a4d3fdecad9f04d0b5f3dcca5421edd182267025d52c1677a593fe3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-flowers.webp",
+      "status": 200,
+      "bytes": 30702,
+      "sha256": "532d39b4cb90939800abf32099dc71ea416d99199dfdfd1a002d3e71148ae17a",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-hike.webp",
+      "status": 200,
+      "bytes": 30940,
+      "sha256": "f0f43d20de6f15338fb9af7828a1823b413c1490b523881745faff1a8e59ddba",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-hug.webp",
+      "status": 200,
+      "bytes": 4476,
+      "sha256": "17ef5b76337e6b6fd042351a3cc196740d45c23eeffedf66219b9115d327547d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-love.webp",
+      "status": 200,
+      "bytes": 5064,
+      "sha256": "207a4e8e9d102201e5444822dfaacc2ccbc67b559bcb51a5c780a70b0c3b78cb",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-plant.webp",
+      "status": 200,
+      "bytes": 10482,
+      "sha256": "18b7373c453674906f75fb7dcfcbea202ef0ed9fded31294f547355b2bf2e2cc",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-ridge.webp",
+      "status": 200,
+      "bytes": 2426,
+      "sha256": "d8bc1ce83a563fac5d33c22cd799211fdf35faab3d86bb49acaedc2d48231eaa",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-trail.webp",
+      "status": 200,
+      "bytes": 4928,
+      "sha256": "9780be620b2e78b15f38f59de9f3ec0258455640cb2faec310109cc0027fdc54",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal-twig.webp",
+      "status": 200,
+      "bytes": 3798,
+      "sha256": "051aa15fce8b24f4ea2ea0a021c3ae3ae5c4f5d6491ca819ae3cd572b0089ebe",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal.css",
+      "status": 200,
+      "bytes": 6553,
+      "sha256": "813751c0cbae61e39a4e69f582c8605f70aa2d11fdcb957aafc6de5bf026dd5b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/journal.js",
+      "status": 200,
+      "bytes": 18872,
+      "sha256": "a3c49b054d7ec7c76eb0a2dd4d7d37b4df8b3b3dfe2a003b9ebae2810b505556",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/lake-plan.webp",
+      "status": 200,
+      "bytes": 39004,
+      "sha256": "76ff9366255706c3c1dd2b6b27d33bab83d9d8452fd196674d4c68b5ecef59b3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/leaf-hat.webp",
+      "status": 200,
+      "bytes": 167916,
+      "sha256": "cc0447019fb1ebd571199f8cdce5b03ae10218c1ec378a91d03331f4420d377b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-cat0.webp",
+      "status": 200,
+      "bytes": 3880,
+      "sha256": "7c6e96526963f121388c407cace97d97044ff731944df0976eb7852d1ab8a440",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-cat1.webp",
+      "status": 200,
+      "bytes": 3522,
+      "sha256": "1a049f22e89e08f648422b01c4e9c6df59b1f1841afa4901a382a422f54ed6a3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-cat2.webp",
+      "status": 200,
+      "bytes": 3784,
+      "sha256": "e9e42d21a9ca96183786f04f2e9f8f2b21b1380a57943275f374021a03aaef62",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-cat3.webp",
+      "status": 200,
+      "bytes": 3220,
+      "sha256": "f1e94842bd659571685527dc112a1acc1908c7f3af1b3a9d76b370e552a36542",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-clock.webp",
+      "status": 200,
+      "bytes": 57154,
+      "sha256": "f657567c6d37191e34f1f83c36d76cccaf179eee27debe5b990d066a7c1f6195",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/ledger-stall.webp",
+      "status": 200,
+      "bytes": 16440,
+      "sha256": "98bc8587019b17f909c97f19840bc6fdb44944bb4a63473cd76da03388e4ae73",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-chat-line.svg",
+      "status": 200,
+      "bytes": 205,
+      "sha256": "8e462cf0b398f0c1bf07e4b55c44c902e9e5faa63de974d2caee29acad3e7804",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-chat-on.webp",
+      "status": 200,
+      "bytes": 6254,
+      "sha256": "c2845a92597bffe7770cd80a94cfd6eb6c573c5164853515ebe3ee0c9872685c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-garden-line.svg",
+      "status": 200,
+      "bytes": 378,
+      "sha256": "22c1ce9c99554f43f6ebfad08d90decc83d5ec08d27e90bb4f207b7d1d916253",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-garden-on.webp",
+      "status": 200,
+      "bytes": 8968,
+      "sha256": "5eafd0f241afe3b74f17a07579cd4fbed5587523277c677029a72afddfb5795a",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-me-line.svg",
+      "status": 200,
+      "bytes": 235,
+      "sha256": "23b9c396d31954945f900426f9b6239741aa65fd70d7d1a89899f98fa74dc923",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-me-on.webp",
+      "status": 200,
+      "bytes": 8066,
+      "sha256": "415975469c5cfd9d1ff92812f537f34ad8a5c18bf5102176257454c02ea3c44d",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-tools-line.svg",
+      "status": 200,
+      "bytes": 274,
+      "sha256": "baa3d2c3c3419b269c37b91a01256312917c8f2b5f0290c4cc2625728a5c34b5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/nav-tools-on.webp",
+      "status": 200,
+      "bytes": 16308,
+      "sha256": "097d627cc789e07a8e6d5aeeec4aaceae0a92b3f0cb8c8aaa93c66f204cad823",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/orchard-basket.webp",
+      "status": 200,
+      "bytes": 13838,
+      "sha256": "171a40a53865f04d77736f5e325722d3af43768faf3e6319be755c4c47ba57dd",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/orchard-courtyard.jpg",
+      "status": 200,
+      "bytes": 502205,
+      "sha256": "b5c45c0a058d70882b9be4c3735b92695f3f0798b41894aaaf11e1bb8ccf57f4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/orchard-mascot.webp",
+      "status": 200,
+      "bytes": 36590,
+      "sha256": "ad48723362ad894784befae19de20da699ea51d0de29651aa95a930472104278",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/orchard-tea.jpg",
+      "status": 200,
+      "bytes": 192496,
+      "sha256": "a3b4e9e4049812739ed56b561242a008f486839cc33d71dfe6a6107f0fec8237",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/phone.css",
+      "status": 200,
+      "bytes": 26594,
+      "sha256": "d5282632f92b65bbdbd4edbf84519bba6093d56589227d8d77b9b7b34a9dc7c9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/phone.js",
+      "status": 200,
+      "bytes": 375966,
+      "sha256": "9b32bfc3ae5e290820c19ce4ef69682b166b282eb339e1484b086f25fd31ed50",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/riddle-picnic.webp",
+      "status": 200,
+      "bytes": 35824,
+      "sha256": "bbfe79de663c30b5fa1c8a8a3e32ee01fcf34c3198d1e1dc1f56e16d463e7774",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/slip-leaves.webp",
+      "status": 200,
+      "bytes": 3816,
+      "sha256": "a55ca89eed4e1f14edc71c5b59c996d649eafc44dd7ad2b50d8b97e73647fa2f",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-0.jpg",
+      "status": 200,
+      "bytes": 7641,
+      "sha256": "a1ef251a223d0db15dde8c6508379409e8560f8cb6a7001aec6f2a23c0adca15",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-1.jpg",
+      "status": 200,
+      "bytes": 6496,
+      "sha256": "ad3bd1f7a3759edfe3413f674fa2a58951e6e0960451de6c1589ec9d8b3b1e97",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-2.jpg",
+      "status": 200,
+      "bytes": 7271,
+      "sha256": "f03b793cfa8e4b08c76a9cbc55fd7021818caae1dcd5fc9661f1b61fa7eeb259",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-3.jpg",
+      "status": 200,
+      "bytes": 7941,
+      "sha256": "9a50f0baa615a8e8d6ca95b90eb22119f77d419de70e445135807b9f4b987333",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-4.jpg",
+      "status": 200,
+      "bytes": 6596,
+      "sha256": "3982ac5a2e4ebf03219ad9826401e196f4be58185b97c8cfa577a23987764cf3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/sticker-5.jpg",
+      "status": 200,
+      "bytes": 7041,
+      "sha256": "3f50ddc970c097ea861ca798aa7d0c00e418bdaa71ab4a4eb0e33300187deb10",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tea-room.jpg",
+      "status": 200,
+      "bytes": 90700,
+      "sha256": "b9c089e7db6fb459b49364e7b1ef792143a5cd6f22d733c78edb1c8ae5541645",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/themes.css",
+      "status": 200,
+      "bytes": 18420,
+      "sha256": "9e0c3d521df148e5ffb2edb47f1c62f8de1ca6ff7000495ccaf33f48dceaa653",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-garden.webp",
+      "status": 200,
+      "bytes": 45512,
+      "sha256": "99ad246064220baeda817ba6c44563d28b8389fa60fd0e9421796d7add67df43",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-goal.webp",
+      "status": 200,
+      "bytes": 45184,
+      "sha256": "e61ad9ad2deaae9f5b98dfb4934d5f00ffdf633b36c1f6b5a862dd512ec322be",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-gomoku.webp",
+      "status": 200,
+      "bytes": 44826,
+      "sha256": "215fe2f11160842de59736340b36cd12ec4fd3a2de305a5fb652279853d1c474",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-riddles.webp",
+      "status": 200,
+      "bytes": 25422,
+      "sha256": "c1bf491de718f6fd8514c335bbb103eea5e0f0624675f8ad17b60ced751d2ac5",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-soup.webp",
+      "status": 200,
+      "bytes": 44094,
+      "sha256": "064907a9ea5ff7d986c7f364177cc171a4881cbe0b37b1e3ea8a901beee9e8d0",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/tile-tree.webp",
+      "status": 200,
+      "bytes": 56994,
+      "sha256": "033245510f93391a7c8cac2c8890f4087b0797b71d99a2fa3683f61330e64bc2",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/v61-sw.js",
+      "status": 200,
+      "bytes": 1906,
+      "sha256": "7b46af06a047a6fbdaf410c76d5f3051522b95d384d41b5e55ee54688887ec9e",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/v61.css",
+      "status": 200,
+      "bytes": 15002,
+      "sha256": "23a4173c6b5c5a414b1646e8dc7d093a318e05d32fa1a6d98b41cdebcb9ffd5b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/v61.js",
+      "status": 200,
+      "bytes": 29245,
+      "sha256": "58964a34fb33ca9fef135e4f610458686669fbec4be0fd032c800bdc69920f45",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/v62.css",
+      "status": 200,
+      "bytes": 15388,
+      "sha256": "25ec225cb5f6615c8562ea38503239f81b358b5be10eb3542f8230be5098b030",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/v62.js",
+      "status": 200,
+      "bytes": 15131,
+      "sha256": "79a8e9f8d9ad8498c6effc6a64d1e644dee7b9bb5ca9eedf736e71f380eb4860",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/version.txt",
+      "status": 200,
+      "bytes": 6,
+      "sha256": "319095c4c2691f083478e17bfee6df58022bc5f23aca4e08b5dcb06dc24ce6c6",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/mobile/viewport.js",
+      "status": 200,
+      "bytes": 1299,
+      "sha256": "443a1a03e77eb9c6d524f7ce857688119e722a810be59f6865c9966885b44960",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-basket.webp",
+      "status": 200,
+      "bytes": 8456,
+      "sha256": "83c87623ac9306c9c3c618e414b16c28e8f4698bc0d5aebf5c4f660c7eb5ce86",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-butterfly.webp",
+      "status": 200,
+      "bytes": 9688,
+      "sha256": "80566df36f889e9fe004b228648a494343fe86ca791ea7012d4aae6af2a48b87",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-can.webp",
+      "status": 200,
+      "bytes": 9758,
+      "sha256": "689822d5863c276d2caa42ade0bfef275fe27be9a6c98bcf49682c429017bec3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-folio.webp",
+      "status": 200,
+      "bytes": 36464,
+      "sha256": "f4ecfa1898329306fb72ae52ad012a288787908d6f6dcbc96d329259bac43fa3",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-green.webp",
+      "status": 200,
+      "bytes": 7288,
+      "sha256": "29527a15b0b70744437911de596f0568cb5b615cb9a121af9232e3af20c8a49e",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-red.webp",
+      "status": 200,
+      "bytes": 8996,
+      "sha256": "74e455158684759cf2241d81b06e1ad60059d68f80035039bde74acdd0346c45",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-ribbon.webp",
+      "status": 200,
+      "bytes": 6938,
+      "sha256": "cb86255eb753a5431b0e5996c87f07264255c17d3d4c46d083c31d5253b72fc0",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage0.webp",
+      "status": 200,
+      "bytes": 27818,
+      "sha256": "d0357e59842d1e06450fa819eb227ed801ffef183f7c05a2bc29927da8f79bf4",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage1.webp",
+      "status": 200,
+      "bytes": 28290,
+      "sha256": "b7f8a7e55769a403a88fcf663a9de25cf919423366f6bf5b2d638f7d98f8a16b",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage2.webp",
+      "status": 200,
+      "bytes": 30560,
+      "sha256": "e1d38576c746e62a769357834a6d889a9c317778bebca4cb91fd334260bb8b84",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage3.webp",
+      "status": 200,
+      "bytes": 33314,
+      "sha256": "99109e21969dac8df03e6c2778b3170264c21c0b2c478e6d2434dbcb49081ef0",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage4.webp",
+      "status": 200,
+      "bytes": 34298,
+      "sha256": "9fdd46d3fb558dfd7805993c6bcc5d120bf22ae47bdd6215806e569f7834a9ab",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage5.webp",
+      "status": 200,
+      "bytes": 35702,
+      "sha256": "43aa246febb7634711326055489d87e370ff590cdea4d3b36edaaa28618cc4c0",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage6.webp",
+      "status": 200,
+      "bytes": 35210,
+      "sha256": "b25968271bf94cf868bbed88eab3b65d2becc223d3ef596489412971f436c664",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65-stage7.webp",
+      "status": 200,
+      "bytes": 35894,
+      "sha256": "9abf5e54cb648bcde45dfcd69217a0ad16c93e07707c40eafacc96da380691de",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65.css",
+      "status": 200,
+      "bytes": 8342,
+      "sha256": "e88f88fef6b7bf024c8bf79889afb6b18fd035c2a6962b7474d6b469f4e1c517",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/mobile/yard65.js",
+      "status": 200,
+      "bytes": 11320,
+      "sha256": "58ddeffb26e272f193c629bc0e9d5f7202523752d3861225b670bd30802cac59",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/api/client-capabilities",
+      "status": 200,
+      "bytes": 120,
+      "sha256": "cb5a2a8148df575480120cd99bfc691814f620323ff47c32e6894a4922e8afc8",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/v8/social",
+      "status": 401,
+      "bytes": 24,
+      "sha256": "9ae5df81a66150b59c285b977d88c172ec17a2d4e79f7b0c6c7d234513589abf",
+      "cacheControl": "private, no-store"
+    },
+    {
+      "path": "/windows-update/download.html",
+      "status": 200,
+      "bytes": 1156,
+      "sha256": "ef7a1f75e1effbe0e2894a277d017d13d62db6f396a67b0baa3ebe13ffb43fd9",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/download.html",
+      "status": 200,
+      "bytes": 824,
+      "sha256": "285a82b190ba779ea94240fd1e191a210a21921275c2a49fef0c68e3a63fe34e",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/current.json",
+      "status": 200,
+      "bytes": 281,
+      "sha256": "af6e313bd50581af90b6d693ed306bbc445e9a253199a406230f9e8b4e792ace",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.1/Lychee-Friends-A8.0.1.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.1/Lychee-Friends-V8.0.1.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/windows-update/stable.json",
+      "status": 200,
+      "bytes": 400,
+      "sha256": "6a990a8d719b48f2f0c5f4846206af0f6dda1001e0deb9097124ffc082d3f9c6",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.0/Lychee-Friends-A8.0.0.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/windows-update/windows-v8.0.0/Lychee.exe",
+      "status": 200,
+      "bytes": 20485120,
+      "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "cacheControl": "no-cache"
+    },
+    {
+      "path": "/windows-update/windows-v8.0.0/Lychee.msi",
+      "status": 200,
+      "bytes": 20029440,
+      "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648",
+      "cacheControl": "no-cache"
+    }
+  ],
+  "finishedAt": "2026-11-27T13:25:04.598567Z",
+  "deploymentId": "dep-dc4o8i95efls73a411v0",
+  "android": "A8.0.1",
+  "windows": "W8.0.0",
+  "targetBranch": "web/mobile-stable",
+  "entryNewlines": "Render Linux writes LF when building mobile/index.html. The Windows comparison build uses CRLF. On the served page only the line endings differ.",
+  "browserPublicAnonymous": {
+    "timeUTC": "2026-11-27T13:25:18.945Z",
+    "url": "https://lychee-link-check.onrender.com/mobile/",
+    "publicVersion": "8.0.1",
+    "browser": "Edg/158.0.4370.33",
+    "viewport": [
+      390,
+      844
+    ],
+    "page": {
+      "launch": false,
+      "build": "8.0.1",
+      "buttons": [
+        "登录",
+        "注册新账号"
+      ],
+      "text": "荔枝园\n登录荔枝园\n用户名\n密码\n登录\n注册新账号",
+      "inputs": [
+        {
+          "type": "text",
+          "filled": false
+        },
+        {
+          "type": "password",
+          "filled": false
+        }
+      ]
+    },
+    "onlyReadRequests": true,
+    "blocked": [],
+    "networkFailures": [],
+    "jsErrors": [],
+    "statuses": [
+      [
+        401,
+        "/api/v640/workspace"
+      ]
+    ],
+    "newJs": [
+      {
+        "method": "GET",
+        "path": "/mobile/assets-8.0.1/client/social-v8.js"
+      }
+    ]
+  },
+  "isolatedBrowserUpdate": {
+    "baselineNotice": "荔枝 V8.0.0 · 荔圈、好友与我的荔枝园",
+    "firstNotice": "荔枝 V8.0.1 · 荔圈聊天和荔枝园换新了",
+    "settings": "手机网页 V8.0.1",
+    "history": {
+      "newest": {
+        "title": "荔枝 V8.0.1 · 荔圈聊天和荔枝园换新了",
+        "read": "已读",
+        "action": null
+      },
+      "previous": {
+        "title": "荔枝 V8.0.0 · 荔圈、好友与我的荔枝园",
+        "read": "已读",
+        "action": null
+      },
+      "total": 9
+    },
+    "themes": [
+      {
+        "name": "原味荔枝园",
+        "chat": "/mobile/assets-8.0.1/client/social-wall-orchard.webp",
+        "garden": "social-corner-orchard.webp",
+        "gardenRows": [
+          "园中事",
+          "问一问",
+          "约定",
+          "荔枝树"
+        ]
+      },
+      {
+        "name": "米菲采荔枝",
+        "chat": "/mobile/assets-8.0.1/client/social-wall-miffy.webp",
+        "garden": "social-corner-miffy.webp",
+        "gardenRows": [
+          "园中事",
+          "问一问",
+          "约定",
+          "荔枝树"
+        ]
+      }
+    ],
+    "sameOriginReload": {
+      "oldBuild": "8.0.0",
+      "newBuild": "8.0.1",
+      "cacheEnabled": true,
+      "ignoredCacheOnReload": false,
+      "sameLiveProfile": true,
+      "oldAssetRequestsAfterSwitch": [],
+      "distinctNewVersionedPaths": 37
+    },
+    "noticeState": {
+      "oldAcknowledgedBeforeDeployment": true,
+      "newInitiallyUnread": true,
+      "clickPersisted": true,
+      "reopenWentToHomepage": true
+    },
+    "entryCacheControl": "no-cache",
+    "socialJsSha256": "b9e64b2e4567517f9da821631013da80e868bf6896fd7eed10e03d04ae801905",
+    "noticeCatalogSha256": "cdc21d89be5b2055a5f5efda6049fa1d38ceeb1e0978b07dc977c176fedd4c3d",
+    "releaseFiles": {
+      "count": 188,
+      "sha256": "f7b0ef62df5fa780ba6e2b35ba149cf6d54459e9d2f11970416ef4a2f54f29b3",
+      "matchedPackagedSite": true
+    },
+    "browser": "Edg/158.0.4370.33",
+    "passed": true
+  }
+}
