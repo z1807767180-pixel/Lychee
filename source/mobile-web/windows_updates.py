@@ -88,7 +88,7 @@ def prepare(manifest, output):
     with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
         root = Path(tmp) / "windows-update"
         version, data = prepare_packages(manifest, root)
-        if version != "8.1.1":
+        if tuple(map(int, version.split("."))) > (8, 1, 1):
             previous = manifest.with_name("stable-8.1.1.json")
             if previous.is_file():
                 prepare_packages(previous, root)
