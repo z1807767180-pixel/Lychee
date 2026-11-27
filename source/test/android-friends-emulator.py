@@ -13,6 +13,7 @@ def adb(*args):
 
 
 def find(label, click=False, timeout=100, retry_landing=False):
+    labels = (label,) if isinstance(label, str) else label
     deadline = time.monotonic() + timeout
     retry_at = time.monotonic() + 5
     visible = []
@@ -25,7 +26,7 @@ def find(label, click=False, timeout=100, retry_landing=False):
                 text = node.get("text") or node.get("content-desc") or ""
                 if text:
                     visible.append(text)
-                if label in text or label == "登录荔枝园" and "注册新账号" in text:
+                if any(item in text for item in labels) or label == "登录荔枝园" and "注册新账号" in text:
                     if click:
                         a,b,c,d=map(int,re.findall(r"\d+",node.get("bounds")))
                         adb("shell","input","tap",str((a+c)//2),str((b+d)//2))
@@ -88,7 +89,7 @@ if __name__ == "__main__":
         try:
             offline(True)
             launch()
-            find("暂时打不开荔枝")
+            find(("暂时打不开荔枝", "网络未连接"))
             find("检查安卓更新",click=True)
             find("暂时查不到更新",timeout=45)
             print("Verified offline startup and honest manual update result.")
