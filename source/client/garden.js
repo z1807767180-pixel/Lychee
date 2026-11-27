@@ -232,7 +232,9 @@
       if(!social) {
         started=true;
         social=window.LycheeSocial.mount(app,state.account,{
-          join:()=>gardenForm('join',true),announcements:openAnnouncement,logout:exitFromSettings
+          joinGroup:async code=>(await change('join',{code})).activeGardenId,
+          listNotices:async()=>{await load();return state.notices;},
+          readNotice:noticeId=>change('read',{noticeId}),announcements:openAnnouncement,logout:exitFromSettings
         },member(chosen)?.id);
       }
       return;

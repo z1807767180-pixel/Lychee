@@ -35,7 +35,7 @@ async function privateToolRequest(request,url,route){
   if(route!=='camp'&&route!=='phone')return false;
   if(request.method==='GET'){
     const q=url.searchParams;
-    if(route==='camp')return !q.size||(q.size===1&&q.get('roster')==='lychee');
+    if(route==='camp')return !q.size||(q.size===1&&['lychee','circle-names'].includes(q.get('roster')));
     if(q.has('v62'))return privatePhoneReads.has(q.get('v62'));
     if(q.has('v61'))return ['personal','notifications'].includes(q.get('v61'));
     return !q.size||[...q.keys()].every(k=>['private','month','tools','portrait','rev'].includes(k));
@@ -139,7 +139,7 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
       const execute=(sql,args)=>client.execute({sql,args});
       const push=createWebPush({execute,domains});
-      const social=await createSocial({client,publish:originalChat(domains,push)});
+      const social=await createSocial({client,domains,publish:originalChat(domains,push)});
       return {accounts,domains,push,social,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();await social.close();}finally{client.close();}}};
     }catch(error){client.close();throw error;}
   }
@@ -157,7 +157,7 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
   };
   const push=createWebPush({domains,execute});
-  const social=await createSocial({dataDir:data,publish:originalChat(domains,push)});
+  const social=await createSocial({dataDir:data,domains,publish:originalChat(domains,push)});
   return {accounts,domains,push,social,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();await social.close();}finally{db.close();}}};
 }
 

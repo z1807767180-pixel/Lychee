@@ -1,11 +1,19 @@
 import {DatabaseSync} from 'node:sqlite';
 import {join} from 'node:path';
+import {playSchema} from './social-play.mjs';
 
 const schema=[
+  ...playSchema,
   'CREATE TABLE IF NOT EXISTS mc_v8_friends(lo TEXT NOT NULL,hi TEXT NOT NULL,sender TEXT NOT NULL,accepted INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(lo,hi),CHECK(lo<hi))',
   'CREATE INDEX IF NOT EXISTS mc_v8_friends_hi ON mc_v8_friends(hi,accepted)',
   'CREATE TABLE IF NOT EXISTS mc_v8_goals(id TEXT PRIMARY KEY,account TEXT NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,due INTEGER NOT NULL,created INTEGER NOT NULL)',
   'CREATE INDEX IF NOT EXISTS mc_v8_goals_owner ON mc_v8_goals(account,due)',
+  'CREATE TABLE IF NOT EXISTS mc_v8_goal_choice(account TEXT PRIMARY KEY,goal TEXT NOT NULL)',
+  'CREATE TABLE IF NOT EXISTS mc_v8_tree_growth(account TEXT PRIMARY KEY,progress INTEGER NOT NULL DEFAULT 0 CHECK(progress BETWEEN 0 AND 3))',
+  'CREATE TABLE IF NOT EXISTS mc_v8_tree_help(owner TEXT NOT NULL,helper TEXT NOT NULL,day TEXT NOT NULL,PRIMARY KEY(owner,helper,day))',
+  'CREATE TABLE IF NOT EXISTS mc_v8_tree_notes(id TEXT PRIMARY KEY,owner TEXT NOT NULL,author TEXT NOT NULL,body TEXT NOT NULL,created INTEGER NOT NULL,client_id TEXT NOT NULL,UNIQUE(author,client_id))',
+  'CREATE INDEX IF NOT EXISTS mc_v8_tree_notes_owner ON mc_v8_tree_notes(owner,created DESC)',
+  'CREATE TABLE IF NOT EXISTS mc_v8_tree_harvest(account TEXT NOT NULL,client_id TEXT NOT NULL,PRIMARY KEY(account,client_id))',
   "CREATE TABLE IF NOT EXISTS mc_v8_entries(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT UNIQUE NOT NULL,author TEXT NOT NULL,client_id TEXT NOT NULL,kind TEXT NOT NULL,scope TEXT NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,reply_to TEXT,created INTEGER NOT NULL,UNIQUE(author,client_id))",
   'CREATE INDEX IF NOT EXISTS mc_v8_stream ON mc_v8_entries(kind,scope,seq)',
   'CREATE INDEX IF NOT EXISTS mc_v8_activity ON mc_v8_entries(kind,author,seq)',

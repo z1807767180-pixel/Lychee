@@ -51,3 +51,56 @@ def notifications(text):
           if(!row) {""")
     return replace(text, "btn('刷新',refresh),", """btn('刷新',refresh),
         push && !push.enabled && h('p',null,!push.supported?'iPhone 请将荔枝添加到主屏幕，从图标打开后开启后台通知。':!push.configured?'服务器尚未启用后台推送。':'开启后台通知后，回到主屏幕或锁屏也能收到园中消息。'),""")
+
+def direct_runtime(files):
+    """Expose existing feature components without mounting the original application."""
+    source = phone(files["mobile/phone.js"].decode())
+    source = replace(source, 'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(null)',
+                     'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(ctx.camp)')
+    source = replace(source, '[L,y]=(0,Ee.useState)(""),[v,i]', '[L,y]=(0,Ee.useState)(ctx.dest),[v,i]')
+    source = replace(source, '[selectedCircle,setSelectedCircle]=Ee.useState(null)',
+                     '[selectedCircle,setSelectedCircle]=Ee.useState(ctx.dest==="circle"?{id:"main",name:ctx.groupName}:null)')
+    source = replace(source, 'function De(O){O=window.lycheeWorkspaceDetail',
+                     'function De(O){if(O!==ctx.dest){ctx.open(O);return;}O=window.lycheeWorkspaceDetail')
+    source = replace(source, '[p,g]=(0,Ze.useState)(null);return!u||n?', '[p,g]=(0,Ze.useState)(ctx.gameMode||null);return!u||n?')
+    source = replace(source, 'let[u,o]=(0,aa.useState)("bank")', 'let[u,o]=(0,aa.useState)(ctx.gameMode==="team"?"team":"bank")')
+    # The surrounding social shell owns the title, badges, all four tabs and theme.
+    source = replace(source, 'document.documentElement.dataset.theme=yc[d].id;', 'if(ctx)return;document.documentElement.dataset.theme=yc[d].id;')
+    start = source.index('return(0,A.jsxs)("main",{className:"garden-app"')
+    end = source.index('}var Ee,A,co,PS', start)
+    source = source[:start] + 'return A.jsxs(Ee.Fragment,{children:[(b||s)&&A.jsx("p",{role:"status",children:b||s}),Ca]})' + source[end:]
+    boot = '(0,VS.createRoot)(document.getElementById("root")).render((0,XS.jsx)(hc,{compact:!0,phoneShell:Mc}))'
+    source = replace(source, boot, '''const host=VS.createRoot(ctx.node),h=Ee.createElement;
+      const back=()=>ctx.open(""),players=ctx.members||[];
+      const common={me:ctx.slot,member:ctx.slot,members:players,avatarUrl:id=>ctx.avatar(players.find(p=>p.id===id)),
+        back,exit:back,tutorialSeen:ctx.tutorialSeen,onTutorialSeen:()=>ctx.onTutorialSeen()};
+      const dest=ctx.dest;
+      let page;
+      if(ctx.history&&dest==="quiz")page=h(window.LycheeQuizV7,{React:Ee,initialId:ctx.oldMatch||"",avatarFor:id=>ctx.avatar(ctx.camp.members.find(p=>String(p.id)===String(id)))});
+      else if(ctx.history||["style","profile"].includes(dest))page=h(hc,{compact:true,phoneShell:Mc});
+      else if(dest==="wheel"||dest==="diet")page=h(dest==="wheel"?window.LycheeWheelV7:window.LycheeDietV7,
+        {React:Ee,accountId:ctx.scope.accountId,gardenId:ctx.scope.gardenId});
+      else if(dest==="focus"||dest==="ledger")page=h(dest==="focus"?GardenFocus:GardenLedger,{day:ctx.day});
+      else if(dest==="tasks"||dest==="notifications")page=h(V61Page,{mode:dest==="tasks"?"Tasks":"Notifications",onOpen:row=>ctx.openNotice(row)});
+      else if(dest==="ai-chat"||dest==="ai-image")page=h(A62,{mode:dest==="ai-chat"?"Chat":"ImagePage",
+        onApply:picture=>ctx.wallpaper(picture)});
+      else if(dest==="quiz")page=h(window.LycheeQuizV7,{React:Ee,initialId:ctx.match.id,friendPlay:ctx.friendPlay,avatarFor:id=>ctx.avatar(players.find(p=>p.id===String(id)))});
+      else if(dest==="gomoku")page=h(vn,{...common,backLabel:"工具箱"});
+      else if(dest==="soup")page=h(bn,common);
+      else if(dest==="riddles")page=h(In,common);
+      else throw Error("没有这个工具");
+      host.render(page);unmount=()=>host.unmount();''')
+    # Each mount captures the signed-in account and the exact garden/match. Async handlers
+    # from a former page cannot later target a different account or game.
+    modules = ["client/business-scope.js", "windows/team-share.js", "mobile/v62.js",
+               "mobile/v61.js", "mobile/journal.js", "mobile/yard65.js", "client/quiz-v7.js"]
+    parts = ["globalThis.LycheeDirectRuntime=function(ctx){const window=ctx.window;let unmount;"]
+    for name in modules:
+        code = files[name].decode()
+        if name == "mobile/journal.js":
+            code = journal(code)
+        parts.append(code + "\n;")
+        if name == "client/business-scope.js":
+            parts.append('if(ctx.roomApi)window.LycheeBusiness.api=ctx.roomApi;')
+    parts.extend([source, "\nreturn unmount;};"])
+    return "\n".join(parts).encode()

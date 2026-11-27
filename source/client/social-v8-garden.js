@@ -13,6 +13,11 @@
   function picture(ui,file,cls){
     const img=ui.h('img',null,cls);img.src='/mobile/'+file;img.alt='';return img;
   }
+  function columnArt(ui,kind,title,sub){
+    const box=ui.h('section',null,'s8-column-art s8-art-'+kind);
+    const copy=ui.h('div');copy.append(ui.h('h2',title));if(sub)copy.append(ui.h('p',sub));
+    box.append(copy,picture(ui,columns[kind].image));return box;
+  }
   function tile(ui,label,summary,file,action,count=0){
     const el=ui.btn('',action,'s8-garden-row');
     const copy=ui.h('span',null,'s8-garden-copy');
@@ -90,7 +95,8 @@
     write.setAttribute('aria-expanded','false');
     if(ui.header)ui.header(column.label,write);
     else{const tools=ui.h('div',null,'s8-garden-toolbar');tools.append(write);ui.main.append(tools);}
-    ui.main.append(compose);
+    ui.main.append(columnArt(ui,kind,data.items.length?column.label:column.empty,
+      data.items.length?column.summary:kind==='questions'?'向好友提一个问题，回答会留在这里。':'发一条近况，让好友看见你的今天。'),compose);
     if(data.repliesToMe?.length){
       const inbox=ui.h('details',null,'s8-panel s8-replies-inbox');
       inbox.append(ui.h('summary','回复我的（'+data.repliesToMe.length+'）'));
@@ -101,7 +107,6 @@
       }
       ui.main.append(inbox);
     }
-    if(!data.items.length)ui.main.append(ui.h('p',column.empty,'s8-muted'));
     for(const item of data.items){
       const card=ui.btn('',()=>ui.go('post',{id:item.id,kind}),'s8-garden-post s8-panel');
       const by=byline(ui,item);
@@ -114,6 +119,7 @@
   }
   function post(ui,data){
     const item=data.post,column=columns[item.kind],box=ui.h('article',null,'s8-panel s8-garden-detail');
+    box.classList.add('s8-column-detail','s8-art-'+item.kind);
     box.append(byline(ui,item));
     if(item.title)box.append(ui.h('h2',item.title));
     if(item.body)box.append(ui.h('p',item.body));
@@ -148,28 +154,58 @@
     if(highlight)requestAnimationFrame(()=>{if(highlight.isConnected){highlight.focus({preventScroll:true});highlight.scrollIntoView({block:'nearest'});}});
   }
   function tree(ui,data){
-    const t=data.tree,stage=Math.min(7,Math.max(0,Number(t.waterCount)||0));
-    const box=ui.h('section',null,'s8-panel s8-tree-card');
-    const image=picture(ui,'yard65-stage'+stage+'.webp','s8-tree-image');image.alt='小院里正在生长的荔枝树';
-    const detail=ui.h('div',null,'s8-tree-care'),stats=ui.h('div',null,'s8-tree-stats');
-    for(const [value,unit,label] of [[t.fruit,'颗','可赠荔枝'],[t.waterCount,'天','累计浇水']]){
-      const stat=ui.h('div'),n=ui.h('strong',String(value));n.append(ui.h('small',unit));
-      stat.append(ui.h('small',label),n);stats.append(stat);
+    const t=data.tree,mine=data.mine!==false,owner=data.owner||ui.home.me;
+    const stage=t.mature?7:t.progress===2?5:t.progress===1?3:t.waterCount?2:1;
+    const cycle=['冒出新芽','长出嫩叶','枝头结果','荔枝成熟'][t.progress||0];
+    ui.header(mine?'我的荔枝树':owner.name+'的小园');
+    const scene=ui.h('section',null,'s8-yard-scene');scene.setAttribute('aria-label',owner.name+'的荔枝小园');
+    const landscape=picture(ui,'yard65-stage'+stage+'.webp','s8-yard-landscape');landscape.alt=cycle+'的荔枝树';
+    const stageTag=ui.h('div',null,'s8-yard-season');stageTag.append(ui.h('strong',cycle),ui.h('small',t.mature?'这一批已结果':'本轮浇水 '+t.progress+' / 3'));
+    scene.append(landscape,stageTag);
+    if(mine){const basket=ui.h('div',null,'s8-yard-basket');basket.append(picture(ui,'yard65-basket.webp'),ui.h('b','果篮 '+t.fruit+' 颗'));scene.append(basket);}
+    const origin=ui.route,reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const waterDone=mine?t.wateredToday:data.helpedToday;
+    if(!t.mature){
+      const water=ui.btn('',async()=>{
+        if(water.disabled)return;water.disabled=true;scene.classList.add('is-watering');
+        try{
+          const [result]=await Promise.all([ui.mutate('treeWater',mine?{}:{friendId:owner.id}),new Promise(done=>setTimeout(done,reduce?0:550))]);
+          if(ui.route!==origin)return;await ui.repaint();ui.notice(result.mature?'枝头的荔枝熟了。':result.changed?'水浇好了，树又长大了一点。':'今天已经浇过水了。');
+        }catch(e){if(ui.route===origin){ui.notice(e.message);water.disabled=false;scene.classList.remove('is-watering');}}
+      },'s8-yard-water');
+      const label=waterDone?'今天已浇水':mine?'给树浇水':'帮好友浇水';
+      water.setAttribute('aria-label',label);water.disabled=waterDone;water.append(picture(ui,'yard65-can.webp'),ui.h('span',label));scene.append(water);
+      const drops=ui.h('span',null,'s8-yard-drops');drops.setAttribute('aria-hidden','true');drops.append(ui.h('i'),ui.h('i'),ui.h('i'));scene.append(drops);
+    }else{
+      const key=window.LycheeSocialApi.requestId();
+      const bunch=mine?ui.btn('',async()=>{
+        if(bunch.disabled)return;bunch.disabled=true;scene.classList.add('is-picking');
+        try{await Promise.all([ui.mutate('treeHarvest',{clientId:key}),new Promise(done=>setTimeout(done,reduce?0:370))]);if(ui.route===origin){await ui.repaint();ui.notice('3 颗荔枝已放进果篮。');}}
+        catch(e){if(ui.route===origin){ui.notice(e.message);bunch.disabled=false;scene.classList.remove('is-picking');}}
+      },'s8-yard-fruit'):ui.h('div',null,'s8-yard-fruit');
+      if(mine)bunch.setAttribute('aria-label','采摘 3 颗成熟荔枝');
+      for(let i=0;i<3;i++)bunch.append(picture(ui,'yard65-red.webp'));
+      scene.append(bunch,ui.h('span',mine?'点枝头红果，收进果篮':'果子熟了，等主人来摘','s8-yard-hint'));
     }
-    detail.append(stats);
-    const water=ui.btn(t.wateredToday?'今天已浇水':'浇水 · 收 1 颗荔枝',async()=>{
-      if(water.disabled)return;water.disabled=true;
-      try{await ui.mutate('water',{});await ui.repaint();}
-      catch(error){ui.notice(error.message);water.disabled=false;}
-    },'s8-primary');
-    water.disabled=t.wateredToday;detail.append(water);box.append(image,detail);ui.main.append(box);
-    if(t.fruit>0&&ui.home.friends.length){
+    ui.main.append(scene);
+    if(mine&&t.fruit>0&&ui.home.friends.length){
       const picker=ui.h('select');
       const placeholder=ui.h('option','选择好友');placeholder.value='';picker.append(placeholder);picker.required=true;
       for(const f of ui.home.friends){const option=ui.h('option',f.name);option.value=f.id;picker.append(option);}
       const form=editor(ui,'赠送 1 颗荔枝',[{label:'赠给好友',input:picker}],([id],key)=>ui.mutate('gift',{friendId:id,clientId:key}),()=>ui.repaint());
       form.classList.add('s8-garden-gift');ui.main.append(form);
-    }else if(!ui.home.friends.length)ui.main.append(ui.h('p','成为好友后，就可以互赠荔枝。','s8-muted'));
+    }else if(mine&&!ui.home.friends.length)ui.main.append(ui.h('p','成为好友后，就可以互访小园、互赠荔枝。','s8-muted'));
+    if(mine&&ui.home.friends.length){
+      ui.main.append(ui.h('h2','去好友的小园','s8-heading'));
+      const visits=ui.h('div',null,'s8-visit-list');
+      for(const f of ui.home.friends){const button=ui.btn('',()=>ui.go('tree',{id:f.id}),'s8-visit');button.append(ui.avatar(f),ui.h('span',f.name),ui.h('small','去看看 ›'));visits.append(button);}ui.main.append(visits);
+    }
+    ui.main.append(ui.h('h2','小园留言','s8-heading'));
+    for(const note of data.notes||[]){const card=ui.h('article',null,'s8-panel s8-yard-note');card.append(byline(ui,note),ui.h('p',note.body));ui.main.append(card);}
+    if(!data.notes?.length)ui.main.append(ui.h('p','小园里还没有留言。','s8-muted'));
+    const note=field(ui,'写下留言','textarea',240);
+    ui.main.append(editor(ui,'留言',[note],([body],key)=>ui.mutate('treeNote',{...(mine?{}:{friendId:owner.id}),body,clientId:key}),()=>ui.repaint()));
+    if(!mine)return;
     ui.main.append(ui.h('h2','赠送记录','s8-heading'));
     if(!data.gifts.length)ui.main.append(ui.h('p','还没有收发记录','s8-muted'));
     const records=ui.h('div',null,'s8-gift-records');ui.main.append(records);
@@ -180,6 +216,7 @@
     }
   }
   window.LycheeSocialGarden=Object.freeze({render(ui,view,data){
+    if(['goals','goalDetail','goalEdit'].includes(view))return window.LycheeSocialPlans.render(ui,view);
     const views={garden,feed,post,tree};
     if(views[view])views[view](ui,data);
   }});

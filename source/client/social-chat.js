@@ -40,6 +40,8 @@
         const button=btn('',()=>showImage(msg.imageUrl),'s8-photo-button');const im=h('img');im.src=msg.imageUrl;im.alt='群聊图片';im.loading='lazy';button.append(im);row.append(button);
       }
       if(msg.body&&(!msg.imageUrl||msg.body!=='[图片]'))row.append(h('p',msg.body));
+      const invite=!group&&window.LycheeSocialTools?.invitation(msg.body);
+      if(invite)row.append(btn('查看游戏邀请',()=>ui.go('tool',invite)));
       if(group&&/^【头脑王者】/.test(msg.body||''))row.append(btn('查看对局',()=>ui.legacyGame(id,(msg.body.match(/对局编号：([\da-f-]{36})/i)||[])[1])));
       row.tabIndex=0;log.append(row);
     }
