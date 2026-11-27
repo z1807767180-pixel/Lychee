@@ -1,6 +1,7 @@
 """Mobile-web-only adapters for the frozen React bundle."""
 
 from chat_inbox_build import inbox_phone, inbox_journal
+import tool_views
 
 
 def replace(text, old, new):
@@ -54,7 +55,7 @@ def notifications(text):
 
 def direct_runtime(files):
     """Expose existing feature components without mounting the original application."""
-    source = phone(files["mobile/phone.js"].decode())
+    source = tool_views.clock_ledger(phone(files["mobile/phone.js"].decode()))
     source = replace(source, 'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(null)',
                      'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(ctx.camp)')
     source = replace(source, '[L,y]=(0,Ee.useState)(""),[v,i]', '[L,y]=(0,Ee.useState)(ctx.dest),[v,i]')
@@ -64,6 +65,7 @@ def direct_runtime(files):
                      'function De(O){if(O!==ctx.dest){ctx.open(O);return;}O=window.lycheeWorkspaceDetail')
     source = replace(source, '[p,g]=(0,Ze.useState)(null);return!u||n?', '[p,g]=(0,Ze.useState)(ctx.gameMode||null);return!u||n?')
     source = replace(source, 'let[u,o]=(0,aa.useState)("bank")', 'let[u,o]=(0,aa.useState)(ctx.gameMode==="team"?"team":"bank")')
+    source = replace(source, 'function HL(){let[e,a]=(0,Sa.useState)("warmup")', 'function HL(){let[e,a]=(0,Sa.useState)(ctx.deck||"warmup")')
     # The surrounding social shell owns the title, badges, all four tabs and theme.
     source = replace(source, 'document.documentElement.dataset.theme=yc[d].id;', 'if(ctx)return;document.documentElement.dataset.theme=yc[d].id;')
     start = source.index('return(0,A.jsxs)("main",{className:"garden-app"')
@@ -83,7 +85,7 @@ def direct_runtime(files):
       else if(dest==="focus"||dest==="ledger")page=h(dest==="focus"?GardenFocus:GardenLedger,{day:ctx.day});
       else if(dest==="tasks"||dest==="notifications")page=h(V61Page,{mode:dest==="tasks"?"Tasks":"Notifications",onOpen:row=>ctx.openNotice(row)});
       else if(dest==="ai-chat"||dest==="ai-image")page=h(A62,{mode:dest==="ai-chat"?"Chat":"ImagePage",
-        onApply:picture=>ctx.wallpaper(picture)});
+        initialRatio:ctx.wallpaperMode?"9:16":undefined,onApply:picture=>ctx.wallpaper(picture)});
       else if(dest==="quiz")page=h(window.LycheeQuizV7,{React:Ee,initialId:ctx.match.id,friendPlay:ctx.friendPlay,avatarFor:id=>ctx.avatar(players.find(p=>p.id===String(id)))});
       else if(dest==="gomoku")page=h(vn,{...common,backLabel:"工具箱"});
       else if(dest==="soup")page=h(bn,common);
@@ -93,11 +95,20 @@ def direct_runtime(files):
     # Each mount captures the signed-in account and the exact garden/match. Async handlers
     # from a former page cannot later target a different account or game.
     modules = ["client/business-scope.js", "windows/team-share.js", "mobile/v62.js",
-               "mobile/v61.js", "mobile/journal.js", "mobile/yard65.js", "client/quiz-v7.js"]
+               "mobile/v61.js", "mobile/journal.js", "mobile/yard65.js", "client/quiz-v7.js",
+               "client/wheel-v7.js", "client/diet-v7.js"]
     parts = ["globalThis.LycheeDirectRuntime=function(ctx){const window=ctx.window;let unmount;"]
     for name in modules:
         code = files[name].decode()
-        if name == "mobile/journal.js":
+        if name == "mobile/v61.js":
+            code = tool_views.tasks(code)
+        elif name == "mobile/v62.js":
+            code = tool_views.ai(code)
+        elif name == "client/wheel-v7.js":
+            code = replace(code, "const [expanded, setExpanded] = React.useState(false)", "const [expanded, setExpanded] = React.useState(true)")
+        elif name == "client/diet-v7.js":
+            code = tool_views.diet(code)
+        elif name == "mobile/journal.js":
             code = journal(code)
         parts.append(code + "\n;")
         if name == "client/business-scope.js":
