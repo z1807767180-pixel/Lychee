@@ -1,18 +1,61 @@
 {
-  "status": "signed; live channels and Android 15 upgrade pending",
-  "checkedAtUtc": "2026-11-27T17:22:25.045965+00:00",
-  "title": "荔枝朋友版 A8.1.1",
+  "verifiedAtUtc": "2026-11-27T17:31:30.132995+00:00",
   "version": "8.1.1",
+  "title": "荔枝朋友版 A8.1.1",
   "package": "dev.lychee.friends",
   "versionCode": 80101,
+  "apkBytes": 3007817,
+  "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
   "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
   "signatureSchemes": [
     "v2",
     "v3"
   ],
-  "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
-  "unsignedSha256": "e1caaa6bfb9a30f6500c1c7a3fc34b5c5d6317f72815ac8df547d89ae2923c46",
-  "apkBytes": 3007817,
   "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46040531160",
-  "deliveryCommitPrepared": "aa90ed8f1d16015053a5f1148f92f77f2157e4b4"
+  "unsignedCommit": "3603ea138210bcba07b6ea03be2420a305c26e76",
+  "unsignedSha256": "e1caaa6bfb9a30f6500c1c7a3fc34b5c5d6317f72815ac8df547d89ae2923c46",
+  "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/android-friends-v8.1.1",
+  "githubFeed": "https://github.com/z1807767180-pixel/Lychee/releases/download/android-friends/current.json",
+  "githubFeedMatchesOfficial": true,
+  "officialFiles": {
+    "Lychee-Friends-A8.1.1.apk": {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.1/Lychee-Friends-A8.1.1.apk",
+      "size": 3007817,
+      "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+      "httpStatus": 200,
+      "redirects": 0
+    },
+    "Lychee-Friends-V8.1.1.apk": {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.1/Lychee-Friends-V8.1.1.apk",
+      "size": 3007817,
+      "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+      "httpStatus": 200,
+      "redirects": 0
+    }
+  },
+  "officialDelivery": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46041996406",
+  "deliveryCommit": "aa90ed8f1d16015053a5f1148f92f77f2157e4b4",
+  "deliveryJob": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46041996406/job/140651770286",
+  "checks": [
+    "Set up job",
+    "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "Reconstruct the locally signed public artifact",
+    "First installation on Android 15",
+    "Publish verified APK, then advance friends update channel",
+    "Check the live update channel from the installed app",
+    "Upgrade the previous public APK through Android's installer",
+    "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "Complete job"
+  ],
+  "upgrade": {
+    "from": "8.0.1",
+    "to": "8.1.1",
+    "environment": "GitHub Actions Android 15 emulator",
+    "limitedToOfficialDomain": true,
+    "androidSystemInstallerConfirmed": true,
+    "installedPackageSha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+    "coldLoginAfterUpdate": true
+  },
+  "nativeDexMatchesPreviousVersion": "0046bf0ab83c7da3eb8a761e1e182560964bcafccc9183708351ea1f62a49e4b",
+  "limits": "本次覆盖升级由 Android 15 模拟器执行。厂商真机上的安装体验待反馈。"
 }
