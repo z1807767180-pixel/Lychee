@@ -57,14 +57,25 @@ public final class MainActivity extends BridgeActivity {
                 }
                 return !entry(uri);
             }
-            @Override public void onPageFinished(WebView web, String url) {
-                super.onPageFinished(web,url);
+            private void installUpdateLinks(WebView web, String url) {
                 if (!entry(Uri.parse(url))) return;
                 web.evaluateJavascript("(()=>{if(window.lycheeShellSettings)return;window.lycheeShellSettings=true;"
-                    +"function install(){const v=document.querySelector('.settings-version');if(!v||document.getElementById('lychee-shell-update'))return;"
-                    +"const b=document.createElement('a');b.id='lychee-shell-update';b.className='entry';b.href='"+UPDATE+"';"
-                    +"b.textContent='检查安卓更新 · V'+ "+org.json.JSONObject.quote(updates.version())+";v.before(b)}"
-                    +"new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true});install()})()",null);
+                    +"function link(id,label){const a=document.createElement('a');a.id=id;a.href='"+UPDATE+"';a.textContent=label;return a}"
+                    +"function install(){const v=document.querySelector('.settings-version');if(v&&!document.getElementById('lychee-shell-update')){"
+                    +"const a=link('lychee-shell-update','检查安卓更新 · V'+ "+org.json.JSONObject.quote(updates.version())+");a.className='entry';v.before(a)}"
+                    +"const retry=document.querySelector('#lychee-launch button');if(!retry)return;"
+                    +"let a=document.getElementById('lychee-launch-update');if(!a&&!retry.hidden){a=link('lychee-launch-update','检查安卓更新');"
+                    +"a.style.cssText='display:block;padding:12px;color:inherit;text-decoration:underline';retry.after(a)}"
+                    +"if(a)a.style.display=retry.hidden?'none':'block'}"
+                    +"new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});install()})()",null);
+            }
+            @Override public void onPageCommitVisible(WebView web, String url) {
+                super.onPageCommitVisible(web,url);
+                installUpdateLinks(web,url);
+            }
+            @Override public void onPageFinished(WebView web, String url) {
+                super.onPageFinished(web,url);
+                installUpdateLinks(web,url);
             }
             @Override public void onReceivedError(WebView web,WebResourceRequest request,WebResourceError error) {
                 super.onReceivedError(web,request,error);
