@@ -89,6 +89,98 @@
           "finalHost": "release-assets.githubusercontent.com"
         }
       ]
+    },
+    "publicOfficialSiteGet": {
+      "dateUtc": "2026-11-27T17:27:34.647548+00:00",
+      "base": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.1/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 21828096,
+          "sha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21372928,
+          "sha256": "eb54056357a19915a9cc4fb8648f0fd3ebdc8bad30bbc45208d3636d6b16aa16",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "b86c0c713647f7beec06c557d24769cc8bef7369dafbfb97a65edfcb2dd9b1ee",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        }
+      ]
+    },
+    "productionPortableOfficialOnlyUpgrade": {
+      "from": "8.0.0",
+      "to": "8.1.1",
+      "startHash": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "mode": "public-upgrade-website-only",
+      "pass": true,
+      "connections": [
+        {
+          "host": "raw.githubusercontent.com:443",
+          "allowed": false
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "raw.githubusercontent.com:443",
+          "allowed": false
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "raw.githubusercontent.com:443",
+          "allowed": false
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        }
+      ],
+      "privateDesktop": true,
+      "offer": "发现新版本 W8.1.1",
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "toolScreens": [
+        "交给命运",
+        "照记饮食",
+        "提醒事项",
+        "番茄钟",
+        "记账本",
+        "头脑王者",
+        "五子棋",
+        "海龟汤",
+        "脑筋急转弯",
+        "AI 助手",
+        "AI 生图"
+      ],
+      "appearance": true,
+      "settingsVersion": "Windows W8.1.1",
+      "settingsResult": "荔枝 W8.1.1\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+      "localAccountRequests": 56
     }
   },
   "scope": [

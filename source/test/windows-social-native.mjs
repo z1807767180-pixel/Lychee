@@ -13,8 +13,8 @@ import {fileURLToPath} from 'node:url';
 import {listen} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 
-const [packageDir,evidenceDir,source]=process.argv.slice(2);
-const websiteOnly=source==='--website-only',fromDir=websiteOnly?null:source;
+const [packageDir,evidenceDir,...flags]=process.argv.slice(2);
+const websiteOnly=flags.includes('--website-only'),fromDir=flags.find(value=>value!=='--website-only');
 if(!packageDir||!evidenceDir||process.platform!=='win32')throw Error('Pass final Windows package folder, evidence folder, optional older source package folder.');
 const base=resolve(packageDir),out=resolve(evidenceDir),origin='https://lychee-link-check.onrender.com';
 const build=JSON.parse(await readFile(join(base,'stable.json'))),wanted=build.assets.find(a=>a.kind==='exe').sha256;
@@ -23,7 +23,7 @@ const digest=async p=>createHash('sha256').update(await readFile(p)).digest('hex
 const work=await mkdtemp(join(tmpdir(),'lychee-social-wpf-')),exe=join(work,'Lychee.exe'),profile=join(work,'profile'),tmp=join(work,'tmp');
 await mkdir(out,{recursive:true});await mkdir(tmp);await mkdir(profile);
 await copyFile(join(fromDir||base,'Lychee.exe'),exe);
-const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:prior?'public-upgrade':websiteOnly?'current-website-only':'native-social',pass:false};
+const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:prior?(websiteOnly?'public-upgrade-website-only':'public-upgrade'):websiteOnly?'current-website-only':'native-social',pass:false};
 assert.equal(report.startHash,prior?prior.assets.find(a=>a.kind==='exe').sha256:wanted);
 let proxy;
 if(websiteOnly){
