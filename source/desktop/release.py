@@ -8,6 +8,14 @@ ROOT=Path(__file__).resolve().parents[1]
 def run(*args):
     subprocess.run([str(a) for a in args],check=True,cwd=ROOT)
 
+def desktop_tools(site):
+    # Use the same feature components with the already prepared desktop chat and journal.
+    sys.path.insert(0,str(ROOT))
+    sys.path.insert(0,str(ROOT/'mobile-web'))
+    from chat_build import direct_runtime
+    scripts={p.relative_to(site).as_posix():p.read_bytes() for p in site.rglob('*.js')}
+    (site/'client/social-tools-runtime.js').write_bytes(direct_runtime(scripts,windows=True))
+
 def friend_package(out,version):
     installer=out/'Lychee.msi'
     name=f'Lychee-Windows-{version}.msi'
@@ -52,6 +60,7 @@ def build(out,qa_version=None,qa_instance=None,client_dir=None):
     if actual!=set(receipt['files']) or any(hashlib.sha256((client_dir/name).read_bytes()).hexdigest()!=digest for name,digest in receipt['files'].items()):
         raise ValueError('Client files do not match their build receipt')
     run(sys.executable,ROOT/'launch/build.py',client_dir,out/'site')
+    desktop_tools(out/'site')
     shared_version=receipt['version']
     if version!=shared_version:
         page=out/'site/windows/workspace.html'

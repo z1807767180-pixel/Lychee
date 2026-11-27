@@ -47,7 +47,7 @@ if(websiteOnly){
   proxy.listen(0,'127.0.0.1');await once(proxy,'listening');
   await writeFile(exe+'.config','<configuration><system.net><defaultProxy enabled="true"><proxy usesystemdefault="false" bypassonlocal="false" proxyaddress="http://127.0.0.1:'+proxy.address().port+'"/></defaultProxy></system.net></configuration>');
 }
-const fixture=await listen({dataDir:join(work,'accounts')});
+const fixture=await listen({dataDir:join(work,'accounts'),webRoot:await stat(join(base,'site')).then(()=>join(base,'site'),()=>undefined)});
 async function api(u,path,body){
   const r=await fetch(fixture.url+path,{method:body?'POST':'GET',headers:{cookie:u.cookie??'',origin:fixture.url,'content-type':'application/json'},body:body&&JSON.stringify(body)});
   const data=await r.json();assert.equal(r.status,200,JSON.stringify(data));
@@ -127,7 +127,7 @@ try{
     browser.socket.close();await connect(target);await browser.call('Page.reload');
     assert.equal(await browser.js("localStorage.getItem('lychee-social-upgrade-marker')"),'keep');
   }
-  await until(()=>browser.js("!document.querySelector('#lychee-launch')&&document.querySelector('.s8-header h1')?.innerText.includes('小桂')"),'B 无默认群直接到自己的首页');
+  await until(()=>browser.js("!document.querySelector('#lychee-launch')&&document.querySelector('.s8-content')?.innerText.includes('周末荔枝约定')"),'B 无默认群直接到自己的首页');
   const before=await browser.js("({time:performance.timeOrigin,path:location.pathname,version:document.body.dataset.clientBuild,home:document.querySelector('.s8-content').innerText,host:window.lycheeDesktopHost})");
   assert.ok(before.host);assert.equal(before.version,build.version);assert.ok(before.home.includes('周末荔枝约定'));
   assert.ok(before.home.includes('桂味朋友群')&&before.home.includes('糯米糍朋友群')&&before.home.includes('我带一篮过来'));
@@ -137,7 +137,20 @@ try{
   await shot('02-群聊');await click('‹ 返回');
   await until(()=>browser.js("document.querySelector('.s8-content')?.innerText.includes('周末荔枝约定')"),'返回个人首页');
   assert.equal(await browser.js('performance.timeOrigin'),before.time);report.returnedWithoutPageReload=true;
-  await click('我');await click('设置');
+  if(build.version==='8.1.1'){
+    await click('工具箱');
+    const tools=[['交给命运','.v7-wheel'],['照记饮食','.diet-v7'],['提醒事项','.s81-task-actions'],['番茄钟','.focus-dial'],['记账本','.ledger-header'],['头脑王者','[data-game="quiz"]'],['五子棋','[data-game="gomoku"]'],['海龟汤','[data-game="soup"]'],['脑筋急转弯','[data-game="riddles"]'],['AI 助手','.s81-chat-compose'],['AI 生图','.s81-atelier']];
+    report.toolScreens=[];
+    for(const [title,selector] of tools){
+      await click(title);
+      await until(()=>browser.js('!!document.querySelector('+JSON.stringify(selector)+')'),title+' 的功能组件',12000);
+      report.toolScreens.push(title);await click('‹ 返回');
+    }
+    await click('我');await click('头像与主题');
+    await until(()=>browser.js("document.querySelectorAll('.s8-theme-picks button img').length===4 && [...document.querySelectorAll('.s8-theme-picks button img')].every(i=>i.complete&&i.naturalWidth>0)"),'四种主题插画加载');
+    report.appearance=true;await click('‹ 返回');
+  }else await click('我');
+  await click('设置');
   report.settingsVersion=await until(()=>browser.js("document.querySelector('.settings-version')?.innerText"),'设置中的版本');
   assert.ok(report.settingsVersion.includes('W'+build.version));
   await click('检查更新');await until(async()=>await state()==='current','正式 .NET 更新器对比公开清单',130000);
