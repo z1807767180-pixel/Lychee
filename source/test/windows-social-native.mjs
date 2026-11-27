@@ -124,6 +124,32 @@ async function click(label){
   const point=await until(()=>browser.js('(()=>{const b=[...document.querySelectorAll("button")].find(e=>e.offsetWidth&&!e.disabled&&(e.innerText.trim()==='+JSON.stringify(label)+'||e.getAttribute("aria-label")==='+JSON.stringify(label)+'));if(!b)return; b.scrollIntoView({block:"nearest"});const r=b.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return b.contains(document.elementFromPoint(x,y))?{x,y}:null})()'),label);
   for(const type of ['mousePressed','mouseReleased'])await browser.call('Input.dispatchMouseEvent',{...point,type,button:'left',clickCount:1});
 }
+async function sendChatSticker(room){
+  await click('更多聊天操作');
+  const actions=await browser.js("[...document.querySelectorAll('.s8-chat-tray button')].map(b=>b.innerText.trim())");
+  assert.deepEqual(actions,['发图片','表情','一起玩']);
+  await click('表情');
+  const tabs=await browser.js("[...document.querySelectorAll('.s8-emoji-tabs button')].map(b=>b.textContent)");
+  assert.deepEqual(tabs,['常用','心情','手势','爱心','动物','吃喝','日常','荔枝贴纸']);
+  await click('心情');
+  assert.equal(await browser.js("document.querySelectorAll('.s8-symbols button').length"),42);
+  await click('😀');await click('荔枝贴纸');
+  assert.equal(await browser.js("document.querySelectorAll('.s8-symbols img').length"),6);
+  await click('喝杯茶');
+  await until(()=>browser.js("document.querySelector('.s8-draft-photo img')?.naturalWidth>0"),'待发贴纸预览',10000);
+  assert.equal(await browser.js("document.querySelector('.s8-composer textarea').value"),'😀');
+  await click('发送');
+  const result=await until(()=>browser.js(`(()=>{
+    const own=[...document.querySelectorAll('.s8-msg.mine')].find(row=>row.querySelector('.s8-photo-button img')?.naturalWidth>0);
+    const other=document.querySelector('.s8-msg:not(.mine) .s8-person');
+    const image=own?.querySelector('.s8-photo-button img'),avatar=own?.querySelector('.s8-person');
+    if(!image||!other?.naturalWidth||!avatar?.naturalWidth)return;
+    return {path:image.getAttribute('src').split('?')[0],kind:new URL(image.src).searchParams.get('view')||'group-image',caption:own.querySelector('p')?.textContent,avatarsOnBothSides:other.getBoundingClientRect().left<avatar.getBoundingClientRect().left};
+  })()`),'已发送贴纸、头像与原图',12000);
+  assert.equal(result.caption,'😀');assert.ok(result.avatarsOnBothSides);
+  assert.equal(result.kind,room==='dm'?'dmPhoto':'group-image');
+  return {room,actions,tabs,images:6,...result};
+}
 const state=()=>browser.js("document.querySelector('[data-windows-update]:not([hidden])')?.dataset.updateState");
 const shot=async name=>{if(!websiteOnly&&!prior)await writeFile(join(out,name+'.png'),Buffer.from((await browser.call('Page.captureScreenshot',{format:'png'})).data,'base64'));};
 try{
@@ -151,7 +177,11 @@ try{
   assert.ok(!before.home.includes('常用群'));report.singleList=true;
   await shot('01-统一首页');
   await click('桂味朋友群');await until(()=>browser.js("document.querySelector('.s8-msg')?.innerText.includes('周末一起吃荔枝')"),'原群消息');
-  await shot('02-群聊');await click('‹ 返回');
+  await shot('02-群聊');
+  if(build.version==='8.1.3'){
+    report.chat=[await sendChatSticker('group')];await click('返回');await click(cc.name);
+    report.chat.push(await sendChatSticker('dm'));await click('返回');
+  }else await click('‹ 返回');
   await until(()=>browser.js("document.querySelector('.s8-content')?.innerText.includes('周末荔枝约定')"),'返回个人首页');
   assert.equal(await browser.js('performance.timeOrigin'),before.time);report.returnedWithoutPageReload=true;
   if(build.version.localeCompare('8.1.1','en',{numeric:true})>=0){

@@ -1,0 +1,207 @@
+{
+  "version": "8.1.3",
+  "sources": {
+    "tag": "windows-v8.1.3",
+    "commit": "35a2d149ecdcbe032741c63d43c8e0f5394aca8e",
+    "releaseId": 460922848,
+    "official": "https://lychee-link-check.onrender.com/windows-update/download.html"
+  },
+  "date": "2026-11-28",
+  "assets": [
+    {
+      "kind": "exe",
+      "name": "Lychee.exe",
+      "length": 21819392,
+      "sha256": "e399b85910f612f200a62ccdc0a6ded86f497f0d4de7b97aab899e591305d801"
+    },
+    {
+      "kind": "msi",
+      "name": "Lychee.msi",
+      "length": 21372928,
+      "sha256": "72333f2dabb08f1a66cfc2f9c91ddbe193dff8a353bf997fa76b1e64eba6e10f"
+    }
+  ],
+  "checks": {
+    "storageRoutes": {
+      "test": "node --test source/test/social-routes.test.mjs",
+      "passed": [
+        "SQLite",
+        "isolated libSQL HTTP with persistent SQLite"
+      ],
+      "attachments": "two-party authenticated JPEG fetch, retries, conflicts, mismatched account, outsider, history and restart"
+    },
+    "nativeChatBeforeFinalWallpaperCrop": {
+      "from": "8.1.3",
+      "to": "8.1.3",
+      "startHash": "1ae5e9b9c199bd84f6df080e289de90520d74db9bab51f411d257d91f29ed9ad",
+      "mode": "current-website-only",
+      "pass": true,
+      "connections": [
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        }
+      ],
+      "privateDesktop": true,
+      "singleList": true,
+      "chat": [
+        {
+          "room": "group",
+          "actions": [
+            "发图片",
+            "表情",
+            "一起玩"
+          ],
+          "tabs": [
+            "常用",
+            "心情",
+            "手势",
+            "爱心",
+            "动物",
+            "吃喝",
+            "日常",
+            "荔枝贴纸"
+          ],
+          "images": 6,
+          "path": "/g/365a107b-3151-4ff0-a67f-1f6bc6d076b5/api/for/61ad397b-bf3e-42c7-9384-703a87dc4669/camp",
+          "kind": "group-image",
+          "caption": "😀",
+          "avatarsOnBothSides": true
+        },
+        {
+          "room": "dm",
+          "actions": [
+            "发图片",
+            "表情",
+            "一起玩"
+          ],
+          "tabs": [
+            "常用",
+            "心情",
+            "手势",
+            "爱心",
+            "动物",
+            "吃喝",
+            "日常",
+            "荔枝贴纸"
+          ],
+          "images": 6,
+          "path": "/api/v8/social",
+          "kind": "dmPhoto",
+          "caption": "😀",
+          "avatarsOnBothSides": true
+        }
+      ],
+      "returnedWithoutPageReload": true,
+      "toolScreens": [
+        "交给命运",
+        "照记饮食",
+        "提醒事项",
+        "番茄钟",
+        "记账本",
+        "头脑王者",
+        "五子棋",
+        "海龟汤",
+        "脑筋急转弯",
+        "AI 助手",
+        "AI 生图"
+      ],
+      "appearance": true,
+      "settingsVersion": "Windows W8.1.3",
+      "settingsResult": "荔枝 W8.1.3\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "1ae5e9b9c199bd84f6df080e289de90520d74db9bab51f411d257d91f29ed9ad",
+      "localAccountRequests": 67
+    },
+    "finalEmbedding": {
+      "changedFromNativePreview": [
+        "client/social-appearance.js",
+        "client/social-v8.css"
+      ],
+      "finalSourceReceiptMatches": true,
+      "embedded": {
+        "client/social-appearance.js": "198d5e60a2d598a4fdfa44fa0e06cf4c17a8e6c11d51accbf7291b59ba585ee9",
+        "client/social-v8.css": "5cf50887f0c669fda30d84c5c151ef6b00d53245d8976cfbbf2839307a086cff"
+      },
+      "previewSha256": "1ae5e9b9c199bd84f6df080e289de90520d74db9bab51f411d257d91f29ed9ad",
+      "sha256OfSiteReadFromOfficialExe": "945142c1f334d24d32f338655da0c7673f373ecae591e43a0c0ea097b6e90f56"
+    },
+    "msi": {
+      "verifiedSameEmbeddedExe": true,
+      "verifiedWizardAndShortcuts": true,
+      "validatedUpgradeTableFrom": "8.1.2",
+      "authenticode": {
+        "exe": "NotSigned",
+        "msi": "NotSigned"
+      }
+    },
+    "unchangedUpdater": {
+      "sourceSha256": "4030ffd9e20acdbd44215077c2732c24bbd4f934a24f9fefdb1260653ef80937",
+      "previousReceipt": "verified-8.1.2.json",
+      "sameUpdaterSource": true
+    },
+    "maintainerArchiveVerification": {
+      "dateUtc": "2026-11-27T18:05:10.264572+00:00",
+      "base": "https://github.com/z1807767180-pixel/Lychee/releases/download/windows-v8.1.3/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 21819392,
+          "sha256": "e399b85910f612f200a62ccdc0a6ded86f497f0d4de7b97aab899e591305d801",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21372928,
+          "sha256": "72333f2dabb08f1a66cfc2f9c91ddbe193dff8a353bf997fa76b1e64eba6e10f",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "942a9e471ae8a49efe70b1c696540ed21bd5d8c829dfc2f195d183aa464d102a",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        }
+      ]
+    },
+    "publicOfficialFiles": {
+      "dateUtc": "2026-11-27T18:09:29.015111+00:00",
+      "base": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.3/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 21819392,
+          "sha256": "e399b85910f612f200a62ccdc0a6ded86f497f0d4de7b97aab899e591305d801",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21372928,
+          "sha256": "72333f2dabb08f1a66cfc2f9c91ddbe193dff8a353bf997fa76b1e64eba6e10f",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "942a9e471ae8a49efe70b1c696540ed21bd5d8c829dfc2f195d183aa464d102a",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Windows 原生验收使用隔离的假账号与 WebView2 配置；发图、贴纸和聊天使用真实本地服务协议。最终包的两份主题样式相关文件逐项核对，嵌入 ZIP 从最终正式 EXE 资源提取比对。",
+    "安装版核验嵌入 EXE、产品版本、升级家族、安装向导与升级序列；本轮未覆盖用户的实际 MSI 安装。用户个人设备与移动网络体验仍待反馈。"
+  ]
+}
