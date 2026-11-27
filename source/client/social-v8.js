@@ -26,11 +26,12 @@
   function listTime(stamp){if(!stamp)return '';const date=new Date(stamp);return date.toDateString()===new Date().toDateString()?timeOf(stamp):date.toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});}
   function mount(root,account,access,initialGroup){
     const api=window.LycheeSocialApi.connect(account.id),shell=h('div',null,'s8');
+    const appearance=window.LycheeSocialAppearance.make(shell,account.id);
     const bar=h('header',null,'s8-header'),scroll=h('div',null,'s8-scroll'),main=h('section',null,'s8-content');
     const alert=h('div',null,'s8-alert'),nav=h('nav',null,'s8-nav');
     nav.setAttribute('aria-label','主导航');alert.setAttribute('role','status');scroll.append(main);shell.append(bar,alert,scroll,nav);root.replaceChildren(shell);
     let home=null,route={view:'home',params:{}},sequence=0,timer,snapshot='',busy=false,activeData;
-    const stack=[],drafts=new Map(),unreadPositions=new Map();
+    const stack=[],drafts=new Map(),unreadPositions=new Map();let navState='';
     const bridge=document.body.dataset.app==='/windows/phone.js'?window.chrome?.webview:null;
     let nativeActive=false,refreshing=false;
     const foreground=()=>!document.hidden&&(!bridge||nativeActive);
@@ -38,21 +39,24 @@
     function notice(msg){alert.textContent=msg||'';}
     async function mutate(action,fields){return api.write(action,fields);}
     function go(view,params={},replace=false){
+      if(route.view==='legacy'&&['profile','style','me'].includes(route.params.detail))appearance.refresh(true);
+      shell.querySelector('.s8-composer')?.remove();
       if(!replace)stack.push(route);route={view,params};sequence++;snapshot='';scroll.scrollTop=0;notice('');
       return refresh(true);
     }
     function back(){const prev=stack.pop()||{view:'home',params:{}};return go(prev.view,prev.params,true);}
     function tab(view){stack.length=0;return go(view,{},true);}
     function section(){
-      if(['garden','post','feed','tree'].includes(route.view))return 'garden';
+      if(['garden','post','feed','tree','goals'].includes(route.view))return 'garden';
       if(['tools','selectGroup','legacy'].includes(route.view))return route.params.tab||'tools';
-      if(['me','settings'].includes(route.view))return 'me';
+      if(['me','settings','friends'].includes(route.view))return 'me';
       return 'home';
     }
     function drawNav(){
       const u=home?.unread||{};
+      const state=[section(),u.garden,u.groups,u.private].join('/');if(state===navState)return;navState=state;
       nav.replaceChildren(...tabs.map(([view,name,icon])=>{
-        const b=btn('',()=>tab(view)),image=photo('/mobile/nav-'+icon+'-on.webp');
+        const b=btn('',()=>tab(view)),image=photo('/mobile/nav-'+icon+(view===section()?'-on.webp':'-line.svg'));
         b.append(image,document.createTextNode(name));b.setAttribute('aria-label',name);
         if(view===section())b.setAttribute('aria-current','page');
         const count=view==='garden'?u.garden:view==='home'?(u.groups||0)+(u.private||0):0;
@@ -62,7 +66,6 @@
     function header(title,action){
       bar.replaceChildren();
       if(!tabs.some(t=>t[0]===route.view))bar.append(btn('‹ 返回',back,'s8-back'));
-      else{const logo=photo('/mobile/icon.png');logo.className='s8-logo';bar.append(logo);}
       bar.append(h('h1',title));if(action)bar.append(action);
     }
     async function loadData(view,params){
@@ -80,26 +83,30 @@
       await api.write('read',{...scope,through:data.through||0,legacyThrough:data.legacyThrough||0});
       unreadPositions.set(key,marker);
     }
-    const ui={h,btn,go,api,main,mutate,formField,notice,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),repaint:()=>refresh(true)};
+    const ui={h,btn,go,api,main,mutate,formField,notice,header,avatar:appearance.avatar,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),legacyGame:(id,match)=>legacy(id,'quiz',false,match),repaint:()=>refresh(true)};
     Object.defineProperties(ui,{home:{get:()=>home},route:{get:()=>route}});
     async function refresh(force=false){
       const token=++sequence,{view,params}=route,key=JSON.stringify(route);refreshing=true;
       try{
         const details=await loadData(view,params);
         if(token!==sequence||!shell.isConnected)return;
-        await mark(view,params,details);
+        const chat=view==='dm'||view==='group';
+        const editing=!force&&shell.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');
+        if(!editing||chat)await mark(view,params,details);
         const latest=await api.read('home');
         if(token!==sequence||!shell.isConnected)return;
         if(bridge&&home&&!foreground()){
           const previous=new Map([...home.groups,...home.friends].map(c=>[c.id,c.unread]));
           if([...latest.groups,...latest.friends].some(c=>c.unread>(previous.get(c.id)||0)))bridge.postMessage('notify:attention');
         }
-        home=latest;activeData=details;drawNav();
+        home=latest;activeData=details;appearance.apply(latest,view==='group'?details:null,view==='group'||view==='dm');drawNav();
         const signature=JSON.stringify([key,home,details]);
-        if(!force&&(signature===snapshot||main.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select')||view==='legacy'))return;
-        snapshot=signature;const position=scroll.scrollTop;
-        render(view,params,details);
-        if(!force)scroll.scrollTop=position;
+        if(!force&&(signature===snapshot||editing&&!chat||view==='legacy'))return;
+        snapshot=signature;const position=scroll.scrollTop,atEnd=scroll.scrollHeight-position-scroll.clientHeight<60;
+        render(view,params,details,chat&&!force&&!!shell.querySelector('.s8-composer'));
+        appearance.refresh();
+        if(view==='group'||view==='dm'){if(force||atEnd)scroll.scrollTop=scroll.scrollHeight;else scroll.scrollTop=position;}
+        else if(!force)scroll.scrollTop=position;
       }catch(error){
         if(token!==sequence||!shell.isConnected)return;
         if(error.status===401){location.reload();return;}
@@ -119,25 +126,30 @@
     }
     function input(type,limit,value=''){const i=h('input');i.type=type;i.value=value;if(limit)i.maxLength=limit;return i;}
     function homeView(){
-      header(home.me.name+'的首页',btn('好友',()=>go('friends')));
+      const create=btn('＋',()=>go('createGroup'),'s8-header-icon');create.setAttribute('aria-label','创建群聊');header('荔圈',create);
       const goal=home.goals.find(g=>g.due>=Date.now())||home.goals[0],date=goal?new Date(goal.due):new Date();
       const card=btn('',()=>go('goals'),'s8-card');
-      const day=h('span',String(date.getDate()),'s8-day');day.prepend(h('small',(date.getMonth()+1)+'月'));
-      const content=h('span');content.append(h('small','我的约定'+(goal?' · '+timeOf(goal.due):'')),h('b',goal?goal.title:'添加个人约定'));card.append(day,content);
-      main.append(card,heading('最近消息',btn('创建群聊',()=>go('createGroup'))));
+      const content=h('span');content.append(h('small','我的约定'),h('b',goal?goal.title:'添加个人约定'));
+      if(goal)content.append(h('span',(date.getMonth()+1)+'月'+date.getDate()+'日　'+timeOf(goal.due)));card.append(content);
+      main.append(card,heading('最近消息'));
       const chats=[...home.groups.map(g=>({...g,group:true})),...home.friends];
       chats.sort((a,b)=>(b.lastMessage?.created||0)-(a.lastMessage?.created||0)||a.name.localeCompare(b.name)||a.id.localeCompare(b.id));
       for(const c of chats){
         const last=c.lastMessage,kind=c.group?'群聊':'私聊';
         const summary=last?(c.group&&last.name?last.name+'：':'')+last.body:(c.group?'还没有群消息':'开始和好友聊天');
         const b=row(c.name,summary,()=>go(c.group?'group':'dm',{id:c.id}),c.group?c.cover:null,{kind,unread:c.unread,time:listTime(last?.created)});
-        b.dataset.conversation=c.id;main.append(b);
+        if(!c.group)b.firstChild.replaceWith(appearance.avatar(c));b.dataset.conversation=c.id;main.append(b);
       }
       if(!chats.length)main.append(h('p','还没有会话。可以添加好友或创建群聊。','s8-panel'));
       main.append(btn('使用邀请码加入原群',()=>access.join()));
     }
     function goals(id){
-      header('我的约定');const current=home.goals.find(g=>g.id===id);
+      const shared=route.params.mode==='shared',editing=!!id||route.params.mode==='new';
+      header('约定',!shared&&!editing?btn('＋ 新建',()=>go('goals',{mode:'new'})):null);
+      const choices=h('div',null,'s8-goal-tabs');for(const [isShared,label] of [[false,'我的计划'],[true,'共同计划']]){const b=btn(label,()=>go('goals',isShared?{mode:'shared'}:{},true));b.setAttribute('aria-pressed',String(isShared===shared));choices.append(b);}main.append(choices);
+      if(shared){main.append(heading('选择群聊'));for(const g of home.groups)main.append(row(g.name,'查看本群共同约定',()=>legacy(g.id,'goal',true),g.cover));if(!home.groups.length)main.append(h('p','加入群聊后，可查看该群的共同约定。','s8-panel'));return;}
+      const current=home.goals.find(g=>g.id===id&&g.source!=='legacy');
+      if(!editing){
       for(const g of home.goals){
         const box=h('article',null,'s8-panel');box.append(h('h3',g.title),h('small',new Date(g.due).toLocaleString('zh-CN')),h('p',g.body||''));
         if(g.source==='legacy'){
@@ -145,6 +157,7 @@
         }else box.append(btn('编辑',()=>go('goals',{id:g.id})),btn('删除',calling(async()=>{if(confirm('删除这个个人约定？')){await mutate('goalDelete',{id:g.id});await go('goals',{},true);}})));
         main.append(box);
       }
+      if(!home.goals.length)main.append(h('p','还没有个人计划。点右上角新建约定。','s8-panel'));return;}
       const title=input('text',80,current?.title),due=input('datetime-local'),body=input('text',300,current?.body);
       title.required=due.required=true;
       if(current){const d=new Date(current.due);due.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
@@ -179,35 +192,7 @@
         if(m.friendStatus==='friend')box.append(btn('私聊',()=>go('dm',{id:m.id})));
         main.append(box);
       }
-      main.append(btn('退出群聊',calling(async()=>{if(confirm('退出此群？现有好友关系会保留。')){await mutate('groupLeave',{groupId:id});await tab('home');}})));
-    }
-    function room(view,id,data){
-      const group=view==='group',key=view+':'+id;
-      header(group?data.group.name:data.friend.name,group?btn('群成员',()=>go('members',{id})):null);
-      if(group){
-        const actions=h('div',null,'s8-actions');actions.append(btn('图片、表情与撤回',()=>legacy(id,'circle',true)),btn('一起玩',()=>legacy(id,'quiz')),btn('原圈资料',()=>legacy(id,'history',true)));
-        main.append(actions);
-      }
-      let previous;
-      for(const msg of data.messages){
-        const divider=window.LycheeSocialApi.chatDivider(previous,msg.created,5*60000);previous=msg.created;
-        if(divider)main.append(h('time',divider,'s8-time'));
-        const bubble=h('article',null,'s8-msg'+(msg.authorId===home.me.id?' mine':''));
-        if(group)bubble.append(h('small',msg.name));bubble.append(h('p',msg.body||'群聊附件'));
-        if(group&&typeof msg.imageUrl==='string'&&msg.imageUrl.startsWith('/g/'+encodeURIComponent(id)+'/api/for/'+encodeURIComponent(home.me.id)+'/')){
-          const image=h('img');image.alt='群聊图片';image.loading='lazy';image.style.maxWidth='100%';image.src=msg.imageUrl;
-          bubble.append(image);
-        }
-        if(group&&/^【头脑王者】/.test(msg.body||''))bubble.append(btn('查看对局',()=>legacy(id,'quiz',false,(msg.body.match(/对局编号：([\da-f-]{36})/i)||[])[1])));
-        main.append(bubble);
-      }
-      if(!data.messages.length)main.append(h('p','还没有消息。','s8-muted'));
-      const draft=drafts.get(key)||{text:'',id:null},area=h('textarea');area.rows=1;area.maxLength=2000;area.placeholder='写消息…';area.setAttribute('aria-label','消息内容');area.value=draft.text;
-      area.oninput=()=>{draft.text=area.value;draft.id=null;drafts.set(key,draft);};
-      const f=form('发送',[area],async()=>{const text=area.value.trim();if(!text)return;
-        draft.id=draft.id||window.LycheeSocialApi.requestId();drafts.set(key,draft);
-        await mutate('message',{...(group?{groupId:id}:{friendId:id}),body:text,clientId:draft.id});drafts.delete(key);await refresh(true);scroll.scrollTop=scroll.scrollHeight;});
-      f.className='s8-composer';main.append(f);
+      main.append(btn('原圈资料',()=>legacy(id,'history',true)),btn('退出群聊',calling(async()=>{if(confirm('退出此群？现有好友关系会保留。')){await mutate('groupLeave',{groupId:id});await tab('home');}})));
     }
     function legacy(gardenId,detail,history=false,match){
       if(detail==='history'||detail==='garden')return go('history',{id:gardenId});
@@ -215,17 +200,11 @@
     }
     function tools(){
       header('工具箱');
-      const games=new Set(['quiz','gomoku','soup','riddles']);
-      for(const [label,isGame] of [['日常工具',false],['一起玩',true]]){
-        const grid=h('div',null,'s8-grid');
-        main.append(heading(label),grid);
-        for(const [dest,title,art] of toolLinks){
-          if(games.has(dest)!==isGame)continue;
-          const button=btn('',()=>openTool(dest),'s8-tool');
-          button.append(photo(art),h('b',title));grid.append(button);
-        }
+      const sections=[['日常工具',['wheel','diet','tasks','focus','ledger']],['一起玩',['quiz','gomoku','soup','riddles']],['AI 工具',['ai-chat','ai-image']]];
+      for(const [label,destinations] of sections){
+        const grid=h('div',null,'s8-grid');main.append(heading(label),grid);
+        for(const dest of destinations){const [,title,art]=toolLinks.find(x=>x[0]===dest);const button=btn('',()=>openTool(dest),'s8-tool');button.append(photo(art),h('b',title));grid.append(button);}
       }
-      main.append(btn('全部原有工具',()=>legacy(home.accountToolsGardenId,'tools')));
     }
     function openTool(dest){
       if(dest==='tree')return go('tree');if(dest==='goal')return go('goals');if(dest==='question')return go('feed',{kind:'questions'});
@@ -234,7 +213,7 @@
     }
     function embed(params){
       const tool=toolLinks.find(([id])=>id===params.detail);
-      header(tool?.[1]||({circle:'群聊图片、表情与撤回',me:'头像、主题与更多',album:'原圈相册',notifications:'提醒与通知',profile:'个人资料',history:'原圈资料',feed:'原圈园中事',question:'原圈问一问',tree:'原圈荔枝树',goal:'原圈约定',settings:'设置'}[params.detail]||'荔枝'));
+      header(tool?.[1]||({circle:'群聊图片、表情与撤回',me:'头像、主题与更多',style:'头像与主题',album:'原圈相册',notifications:'提醒与通知',profile:'个人资料',history:'原圈资料',feed:'原圈园中事',question:'原圈问一问',tree:'原圈荔枝树',goal:'原圈约定',settings:'设置'}[params.detail]||'荔枝'));
       const frame=h('iframe',null,'s8-legacy'),url=new URL(location.pathname,location.origin);
       url.searchParams.set('garden',params.id);url.searchParams.set('s8tool',params.detail);
       if(params.history)url.searchParams.set('history','1');if(params.match)url.searchParams.set('match',params.match);
@@ -243,23 +222,25 @@
     function me(settings=false){
       header(settings?'设置':'我');
       if(!settings){
-        main.append(heading(home.me.name),btn('个人资料',()=>legacy(home.accountToolsGardenId,'profile')),btn('我的约定',()=>go('goals')),btn('好友',()=>go('friends')),btn('提醒与通知',()=>legacy(home.accountToolsGardenId,'notifications')),btn('头像、主题与更多',()=>legacy(home.accountToolsGardenId,'me')),btn('设置',()=>go('settings')));
-        main.append(heading('原圈资料'));for(const g of home.groups)main.append(row(g.name,'旧帖、共同约定和原圈记录',()=>legacy(g.id,'history',true),g.cover));
+        const profile=btn('',()=>legacy(home.accountToolsGardenId,'profile'),'s8-profile');const info=h('span');info.append(h('b',home.me.name),h('small','个人资料 ›'));profile.append(appearance.avatar(home.me),info);main.append(profile);
+        main.append(row('我的好友','',()=>go('friends'),'/mobile/nav-chat-on.webp'),heading('设置'),row('提醒与通知','',()=>legacy(home.accountToolsGardenId,'notifications')),row('头像与主题','',()=>legacy(home.accountToolsGardenId,'style')),row('账号公告','',()=>access.announcements()),row('设置','版本、检查更新与账号',()=>go('settings')));
         return;
       }
       const win=document.body.dataset.app==='/windows/phone.js',android=window.lycheeAndroidShellVersion;
       const webVersion=document.body.dataset.clientBuild;
       const version=h('p',android?'安卓 A'+android:(win?'Windows W':'手机网页 V')+webVersion,'settings-version');
       main.append(version);if(android)main.append(h('small','手机网页 V'+webVersion));
+      if(android){const update=h('a','检查安卓更新','s8-upgrade');update.href='lychee-android://settings/update';main.append(update);}
       if(window.LycheeDesktopUpdate)main.append(btn('检查更新',()=>window.LycheeDesktopUpdate.check()));
       main.append(btn('账号公告',()=>access.announcements()),btn('退出账号',()=>access.logout()));
     }
-    function render(view,params,data){
-      main.replaceChildren();main.style.height='';scroll.classList.toggle('s8-has-legacy',view==='legacy');if(view==='home')return homeView();
+    function render(view,params,data,keepComposer=false){
+      if(!keepComposer)shell.querySelector('.s8-composer')?.remove();
+      main.replaceChildren();main.style.height='';shell.dataset.view=view;scroll.classList.toggle('s8-has-legacy',view==='legacy');if(view==='home')return homeView();
       if(view==='goals')return goals(params.id);if(view==='friends')return friends();
       if(view==='createGroup'||view==='inviteGroup')return groupForm(params.id,data);
       if(view==='members')return members(params.id,data);
-      if(view==='group'||view==='dm')return room(view,params.id,data);
+      if(view==='group'||view==='dm')return window.LycheeSocialChat.display(ui,view,params.id,data,drafts,keepComposer);
       if(view==='tools')return tools();if(view==='me'||view==='settings')return me(view==='settings');
       if(view==='legacy')return embed(params);
       if(view==='history'){
@@ -271,7 +252,7 @@
         return;
       }
       if(view==='selectGroup'){header('选择群聊');for(const g of home.groups)main.append(row(g.name,g.memberCount+' 位成员',()=>legacy(g.id,params.dest),g.cover));if(!home.groups.length)main.append(btn('创建群聊',()=>go('createGroup')));return;}
-      header(({garden:'荔枝园',feed:params.kind==='questions'?'问一问':'园中事',post:'详情',tree:'我的荔枝树'})[view]);
+      header(({garden:'荔枝园',feed:params.kind==='questions'?'问一问':'园中事',post:params.kind==='questions'?'问题与回答':'动态与评论',tree:'我的荔枝树'})[view]);
       window.LycheeSocialGarden.render(ui,view,data||home);
     }
     window.addEventListener('message',event=>{

@@ -16,6 +16,8 @@ TOOL_SCRIPTS = ("diet-foods-v7.js", "diet-recipes-v7.js", "diet-match-v7.js", "d
 TOOL_STYLES = ("diet-v7.css", "wheel-v7.css", "quiz-v7.css")
 TOOL_IMAGES = ("diet-banner-v7.webp", "wheel-banner-v7.webp", "wheel-hub-v7.webp",
                "diet-card-v7.webp", "wheel-card-v7.webp", "quiz-card-v7.webp", "quiz-result-v7.webp")
+SOCIAL_ART = tuple(f'social-{kind}-{skin}.webp' for kind in ('wall', 'wide', 'corner')
+                   for skin in ('orchard', 'miffy', 'tutu', 'kitty'))
 API_LITERAL = re.compile(r"""(?P<q>["'])(?P<path>/api/(?:camp|phone)[^"'\n]*?)(?P=q)""")
 
 
@@ -212,7 +214,7 @@ def entry(text, mobile):
     original = '<script src="/mobile/phone.js?v=6.3.3" defer></script>' if mobile else '<script defer src="/windows/phone.js"></script>'
     includes = '<script defer src="/client/business-scope.js"></script>'
     includes += ''.join(f'<script defer src="/client/{n}"></script>' for n in
-                        ('social-v8-api.js','social-v8-garden.js','social-v8.js'))
+                        ('social-v8-api.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-v8.js'))
     includes += ''.join(f'<script defer src="/client/{name}"></script>' for name in TOOL_SCRIPTS)
     styles = ''.join(f'<link rel="stylesheet" href="/client/{name}">' for name in (*TOOL_STYLES,'social-v8.css','social-v8-garden.css'))
     if mobile:
@@ -271,7 +273,7 @@ def build(out):
         files["windows/" + name] = (ROOT / "desktop" / name).read_bytes()
     files["index.html"] = b'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/mobile/">'
     for name in ("business-scope.js", "garden.js", "garden.css", "toolbox-cards.css", "responsive-text.css", "typography.css",
-                 'social-v8.js','social-v8-api.js','social-v8-garden.js','social-v8.css','social-v8-garden.css',
+                 'social-v8.js','social-v8-api.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-v8.css','social-v8-garden.css',*SOCIAL_ART,
                  *TOOL_SCRIPTS, *TOOL_STYLES, *TOOL_IMAGES):
         files["client/" + name] = (ROOT / "client" / name).read_bytes()
     font_files = sorted((ROOT / "client/fonts").rglob("*"))
