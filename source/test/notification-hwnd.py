@@ -10,10 +10,33 @@ is_minimized = qa.fn(qa.u, "IsIconic", qa.w.BOOL, qa.w.HWND)
 
 def probe(desktop, pid):
     main = qa.locate(desktop, pid)
+    other = None
+    show = qa.fn(qa.u, "ShowWindow", qa.w.BOOL, qa.w.HWND, qa.c.c_int)
+    activate = qa.fn(qa.u, "SetActiveWindow", qa.w.HWND, qa.w.HWND)
+    attach = qa.fn(qa.u, "AttachThreadInput", qa.w.BOOL, qa.w.DWORD, qa.w.DWORD, qa.w.BOOL)
+    def switch_local(target):
+        tid=qa.proc_window(main,None)
+        qa.check(attach(qa.thread(),tid,True))
+        try:
+            show(target,9)
+            activate(target)
+            return qa.info(tid).active==target
+        finally:
+            attach(qa.thread(),tid,False)
     for command in sys.stdin:
         command = command.strip()
         if command == "end":
+            if other:qa.fn(qa.u,'DestroyWindow',qa.w.BOOL,qa.w.HWND)(other)
             return []
+        if command in ("other-window","main-window"):
+            if not other:
+                create=qa.fn(qa.u,'CreateWindowExW',qa.w.HWND,qa.w.DWORD,qa.w.LPCWSTR,qa.w.LPCWSTR,qa.w.DWORD,
+                             qa.c.c_int,qa.c.c_int,qa.c.c_int,qa.c.c_int,qa.w.HWND,qa.w.HMENU,qa.w.HINSTANCE,qa.c.c_void_p)
+                other=create(0,'STATIC','Lychee isolated foreground control',0x10cf0000,10,10,260,140,None,None,None,None)
+                qa.check(other)
+            target=other if command=="other-window" else main
+            qa.emit({"target":command,"active":switch_local(target),"minimized":bool(is_minimized(main))})
+            continue
         if command == "minimized":
             qa.emit({"minimized": bool(is_minimized(main))})
             continue

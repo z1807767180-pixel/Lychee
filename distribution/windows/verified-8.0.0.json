@@ -1,0 +1,271 @@
+{
+  "version": "8.0.0",
+  "date": "2026-11-27",
+  "sources": {
+    "tag": "windows-v8.0.0",
+    "commit": "1d3d071958dffea3a0c33f73cee31457f5621a80"
+  },
+  "assets": [
+    {
+      "kind": "exe",
+      "name": "Lychee.exe",
+      "length": 20485120,
+      "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209"
+    },
+    {
+      "kind": "msi",
+      "name": "Lychee.msi",
+      "length": 20029440,
+      "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648"
+    }
+  ],
+  "checks": {
+    "productionWpfWithIsolatedAccounts": {
+      "from": "8.0.0",
+      "to": "8.0.0",
+      "startHash": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "mode": "native-social",
+      "pass": true,
+      "privateDesktop": true,
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "settingsVersion": "Windows W8.0.0",
+      "settingsResult": "荔枝 W8.0.0\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "localAccountRequests": 11
+    },
+    "productionPortableUpgrade": {
+      "from": "7.0.7",
+      "to": "8.0.0",
+      "startHash": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+      "mode": "public-upgrade",
+      "pass": true,
+      "privateDesktop": true,
+      "offer": "发现新版本 8.0.0",
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "settingsVersion": "Windows W8.0.0",
+      "settingsResult": "荔枝 W8.0.0\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "localAccountRequests": 13
+    },
+    "nativeWindowAttention": {
+      "otherWindowActive": true,
+      "lycheeRemainedUnminimized": true,
+      "unreadAfterOtherWindow": 2,
+      "backgroundFlashCalls": 1,
+      "minimized": {
+        "groups": 1,
+        "private": 1,
+        "nativePoll": true
+      },
+      "groupReadOnReturn": true,
+      "privateRemainedUnread": true,
+      "nativeFlashEvents": [
+        "notify:flash-call:2:3",
+        "notify:flash-call:0:0",
+        "notify:flash-call:2:3",
+        "notify:flash-call:0:0"
+      ],
+      "pass": true
+    },
+    "beforeAttentionFix": {
+      "otherWindowActive": true,
+      "lycheeRemainedUnminimized": true,
+      "unreadAfterOtherWindow": 0,
+      "backgroundFlashCalls": 0,
+      "regressionReproduced": true,
+      "nativeFlashEvents": [],
+      "pass": true
+    },
+    "isolatedUpgradeFamily": {
+      "from": "7.0.7",
+      "to": "8.0.0",
+      "mode": "mirror-only in-app update",
+      "exe": {
+        "badHashPreservedOld": true,
+        "mirrorManifestAndFullPackageApplied": true,
+        "decoysUnchanged": true,
+        "cookieBefore": {
+          "present": true,
+          "persistent": true,
+          "lifetimeDays": 30,
+          "httpOnly": true,
+          "secure": true
+        },
+        "cookieAfter": {
+          "present": true,
+          "persistent": true,
+          "lifetimeDays": 30,
+          "httpOnly": true,
+          "secure": true
+        },
+        "afterRelaunch": {
+          "workspaceStatus": 200,
+          "originalAccount": true,
+          "originalGarden": true,
+          "profileMarker": true,
+          "embeddedVersion": "8.0.0"
+        },
+        "latestAfterUpgrade": true
+      },
+      "msi": {
+        "badHashPreservedOld": true,
+        "mirrorManifestAndFullPackageApplied": true,
+        "decoysUnchanged": true,
+        "cookieBefore": {
+          "present": true,
+          "persistent": true,
+          "lifetimeDays": 30,
+          "httpOnly": true,
+          "secure": true
+        },
+        "cookieAfter": {
+          "present": true,
+          "persistent": true,
+          "lifetimeDays": 30,
+          "httpOnly": true,
+          "secure": true
+        },
+        "afterRelaunch": {
+          "workspaceStatus": 200,
+          "originalAccount": true,
+          "originalGarden": true,
+          "profileMarker": true,
+          "embeddedVersion": "8.0.0"
+        },
+        "latestAfterUpgrade": true
+      },
+      "installedProductState": 5,
+      "installedComponentState": 3
+    },
+    "websiteOnlyUpdater": {
+      "utc": "2026-11-27T09:39:19.9686924Z",
+      "clientVersion": "7.0.7.0",
+      "clientSha256": "848433828e4fbe42d8a723fc4343768e690626827e26115316c021b2c13e44b0",
+      "expectedFeed": "8.0.0",
+      "scenario": "production origin",
+      "packages": [
+        {
+          "kind": "exe",
+          "file": "Lychee.exe",
+          "bytes": 20485120,
+          "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+          "updaterVerified": true
+        },
+        {
+          "kind": "msi",
+          "file": "Lychee.msi",
+          "bytes": 20029440,
+          "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648",
+          "updaterVerified": true
+        }
+      ],
+      "passed": true,
+      "manifestVersion": "8.0.0",
+      "proxyDecisions": [
+        "DENY https://raw.githubusercontent.com/z1807767180-pixel/Lychee/main/distribution/windows/stable.json",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/stable.json",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v8.0.0/Lychee.exe",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v8.0.0/Lychee.msi"
+      ],
+      "blockedConnect": [
+        "raw.githubusercontent.com:443"
+      ]
+    },
+    "websiteOnlySettings": {
+      "from": "8.0.0",
+      "to": "8.0.0",
+      "startHash": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "mode": "current-website-only",
+      "pass": true,
+      "connections": [
+        {
+          "host": "raw.githubusercontent.com:443",
+          "allowed": false
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "raw.githubusercontent.com:443",
+          "allowed": false
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        }
+      ],
+      "privateDesktop": true,
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "settingsVersion": "Windows W8.0.0",
+      "settingsResult": "荔枝 W8.0.0\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "localAccountRequests": 11
+    },
+    "publicDownloads": {
+      "github": {
+        "source": "github",
+        "version": "8.0.0",
+        "checkedUtc": "2026-11-27T09:31:24.296307+00:00",
+        "manifestHost": "release-assets.githubusercontent.com",
+        "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/windows-v8.0.0",
+        "commit": "1d3d071958dffea3a0c33f73cee31457f5621a80",
+        "assets": [
+          {
+            "url": "https://github.com/z1807767180-pixel/Lychee/releases/download/windows-v8.0.0/Lychee.exe",
+            "status": 200,
+            "servedBy": "release-assets.githubusercontent.com",
+            "length": 20485120,
+            "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209"
+          },
+          {
+            "url": "https://github.com/z1807767180-pixel/Lychee/releases/download/windows-v8.0.0/Lychee.msi",
+            "status": 200,
+            "servedBy": "release-assets.githubusercontent.com",
+            "length": 20029440,
+            "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648"
+          }
+        ]
+      },
+      "website": {
+        "source": "website",
+        "version": "8.0.0",
+        "checkedUtc": "2026-11-27T09:39:22.784181+00:00",
+        "manifestHost": "lychee-link-check.onrender.com",
+        "assets": [
+          {
+            "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.0.0/Lychee.exe",
+            "status": 200,
+            "servedBy": "lychee-link-check.onrender.com",
+            "length": 20485120,
+            "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209"
+          },
+          {
+            "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.0.0/Lychee.msi",
+            "status": 200,
+            "servedBy": "lychee-link-check.onrender.com",
+            "length": 20029440,
+            "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648"
+          }
+        ],
+        "page": "https://lychee-link-check.onrender.com/windows-update/download.html"
+      },
+      "main": {
+        "source": "main",
+        "version": "8.0.0",
+        "checkedUtc": "2026-11-27T09:40:44.992195+00:00",
+        "manifestHost": "raw.githubusercontent.com"
+      }
+    }
+  },
+  "scope": "Windows WPF 与 WebView2；生产 EXE 的账号及园请求转发到同源隔离测试库，更新发现、下载、校验、替换及重开走正式 .NET 更新器。MSI 实装升级使用独立测试产品标识及与正式包一致的网页资源。"
+}

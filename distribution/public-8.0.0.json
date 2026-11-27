@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-11-27T09:38:19Z",
+  "origin": "https://lychee-link-check.onrender.com",
+  "publicReadOnly": true,
+  "checks": [
+    {
+      "path": "/mobile/version.txt",
+      "status": 200,
+      "bytes": 6,
+      "sha256": "462c9aaa608fb2014cd9649af1c5c009485c60b9c8b15b89401fdc10cf6161c6",
+      "etag": null
+    },
+    {
+      "path": "/mobile/",
+      "status": 200,
+      "bytes": 4528,
+      "sha256": "6cf7ec96e3f29b1c2554fba16197a342ecb73aeeadc422d1016486d21cce2543",
+      "etag": null
+    },
+    {
+      "path": "/api/client-capabilities",
+      "status": 200,
+      "bytes": 120,
+      "sha256": "cb5a2a8148df575480120cd99bfc691814f620323ff47c32e6894a4922e8afc8",
+      "etag": null
+    },
+    {
+      "path": "/api/v8/social",
+      "status": 401,
+      "bytes": 24,
+      "sha256": "9ae5df81a66150b59c285b977d88c172ec17a2d4e79f7b0c6c7d234513589abf",
+      "etag": null
+    },
+    {
+      "path": "/windows-update/download.html",
+      "status": 200,
+      "bytes": 1156,
+      "sha256": "ef7a1f75e1effbe0e2894a277d017d13d62db6f396a67b0baa3ebe13ffb43fd9",
+      "etag": null
+    },
+    {
+      "path": "/android-update/download.html",
+      "status": 200,
+      "bytes": 824,
+      "sha256": "3307514bb73ea007a1ad6b0d1ba4d9d8d4771a843137ec6f669053399a3522d2",
+      "etag": null
+    },
+    {
+      "path": "/android-update/current.json",
+      "status": 200,
+      "bytes": 269,
+      "sha256": "eda991f151394fa91ab3738c98171ffd382a69d3bab67e9ffc5bf7bd89b095ac",
+      "etag": null
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.0/Lychee-Friends-A8.0.0.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+      "etag": null
+    },
+    {
+      "path": "/android-update/android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk",
+      "status": 200,
+      "bytes": 3007817,
+      "sha256": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
+      "etag": null
+    },
+    {
+      "path": "/windows-update/stable.json",
+      "status": 200,
+      "bytes": 400,
+      "sha256": "6a990a8d719b48f2f0c5f4846206af0f6dda1001e0deb9097124ffc082d3f9c6",
+      "etag": null
+    },
+    {
+      "path": "/mobile/assets-8.0.0/launch/start.js",
+      "status": 200,
+      "bytes": 39495,
+      "sha256": "54d6a88c9b04edf52b1f098e39a3830e8b4322e204a24544d255731bd6ca8942",
+      "etag": "W/\"54d6a88c9b04edf52b1f098e39a3830e8b4322e204a24544d255731bd6ca8942\""
+    },
+    {
+      "path": "/mobile/assets-8.0.0/client/social-v8.js",
+      "status": 200,
+      "bytes": 20951,
+      "sha256": "d74c7da0eded8a5503b49376c213a1bc14eb7aaaa460e82489b9013476fe1ce9",
+      "etag": "W/\"d74c7da0eded8a5503b49376c213a1bc14eb7aaaa460e82489b9013476fe1ce9\""
+    },
+    {
+      "path": "/mobile/assets-8.0.0/client/social-v8-garden.js",
+      "status": 200,
+      "bytes": 8364,
+      "sha256": "6775955405a7b38daa9d2d442155034e28104865aa69e392eda8f01c9ca165dc",
+      "etag": "W/\"6775955405a7b38daa9d2d442155034e28104865aa69e392eda8f01c9ca165dc\""
+    },
+    {
+      "path": "/mobile/assets-8.0.0/client/wheel-v7.js",
+      "status": 200,
+      "bytes": 51867,
+      "sha256": "03dc0c9e5ede456d44814195d4156f3386cba38778fb4b8d3a41ca05606f2265",
+      "etag": "W/\"03dc0c9e5ede456d44814195d4156f3386cba38778fb4b8d3a41ca05606f2265\""
+    },
+    {
+      "path": "/windows-update/windows-v8.0.0/Lychee.exe",
+      "status": 200,
+      "bytes": 20485120,
+      "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209",
+      "etag": null
+    },
+    {
+      "path": "/windows-update/windows-v8.0.0/Lychee.msi",
+      "status": 200,
+      "bytes": 20029440,
+      "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648",
+      "etag": null
+    }
+  ]
+}

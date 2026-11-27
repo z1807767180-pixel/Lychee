@@ -109,6 +109,7 @@ def check_receipt(apk, receipt):
 
 def download_page(version, path):
     prefix = 'A' if int(version.split('.')[0]) >= 8 else 'V'
+    download = f'download="Lychee-Friends-A{version}.apk"' if prefix == 'A' else 'download'
     return f"""<!doctype html>
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>荔枝安卓朋友版下载</title>
@@ -118,7 +119,7 @@ main{{max-width:35em;margin:8vh auto;padding:1.5em}} h1{{line-height:1.2}}
 a{{display:inline-block;padding:.55em 1.15em;border-radius:9px;background:#245447;color:white;text-decoration:none}}
 a:focus-visible{{outline:3px solid #b95734;outline-offset:3px}}
 </style><main><h1>荔枝安卓朋友版</h1><p>正式版 {prefix}{version}</p>
-<a href="{path}" download>下载安卓安装包</a><p>下载完成后打开 APK，按手机提示安装。已安装朋友版的用户可以直接覆盖升级。</p></main></html>"""
+<a href="{path}" {download}>下载安卓安装包</a><p>下载完成后打开 APK，按手机提示安装。已安装朋友版的用户可以直接覆盖升级。</p></main></html>"""
 
 
 def prepare(release_path, packages, output):
@@ -149,6 +150,10 @@ def prepare(release_path, packages, output):
         directory = root / tag
         directory.mkdir(parents=True)
         (directory/filename).write_bytes(apk)
+        link_name = filename
+        if major >= 8:
+            link_name = f"Lychee-Friends-A{version}.apk"
+            (directory/link_name).write_bytes(apk)
         (root/"current.json").write_text(json.dumps(feed, ensure_ascii=False, indent=2)+"\n", encoding="utf8")
-        (root/"download.html").write_text(download_page(version,tag+"/"+filename), encoding="utf8")
+        (root/"download.html").write_text(download_page(version,tag+"/"+link_name), encoding="utf8")
         root.rename(output)

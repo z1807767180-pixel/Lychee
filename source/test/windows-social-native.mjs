@@ -3,7 +3,8 @@ import {spawn} from 'node:child_process';
 import {randomUUID,createHash} from 'node:crypto';
 import {once} from 'node:events';
 import {copyFile,mkdir,mkdtemp,readFile,writeFile,rm,realpath,lstat,stat} from 'node:fs/promises';
-import {createServer} from 'node:net';
+import {createServer,connect as connectTcp} from 'node:net';
+import {createServer as createHttpServer} from 'node:http';
 import {tmpdir} from 'node:os';
 import {basename,dirname,join,resolve} from 'node:path';
 import {setTimeout as sleep} from 'node:timers/promises';
@@ -12,7 +13,8 @@ import {fileURLToPath} from 'node:url';
 import {listen} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 
-const [packageDir,evidenceDir,fromDir]=process.argv.slice(2);
+const [packageDir,evidenceDir,source]=process.argv.slice(2);
+const websiteOnly=source==='--website-only',fromDir=websiteOnly?null:source;
 if(!packageDir||!evidenceDir||process.platform!=='win32')throw Error('Pass final Windows package folder, evidence folder, optional older source package folder.');
 const base=resolve(packageDir),out=resolve(evidenceDir),origin='https://lychee-link-check.onrender.com';
 const build=JSON.parse(await readFile(join(base,'stable.json'))),wanted=build.assets.find(a=>a.kind==='exe').sha256;
@@ -21,8 +23,30 @@ const digest=async p=>createHash('sha256').update(await readFile(p)).digest('hex
 const work=await mkdtemp(join(tmpdir(),'lychee-social-wpf-')),exe=join(work,'Lychee.exe'),profile=join(work,'profile'),tmp=join(work,'tmp');
 await mkdir(out,{recursive:true});await mkdir(tmp);await mkdir(profile);
 await copyFile(join(fromDir||base,'Lychee.exe'),exe);
-const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:prior?'public-upgrade':'native-social',pass:false};
+const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:prior?'public-upgrade':websiteOnly?'current-website-only':'native-social',pass:false};
 assert.equal(report.startHash,prior?prior.assets.find(a=>a.kind==='exe').sha256:wanted);
+let proxy;
+if(websiteOnly){
+  const host=new URL(origin).hostname;
+  report.connections=[];
+  proxy=createHttpServer((_req,res)=>res.writeHead(403).end());
+  proxy.on('connect',(req,client,head)=>{
+    const allowed=req.url===host+':443';
+    report.connections.push({host:req.url,allowed});
+    if(!allowed){client.end('HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n');return;}
+    const upstream=connectTcp(443,host,()=>{
+      client.write('HTTP/1.1 200 Connection Established\r\n\r\n');
+      if(head.length)upstream.write(head);
+      client.pipe(upstream).pipe(client);
+    });
+    for(const [socket,peer] of [[upstream,client],[client,upstream]]){
+      socket.on('error',()=>peer.destroy());
+      socket.on('close',()=>peer.destroy());
+    }
+  });
+  proxy.listen(0,'127.0.0.1');await once(proxy,'listening');
+  await writeFile(exe+'.config','<configuration><system.net><defaultProxy enabled="true"><proxy usesystemdefault="false" bypassonlocal="false" proxyaddress="http://127.0.0.1:'+proxy.address().port+'"/></defaultProxy></system.net></configuration>');
+}
 const fixture=await listen({dataDir:join(work,'accounts')});
 async function api(u,path,body){
   const r=await fetch(fixture.url+path,{method:body?'POST':'GET',headers:{cookie:u.cookie??'',origin:fixture.url,'content-type':'application/json'},body:body&&JSON.stringify(body)});
@@ -80,17 +104,19 @@ async function connect(before){
   browser=b;return page.id;
 }
 async function click(label){
-  return until(()=>browser.js('(()=>{const b=[...document.querySelectorAll("button")].find(e=>e.offsetWidth&&!e.disabled&&(e.innerText.trim()==='+JSON.stringify(label)+'||e.getAttribute("aria-label")==='+JSON.stringify(label)+'));if(b){b.click();return true}})()'),label);
+  const point=await until(()=>browser.js('(()=>{const b=[...document.querySelectorAll("button")].find(e=>e.offsetWidth&&!e.disabled&&(e.innerText.trim()==='+JSON.stringify(label)+'||e.getAttribute("aria-label")==='+JSON.stringify(label)+'));if(!b)return; b.scrollIntoView({block:"nearest"});const r=b.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return b.contains(document.elementFromPoint(x,y))?{x,y}:null})()'),label);
+  for(const type of ['mousePressed','mouseReleased'])await browser.call('Input.dispatchMouseEvent',{...point,type,button:'left',clickCount:1});
 }
 const state=()=>browser.js("document.querySelector('[data-windows-update]:not([hidden])')?.dataset.updateState");
-const shot=async name=>writeFile(join(out,name+'.png'),Buffer.from((await browser.call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+const shot=async name=>{if(!websiteOnly&&!prior)await writeFile(join(out,name+'.png'),Buffer.from((await browser.call('Page.captureScreenshot',{format:'png'})).data,'base64'));};
 try{
   const firstLine=await log.next();assert.ok(!firstLine.done,errors);
   const native=JSON.parse(firstLine.value);assert.ok(native.started&&native.privateDesktop!==native.inputDesktop);
   report.privateDesktop=true;
   const target=await connect();await browser.call('Page.reload');
-  await until(()=>browser.js("!!document.querySelector('.garden-access input[name=username]')"),'原生启动、登录表单');
-  await browser.js('(()=>{const f=document.querySelector(".garden-access form");f.elements.username.value='+JSON.stringify(bb.name)+';f.elements.password.value='+JSON.stringify(bb.password)+';f.requestSubmit()})()');
+  await until(()=>browser.js("!document.querySelector('#lychee-launch')&&!!document.querySelector('.garden-access input[name=username]')"),'启动画面消失、原生登录表单');
+  await browser.js('(()=>{const f=document.querySelector(".garden-access form");f.elements.username.value='+JSON.stringify(bb.name)+';f.elements.password.value='+JSON.stringify(bb.password)+'})()');
+  await click('登录');
   await until(async()=>(await browser.call('Network.getCookies',{urls:[origin]})).cookies.some(c=>c.name==='__Host-lychee-account'&&c.secure&&c.httpOnly),'登录会话已由浏览器保存');
   if(prior){
     await until(async()=>await state()==='available','旧正式版发现新版',120000);
@@ -101,7 +127,7 @@ try{
     browser.socket.close();await connect(target);await browser.call('Page.reload');
     assert.equal(await browser.js("localStorage.getItem('lychee-social-upgrade-marker')"),'keep');
   }
-  await until(()=>browser.js("document.querySelector('.s8-header h1')?.innerText.includes('小桂')"),'B 无默认群直接到自己的首页');
+  await until(()=>browser.js("!document.querySelector('#lychee-launch')&&document.querySelector('.s8-header h1')?.innerText.includes('小桂')"),'B 无默认群直接到自己的首页');
   const before=await browser.js("({time:performance.timeOrigin,path:location.pathname,version:document.body.dataset.clientBuild,home:document.querySelector('.s8-content').innerText,host:window.lycheeDesktopHost})");
   assert.ok(before.host);assert.equal(before.version,build.version);assert.ok(before.home.includes('周末荔枝约定'));
   assert.ok(before.home.includes('桂味朋友群')&&before.home.includes('糯米糍朋友群')&&before.home.includes('我带一篮过来'));
@@ -121,11 +147,15 @@ try{
   const {cookies}=await browser.call('Network.getCookies',{urls:[origin]});
   report.persistentAccountCookie=cookies.some(c=>c.name==='__Host-lychee-account'&&c.httpOnly&&c.secure&&!c.session);
   assert.ok(report.profile&&report.persistentAccountCookie);report.artifactSha256=await digest(exe);assert.equal(report.artifactSha256,wanted);
+  if(websiteOnly){
+    assert.ok(report.connections.some(c=>!c.allowed&&c.host==='raw.githubusercontent.com:443'));
+    assert.ok(report.connections.some(c=>c.allowed&&c.host===new URL(origin).hostname+':443'));
+  }
   report.localAccountRequests=requests;report.pass=true;
 }catch(error){report.error=error.message;report.visible=await browser?.js('document.body.innerText.slice(-900)').catch(()=>null);process.exitCode=1;}
 finally{
   if(browser?.socket?.readyState===1){await browser.js("window.chrome.webview.postMessage('window:close')").catch(()=>{});browser.socket.close();}
-  host.stdin.end();await exited;await fixture.close();
+  host.stdin.end();await exited;await fixture.close();proxy?.close();
   await writeFile(join(out,report.mode+'.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
   const actual=await realpath(work);assert.equal(dirname(actual),await realpath(tmpdir()));assert.match(basename(actual),/^lychee-social-wpf-[A-Za-z0-9]{6}$/);
   assert.ok(!(await lstat(actual)).isSymbolicLink());await rm(actual,{force:true,recursive:true,maxRetries:20,retryDelay:180});

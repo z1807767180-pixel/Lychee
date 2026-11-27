@@ -82,7 +82,8 @@ try{
   const sentPhoto=(await social(b,null,'&view=group&id='+g)).messages.find(m=>m.imageUrl&&m.name==='小荔');
   assert.ok(sentPhoto?.imageUrl);assert.match(sentPhoto.body,/😀/u);
   await inside("Array.from(doc.querySelectorAll('.room-row.mine')).at(-1).dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))");
-  await until(()=>inside("Array.from(doc.querySelectorAll('button')).find(b=>b.textContent.trim()==='撤回')?.click()===undefined && doc.body.innerText.includes('撤回')"),'群图片撤回');
+  await until(()=>inside("!!Array.from(doc.querySelectorAll('button')).find(b=>b.textContent.trim()==='撤回')"),'显示撤回操作');
+  await inside("Array.from(doc.querySelectorAll('button')).find(b=>b.textContent.trim()==='撤回').click()");
   await until(async()=>(await social(b,null,'&view=group&id='+g)).messages.find(m=>m.id===sentPhoto.id)?.body==='消息已撤回','对方看到已撤回');
   await choose(desktop,'工具箱');await tap(desktop,'交给命运');
   await until(()=>desktop.js("!!document.querySelector('iframe')?.contentDocument.querySelector('.v7-wheel')"),'原转盘');

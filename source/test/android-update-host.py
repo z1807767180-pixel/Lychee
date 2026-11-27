@@ -23,6 +23,8 @@ class AndroidReleaseFiles(unittest.TestCase):
         version = self.metadata["version"]
         self.name = f"Lychee-Friends-V{version}.apk"
         self.relative = f"android-friends-v{version}/{self.name}"
+        self.visible = (self.relative.replace("/Lychee-Friends-V", "/Lychee-Friends-A")
+                        if int(version.split('.')[0]) >= 8 else self.relative)
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         work = Path(temp.name)
@@ -38,14 +40,17 @@ class AndroidReleaseFiles(unittest.TestCase):
     def test_only_current_signed_apk_and_same_origin_download_are_exposed(self):
         self.prepare()
         files = {f.relative_to(self.output).as_posix() for f in self.output.rglob("*") if f.is_file()}
-        self.assertEqual(files, {"current.json","download.html",self.relative})
+        self.assertEqual(files, {"current.json","download.html",self.relative,self.visible})
         actual = (self.output/self.relative).read_bytes()
         self.assertEqual(actual,(self.packages/self.name).read_bytes())
         expected = {k:self.metadata[k] for k in ["version","note"]}
         expected["sha256"] = hashlib.sha256(actual).hexdigest()
         self.assertEqual(json.loads((self.output/"current.json").read_bytes()),expected)
         page = (self.output/"download.html").read_text(encoding="utf8")
-        self.assertIn(f'href="{self.relative}" download',page)
+        self.assertEqual((self.output/self.visible).read_bytes(),actual)
+        self.assertIn(f'href="{self.visible}" download',page)
+        if self.visible != self.relative:
+            self.assertIn(f'download="{Path(self.visible).name}"',page)
         self.assertNotIn("https://",page)
         with self.assertRaises(ValueError):
             self.prepare()
@@ -107,6 +112,7 @@ class AndroidReleaseFiles(unittest.TestCase):
         result=install(target)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertEqual((target/"android-update"/self.relative).read_bytes(),(self.packages/self.name).read_bytes())
+        self.assertEqual((target/"android-update"/self.visible).read_bytes(),(self.packages/self.name).read_bytes())
         self.assertFalse((target/"android-update/internal.json").exists())
         self.assertEqual((target/"windows-update/stable.json").read_bytes(),b"existing Windows route")
         self.assertEqual((target/"mobile/index.html").read_bytes(),(mobile/"index.html").read_bytes())
