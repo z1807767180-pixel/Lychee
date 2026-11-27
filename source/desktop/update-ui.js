@@ -30,8 +30,8 @@
   bridge.addEventListener('message', event => {
     const info = event.data;
     if (info?.type !== 'lychee:update') return;
-    const headings = {checking:'检查更新', available:'发现新版本 '+info.version,
-      current:'荔枝 '+info.current, 'check-error':'暂时无法检查更新', error:'更新暂未完成', downloading:'正在更新荔枝'};
+    const headings = {checking:'检查更新', available:'发现新版本 W'+info.version,
+      current:'荔枝 W'+info.current, 'check-error':'暂时无法检查更新', error:'更新暂未完成', downloading:'正在更新荔枝'};
     if (!Object.hasOwn(headings, info.state)) return;
     panel.dataset.updateState = info.state;
     title.textContent = headings[info.state]; message.textContent = info.message;

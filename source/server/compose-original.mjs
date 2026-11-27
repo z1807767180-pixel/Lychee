@@ -24,7 +24,7 @@ export function composeOriginal(bytes){
   const originalCall='const result=await fn(request);';
   if([start,origin,listen,originalCall].some(marker=>code.split(marker).length!==2))throw Error('Original entry shape mismatch');
   const branch=`
- if(url.pathname==='/api/client-capabilities'||url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/g/')){
+ if(url.pathname==='/api/client-capabilities'||url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/api/v7/')||url.pathname==='/api/v8/social'||url.pathname.startsWith('/g/')){
   try{
    await (await loadV640())(req,res);
   }catch{if(!res.headersSent)res.writeHead(503,{'Cache-Control':'no-store','Retry-After':'10'});res.end();}

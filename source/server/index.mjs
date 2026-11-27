@@ -11,6 +11,7 @@ import {handleDietVision} from './diet-vision.mjs';
 import {handleDietEntries} from './diet-store.mjs';
 import {createWebPush} from './notify-push.mjs';
 import {createQuizGames} from './quiz-game.mjs';
+import {createSocial,accountToolsGarden} from './social.mjs';
 
 const project=dirname(dirname(fileURLToPath(import.meta.url)));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8',
@@ -22,6 +23,27 @@ const business=new Set(['/api/camp','/api/phone','/api/phone/circles']);
 const publicInfo=Object.freeze({protocol:1,version:'6.4.0',accountApi:'v640',privateGardens:true,accountNotices:true});
 const accountCatalog=[...mobileNotices,...notices];
 const mobileNoticeIds=new Set(mobileNotices.map(n=>n.id));
+
+// Private tools reuse the original per-member storage but never register a
+// garden, group membership or invite code. Only these personal operations can
+// reach it; the ordinary historical group routes keep their own membership check.
+const privatePhoneReads=new Set(['status','images','image','image-status','threads','thread','covers']);
+const privatePhoneWrites=new Set(['avatar','portrait','income','edit-income','expense','edit-expense','focus','pause-focus',
+  'resume-focus','cancel-focus','v61-task','v61-task-done','v61-task-delete','v61-mood','v61-read',
+  'v62-thread-delete','v62-chat','v62-assist','v62-image','v62-cover']);
+async function privateToolRequest(request,url,route){
+  if(route!=='camp'&&route!=='phone')return false;
+  if(request.method==='GET'){
+    const q=url.searchParams;
+    if(route==='camp')return !q.size||(q.size===1&&q.get('roster')==='lychee');
+    if(q.has('v62'))return privatePhoneReads.has(q.get('v62'));
+    if(q.has('v61'))return ['personal','notifications'].includes(q.get('v61'));
+    return !q.size||[...q.keys()].every(k=>['private','month','tools','portrait','rev'].includes(k));
+  }
+  if(request.method!=='POST')return false;
+  const p=await request.clone().json().catch(()=>null);
+  return route==='camp'?p?.type==='profile':privatePhoneWrites.has(p?.type);
+}
 
 async function gardenNames(domains,origin,member) {
   const response=await domains.handle(new Request(new URL('/api/camp?roster=circle-names',origin)),member);
@@ -93,6 +115,18 @@ function gardenQuiz(execute, domains, push) {
   });
 }
 
+function originalChat(domains,push){
+  return async (request,session,gardenId,row)=>{
+    const origin=new URL(request.url).origin;
+    const copy=row.body.length<=200?row.body:row.body.slice(0,198)+'…';
+    const response=await domains.handle(new Request(new URL('/api/camp',origin),{method:'POST',
+      headers:{origin,'content-type':'application/json'},body:JSON.stringify({type:'note',key:row.id,
+        name:session.username,avatar:0,body:copy})}),{accountId:session.accountId,username:session.username,gardenId,slot:row.slot});
+    if(!response.ok)throw Error('Original group channel unavailable');
+    void push.signal(gardenId);
+  };
+}
+
 async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,staticRoots}){
   if(storage==='turso'){
     if(!turso?.url||!turso?.authToken)throw Error('Configure server-side Turso access before starting');
@@ -105,7 +139,8 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
       const execute=(sql,args)=>client.execute({sql,args});
       const push=createWebPush({execute,domains});
-      return {accounts,domains,push,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();}finally{client.close();}}};
+      const social=await createSocial({client,publish:originalChat(domains,push)});
+      return {accounts,domains,push,social,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();await social.close();}finally{client.close();}}};
     }catch(error){client.close();throw error;}
   }
   if(storage!=='sqlite')throw Error('Unsupported LYCHEE_STORAGE');
@@ -122,7 +157,8 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
   };
   const push=createWebPush({domains,execute});
-  return {accounts,domains,push,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();}finally{db.close();}}};
+  const social=await createSocial({dataDir:data,publish:originalChat(domains,push)});
+  return {accounts,domains,push,social,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();await social.close();}finally{db.close();}}};
 }
 
 export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(project,'public'),legacyDir=join(project,'legacy'),legacyWebRoot,origin,testProviderOrigin}){
@@ -141,12 +177,17 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
     if(path==='/api/v640/account'||path==='/api/v640/workspace')
       url.pathname=path.replace('/api/v640/','/api/');
     if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,domains,url,request,ctx);
+    if(path==='/api/v8/social'){
+      const session=await accounts.resolveSession(request);
+      return session?stores.social.handle(request,session):deny(401,'请先登录');
+    }
     if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'||path==='/api/v7/quiz'){
       const session=await accounts.resolveSession(request);
       if(!session)return deny(401,'请先登录');
       if(url.searchParams.get('accountId')!==session.accountId)return deny(403,'账号已切换，请重新打开');
       const gardenId=url.searchParams.get('gardenId');
-      const member=gardenId&&await accounts.resolveMember(session.accountId,gardenId);
+      const privateDiet=path.startsWith('/api/v7/diet/')&&gardenId===accountToolsGarden(session.accountId);
+      const member=privateDiet?{...session,gardenId,slot:1}:gardenId&&await accounts.resolveMember(session.accountId,gardenId);
       if(!member)return deny(403,'需要先加入这个圈子');
       if(path==='/api/v7/quiz')return stores.quiz(request,member);
       if(path==='/api/v7/push')return stores.push.handle(request,session,member);
@@ -162,15 +203,20 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
       const session=await accounts.resolveSession(request);
       if(!session)return deny(401,'请先登录');
       if(scoped?.[2]&&scoped[2]!==session.accountId)return deny(403,'账号已切换，请重新打开圈子');
-      const member=await accounts.resolveMember(session.accountId,scoped?scoped[1]:LEGACY_GARDEN_ID);
+      const tools=scoped?.[1]===accountToolsGarden(session.accountId);
+      if(tools && (scoped[2]!==session.accountId||!await privateToolRequest(request,url,scoped[3])))return deny(403,'个人工具空间不支持此操作');
+      const member=tools?{...session,gardenId:scoped[1],slot:1,role:'owner'}:
+        await accounts.resolveMember(session.accountId,scoped?scoped[1]:LEGACY_GARDEN_ID);
       if(!member)return deny(403,'需要先加入这个圈子');
       const canonical=new URL(scoped?'/api/'+scoped[3]:path,url);canonical.search=url.search;
       const headers=new Headers({'origin':url.origin});
       if(request.headers.has('content-type'))headers.set('content-type',request.headers.get('content-type'));
       const normalized=new Request(canonical,{method:request.method,headers,
         body:request.method==='POST'?await request.arrayBuffer():undefined});
+      const note=request.method==='POST'&&canonical.pathname==='/api/camp'?await normalized.clone().json().catch(()=>null):null;
       const response=await domains.handle(normalized,member);
-      if(response.ok&&request.method==='POST')void stores.push.signal(member.gardenId);
+      if(response.ok&&note?.type==='recall')await stores.social.recall(member,note.id);
+      if(response.ok&&request.method==='POST'&&!tools)void stores.push.signal(member.gardenId);
       const safe=new Headers(response.headers);safe.set('cache-control','private, no-store');safe.delete('set-cookie');safe.set('x-content-type-options','nosniff');
       return new Response(response.body,{status:response.status,headers:safe});
     }

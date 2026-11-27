@@ -61,7 +61,8 @@ def workspace_gate(text):
       for(const r of window.LycheePhoneReleases || []){
         if(r.audience!=='phone'||known.has('mobile-web-'+r.version))continue;
         const row=el('article',null,'ga-notice');
-        row.append(el('h2','荔枝 '+r.version+' · '+r.title));
+        const prefix=Number(r.version.split('.')[0])>=8?'V':'';
+        row.append(el('h2','荔枝 '+prefix+r.version+' · '+r.title));
         for(const [title,body] of r.items)row.append(el('p',title+'：'+body));
         row.append(el('small','历史公告'));box.append(row);
       }
@@ -70,7 +71,7 @@ def workspace_gate(text):
 
 
 def account_catalog(text, rows):
-    records = [{"id": "mobile-web-" + row["version"], "title": "荔枝 " + row["version"] + " · " + row["title"],
+    records = [{"id": "mobile-web-" + row["version"], "title": "荔枝 " + ("V" if int(row["version"].split(".")[0])>=8 else "") + row["version"] + " · " + row["title"],
                 "body": "\n".join(title + "：" + body for title, body in row["items"])} for row in rows]
     return replace(text, "export const mobileNotices = [];", "export const mobileNotices = " +
                    json.dumps(records, ensure_ascii=False) + ";")

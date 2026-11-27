@@ -15,12 +15,15 @@ from chat_build import journal, notifications, phone as mobile_chat
 from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
 from windows_updates import prepare as prepare_windows_updates
 from android_updates import prepare as prepare_android_updates
+from wheel_art import include_wheel_art
+from legacy_webview import prepare_legacy_webview
 
 SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:team-share|workspace-nav)\.js|(?:app\.css|camp\.webp|meadow\.webp)\b)""")
 
 SERVER_MODULES = (
     "soup-categories", "index", "accounts", "turso-accounts", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
     "notification-source", "notify-push", "notify-push-transport", "notices", "quiz-game", "quiz-rounds",
+    "social", "social-store", "social-history",
 )
 
 
@@ -34,6 +37,7 @@ def build(out):
     prefix = f"/mobile/assets-{version}/"
     out.mkdir(parents=True, exist_ok=False)
     for name, data in files.items():
+        data = include_wheel_art(name, data)
         if name == "mobile/index.html":
             data = data.replace(shared_version, version.encode())
             marker = b'<link rel="apple-touch-icon"'
@@ -65,6 +69,7 @@ def build(out):
         shutil.copyfile(HERE / name, out / "mobile" / name)
     chat = out / "mobile/chat.js"
     chat.write_bytes((ROOT / "source/client/chat-inbox.js").read_bytes() + b"\n" + chat.read_bytes())
+    prepare_legacy_webview(out / 'mobile')
     if out.name == "www":
         if os.environ.get("RENDER") == "true":
             prepare_windows_updates(ROOT / "distribution/windows/stable.json", out / "windows-update")

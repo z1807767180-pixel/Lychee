@@ -7,7 +7,7 @@ window.LycheeChatInbox=(()=>{
     React.useEffect(()=>{
       let live=true,busy=false,again=false,timer;
       setBadge(empty);
-      if(!access?.accountId||!access.gardenId)return;
+      if(!access?.accountId||!access.gardenId||window.lycheeToolEntry?.privateTools)return;
       const device=presence?.(access);
       const desktop=location.pathname==='/windows/workspace.html';
       const bridge=desktop && window.chrome?.webview;

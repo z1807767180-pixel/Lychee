@@ -119,7 +119,7 @@
     });
 
     return h('section', { className: 'v7-wheel', 'aria-label': '交给命运' },
-      h('img', { className: 'v7-wheel-banner', src: '/client/wheel-banner-v7.webp', alt: '' }),
+      h('img', { className: 'v7-wheel-banner', src: '/client/wheel-banner-v7.webp', width: 642, height: 147, alt: '' }),
       h('label', { className: 'v7-wheel-topic' },
         h('input', { type: 'text', value: topic, disabled: spinning, 'aria-label': '转盘主题', placeholder: '想决定什么？',
           onChange: event => { setTopic(event.target.value); setResult(null); } }),

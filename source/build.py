@@ -119,9 +119,26 @@ def phone_bundle(text, mobile):
     text = once(text, 'It=PS.some(O=>O===L)', 'It=L!=="quiz"&&PS.some(O=>O===L)')
     point = 'const windowsPages=Ee.useRef([])'
     text = once(text, point, """const [quizInvite,setQuizInvite]=Ee.useState(null);
+        const embeddedTool=window.lycheeToolEntry, initialTool=Ee.useRef(false);
+        Ee.useEffect(()=>{
+          if(!embeddedTool||initialTool.current)return;
+          initialTool.current=true;
+          const dest=embeddedTool.detail;
+          Za(["profile","settings","me","notifications","theme"].includes(dest)?"我":["feed","question","goal","tree"].includes(dest)?"园":"箱");
+          if(dest==="circle")setSelectedCircle({id:"main",name:window.LycheeAccess.scope.gardenName});
+          if(dest!=="me"&&dest!=="tools")De(dest);
+          if(dest==="quiz"&&embeddedTool.match)setQuizInvite(embeddedTool.match);
+        },[]);
         Ee.useEffect(()=>{function enter(event){Za("箱");De("quiz");setQuizInvite(event.detail)}
           window.addEventListener("lychee:quiz-invitation",enter);return ()=>window.removeEventListener("lychee:quiz-invitation",enter)},[]);
         """ + point)
+    tool_stack = 'O=window.lycheeWorkspaceDetail(windowsPages.current,O);'
+    text = once(text, tool_stack, tool_stack + """
+          if(embeddedTool&&initialTool.current&&!embeddedTool.history&&O&&O!==embeddedTool.detail&&
+             ["feed","goal","question","tree","quiz"].includes(O)){
+            window.parent.postMessage({type:"lychee-social-nav",dest:O},location.origin);return;
+          }
+          """)
     text = once(text, 'openAlbumFromGoal(false);i(!1),C(""),y(O)', 'openAlbumFromGoal(false);setQuizInvite(null);i(!1),C(""),y(O)')
     text = once(text, 'className:"room-bubble",children:R.body', 'className:"room-bubble",children:window.LycheeQuizV7.chatCard(X.jsx,R)')
     detail = 'else if(L==="ledger"||L==="focus")'
@@ -194,8 +211,10 @@ def entry(text, mobile):
     application = "/mobile/phone.js" if mobile else "/windows/phone.js"
     original = '<script src="/mobile/phone.js?v=6.3.3" defer></script>' if mobile else '<script defer src="/windows/phone.js"></script>'
     includes = '<script defer src="/client/business-scope.js"></script>'
+    includes += ''.join(f'<script defer src="/client/{n}"></script>' for n in
+                        ('social-v8-api.js','social-v8-garden.js','social-v8.js'))
     includes += ''.join(f'<script defer src="/client/{name}"></script>' for name in TOOL_SCRIPTS)
-    styles = ''.join(f'<link rel="stylesheet" href="/client/{name}">' for name in TOOL_STYLES)
+    styles = ''.join(f'<link rel="stylesheet" href="/client/{name}">' for name in (*TOOL_STYLES,'social-v8.css','social-v8-garden.css'))
     if mobile:
         includes += '<script defer src="/windows/workspace-nav.js"></script><script defer src="/windows/team-share.js"></script>'
         text = text.replace('<link rel="manifest" href="/mobile/app.webmanifest">','<link rel="icon" href="/mobile/icon.png">')
@@ -252,6 +271,7 @@ def build(out):
         files["windows/" + name] = (ROOT / "desktop" / name).read_bytes()
     files["index.html"] = b'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/mobile/">'
     for name in ("business-scope.js", "garden.js", "garden.css", "toolbox-cards.css", "responsive-text.css", "typography.css",
+                 'social-v8.js','social-v8-api.js','social-v8-garden.js','social-v8.css','social-v8-garden.css',
                  *TOOL_SCRIPTS, *TOOL_STYLES, *TOOL_IMAGES):
         files["client/" + name] = (ROOT / "client" / name).read_bytes()
     font_files = sorted((ROOT / "client/fonts").rglob("*"))

@@ -70,17 +70,31 @@
       status.textContent='正在打开荔枝…';
       const gate = document.createElement('script');
       gate.src='/client/garden.js?v='+encodeURIComponent(document.body.dataset.clientBuild);
-      // Keep the splash until the client has actually painted an interactive view.
-      const root = document.getElementById('root');
-      const ready = () => !!document.querySelector('.garden-access button,.garden-access input') || !!root.querySelector('input,button,main,form');
+      const visibleControl = () => {
+        const controls = document.querySelectorAll('.garden-access input,.garden-access button,#root input,#root button,#root a[href],#root [role="button"]');
+        return Array.from(controls).some(control => {
+          if (control.disabled || control.closest('[hidden],[aria-hidden="true"]')) return false;
+          const box = control.getBoundingClientRect();
+          return box.width > 0 && box.height > 0 && getComputedStyle(control).visibility === 'visible';
+        });
+      };
       const rendered = new Promise((resolve,reject) => {
-        const observer = new MutationObserver(() => {if(ready()) finish(true);});
-        const timeout=setTimeout(()=>finish(false),30000);
-        function finish(ok) {observer.disconnect(); clearTimeout(timeout);ok?resolve():reject(new Error('load'));}
-        observer.observe(document.body,{childList:true,subtree:true});
-        gate.onerror=()=>finish(false);
+        const deadline = Date.now()+30000;
+        let since=0, timer=0, stopped=false;
+        function check(){
+          if(stopped)return;
+          const now=Date.now();
+          if(visibleControl()){
+            if(since && now-since>=350){resolve();return;}
+            if(!since)since=now;
+          }else since=0;
+          if(now>=deadline){reject(new Error('load'));return;}
+          timer=setTimeout(check,100);
+        }
+        gate.onerror=()=>{stopped=true;clearTimeout(timer);reject(new Error('load'));};
         document.head.append(gate);
-        if(ready())finish(true);
+        // A temporary sign-in control or an empty React main can disappear during startup.
+        opening.then(check);
       });
       try {
         await Promise.all([rendered,opening]);

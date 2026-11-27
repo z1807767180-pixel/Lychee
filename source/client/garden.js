@@ -7,6 +7,9 @@
   identity?.addEventListener('message', () => location.reload());
   window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
   let state, overlay, card, message, trigger;
+  let social;
+  const toolParams = new URL(location.href).searchParams;
+  const embedded = window.parent !== window && toolParams.has('s8tool');
   let started = false, locked = false, dismissible = false, readSequence = 0;
   const idOf = v => v == null ? '' : String(v);
   const routeId = () => new URL(location.href).searchParams.get('garden');
@@ -28,7 +31,7 @@
     if (!data?.account || !Array.isArray(data.gardens) || !Array.isArray(data.notices)) throw Error('园子资料未能加载，请重新连接。');
     if (started && state && idOf(state.account.id) !== idOf(data.account.id)) { location.reload(); throw Error('正在切换账号。'); }
     state = data;
-    if (started) {
+    if (started && !social && !embedded) {
       const current=member(routeId());
       if (!current) { location.replace(location.pathname);return; }
       window.LycheeAccess.scope=Object.freeze({accountId:state.account.id,gardenId:current.id,gardenName:current.name,gardenSubtitle:current.subtitle});
@@ -145,7 +148,8 @@
     submit(form,create?'创建并进入':'加入并进入',async()=>{
       const data=await change(kind,create?{name:input.value.trim(),subtitle:subtitle.value.trim()}:{code:input.value.trim()});
       if (!member(data.activeGardenId)) throw Error('已提交，请返回园子列表查看。');
-      navigate(data.activeGardenId,false);
+      if(social){dismiss();await social.go('group',{id:data.activeGardenId});}
+      else navigate(data.activeGardenId,false);
     });
     box.append(form);actions(box,button('返回园子列表',()=>gardens(fromApp)));
   }
@@ -223,9 +227,31 @@
   async function enter(){
     if(unread().length){notices(true);return;}
     const chosen=routeId();
+    if(window.LycheeSocial && !embedded){
+      dismiss();
+      if(!social) {
+        started=true;
+        social=window.LycheeSocial.mount(app,state.account,{
+          join:()=>gardenForm('join',true),announcements:openAnnouncement,logout:exitFromSettings
+        },member(chosen)?.id);
+      }
+      return;
+    }
+    if(embedded && chosen){
+      const latest=await window.LycheeSocialApi.connect(state.account.id).read('home');
+      const target=member(chosen)||(latest.accountToolsGardenId===chosen?{id:chosen,name:state.account.username}:null);
+      if(!target)throw Error('此账号无法打开该圈资料');
+      document.documentElement.classList.add('s8-embed');
+      window.lycheeToolEntry={privateTools:latest.accountToolsGardenId===chosen,detail:toolParams.get('s8tool'),history:toolParams.get('history')==='1',match:toolParams.get('match')};
+      mountBusiness(target);
+      return;
+    }
     if(!chosen){if(member(state.activeGardenId))navigate(state.activeGardenId,false);else gardens(false);return;}
     const g=member(chosen);
     if(!g){gardens(false,'当前账号未加入此园，请选择自己的园子。');return;}
+    mountBusiness(g);
+  }
+  function mountBusiness(g){
     if(!['/mobile/phone.js','/windows/phone.js'].includes(bundle))throw Error('客户端启动入口缺失。');
     dismiss();if(started)return;
     started=true;window.LycheeAccess.scope=Object.freeze({accountId:state.account.id,gardenId:g.id,gardenName:g.name,gardenSubtitle:g.subtitle});
