@@ -6,13 +6,13 @@
       "kind": "exe",
       "name": "Lychee.exe",
       "length": 20485120,
-      "sha256": "be77cf0a4206d5629fe87c749f193884b9abd7ebaddb966765a19a414e130f9d"
+      "sha256": "94ce7a4c4d76f3759937be1053c7184329c275317993a41c160ebc6b4f986209"
     },
     {
       "kind": "msi",
       "name": "Lychee.msi",
-      "length": 20025344,
-      "sha256": "a0ae71310e71c317e37d20678bd5714549e18373605cf8090eab34b89448fa1b"
+      "length": 20029440,
+      "sha256": "f3598dcd5dc0bf0f57b437255ff01991ebcc901713823ff6407b946ca142c648"
     }
   ]
 }
