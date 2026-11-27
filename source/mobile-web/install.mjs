@@ -63,24 +63,26 @@ async function installAndroidUpdates(webRoot) {
     throw Error('Prepared Android friends APK does not match its release manifest');
   }
   const page = await readFile(new URL('download.html', source));
-  let archive;
-  if (Number(version.split('.')[0])>=8 && version!=='8.0.0') {
-    const old = new URL('android-friends-v8.0.0/Lychee-Friends-V8.0.0.apk',source);
-    if ((await stat(old)).size !== 3007817) throw Error('Invalid archived A8.0.0 APK size');
-    archive=await readFile(old);
-    if (createHash('sha256').update(archive).digest('hex') !== '3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42') {
-      throw Error('Archived A8.0.0 APK differs from the signed release');
-    }
-  }
   const target = join(webRoot, 'android-update');
   await mkdir(target);
   await mkdir(join(target,tag));
   await writeFile(join(target,tag,name),apk);
   if (Number(version.split('.')[0])>=8) await writeFile(join(target,tag,'Lychee-Friends-A'+version+'.apk'),apk);
-  if (archive) {
-    const oldFolder=join(target,'android-friends-v8.0.0');
+  const archives = [
+    ['8.0.0','3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42'],
+    ['8.0.1','a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c'],
+  ];
+  const versionCode = v => v.split('.').reduce((total,n) => total*100 + Number(n),0);
+  for (const [oldVersion, expected] of archives) {
+    if (versionCode(version) <= versionCode(oldVersion)) continue;
+    const oldTag = 'android-friends-v'+oldVersion;
+    const old = new URL(oldTag+'/Lychee-Friends-V'+oldVersion+'.apk',source);
+    if ((await stat(old)).size !== 3007817) throw Error('Invalid archived APK size: '+oldVersion);
+    const archive = await readFile(old);
+    if (createHash('sha256').update(archive).digest('hex') !== expected) throw Error('Archived APK differs: '+oldVersion);
+    const oldFolder = join(target,oldTag);
     await mkdir(oldFolder);
-    for (const prefix of ['A','V']) await writeFile(join(oldFolder,'Lychee-Friends-'+prefix+'8.0.0.apk'),archive);
+    for (const prefix of ['A','V']) await writeFile(join(oldFolder,'Lychee-Friends-'+prefix+oldVersion+'.apk'),archive);
   }
   await writeFile(join(target,'download.html'),page);
   await writeFile(join(target,'current.json'),manifest);
