@@ -1,0 +1,98 @@
+{
+  "version": "8.1.1",
+  "date": "2026-11-28",
+  "sources": {
+    "tag": "windows-v8.1.1",
+    "commit": "60fe7d653003a58433ed65b730db4fe79f3fae94",
+    "releaseId": 460887051,
+    "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/windows-v8.1.1"
+  },
+  "assets": [
+    {
+      "kind": "exe",
+      "name": "Lychee.exe",
+      "length": 21828096,
+      "sha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa"
+    },
+    {
+      "kind": "msi",
+      "name": "Lychee.msi",
+      "length": 21372928,
+      "sha256": "eb54056357a19915a9cc4fb8648f0fd3ebdc8bad30bbc45208d3636d6b16aa16"
+    }
+  ],
+  "checks": {
+    "productionWpfWithIsolatedAccounts": {
+      "from": "8.1.1",
+      "to": "8.1.1",
+      "startHash": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+      "mode": "native-social",
+      "pass": true,
+      "privateDesktop": true,
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "toolScreens": [
+        "交给命运",
+        "照记饮食",
+        "提醒事项",
+        "番茄钟",
+        "记账本",
+        "头脑王者",
+        "五子棋",
+        "海龟汤",
+        "脑筋急转弯",
+        "AI 助手",
+        "AI 生图"
+      ],
+      "appearance": true,
+      "settingsVersion": "Windows W8.1.1",
+      "settingsResult": "荔枝 W8.1.1\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+      "localAccountRequests": 53
+    },
+    "msiPackage": {
+      "identicalEmbeddedExe": true,
+      "productVersion": "8.1.1",
+      "verifiedWizardAndShortcutTargets": true,
+      "majorUpgradeFrom": "8.0.0",
+      "verifiedSameUpgradeFamilyAndComponentPaths": true,
+      "authenticode": {
+        "exe": "NotSigned",
+        "msi": "NotSigned"
+      }
+    },
+    "publicGitHubGet": {
+      "dateUtc": "2026-11-27T17:23:01.863731+00:00",
+      "base": "https://github.com/z1807767180-pixel/Lychee/releases/download/windows-v8.1.1/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 21828096,
+          "sha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21372928,
+          "sha256": "eb54056357a19915a9cc4fb8648f0fd3ebdc8bad30bbc45208d3636d6b16aa16",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "b86c0c713647f7beec06c557d24769cc8bef7369dafbfb97a65edfcb2dd9b1ee",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        }
+      ]
+    }
+  },
+  "scope": [
+    "Windows 测试使用正式产品和隔离的 WebView2 用户目录、临时账号与服务器。11 项工具已打开各自界面，AI 页面未向真实服务商发起计费调用。",
+    "Windows 当前用户的正式 MSI 安装目录未改动。8.0.0 → 8.1.1 安装件比较覆盖主要升级顺序、相同组件、目录与内嵌程序。"
+  ]
+}

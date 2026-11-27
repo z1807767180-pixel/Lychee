@@ -1,0 +1,18 @@
+{
+  "status": "signed; live channels and Android 15 upgrade pending",
+  "checkedAtUtc": "2026-11-27T17:22:25.045965+00:00",
+  "title": "荔枝朋友版 A8.1.1",
+  "version": "8.1.1",
+  "package": "dev.lychee.friends",
+  "versionCode": 80101,
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "signatureSchemes": [
+    "v2",
+    "v3"
+  ],
+  "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+  "unsignedSha256": "e1caaa6bfb9a30f6500c1c7a3fc34b5c5d6317f72815ac8df547d89ae2923c46",
+  "apkBytes": 3007817,
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46040531160",
+  "deliveryCommitPrepared": "aa90ed8f1d16015053a5f1148f92f77f2157e4b4"
+}

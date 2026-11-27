@@ -27,7 +27,7 @@ node server/index.mjs
 
 原 Render 手机站的部署命令以 Git 提交固定构建来源。运行 `source/mobile-web/build.py <准备目录>/www` 后，将 `source/mobile-web/start.mjs` 和 `install.mjs` 复制到同一准备目录，保留 `www/` 与其同级的私有 `server-v7/`。原启动器先解包既有代码分片，手机站启动脚本在临时解包目录验证原路由及三个被扩展的 6.4.7 模块，再装入七版服务及手机页面。原数据库、私有分片、旧版签名下载和主屏幕清单沿用原配置。校验不匹配时先核对发布日志，避免以更老的私有分片覆盖在线服务。代码回退使用上一次正常部署的完整构建命令和提交。
 
-- 拍照识别使用现有问答额度和园范围。在服务端启用 `LYCHEE_ENABLE_PROVIDER_CALLS=1`、`LYCHEE_ENABLE_DIET_VISION=1` 后，默认用现有 `DEEPSEEK_API_KEY` 调用支持图像理解的 `deepseek-flash`。已配置方舟的部署继续通过 `LYCHEE_DIET_VISION_MODEL` 指定方舟视觉理解模型或接入点，使用 `ARK_API_KEY`；切回 DeepSeek 时将该值设为 `deepseek-flash`。照片只交给本次选定的提供商，服务不可用时仍可手动记餐。真实照片与付费调用按当轮授权验收。[DeepSeek 图像理解](https://api-docs.deepseek.com/zh-cn/guides/vision/)
+- 拍照识别沿用问答的账号与园权限、请求去重和服务开关。在服务端启用 `LYCHEE_ENABLE_PROVIDER_CALLS=1`、`LYCHEE_ENABLE_DIET_VISION=1` 后，默认用现有 `DEEPSEEK_API_KEY` 调用支持图像理解的 `deepseek-flash`。已配置方舟的部署继续通过 `LYCHEE_DIET_VISION_MODEL` 指定方舟视觉理解模型或接入点，使用 `ARK_API_KEY`；切回 DeepSeek 时将该值设为 `deepseek-flash`。照片只交给本次选定的提供商，服务不可用时仍可手动记餐。真实照片与付费调用按当轮授权验收。[DeepSeek 图像理解](https://api-docs.deepseek.com/zh-cn/guides/vision/)
 - 移动网页的后台通知使用 Web Push。服务端需持有稳定的 `LYCHEE_VAPID_PRIVATE_KEY`（P-256 私钥标量的 base64url 编码）和 `LYCHEE_VAPID_SUBJECT`（服务方的 mailto 或 HTTPS 联系地址）。订阅由当前设备在园内发起。上线后需用对应浏览器或主屏幕应用实测锁屏、后台送达及点开目标；Android 原生壳另测。
 
 1. 选定维护窗口，确认现有服务和 Turso 的独立恢复点。保存原发布的代码分片、签名清单、原安装包以及数据库备份。将这些私有恢复物放在受限备份位置。

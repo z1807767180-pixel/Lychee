@@ -1,0 +1,148 @@
+{
+  "website": "V8.1.1",
+  "origin": "https://lychee-link-check.onrender.com/mobile/",
+  "deployedCommit": "34ab90c7c8fb75e793e62a9fdf06621cda8d0d94",
+  "renderDeploy": "dep-dc4rpuvf3r2c73cgvo4g",
+  "verifiedAt": "2026-11-27T17:27:08.789274+00:00",
+  "checks": [
+    {
+      "path": "/mobile/",
+      "status": 200,
+      "length": 5114,
+      "sha256": "14b7fe477a085eab38df57b597091d29b43f970b44a441110946f6a6573a9516",
+      "comparison": "identical with normalized line endings"
+    },
+    {
+      "path": "/mobile/version.txt",
+      "status": 200,
+      "length": 6,
+      "sha256": "7aeae32cd8e4dd6a657fc2c67b296252886e373524a63fa23b5c3b499a61f112",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-garden-posts.js",
+      "status": 200,
+      "length": 12658,
+      "sha256": "0c418adbe2e87ee83d6c1e34d514cea99bd64fe63a64ff123398670bb5d8242d",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-v8.js",
+      "status": 200,
+      "length": 24279,
+      "sha256": "2b4fc6be92fea11c4840d14f4063b07b1c0bf7917afe9b0c84dd6b353be1bf2c",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-v8-garden.css",
+      "status": 200,
+      "length": 16672,
+      "sha256": "55467b433ecb27afb8eb6f6330696044e66c32c2b8d50b25e4dd6bf22ec5cd25",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-tools-runtime.js",
+      "status": 200,
+      "length": 499377,
+      "sha256": "17d60402233bb1150e430b1b299d2ca9239d3d76999a28eb415499c14f5799b4",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-tools.css",
+      "status": 200,
+      "length": 21738,
+      "sha256": "9a64a5104a3c7d4ffde7150a23fce1d78313c9e0261de1511c92f68834d8cb95",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-personal.js",
+      "status": 200,
+      "length": 14131,
+      "sha256": "f37fd176fafc1ec53a6c1fcb2f14a372e669462e7e22008227df72e9ee752b2d",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/social-chat.js",
+      "status": 200,
+      "length": 9083,
+      "sha256": "3c6c0110255c96f72767b4c36dce5d718924d1da60b63f6d4e09ce7f1b9591dd",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/garden-question-supper.webp",
+      "status": 200,
+      "length": 26528,
+      "sha256": "3edcd416c69db19c1cc02fd7ca09b2b23ddd9500e39f37d200c62efffd5da8b5",
+      "comparison": "identical"
+    },
+    {
+      "path": "/mobile/assets-8.1.1/client/business-scope.js",
+      "status": 200,
+      "length": 7615,
+      "sha256": "bb6ec68ffbc8ba4402e2aaf261be0cb89a2c397bb1177361808b47688b9e3dc4",
+      "comparison": "identical"
+    },
+    {
+      "path": "/windows-update/stable.json",
+      "status": 200,
+      "length": 400,
+      "sha256": "b86c0c713647f7beec06c557d24769cc8bef7369dafbfb97a65edfcb2dd9b1ee",
+      "comparison": "identical"
+    },
+    {
+      "path": "/windows-update/windows-v8.1.1/Lychee.exe",
+      "status": 200,
+      "length": 21828096,
+      "sha256": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+      "comparison": "identical"
+    },
+    {
+      "path": "/windows-update/windows-v8.1.1/Lychee.msi",
+      "status": 200,
+      "length": 21372928,
+      "sha256": "eb54056357a19915a9cc4fb8648f0fd3ebdc8bad30bbc45208d3636d6b16aa16",
+      "comparison": "identical"
+    },
+    {
+      "path": "/android-update/android-friends-v8.1.1/Lychee-Friends-A8.1.1.apk",
+      "status": 200,
+      "length": 3007817,
+      "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+      "comparison": "identical"
+    },
+    {
+      "path": "/android-update/android-friends-v8.1.1/Lychee-Friends-V8.1.1.apk",
+      "status": 200,
+      "length": 3007817,
+      "sha256": "b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e",
+      "comparison": "identical"
+    },
+    {
+      "path": "/android-update/current.json",
+      "status": 200,
+      "length": 241,
+      "sha256": "42ead1e6eedc59379b81e8e1f0bc4097caa424b340c8930ae3ba2ea2f382216e",
+      "comparison": "verified release fields"
+    },
+    {
+      "path": "/windows-update/download.html",
+      "status": 200,
+      "length": 1156,
+      "sha256": "497e8e5fa09242901a69561d2ee167b1f33c8ed15137116ba83b4b7a70d88ea0",
+      "comparison": "verified release fields"
+    },
+    {
+      "path": "/android-update/download.html",
+      "status": 200,
+      "length": 824,
+      "sha256": "3f15acff0f37087101135b7a7ffadd45bbaa7b6f2b3200c0dd11018897a21146",
+      "comparison": "verified release fields"
+    }
+  ],
+  "isolatedAiTests": {
+    "passed": 14,
+    "textApprovedAt24": true,
+    "imageLimit": 15,
+    "provider": "loopback only"
+  }
+}
