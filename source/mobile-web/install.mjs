@@ -5,12 +5,14 @@ import { join } from 'node:path';
 
 // These are the public 6.4.7 server modules whose original behavior is extended in 7.0.
 const previous = {
+  'turso-accounts.mjs':'cce8434d2aff2a9094e81a0dfbfab413628793be2dc2a51a206ee11cabc14ba6',
+  'accounts.mjs':'36ff0baf12e2ef58a04e64ba4c4038459b3ea624f21950e95df2038db0d0d014',
   'notices.mjs':'8384d0e4170c9f01605a0ba0886c4d952d23eff801bdae029762370a9c2ae6fe',
   'index.mjs':'54655bda28347c51c3c896a9b14658d58ffdf47e84ab5f1011fd63f58233c182',
   'domains.mjs':'f7b0fd83695861270aa1d2ffc22527789a0064c0356be4a1e43d627f8e07c284',
   'ai-quota.mjs':'ea64213e2f3a334b65c8a7c24ccec4ce9361b07222ff25f837b1f505234cf0ec',
 };
-const additions = ['diet-store.mjs','diet-vision.mjs','diet-vision-result.mjs',
+const additions = ['circle-puzzles.json','soup-categories.mjs','diet-store.mjs','diet-vision.mjs','diet-vision-result.mjs',
   'notification-source.mjs','notify-push.mjs','notify-push-transport.mjs'];
 const digest = data => createHash('sha256').update(data.toString('utf8').replace(/\r\n/g,'\n')).digest('hex');
 const oldRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/g/')";

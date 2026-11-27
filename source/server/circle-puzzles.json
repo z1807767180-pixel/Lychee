@@ -1,0 +1,478 @@
+{
+  "soups": [
+    {
+      "id": "garden-ninth-address",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "被搬走的第九户",
+      "surface": "【寓言】我出发送件时，整条街有九户。九年半后，我终于到了最远那户：屋子还在，住户也没搬，却不能再算第九户。我给她拍了张近照，寄回第三户。第三户等这张照片等了好多年。",
+      "solution": "这条街是太阳系。“快递员”是从地球出发的新视野号，它在 2006 年发射，同年冥王星被重新归为矮行星。2015 年飞掠时，探测器把冥王星近照传回地球。冥王星的位置没有因为分类变化而搬家。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "九户是旧称的九大行星，第九户冥王星在途中改变了分类。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "快递员是地球发往冥王星的无人探测器，送回来的是影像。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "第三户是按距日顺序排第三的地球；说对探测器的作用即可，不要求背型号。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "不存在具体街道和收件人，不能据此猜测房客。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "先问九户的排列次序有什么意义。",
+        "同一处门牌没了，可能是名册的收录标准变了。",
+        "从第三颗行星出发的设备，飞往曾被叫作第九颗行星的地方。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "推理",
+        "身份误会"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Chess960 / CaptainPlanet / Riley",
+        "url": "https://puzzling.stackexchange.com/questions/66520",
+        "license": "CC-BY-SA-4.0",
+        "note": "据 Puzzling Stack Exchange 题目及解答重写中文场景、推理要点和提示。原帖 CC BY-SA 4.0，本改编 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。选题时原题净得分 66，不是游玩人数。"
+      }
+    },
+    {
+      "id": "garden-snow-autograph",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有落款的签名",
+      "surface": "清早，社区门口的旧邮箱被一辆铲雪车埋住了。没有目击者，路面上的轮胎纹也分不出是哪辆车。管理员却对着一小块竖起来的硬雪，掏出镜子，念出了一个号码。等太阳出来，证据就消失了。",
+      "solution": "铲雪车倒车时，车尾凸起的金属牌照压进了雪墙。留下的是反向的牌号，镜子让文字恢复了正常方向。认出的是车辆，单凭这条线索无法断定当时是谁驾驶。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "车尾的凸字车牌在雪墙上压出了完整牌号。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "雪印左右反转，管理员借镜面读出号码。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "号码识别车辆而非司机；雪墙没有被刻字或涂写。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "停车地点及驾驶者身份没有设定。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "管理员看的不是车开过的路面。",
+        "车上有什么东西自带凸起的数字？",
+        "印章盖出的字，和章面上的字方向相反。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑",
+        "物证"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "FlanMan / msh210",
+        "url": "https://puzzling.stackexchange.com/questions/87953",
+        "license": "CC-BY-SA-4.0",
+        "note": "据 Puzzling Stack Exchange 题目及解答重写中文场景、推理要点和提示。原帖 CC BY-SA 4.0，本改编 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。选题时原题净得分 25，不是游玩人数。"
+      }
+    },
+    {
+      "id": "garden-swapped-stones",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "只答换没换",
+      "surface": "展柜有两颗散石，一真一仿。鉴定师说能分辨，但不肯当场指出真品。馆长把石头分别握在两手，躲到屏风后，可以互换也可以原样返回。每轮都让他再看两颗，他竟连续十二轮答对。馆长信了他的眼力，依然不知道哪颗是真的。",
+      "solution": "开场时鉴定师看过两颗的位置。每轮回来，他只说“换了”或“没换”：真石所在手和上一轮相反，就说明互换过。馆长知道自己的动作，可核对回答；但把“真”“仿”这两个标签对调，十二轮答案都一样。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "鉴定师能辨别两石，比较前后的位置就能答出有无互换。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "回答只透露相对位置有没有变化，从始至终没有指出哪只手里是真石。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "这个演示证明了稳定分辨两石的能力；单凭它不能证明鉴定结论的科学性。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "没有暗号、透视、标记或同伙，如何鉴别宝石不是考点。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "馆长每轮已经知道哪个问题的答案？",
+        "只回答位置变化，用得着说真品在左手吗？",
+        "即使把“真”和“仿”的名字对调，每轮的“换/没换”也不会变。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "推理",
+        "互动",
+        "视角转换"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "padawan / itriedacrab",
+        "url": "https://puzzling.stackexchange.com/questions/59188",
+        "license": "CC-BY-SA-4.0",
+        "note": "据 Puzzling Stack Exchange 题目及解答重写中文场景、推理要点和提示。原帖 CC BY-SA 3.0，本改编 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。选题时原题净得分 32，不是游玩人数。"
+      }
+    },
+    {
+      "id": "garden-missed-target",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "总写在一起的三个数",
+      "surface": "阿夏刚学一种室内运动。她每做一个动作，朋友就在纸上记一个得分。她总盯着同一处，结果 20、1、5 总挤在一起，偶尔还冒出个 60。换了一个瞄准点，她第一次得了 50。朋友看完纸就说：“你刚才瞄的是上面，现在才瞄中间。”",
+      "solution": "她在投标准飞镖。盘上正上方的 20 区两侧恰好是 1 区和 5 区，瞄着 20，偏一点常落进这两区；20 的三倍环得 60。红心正中记 50。所以这些数在纸上常相伴，是因为它们在靶上挨着。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这是飞镖分数，20 区和 1、5 区相邻，偏离目标会记下这两个分数。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "60 对应三倍 20，50 对应内靶心；换瞄准点解释了最后一投。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "没有套用公式生成数列；如果玩家不熟悉飞镖，可以提示分区在圆盘上。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "场馆和镖的重量没有设定。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "同一动作可以做很多次，每次都能单独计分。",
+        "这些数字在纸上不相邻，在一个圆形物体上却可能相邻。",
+        "把圆靶上方的 20、两侧的 1 和 5，以及红心的分值连起来。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理",
+        "空间线索"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Stiv / Oray",
+        "url": "https://puzzling.stackexchange.com/questions/138856",
+        "license": "CC-BY-SA-4.0",
+        "note": "据 Puzzling Stack Exchange 题目及解答重写中文场景、推理要点和提示。原帖 CC BY-SA 4.0，本改编 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。选题时原题净得分 30，不是游玩人数。"
+      }
+    },
+    {
+      "id": "garden-milk-notebook",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "值班表上的牛奶",
+      "surface": "茶水间的同一盒牛奶总在周一、周二、周三少一杯，周四、周五却分毫不动。只有三位同事能开冰箱，每次都是同一个人拿的。小禾跟阿岚共事了一整个周一，跟阿青共事了一整个周二，跟阿哲共事了一整个周四；三人全程都没去冰箱。她却在本子上圈出了一个名字。",
+      "solution": "周一牛奶确实少了，阿岚全程不在冰箱旁；周二也少了，阿青同理被排除。剩下的阿哲才是拿牛奶的人。周四本来就没少，看住他一整天也不能排除他。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "在确实少了牛奶的两天，分别看住了阿岚和阿青，可以排除两人。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "阿哲只在本来就没少奶的周四被看住，三选一只剩他。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "前提是同一人独自拿奶，样本日期的规律在观察期间仍成立。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "没有外人、定时装置或合伙拿奶；拿奶动机不影响还原。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "三次“没看见”提供的是同样有用的信息吗？",
+        "分别标出当天牛奶究竟有没有少。",
+        "只有在确实有人拿奶的日子，全程没去冰箱才构成排除依据。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑",
+        "逻辑排除"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Liath / Bozman",
+        "url": "https://puzzling.stackexchange.com/questions/3932",
+        "license": "CC-BY-SA-4.0",
+        "note": "据 Puzzling Stack Exchange 题目及解答重写中文场景、推理要点和提示。原帖 CC BY-SA 3.0，本改编 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。选题时原题净得分 32，不是游玩人数。"
+      }
+    },
+    {
+      "id": "garden-last-platform",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "等到广播就回家",
+      "surface": "每天，她都坐在同一个站台，有时几班车过去也不上车。广播响过，她就安心地回家。某天，每个字都和以前一样，她却第一次去问站务员：“能不能让他回来？”",
+      "solution": "她常来听已故伴侣留下的站台安全提示。那天播报系统换了声音，词句和时刻都没变。她希望车站找回旧录音，好再听听熟悉的嗓音。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "她来车站是为了听广播录音中已故伴侣的声音。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "系统更换播音，字句相同但声音不同；请求找回的是旧录音。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "故事取材于伦敦 Embankment 站恢复旧播音的事实；具体人物动作与对话为虚构。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "来访次数、对话和日期是题面设定，不要求猜真实人名。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "如果不赶路，她来站台想等到什么？",
+        "对她而言，一句话的内容和说话的人哪个重要？",
+        "那个人已经无法回来，但他的声音曾保存在广播系统里。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "温情",
+        "身份误会"
+      ],
+      "source": {
+        "kind": "original",
+        "author": "荔枝题库",
+        "url": "https://content.tfl.gov.uk/annual-report-2013-14.pdf",
+        "license": "CC-BY-SA-4.0",
+        "note": "依据伦敦交通局 2013/14 年报中恢复 Embankment 旧播音的事实独立编题。情节、人物对白与提示为虚构；自编文字采用 CC BY-SA 4.0。"
+      }
+    },
+    {
+      "id": "garden-silent-curtain",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "录音里没有的掌声",
+      "surface": "校报收到两份材料：一段谢幕录像，和另一台机器录下的现场声音。窗外的雨声听得清清楚楚，偏偏没有一下拍手声。看完消音录像，编辑却在照片下面写：“全场都在鼓掌。”演员后来也说，这是她亲眼见过最热烈的一次。",
+      "solution": "这是手语剧的谢幕。观众们举高手，摊开手掌转动双腕，用视觉掌声向演员致意。编辑从画面看得见，全程没有人把两只手拍在一起。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "观众用双手举起摇动的视觉掌声表达喝彩。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "这种喝彩靠眼睛接收，没有碰掌的响声，录像、录音与演员的观察因此一致。",
+          "required": true
+        },
+        {
+          "id": "f3",
+          "text": "摄像机和录音机都正常工作；不需要猜任何人的身体状况。",
+          "required": false
+        }
+      ],
+      "unknowns": [
+        "演员与观众的听力、演出剧目都未设定。"
+      ],
+      "character_claims": [],
+      "hints": [
+        "编辑和演员用的是哪种感官？",
+        "表达掌声一定要让两只手碰到一起吗？",
+        "留意举到头顶、掌心张开、手腕转动的动作。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "温情",
+        "视角转换"
+      ],
+      "source": {
+        "kind": "original",
+        "author": "荔枝题库",
+        "url": "https://github.com/z1807767180-pixel/Lychee",
+        "license": "CC-BY-SA-4.0",
+        "note": "荔枝为朋友聚会独立编写的中文情境、汤底和提示，采用 CC BY-SA 4.0。"
+      }
+    }
+  ],
+  "riddles": [
+    {
+      "id": "garden-quick-index",
+      "deck": "warmup",
+      "prompt": "小夏只翻开一本书的最后几页，就知道「荔枝」这个词在书里哪五页出现过。她翻到了什么？",
+      "options": [
+        "目录",
+        "索引",
+        "封底定价"
+      ],
+      "correct": 1,
+      "solution": "书后的索引按词条列出相关页码。目录主要列章节，封底价格也帮不上忙。",
+      "topic": "换个角度",
+      "aliases": [
+        "索引",
+        "书后索引"
+      ]
+    },
+    {
+      "id": "garden-quick-photo",
+      "deck": "warmup",
+      "prompt": "四个人面对面坐在小桌四边，同时各自拍了一张正对面的朋友。四张照片里，最少有几位不同的模特？",
+      "options": [
+        "两位",
+        "三位",
+        "四位"
+      ],
+      "correct": 2,
+      "solution": "每个人都在另一人的正对面，所以四人各入镜一次。拍照的人也可以是另一台相机的模特。",
+      "topic": "视角",
+      "aliases": [
+        "四位",
+        "四人",
+        "4"
+      ]
+    },
+    {
+      "id": "garden-quick-frozen",
+      "deck": "warmup",
+      "prompt": "店员说今天卖的所有冰棍都不用拆包装，冰棍一点也没化，客人却立刻把它们塞进了钱包。店里卖的是哪样东西？",
+      "options": [
+        "冰棍形状的贴纸",
+        "刚冻好的迷你冰棍",
+        "保冷购物袋"
+      ],
+      "correct": 0,
+      "solution": "“冰棍”是贴纸上的图案。这家文具店按张卖贴纸，客人把贴纸夹进钱包。",
+      "topic": "词义",
+      "aliases": [
+        "贴纸",
+        "冰棍贴纸"
+      ]
+    },
+    {
+      "id": "garden-quick-relay",
+      "deck": "advanced",
+      "prompt": "接力赛里，小禾在最后一棒超过了一位正在被套圈的选手。只凭这句话，能确定小禾的名次前进了吗？",
+      "options": [
+        "一定前进一名",
+        "名次可以完全不变",
+        "立刻变成第一"
+      ],
+      "correct": 1,
+      "solution": "被套圈者在总圈数上本来就落后。赛道上从他身边超过，不代表排名超过原本领先的人。",
+      "topic": "顺序",
+      "aliases": [
+        "不变",
+        "可以不变",
+        "不一定"
+      ]
+    },
+    {
+      "id": "garden-quick-mirror-clock",
+      "deck": "advanced",
+      "prompt": "镜子里，普通指针钟的分针指着 12，时针指着 8。房间里真正的钟是几点整？",
+      "options": [
+        "四点",
+        "八点",
+        "十点"
+      ],
+      "correct": 0,
+      "solution": "镜面对调左右。钟面上的 4 和 8 关于竖直中线对称，12 仍在正上方。",
+      "topic": "镜像",
+      "aliases": [
+        "四点",
+        "4点",
+        "4:00"
+      ]
+    },
+    {
+      "id": "garden-quick-ribbon",
+      "deck": "advanced",
+      "prompt": "一条纸带两头粘起来成了一个普通的环。沿着纸带横着剪，想拿到三段各自独立、两端开放的纸带，最少剪几刀？每刀只剪一层，不折不叠。",
+      "options": [
+        "两刀",
+        "四刀",
+        "三刀"
+      ],
+      "correct": 2,
+      "solution": "第一刀只是把环打开，得到一条长带。再两刀才从一条变成三段。",
+      "topic": "空间",
+      "aliases": [
+        "三刀",
+        "3刀"
+      ]
+    },
+    {
+      "id": "garden-quick-postcards",
+      "deck": "hard",
+      "prompt": "甲乙丙丁各写一张明信片，洗匀后每人抽一张。前三人都说「我抽到的是别人写的」。丁还没看，能确定自己抽到谁写的吗？",
+      "options": [
+        "一定是丁自己的",
+        "一定是别人写的",
+        "两种都有可能"
+      ],
+      "correct": 2,
+      "solution": "前三人可以互相轮换，分别拿乙、丙、甲的卡，给丁留下自己的。也可以四人轮换：前三人拿乙、丙、丁的卡，丁拿甲的。两种发法都符合题面。",
+      "topic": "反例推理",
+      "aliases": [
+        "两种都可能",
+        "两种都有可能",
+        "无法确定",
+        "不能确定"
+      ]
+    },
+    {
+      "id": "garden-quick-borrowed-day",
+      "deck": "warmup",
+      "prompt": "周五晚上，小桥说明天是这个月的最后一天。这句话是真的。只凭这一点，能确定下个月的第一天是星期几吗？",
+      "options": [
+        "星期日",
+        "星期一",
+        "不能确定，得知道这是几月"
+      ],
+      "correct": 0,
+      "solution": "周五的明天是周六。既然周六是本月最后一天，再过一天就是下月第一天，星期日，与月份长短无关。",
+      "topic": "日历",
+      "aliases": [
+        "星期日",
+        "星期天",
+        "周日",
+        "周天"
+      ]
+    }
+  ]
+}

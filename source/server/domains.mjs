@@ -10,6 +10,8 @@ import { bindLoopbackTestProvider, providerWorkerEnv } from './provider-config.m
 import { openAiQuota, operationFor, providerEndpoints, quotaImageId } from './ai-quota.mjs';
 import { gardenImages, imageProviderPayload } from './image-result.mjs';
 import { notificationSource } from './notification-source.mjs';
+import circlePuzzles from './circle-puzzles.json' with {type:'json'};
+import {soupCategories} from './soup-categories.mjs';
 
 const routes = new Map([
   ['/api/camp', 'camp.mjs'],
@@ -96,6 +98,38 @@ function gardenSource(name, source, originalProfiles) {
     return replaceOnce(source,source.slice(first,last),'const iid=await globalThis.gardenSaveImage(me,prompt,now,buf);');
   }
   if (name === 'camp.mjs') {
+    source = replaceOnce(source, 'if (params.has("soup")) return readSoup', `if (params.get("roster")==="circle-names") {
+      const store=db();
+      const [{results}]=await store.batch([store.prepare("SELECT id,name FROM camp_profiles")]);
+      return answer({profiles:results.map(p=>({slot:Number(p.id),name:p.name}))});
+    }
+    if (params.has("soup")) return readSoup`);
+
+    source = replaceOnce(source, 'var challengeBank = Object.values(decks).flat();', `
+      const pack=globalThis.gardenPuzzlePack;
+      const soupIds=new Set(catalog_default.map(card=>card.id));
+      for(const card of pack.soups){
+        if(soupIds.has(card.id))throw Error('Duplicate soup ID: '+card.id);
+        soupIds.add(card.id);catalog_default.push(card);
+      }
+      const riddleIds=new Set(Object.values(decks).flat().map(card=>card.id));
+      for(const card of pack.riddles){
+        if(!Object.hasOwn(decks,card.deck)||riddleIds.has(card.id))throw Error('Invalid riddle: '+card.id);
+        riddleIds.add(card.id);decks[card.deck].push(card);
+      }
+      var challengeBank = Object.values(decks).flat();
+      const soupGroups=globalThis.gardenSoupCategories(catalog_default);`);
+    source = replaceOnce(source,'count: catalog_default.length, filters, ready:', 'count: catalog_default.length, filters, counts:soupGroups.counts, ready:');
+    source = replaceOnce(source,'tags: card.tags,','tags: soupGroups.byId.get(card.id), difficulty:card.difficulty,');
+    const pool='const pool = catalog_default.filter(';
+    const poolStart=source.indexOf(pool);
+    if(poolStart<0)throw Error('Missing soup draw');
+    source = replaceOnce(source,source.slice(poolStart,source.indexOf('\n',poolStart)),`
+      const level=p.difficulty===undefined?'all':p.difficulty;
+      if(!['all','easy','medium','hard'].includes(level))return bad('请选择有效难度',400);
+      const pool=catalog_default.filter(c=>soupGroups.match(c,p.filter,level));
+      if(!pool.length)return bad('这个组合暂时没有题，请换个题型或难度。');`);
+    source = replaceOnce(source, '...(commonGuesses[card.id]||[])', '...(card.aliases||[]),...(commonGuesses[card.id]||[])');
     source = replaceOnce(source, 'chat\\.[1-3]\\.', 'chat\\.[1-9]\\d*\\.');
     source = replaceOnce(source, 'avatar > 3)', 'avatar > 15)');
     source = replaceOnce(source, 'SELECT ?,?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM ${table} WHERE avatar=? AND id<>?)', 'VALUES(?,?,?,?,?,?)');
@@ -190,6 +224,8 @@ async function serveGarden({ file, quotaFile, turso, legacyDir, gardenId, testPr
   const bindings = new WeakMap();
   let ids = [];
   globalThis.gardenSqlite = backend.driver;
+  globalThis.gardenPuzzlePack = circlePuzzles;
+  globalThis.gardenSoupCategories = soupCategories;
   globalThis.gardenIdentity = request => bindings.get(request);
   globalThis.gardenHasProfile = id => ids.includes(id);
   globalThis.gardenMatchPlayers = day => {
