@@ -4,7 +4,7 @@
 
 ## 安装与更新
 
-用安卓手机的浏览器下载 [V7.0.3 首装 APK](https://github.com/z1807767180-pixel/Lychee/releases/download/android-friends-v7.0.3/Lychee-Friends-V7.0.3.apk)。下载完成后，打开手机「文件管理 → 下载」，点 `Lychee-Friends-V7.0.3.apk`。若系统询问，允许这个来源安装应用，再点「安装」。装好后从桌面打开「荔枝朋友版」。支持 Android 7.0 及以上的兼容设备，需要 Android System WebView 和互联网连接。
+用安卓手机的浏览器下载 [V7.0.4 首装 APK](https://github.com/z1807767180-pixel/Lychee/releases/download/android-friends-v7.0.4/Lychee-Friends-V7.0.4.apk)。下载完成后，打开手机「文件管理 → 下载」，点 `Lychee-Friends-V7.0.4.apk`。若系统询问，允许这个来源安装应用，再点「安装」。装好后从桌面打开「荔枝朋友版」。支持 Android 7.0 及以上的兼容设备，需要 Android System WebView 和互联网连接。
 
 启动时会检查安卓壳更新。在「我 → 设置 → 检查安卓更新」可以手动检查。网络故障或无法验证更新资料时会提示重试。发现新版本后，先点下载，应用核对摘要、包名、版本和证书，再交给安卓的安装确认页。Android 8 及以上有时会要求允许荔枝安装此次更新。
 
