@@ -31,8 +31,7 @@ import org.json.JSONObject;
 /** Device-side tests in a disposable app_process. The production ShellUpdates class comes from CLASSPATH. */
 public final class AndroidUpdatePolicyProbe {
     private static final String ORIGIN="https://lychee-link-check.onrender.com/android-update/";
-    private static final String GH="https://github.com/z1807767180-pixel/Lychee/releases/download/";
-    private static final String CDN="https://release-assets.githubusercontent.com/github-production-release-asset/1471636015/01234567-89ab-cdef-0123-0123456789ab";
+    private static final String UNTRUSTED="https://github.com/test/redirect";
     private static final ArrayDeque<Reply> pending=new ArrayDeque<>();
     private static final JSONObject passed=new JSONObject();
     private static Class<?> shell;
@@ -117,36 +116,36 @@ public final class AndroidUpdatePolicyProbe {
         throw new AssertionError("Expected update rejection");
     }
     private static Object transferCases(String version)throws Exception{
-        String current=ORIGIN+"current.json",backup=GH+"android-friends/current.json";
+        String current=ORIGIN+"current.json";
         Method read=method("readRelease");
         response(current,200,manifest);
         Object offered=invoke(read,null);
         done("officialManifestOnly");
         response(current,0,new byte[0]).timeout=true;
-        response(backup,302,new byte[0]).location=CDN;
-        response(CDN,200,manifest);
-        invoke(read,null);done("unavailableOriginUsesApprovedGithubCdn");
-        response(current,503,new byte[0]);
-        response(backup,503,new byte[0]);
         response(current,200,manifest).cold=true;
-        invoke(read,null);done("coldOriginRetriedAfterGithubUnavailable");
-        response(current,302,new byte[0]).location=current;
-        reject(read);done("originRedirectRejected");
+        invoke(read,null);done("coldOriginRetriedWithoutFallback");
+        response(current,503,new byte[0]);
+        response(current,503,new byte[0]).cold=true;
+        reject(read);done("bothOriginRequestsFailClosed");
+        response(current,302,new byte[0]).location=UNTRUSTED;
+        reject(read);done("redirectToGithubRejectedWithoutRequest");
         response(current,200,"{bad".getBytes(StandardCharsets.UTF_8));
         reject(read);done("malformedManifestStopsAtOrigin");
         response(current,200,manifest).encoding="gzip";
         reject(read);done("unexpectedEncodingRejected");
         response(current,200,manifest).declared=16385;
         reject(read);done("oversizedManifestRejected");
-        response(current,503,new byte[0]);
-        response(backup,302,new byte[0]).location="https://example.invalid/not-an-asset";
-        reject(read);done("untrustedFallbackRedirectRejected");
         String path="android-friends-v"+version+"/Lychee-Friends-V"+version+".apk";
-        Method transfer=method("fromSources",String.class,boolean.class,OutputStream.class,long.class);
+        Method transfer=method("fromOfficial",String.class,boolean.class,OutputStream.class,long.class);
+        response(ORIGIN+path,503,new byte[0]);
+        response(ORIGIN+path,503,new byte[0]).cold=true;
+        reject(transfer,path,true,new ByteArrayOutputStream(),4L);done("unavailableApkRetriesOnlyOfficialOrigin");
+        response(ORIGIN+path,302,new byte[0]).location=UNTRUSTED;
+        reject(transfer,path,true,new ByteArrayOutputStream(),4L);done("apkRedirectToGithubRejectedWithoutRequest");
         byte[] complete={1,2,3,4};
         for(boolean emptyTimeout:new boolean[]{false,true}){
             response(ORIGIN+path,200,new byte[0]).interruptBody=emptyTimeout;
-            response(GH+path,200,complete);
+            response(ORIGIN+path,200,complete).cold=true;
             ByteArrayOutputStream out=new ByteArrayOutputStream();
             invoke(transfer,null,path,true,out,4L);
             require(Arrays.equals(out.toByteArray(),complete),"partial data mixed across sources");

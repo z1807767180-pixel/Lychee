@@ -31,9 +31,7 @@ import org.json.JSONTokener;
 /** App-shell releases are independent from the live mobile website. */
 final class ShellUpdates {
     static final int INSTALL_SETTINGS=701;
-    private static final String REPO="z1807767180-pixel/Lychee";
     private static final String ORIGIN="https://lychee-link-check.onrender.com/android-update/";
-    private static final String GITHUB="https://github.com/"+REPO+"/releases/download/";
     private static final String CERT="19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2";
     private static final long MAX_APK=128L*1024*1024;
     private final Activity activity;
@@ -106,75 +104,56 @@ final class ShellUpdates {
     private static final class InvalidTransfer extends IOException {}
     private static Release readRelease() throws Exception {
         ByteArrayOutputStream out=new ByteArrayOutputStream();
-        fromSources("current.json",false,out,16384);
+        fromOfficial("current.json",false,out,16384);
         JSONTokener json=new JSONTokener(out.toString("UTF-8"));
         Object value=json.nextValue();
         if(!(value instanceof JSONObject)||json.nextClean()!=0)throw new InvalidTransfer();
         return new Release((JSONObject)value);
     }
-    private static void fromSources(String path,boolean apk,OutputStream out,long limit) throws IOException {
-        for(int attempt=0;attempt<3;attempt++){
-            boolean origin=attempt!=1;
-            String address=origin?ORIGIN+path:GITHUB+(apk?"":"android-friends/")+path;
-            try{
-                transfer(address,origin,apk,attempt==2,out,limit);
-                return;
-            } catch(InvalidTransfer invalid){throw invalid;}
-            catch(IOException unavailable){
-                if(attempt==2||Thread.currentThread().isInterrupted())throw unavailable;
-            }
+    private static void fromOfficial(String path,boolean apk,OutputStream out,long limit) throws IOException {
+        URL url=new URL(ORIGIN+path);
+        try{
+            transfer(url,apk,false,out,limit);
+        }catch(InvalidTransfer invalid){throw invalid;}
+        catch(IOException unavailable){
+            if(Thread.currentThread().isInterrupted())throw unavailable;
+            transfer(url,apk,true,out,limit);
         }
     }
-    private static void transfer(String address,boolean origin,boolean apk,boolean coldStart,OutputStream out,long limit) throws IOException {
-        URL url=new URL(address);
+    private static void transfer(URL url,boolean apk,boolean coldStart,OutputStream out,long limit) throws IOException {
         long deadline=System.nanoTime()+(apk?300L:coldStart?95L:25L)*1000000000L;
-        for(int attempt=0;attempt<6;attempt++){
-            if(System.nanoTime()>deadline||Thread.currentThread().isInterrupted())throw new IOException();
-            if(!"https".equals(url.getProtocol())||url.getPort()!=-1||url.getUserInfo()!=null||url.getRef()!=null)
-                throw new InvalidTransfer();
-            HttpsURLConnection conn=(HttpsURLConnection)url.openConnection();
-            try{
-                conn.setInstanceFollowRedirects(false);conn.setUseCaches(false);
-                conn.setConnectTimeout(coldStart?12000:6000);
-                conn.setReadTimeout(coldStart?75000:(apk?25000:10000));
-                conn.setRequestProperty("User-Agent","Lychee Android");conn.setRequestProperty("Cache-Control","no-cache");
-                conn.setRequestProperty("Accept-Encoding","identity");
-                int status=conn.getResponseCode();
-                if(status==301||status==302||status==303||status==307||status==308){
-                    String location=conn.getHeaderField("Location");
-                    if(origin||location==null)throw new InvalidTransfer();
-                    try{url=new URL(url,location);}catch(java.net.MalformedURLException invalid){throw new InvalidTransfer();}
-                    if(!"release-assets.githubusercontent.com".equals(url.getHost()) ||
-                            !url.getPath().matches("/github-production-release-asset/1471636015/[a-fA-F0-9-]{36}"))
-                        throw new InvalidTransfer();
-                    continue;
+        if(Thread.currentThread().isInterrupted())throw new IOException();
+        HttpsURLConnection conn=(HttpsURLConnection)url.openConnection();
+        try{
+            conn.setInstanceFollowRedirects(false);conn.setUseCaches(false);
+            conn.setConnectTimeout(coldStart?12000:6000);
+            conn.setReadTimeout(coldStart?75000:(apk?25000:10000));
+            conn.setRequestProperty("User-Agent","Lychee Android");conn.setRequestProperty("Cache-Control","no-cache");
+            conn.setRequestProperty("Accept-Encoding","identity");
+            int status=conn.getResponseCode();
+            if(status!=200){
+                if(status>=200&&status<400)throw new InvalidTransfer();
+                throw new IOException("HTTP "+status);
+            }
+            long length=conn.getContentLengthLong();
+            String encoding=conn.getContentEncoding();
+            if(length>limit||(encoding!=null&&!"identity".equalsIgnoreCase(encoding)))throw new InvalidTransfer();
+            long count=0;
+            try(InputStream in=conn.getInputStream()){
+                byte[] buf=new byte[16384];int n;
+                while((n=in.read(buf))!=-1){
+                    count+=n;if(count>limit)throw new InvalidTransfer();
+                    if(Thread.currentThread().isInterrupted()||System.nanoTime()>deadline)throw new IOException();
+                    out.write(buf,0,n);
                 }
-                if(status!=200){
-                    if(status>=200&&status<400)throw new InvalidTransfer();
-                    throw new IOException("HTTP "+status);
-                }
-                long length=conn.getContentLengthLong();
-                String encoding=conn.getContentEncoding();
-                if(length>limit||(encoding!=null&&!"identity".equalsIgnoreCase(encoding)))throw new InvalidTransfer();
-                long count=0;
-                try(InputStream in=conn.getInputStream()){
-                    byte[] buf=new byte[16384];int n;
-                    while((n=in.read(buf))!=-1){
-                        count+=n;if(count>limit)throw new InvalidTransfer();
-                        if(Thread.currentThread().isInterrupted()||System.nanoTime()>deadline)throw new IOException();
-                        out.write(buf,0,n);
-                    }
-                    if(count==0)throw new IOException("No response bytes");
-                    if(length>=0&&length!=count)throw new InvalidTransfer();
-                } catch(IOException stopped){
-                    // A partial or rejected response cannot be combined with bytes from another source.
-                    if(count>0)throw new InvalidTransfer();
-                    throw stopped;
-                }
-                return;
-            }finally{conn.disconnect();}
-        }
-        throw new InvalidTransfer();
+                if(count==0)throw new IOException("No response bytes");
+                if(length>=0&&length!=count)throw new InvalidTransfer();
+            } catch(IOException stopped){
+                // A partial or rejected response must not be appended to a retry.
+                if(count>0)throw new InvalidTransfer();
+                throw stopped;
+            }
+        }finally{conn.disconnect();}
     }
     private static String hex(byte[] bytes){
         StringBuilder text=new StringBuilder(bytes.length*2);
@@ -191,7 +170,7 @@ final class ShellUpdates {
     }
     private static void fetchApk(File candidate,Release release) throws IOException {
         try (OutputStream out=new FileOutputStream(candidate)){
-            fromSources(release.path(),true,out,MAX_APK);
+            fromOfficial(release.path(),true,out,MAX_APK);
         }
     }
     @SuppressWarnings("deprecation")

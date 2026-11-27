@@ -35,6 +35,10 @@ class Tunnel(socketserver.StreamRequestHandler):
         allowed = method == "CONNECT" and destination.lower() == ORIGIN + ":443"
         record = {"destination": destination, "allowed": allowed, "sent": 0, "received": 0}
         self.server.records.append(record)
+        if allowed and getattr(self.server,"origin_unavailable",False):
+            record["originUnavailable"]=True
+            self.wfile.write(b"HTTP/1.1 503 Service Unavailable\r\nContent-Length: 0\r\n\r\n")
+            return
         if not allowed:
             self.wfile.write(b"HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n")
             return
@@ -169,6 +173,23 @@ def main():
                     "platform":adb("shell","getprop","ro.build.fingerprint").strip(),
                     "appUid":uid,"testedUpdaterDex":code,"directIPv4AndIPv6Rejected":True,"systemConfirmationRequired":True,
                     "reopenFrom":reopen,"officialLoginVisible":True,"officialColdLaunchLoginVisible":True}
+            if tuple(map(int,a.target_version.split(".")))>=(8,1,2):
+                # The emulator has no user account. Discard its test WebView cache so the
+                # actual installed shell shows the native retry/update buttons on restart.
+                assert "Success" in adb("shell","pm","clear",device.PACKAGE)
+                server.origin_unavailable=True
+                since=len(records)
+                device.launch()
+                find("检查安卓更新",click=True,timeout=100)
+                find("暂时查不到更新",timeout=150)
+                contacts=records[since:]
+                assert any(r.get("originUnavailable") for r in contacts)
+                forbidden=("github.com","githubusercontent.com")
+                hosts={r["destination"].split(":")[0].lower() for r in contacts}
+                assert not any(h==domain or h.endswith("."+domain) for h in hosts for domain in forbidden),hosts
+                report["offlineOfficialUpdate"]={"failureDialog":True,"githubRequests":0,
+                    "originRejectedConnections":sum(1 for r in contacts if r.get("originUnavailable"))}
+                server.origin_unavailable=False
             if a.web_version:
                 conn=http.client.HTTPSConnection("127.0.0.1",HOST_PORT,timeout=90)
                 try:
