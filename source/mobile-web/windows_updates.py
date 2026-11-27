@@ -14,6 +14,24 @@ RELEASE_PATH = re.compile(r"/github-production-release-asset/1471636015/[0-9a-fA
 MAX_PACKAGE = 256 * 1024 * 1024
 
 
+def download_page(version):
+    tag = "windows-v" + version
+    return f"""<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>荔枝 Windows 下载</title>
+<style>
+body{{margin:0;background:#faf5e7;color:#244b41;font:17px/1.65 system-ui,sans-serif}}
+main{{max-width:35em;margin:8vh auto;padding:1.5em}} h1{{line-height:1.2}}
+section{{margin:1.2em 0;padding:1.2em;background:#fffcf4;border:1px solid #dacbb1;border-radius:14px}}
+h2,p{{margin:0 0 .55em}} a{{display:inline-block;padding:.55em 1.15em;border-radius:9px;background:#245447;color:white;text-decoration:none}}
+a:focus-visible{{outline:3px solid #b95734;outline-offset:3px}}
+</style><main><h1>荔枝 Windows 版</h1><p>正式版 W{version} · Windows x64</p>
+<section><h2>安装版</h2><p>原来用安装向导安装，请关闭荔枝后运行 MSI，用原来的 Windows 用户覆盖升级。</p>
+<a href="{tag}/Lychee.msi" download>下载 MSI 安装包</a></section>
+<section><h2>便携版</h2><p>原来直接双击 EXE 使用，请关闭荔枝，用新版替换原位置的 EXE，再从原位置打开。</p>
+<a href="{tag}/Lychee.exe" download>下载便携 EXE</a></section></main></html>"""
+
+
 class RepositoryRedirect(HTTPRedirectHandler):
     def redirect_request(self, request, response, code, message, headers, new_url):
         url = urlsplit(new_url)
@@ -64,6 +82,7 @@ def prepare(manifest, output):
             if actual != length or digest.hexdigest() != asset["sha256"]:
                 raise ValueError("Windows package did not match the pinned release manifest")
         (root / "stable.json").write_bytes(data)
+        (root / "download.html").write_text(download_page(version), encoding="utf8")
         root.rename(output)
 
 
