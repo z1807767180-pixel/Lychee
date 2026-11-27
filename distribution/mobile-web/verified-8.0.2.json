@@ -1,0 +1,65 @@
+{
+  "website": "V8.0.2",
+  "origin": "https://lychee-link-check.onrender.com/mobile/",
+  "deployedCommit": "77539eab5c5bfefff3ee7133df0ff99df89e4c7e",
+  "deploymentId": "dep-dc4p66u1egvs739aln1g",
+  "liveAt": "2026-11-27T14:28:06.991431Z",
+  "verifiedAt": "2026-11-27T14:28:39+00:00",
+  "publicReadOnly": true,
+  "releaseWebsiteFiles": 193,
+  "checks": [
+    {
+      "path": "/mobile/",
+      "code": 200,
+      "bytes": 5026,
+      "sha256": "0247158a3973afc836de24a093b4d5d035780d6e191f6771a09fd382e1a81ad6"
+    },
+    {
+      "path": "/mobile/version.txt",
+      "code": 200,
+      "bytes": 6,
+      "sha256": "d5fdb23a8c78632336fc46295994bcc98cb099d792d2a141f092c879930607de"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-v8.js",
+      "code": 200,
+      "bytes": 21440,
+      "sha256": "986b5f97ea1ff12b02d179e6586adc8cbe317fc52fc78dcc7bd9e704f9d92305"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-v8-garden.js",
+      "code": 200,
+      "bytes": 13389,
+      "sha256": "b109a816c373eeabd4de7dc5279747b1f7f5efd00f31a20763c85c3880f2ba82"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-v8-plans.js",
+      "code": 200,
+      "bytes": 10424,
+      "sha256": "fc6503178d107cce3728f693f5ce729938bf3547f99971b335fa4495a7b8a213"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-tools.js",
+      "code": 200,
+      "bytes": 12335,
+      "sha256": "c95f8a31c95ca95ab6576ff14e8a02e216bae4cf14b9db85b7cbaf4f04e9be99"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-tools-runtime.js",
+      "code": 200,
+      "bytes": 465418,
+      "sha256": "4672e270eeb36ba82b872ba295bd5976e00c102067b780e5519bc3c6448af504"
+    },
+    {
+      "path": "/mobile/assets-8.0.2/client/social-personal.js",
+      "code": 200,
+      "bytes": 7785,
+      "sha256": "50a4d12bf84e6f790a38655291a0520d2b55e776405b031480a109d8fb59af60"
+    }
+  ],
+  "nativeVersionFeeds": {
+    "/windows-update/stable.json": "8.0.0",
+    "/android-update/current.json": "8.0.1"
+  },
+  "verificationScope": "单次手机网页构建和发布。只读核对原入口、版本和指定界面/工具资源，逐项体验与真机反馈由负责人完成。"
+}
