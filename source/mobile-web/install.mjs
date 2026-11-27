@@ -70,6 +70,7 @@ async function installAndroidUpdates(webRoot) {
   if (Number(version.split('.')[0])>=8) await writeFile(join(target,tag,'Lychee-Friends-A'+version+'.apk'),apk);
   const archives = [
     ['8.0.0','3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42'],
+    ['8.1.2','e9edd5e1ecc376bb24675ff42ae3b8fabad9589911d3587fc3717c09281a3ca7'],
     ['8.1.1','b07b3c07c06eb93c01ea334ccc3653d6a8478d85406d3310efe12435d6b40b3e'],
     ['8.0.1','a79805c9cf23ec4e9a485aa55e830cd119f966270cc74f52a4539913396e278c'],
   ];

@@ -25,6 +25,7 @@
       skin=skins[number];shell.dataset.skin=skin;shell.dataset.chat=String(chat);
       const custom=chat&&read('chatWallpaper');
       const bg=chat?(custom&&/^\/9j\/[A-Za-z0-9+/=]+$/.test(custom)?'data:image/jpeg;base64,'+custom:'/client/social-wall-'+skin+'.webp'):'';
+      shell.dataset.customWall=String(!!bg && bg.startsWith('data:image/'));
       if(wall!==bg){
         wall=bg;
         if(bg){const wide=bg.startsWith('data:image/')?bg:'/client/social-wide-'+skin+'.webp';shell.style.setProperty('--s8-chat-wall','url("'+bg+'")');shell.style.setProperty('--s8-chat-wide','url("'+wide+'")');}

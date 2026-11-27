@@ -274,6 +274,13 @@ def build(out):
                  'social-v8.js','social-v8-api.js','social-v8-plans.js','social-garden-posts.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-tools.js','social-personal.js','social-v8.css','social-v8-garden.css','social-tools.css',*SOCIAL_ART,
                  *TOOL_SCRIPTS, *TOOL_STYLES, *TOOL_IMAGES):
         files["client/" + name] = (ROOT / "client" / name).read_bytes()
+    # Use the original six emoji categories in both the social and legacy chat composers.
+    source_phone = (ROOT / "source/web/mobile/phone.js").read_text(encoding="utf8")
+    catalogue = re.search(r"_L=(\[\[.*?\]\])", source_phone)
+    if not catalogue:
+        raise ValueError("Original chat emoji categories are missing")
+    chat = files["client/social-chat.js"].decode()
+    files["client/social-chat.js"] = once(chat, "/* original-emoji-categories */ []", catalogue.group(1)).encode()
     font_files = sorted((ROOT / "client/fonts").rglob("*"))
     if not any(path.suffix == ".woff2" for path in font_files):
         raise ValueError("Missing bundled WOFF2 font")
