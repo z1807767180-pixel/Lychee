@@ -17,7 +17,7 @@ SHARED = re.compile(rb"""(?<=[("'\x60])/((?:client|launch|scenes)/|windows/(?:te
 
 SERVER_MODULES = (
     "soup-categories", "index", "accounts", "turso-accounts", "domains", "ai-quota", "diet-store", "diet-vision", "diet-vision-result",
-    "notification-source", "notify-push", "notify-push-transport", "notices",
+    "notification-source", "notify-push", "notify-push-transport", "notices", "quiz-game", "quiz-rounds",
 )
 
 
@@ -65,6 +65,7 @@ def build(out):
         services = out.parent / "server-v7"
         services.mkdir()
         shutil.copyfile(ROOT / "source/server/circle-puzzles.json", services / "circle-puzzles.json")
+        shutil.copyfile(ROOT / "source/server/quiz-bank.json", services / "quiz-bank.json")
         for module in SERVER_MODULES:
             src = ROOT / "source/server" / (module + ".mjs")
             target = services / src.name

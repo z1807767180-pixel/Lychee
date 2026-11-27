@@ -29,7 +29,7 @@ const oldMsi = join(base, 'Lychee.msi'), newMsi = join(next, 'Lychee.msi');
 const oldInfo = await msiInfo('inspect', oldMsi, instance), nextInfo = await msiInfo('inspect', newMsi, instance);
 assert.equal(oldInfo.upgrade, nextInfo.upgrade);
 if (!checksOnly) {
-  assert.equal(oldInfo.version,'7.0.0'); assert.equal(nextInfo.version,'7.0.1');
+  assert.ok(oldInfo.version.localeCompare(nextInfo.version, 'en', {numeric:true}) < 0, 'Expected a newer QA release');
   assert.notEqual(oldInfo.product,nextInfo.product);
 }
 const root = await mkdtemp(join(tmpdir(), 'lychee-update-e2e-'));
@@ -60,6 +60,7 @@ const deadline = async (fn, label, ms = 35000) => {
   }
   throw Error(label + ' timeout' + (last ? ' (' + last + ')' : ''));
 };
+const contentsPath = '/windows-update/repository/contents/distribution/windows/stable.json?ref=main';
 async function localServer(kind) {
   const app = await createApp({dataDir: join(root, 'server-' + kind), webRoot: join(base, 'site')});
   const fixture = {mode: 'current', requests: []};
@@ -74,8 +75,9 @@ async function localServer(kind) {
           }
           if (req.url.startsWith('/windows-update/repository/releases?')) {res.end('[]');return;}
         }
-        if (req.url === '/windows-update/stable.json') {
-          if (fixture.mode === 'offline') {req.socket.destroy(); return;}
+        if (req.url === '/windows-update/stable.json' || req.url === contentsPath) {
+          if (req.url === contentsPath && fixture.mode === 'offline') {res.writeHead(403).end(); return;}
+          if (req.url === '/windows-update/stable.json' && ['offline','alternate'].includes(fixture.mode)) {req.socket.destroy(); return;}
           const version = fixture.mode === 'current' ? oldInfo.version : checksOnly ? '8.0.0' : nextInfo.version;
           const entries = assets.map(a => fixture.mode === 'bad' ? {...a, sha256: '0'.repeat(64)} : a);
           res.writeHead(200, {'content-type':'application/json', 'cache-control':'no-store'});
@@ -184,8 +186,9 @@ async function testWindow(kind, exe, other) {
         if (!res.ok) throw Error(url + ' ' + res.status); return res.json();
       };
       await post('/api/v640/account', {mode:'register', name:'升级验收', password});
-      const ws = await post('/api/v640/workspace', {action:'create', name:'升级留存园'});
-      for (const n of ws.notices.filter(n => !n.read)) await post('/api/v640/workspace', {action:'read', noticeId:n.id});
+      const workspaceUrl = '/api/v640/workspace?client=windows-' + encodeURIComponent(document.body.dataset.clientBuild);
+      const ws = await post(workspaceUrl, {action:'create', name:'升级留存园'});
+      for (const n of ws.notices.filter(n => !n.read)) await post(workspaceUrl, {action:'read', noticeId:n.id});
       localStorage.setItem('lychee-update-qa-marker', marker);
       return {garden:ws.activeGardenId, account:ws.account.id};
     }, marker, password);
@@ -195,7 +198,8 @@ async function testWindow(kind, exe, other) {
     if (checksOnly) {
       for (const [mode,state,label] of [
         ['unpublished','current','已是最新版本，暂时无需更新'],
-        ['offline','check-error','暂时无法检查更新'],
+        ['offline','check-error','HTTP 403'],
+        ['alternate','available','发现新版本 8.0.0'],
         ['good','available','发现新版本 8.0.0'],
       ]) {
         fixture.mode=mode;
@@ -205,6 +209,7 @@ async function testWindow(kind, exe, other) {
         await closePanel(browser);
       }
       assert.ok(fixture.requests.some(r=>r.path.startsWith('/windows-update/repository/releases?')));
+      assert.ok(fixture.requests.some(r=>r.mode==='alternate' && r.path===contentsPath));
       outcome.passed=true;
       return;
     }
@@ -242,7 +247,11 @@ async function testWindow(kind, exe, other) {
       await deadline(() => browser.js("!document.querySelector('[data-windows-update]')?.offsetWidth"), 'update deferred');
       outcome.automaticAvailableAndDeferredWithoutDownload = true;
     }
-    await deadline(() => browser.js("!!document.querySelector('.windows-nav [data-page=settings], .garden-access input[name=username]')"), 'new application finished opening');
+    await deadline(() => browser.js(`(()=>{
+      const notice=[...document.querySelectorAll('.garden-access button')].find(b=>b.offsetWidth&&b.textContent.trim()==='标为已读');
+      if(notice){notice.click();return false;}
+      return !!document.querySelector('.windows-nav [data-page=settings], .garden-access input[name=username]');
+    })()`), 'new application finished opening');
     const after = await atPage(browser, async () => {
       const res = await fetch('/api/v640/workspace'), ws = await res.json();
       return {status:res.status,account:ws.account?.id, garden:ws.activeGardenId, marker:localStorage.getItem('lychee-update-qa-marker'),

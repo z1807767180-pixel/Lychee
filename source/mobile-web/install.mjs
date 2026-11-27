@@ -13,7 +13,7 @@ const previous = {
   'ai-quota.mjs':'ea64213e2f3a334b65c8a7c24ccec4ce9361b07222ff25f837b1f505234cf0ec',
 };
 const additions = ['circle-puzzles.json','soup-categories.mjs','diet-store.mjs','diet-vision.mjs','diet-vision-result.mjs',
-  'notification-source.mjs','notify-push.mjs','notify-push-transport.mjs'];
+  'notification-source.mjs','notify-push.mjs','notify-push-transport.mjs','quiz-game.mjs','quiz-rounds.mjs','quiz-bank.json'];
 const digest = data => createHash('sha256').update(data.toString('utf8').replace(/\r\n/g,'\n')).digest('hex');
 const oldRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/g/')";
 const newRoutes = "url.pathname.startsWith('/api/v640/')||url.pathname.startsWith('/api/v7/')||url.pathname.startsWith('/g/')";

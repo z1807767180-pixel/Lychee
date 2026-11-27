@@ -17,6 +17,7 @@ import uuid
 
 DESKTOP = Path(__file__).resolve().parents[1] / "desktop"
 PAYLOAD = {}
+CONTENTS = "/windows-update/repository/contents/distribution/windows/stable.json?ref=main"
 MANIFEST = {"schema": 1, "version": "7.0.1", "assets": []}
 HARNESS = """
 using System;
@@ -77,6 +78,12 @@ class Handler(BaseHTTPRequestHandler):
                 body = json.dumps(body).encode()
             headers = cfg.get("manifest_headers", {})
             status = cfg.get("manifest_status", 200)
+        elif self.path == CONTENTS:
+            body = json.dumps(cfg.get("contents", MANIFEST)).encode()
+            headers = {}
+            status = cfg.get("contents_status", 503)
+            if self.headers.get("Accept") != "application/vnd.github.raw+json":
+                status = 406
         elif self.path == "/windows-update/repository":
             body = json.dumps(cfg.get("repo",{"id":1471636015,"full_name":"z1807767180-pixel/Lychee",
                                                "private":False,"default_branch":"main"})).encode()
@@ -258,19 +265,30 @@ class WindowsFeedTests(unittest.TestCase):
         cfg.update(repo_status=200,repo={"id":123,"full_name":"another/repo","private":False,"default_branch":"main"})
         self.request(ok=False)
 
+    def test_official_contents_fallback_when_raw_host_is_unreachable(self):
+        cfg = self.http.model
+        cfg.update(manifest_status=503,contents_status=200)
+        self.assertEqual(self.request(),"7.0.1 2")
+        self.assertEqual(cfg["paths"],["/windows-update/stable.json",CONTENTS])
+        self.request("exe")
+        cfg.update(disconnect="/windows-update/stable.json")
+        self.assertEqual(self.request(),"7.0.1 2")
+        cfg.update(contents={**MANIFEST,"schema":2})
+        self.request(ok=False)
+
     def test_damaged_manifest_and_unreachable_origin_do_not_report_current(self):
         cfg = self.http.model
         for status,body in [(500,b""),(403,b""),(200,b"bad JSON")]:
             cfg.update(paths=[],manifest_status=status,manifests=[body])
             self.request(ok=False)
-            self.assertEqual(cfg["paths"],["/windows-update/stable.json"])
+            self.assertEqual(cfg["paths"],["/windows-update/stable.json"] + ([CONTENTS] if status!=200 else []))
         cfg.update(manifest_status=404,pages={1:[{"id":1,"tag_name":"windows-vNext","draft":False,"prerelease":False,"assets":[]}]})
         self.request(ok=False)
         cfg["pages"]={1:{"message":"not available"}}
         self.request(ok=False)
         cfg.update(paths=[],disconnect="/windows-update/stable.json")
         self.request(ok=False)
-        self.assertEqual(set(cfg["paths"]),{"/windows-update/stable.json"})
+        self.assertEqual(set(cfg["paths"]),{"/windows-update/stable.json",CONTENTS})
         cfg.update(disconnect="/windows-update/repository/releases?per_page=20&page=1",pages={})
         self.request(ok=False)
 

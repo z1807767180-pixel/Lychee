@@ -94,7 +94,7 @@ public final class MainActivity extends BridgeActivity {
                     boolean account = "/api/v640/account".equals(path) || "/api/v640/workspace".equals(path);
                     boolean post = "POST".equals(method);
                     if (post && "/api/v640/account".equals(path)) MessageAlerts.reset(MainActivity.this);
-                    boolean scopedTool = "/api/v7/diet/entries".equals(path) || "/api/v7/push".equals(path);
+                    boolean scopedTool = "/api/v7/diet/entries".equals(path) || "/api/v7/push".equals(path) || "/api/v7/quiz".equals(path);
                     if ((capability && get) || ("/api/v7/diet/recognize".equals(path) && post)
                         || ((scopedTool || account || SCOPED.matcher(path).matches()) && (get || post)))
                         return null; // Ordinary WebView HTTPS, with its own cookie jar, Origin and TLS checks.

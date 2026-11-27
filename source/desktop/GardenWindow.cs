@@ -217,9 +217,9 @@ internal sealed class GardenWindow : Window {
             offered=release!=null&&release.Version.CompareTo(new Version(WindowsInstallationIdentity.Version))>0?release:null;
             if(offered!=null){updateView=true;UpdateStatus("available","更新完成后会重新打开荔枝。");}
             else if(updateView)UpdateStatus("current","已是最新版本，暂时无需更新。");
-        } catch(Exception) {
+        } catch(Exception err) {
             offered=null;
-            if(updateView&&!closing)UpdateStatus("check-error","请检查网络连接，或稍后重试。");
+            if(updateView&&!closing)UpdateStatus("check-error",WindowsUpdateFeed.CheckErrorMessage(err));
         } finally {checking=false;}
     }
     async Task InstallUpdate() {

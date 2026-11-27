@@ -3,6 +3,40 @@
   const bridge = window.chrome?.webview;
   if (!window.lycheeDesktopHost || !bridge) return;
   document.documentElement.classList.add('lychee-native-window');
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('.qz a[target="_blank"]');
+    if (!link || link.protocol !== 'https:' || link.username || link.password) return;
+    event.preventDefault();
+    const dialog = document.createElement('dialog');
+    dialog.className = 'lychee-source-link';
+    dialog.setAttribute('aria-label', link.textContent);
+    const label = document.createElement('label');
+    label.textContent = link.textContent;
+    const url = document.createElement('input');
+    url.type = 'text';
+    url.readOnly = true;
+    url.value = link.href;
+    label.append(url);
+    const copy = document.createElement('button'), close = document.createElement('button');
+    copy.textContent = '复制链接';
+    close.textContent = '关闭';
+    copy.onclick = async () => {
+      url.focus();
+      url.select();
+      try {
+        await navigator.clipboard.writeText(url.value);
+        copy.textContent = '已复制';
+      } catch {
+        copy.textContent = '请按 Ctrl+C 复制';
+      }
+    };
+    close.onclick = () => dialog.close();
+    dialog.onclose = () => { dialog.remove(); if (link.isConnected) link.focus(); };
+    dialog.append(label, copy, close);
+    document.body.append(dialog);
+    dialog.showModal();
+    url.select();
+  });
   window.addEventListener('keydown', event => {
     if (!event.ctrlKey || event.altKey || event.shiftKey || event.metaKey || event.key.toLowerCase() !== 'q') return;
     event.preventDefault();

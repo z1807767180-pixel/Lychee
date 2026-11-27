@@ -11,11 +11,11 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "source/web"
 VERSION = "7.0.0"
 CLIENT_BUILD = VERSION
-TOOL_SCRIPTS = ("diet-foods-v7.js", "diet-recipes-v7.js", "diet-match-v7.js", "diet-estimate-v7.js", "diet-condiment-v7.js", "diet-v7.js", "wheel-v7.js",
+TOOL_SCRIPTS = ("diet-foods-v7.js", "diet-recipes-v7.js", "diet-match-v7.js", "diet-estimate-v7.js", "diet-condiment-v7.js", "diet-v7.js", "wheel-v7.js", "quiz-v7.js",
                 "notify-push-v7.js", "notify-v7.js")
-TOOL_STYLES = ("diet-v7.css", "wheel-v7.css")
+TOOL_STYLES = ("diet-v7.css", "wheel-v7.css", "quiz-v7.css")
 TOOL_IMAGES = ("diet-banner-v7.webp", "wheel-banner-v7.webp", "wheel-hub-v7.webp",
-               "diet-card-v7.webp", "wheel-card-v7.webp")
+               "diet-card-v7.webp", "wheel-card-v7.webp", "quiz-card-v7.webp", "quiz-result-v7.webp")
 API_LITERAL = re.compile(r"""(?P<q>["'])(?P<path>/api/(?:camp|phone)[^"'\n]*?)(?P=q)""")
 
 
@@ -113,8 +113,20 @@ def soup_controls(text):
 
 def phone_bundle(text, mobile):
     text = soup_controls(text)
-    text = once(text, 'GS={"ai-chat":', 'GS={diet:"照记饮食",wheel:"交给命运","ai-chat":')
+    text = once(text, 'GS={"ai-chat":', 'GS={quiz:"头脑王者",diet:"照记饮食",wheel:"交给命运","ai-chat":')
+    text = once(text, 'PS=["gomoku"', 'PS=["quiz","gomoku"')
+    text = once(text, 'src:"/mobile/"+(pe==="feed"', 'src:pe==="quiz"?"/client/quiz-card-v7.webp":"/mobile/"+(pe==="feed"')
+    text = once(text, 'It=PS.some(O=>O===L)', 'It=L!=="quiz"&&PS.some(O=>O===L)')
+    point = 'const windowsPages=Ee.useRef([])'
+    text = once(text, point, """const [quizInvite,setQuizInvite]=Ee.useState(null);
+        Ee.useEffect(()=>{function enter(event){Za("箱");De("quiz");setQuizInvite(event.detail)}
+          window.addEventListener("lychee:quiz-invitation",enter);return ()=>window.removeEventListener("lychee:quiz-invitation",enter)},[]);
+        """ + point)
+    text = once(text, 'openAlbumFromGoal(false);i(!1),C(""),y(O)', 'openAlbumFromGoal(false);setQuizInvite(null);i(!1),C(""),y(O)')
+    text = once(text, 'className:"room-bubble",children:R.body', 'className:"room-bubble",children:window.LycheeQuizV7.chatCard(X.jsx,R)')
     detail = 'else if(L==="ledger"||L==="focus")'
+    text = once(text, detail, 'else if(L==="quiz")Ca=A.jsx("section",{className:"ph-scroll quiz-scroll",children:A.jsx(window.LycheeQuizV7,{React:Ee,initialId:quizInvite,avatarFor:Da},String(windowsVisit))});'+detail)
+
     text = once(text, detail,
                 'else if(L==="diet"||L==="wheel")Ca=A.jsx("section",{className:"ph-scroll v7-tool",'
                 'children:A.jsx(L==="diet"?window.LycheeDietV7:window.LycheeWheelV7,'
@@ -138,7 +150,7 @@ def phone_bundle(text, mobile):
                 ','.join('(0,X.jsx)("span",{children:"'+part+'"})' for part in (first,second))+']})')
     if mobile:
         text = once(text, '!L&&(0,A.jsx)("nav",{className:"bottom"',
-                    '(!L||L==="diet"||L==="wheel")&&(0,A.jsx)("nav",{className:"bottom"')
+                    '(!L||L==="quiz"||L==="diet"||L==="wheel")&&(0,A.jsx)("nav",{className:"bottom"')
         text = once(text, "window.renderLycheeWorkspaceNav({React:Ee,tab:m,detail:L,selectTab:Za,openDetail:De,restartDetail:()=>setWindowsVisit(n=>n+1)})", "null")
     original = 'A.jsx(CircleList,{unread:l,member:c,open:circle=>{setSelectedCircle(circle);De("circle")}})'
     integrated = ('window.LycheeAccess.renderCircles(Ee,{renderCover:options=>A.jsx(A62,{mode:"ImagePicker",...options}),open:()=>{'
@@ -225,7 +237,7 @@ def build(out):
         elif name == "mobile/v62.js":
             files[name] = ai_tool_bundle(files[name].decode()).encode()
         elif name == "windows/workspace-nav.js":
-            nav = files[name].decode()
+            nav = once(files[name].decode(), "['五子棋', 'gomoku']", "['头脑王者', 'quiz'], ['五子棋', 'gomoku']")
             for item in ("['提醒事项与记事', 'tasks']", "['我的账本', 'ledger']", "['番茄钟', 'focus']"):
                 nav = once(nav, item + ", ", "")
             files[name] = once(nav, "['全部工具', ''], ",

@@ -1,0 +1,62 @@
+.quiz-scroll { background:#fcf7e9; padding:10px 12px 28px; }
+.qz { margin:0 auto; width:min(100%,470px); box-sizing:border-box; display:grid; gap:12px; color:#263f37; text-align:center; line-height:1.45; font-family:inherit; }
+.qz * { box-sizing:border-box; }
+.qz h2,.qz h3,.qz p { margin:0; }
+.qz h2 { font-size:clamp(21px,4.7vw,29px); font-weight:700; }
+.qz h3 { font-size:18px; }
+.qz-sub,.qz footer { color:#665e4c; font-size:14px; }
+.qz-hero,.qz-result-art { max-width:100%; width:100%; height:auto; display:block; border-radius:18px; }
+.qz-result-art { height:clamp(125px,22vh,220px); object-fit:contain; }
+.qz-card,.qz-board { background:#fffaf0; border:1px solid #d5b986; border-radius:17px; padding:15px; }
+.qz-card { display:grid; gap:12px; }
+.qz-card header,.qz-row,.qz-round { display:flex; align-items:center; gap:10px; }
+.qz-card header,.qz-round { justify-content:space-between; }
+.qz-row { text-align:left; min-height:40px; }
+.qz-row>span { flex:1; overflow-wrap:anywhere; }
+.qz-row small { color:#63543d; }
+.qz-place { min-width:19px; color:#896938; text-align:center; }
+.qz-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid #c7a66c; background:#f7e9c9; }
+.qz button,.qz-chat { font:inherit; cursor:pointer; touch-action:manipulation; }
+.qz button:disabled { cursor:default; }
+.qz-button,.qz-option,.qz-chat { border:1px solid #bd9867; background:#fff9e9; color:#284139; border-radius:12px; }
+.qz-button { min-height:44px; padding:8px 16px; }
+.qz-button.primary,.qz-button.peach { background:#ffcb92; border-color:#b88749; font-weight:700; }
+.qz-button.primary { font-size:19px; min-height:51px; }
+.qz-button.link { background:transparent; color:#755633; border:none; padding:5px; }
+.qz-button:focus-visible,.qz-option:focus-visible,.qz-chat:focus-visible { outline:3px solid #227871; outline-offset:2px; }
+.qz-invite>.qz-avatar { margin:auto; width:65px; height:65px; }
+.qz-board { display:flex; justify-content:space-around; background:#fff8e7; }
+.qz-player { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:0 7px; text-align:left; max-width:48%; }
+.qz-player>.qz-avatar { grid-row:span 2; }
+.qz-player strong { color:#8d5423; font-size:22px; }
+.qz-player span { overflow-wrap:anywhere; font-size:14px; }
+.qz-round { padding:0 8px; font-size:14px; }
+.qz-clock { display:grid; align-items:center; width:48px; height:48px; border:3px solid #ce9654; border-radius:50%; background:#fff8e9; font-size:20px; font-variant-numeric:tabular-nums; font-weight:bold; }
+.qz-question { text-align:left; }
+.qz-question h2 { font-size:clamp(19px,4.8vw,24px); line-height:1.45; margin-bottom:5px; }
+.qz-option { display:flex; align-items:center; gap:12px; padding:10px 13px; min-height:48px; width:100%; text-align:left; overflow-wrap:anywhere; }
+.qz-option span { flex:1; }
+.qz-option b { color:#846030; }
+.qz-option.selected { background:#ffe0a9; border:2px solid #a37835; }
+.qz-option.correct { border:2px solid #578872; background:#e2efdc; color:#244c32; }
+.qz-feedback,.qz-error { font-size:14px; }
+.qz-error { color:#7b382b; background:#fff1d7; padding:6px; border-radius:10px; }
+.qz a { color:#5d6041; text-decoration:underline; }
+.qz-chat { padding:10px; }
+@media(max-height:720px) { .qz { gap:8px; } .qz-hero { max-height:200px;object-fit:cover; } .qz-card { padding:11px;gap:8px; } }
+
+.qz-review { text-align:left; }
+.qz-review summary { cursor:pointer; }
+.qz-review section { margin:12px 0; }
+
+.qz-board { position:relative; align-items:center; gap:10px; }
+.qz-clock { order:2; flex:0 0 auto; font-size:16px; }
+.qz-player { order:1; }
+.qz-player:last-child { order:3; }
+.qz-round { justify-content:center; gap:12px; }
+.qz-round b { padding:3px 14px; border:1px solid #c8a97b; border-radius:16px; }
+.qz-question { background:transparent; border:0; padding:0; }
+.qz-question h2 { display:grid; place-content:center; padding:14px; min-height:90px; text-align:center; border:1px solid #c5a572; border-radius:16px; background-color:#fff6dd; background-image:linear-gradient(#c59b4520 1px,transparent 1px),linear-gradient(90deg,#c59b4517 1px,transparent 1px); background-size:18px 18px; }
+.qz-result-art { mask-image:linear-gradient(to bottom,black 88%,transparent); }
+.qz .qz-result-title { text-align:center; color:#674b24; }
+.qz-option,.qz-button { border-radius:24px; }

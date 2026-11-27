@@ -1,6 +1,14 @@
 .lychee-native-window { scrollbar-color:#bdad8a transparent; scrollbar-width:thin }
 .lychee-native-window * { scrollbar-width:thin }
 .lychee-window-controls { display:none }
+.lychee-source-link {
+  max-width:calc(100vw - 36px); width:380px; box-sizing:border-box; padding:18px;
+  border:1px solid #c9ad82; border-radius:14px; background:#fff9ed; color:#294e3f;
+}
+.lychee-source-link::backdrop {background:#243d3047}
+.lychee-source-link label {display:block; font-weight:700}
+.lychee-source-link input {box-sizing:border-box; width:100%; margin:10px 0; padding:8px; font:inherit}
+.lychee-source-link button {padding:6px 12px; margin-right:6px; border:1px solid #c9ad82; border-radius:8px; background:#fff1d7; color:inherit}
 .lychee-unified-header .lychee-window-controls {
   position:fixed; z-index:32; display:flex; align-items:center; padding:0 2px;
   background:#fff9eeda; color:#395747; border-radius:10px; -webkit-app-region:no-drag;

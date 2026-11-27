@@ -22,6 +22,10 @@ internal static class WindowsUpdateFeed {
     const long PackageLimit = 256L * 1024 * 1024;
     const int ReleasesPerPage = 20;
     sealed class MissingManifest : IOException {}
+    sealed class HttpFailure : IOException {
+        internal readonly int Status;
+        internal HttpFailure(int status) : base("更新服务返回 HTTP " + status + "。") { Status = status; }
+    }
 
     internal sealed class Asset {
         public string Kind { get; private set; }
@@ -105,7 +109,7 @@ internal static class WindowsUpdateFeed {
                     continue;
                 }
                 if (status == 404 && initial == Feed(local)) throw new MissingManifest();
-                if (status != 200) throw new IOException("更新服务返回 HTTP " + status + "。");
+                if (status != 200) throw new HttpFailure(status);
                 var headers = response.Content.Headers;
                 if (headers.ContentEncoding.Any(x => !x.Equals("identity",StringComparison.OrdinalIgnoreCase)) ||
                     headers.ContentLength > limit || (asset && headers.ContentLength.HasValue && headers.ContentLength != limit))
@@ -239,18 +243,61 @@ internal static class WindowsUpdateFeed {
         }
         throw new InvalidDataException("官方发行记录尚未核查完整。");
     }
-    public static async Task<Release> CheckAsync(Uri localOriginOrNull) {
-        ValidateOrigin(localOriginOrNull);
-        using (var client = Client(localOriginOrNull))
+    static async Task<Release> ReadManifest(HttpClient client, Uri address, Uri local) {
         using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
         using (var bytes = new MemoryStream()) {
-            try {
-                await Copy(client,Feed(localOriginOrNull),false,localOriginOrNull,bytes,ManifestLimit,timeout.Token).ConfigureAwait(false);
-                return Parse(bytes.ToArray(),localOriginOrNull);
-            } catch (MissingManifest) { }
-            await ConfirmNoNewRelease(client,localOriginOrNull,timeout.Token).ConfigureAwait(false);
-            return null;
+            try { await Copy(client,address,false,local,bytes,ManifestLimit,timeout.Token).ConfigureAwait(false); }
+            catch (Exception) {
+                timeout.Token.ThrowIfCancellationRequested();
+                throw;
+            }
+            return Parse(bytes.ToArray(),local);
         }
+    }
+    static bool TransportFailed(Exception ex) {
+        return !(ex is InvalidDataException) && (ex is HttpRequestException || ex is IOException || ex is OperationCanceledException);
+    }
+    public static async Task<Release> CheckAsync(Uri localOriginOrNull) {
+        ValidateOrigin(localOriginOrNull);
+        using (var client = Client(localOriginOrNull)) {
+            bool missing=false;
+            try { return await ReadManifest(client,Feed(localOriginOrNull),localOriginOrNull).ConfigureAwait(false); }
+            catch (MissingManifest) { missing=true; }
+            catch (Exception ex) {
+                if (!TransportFailed(ex)) throw;
+            }
+            if (missing) {
+                using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
+                    await ConfirmNoNewRelease(client,localOriginOrNull,timeout.Token).ConfigureAwait(false);
+                return null;
+            }
+            // Same repository, branch and file via GitHub's Contents service; same manifest validation.
+            client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.raw+json");
+            return await ReadManifest(client,Api(localOriginOrNull,"/contents/distribution/windows/stable.json?ref=main"),
+                localOriginOrNull).ConfigureAwait(false);
+        }
+    }
+    public static string CheckErrorMessage(Exception error) {
+        for (Exception e=error; e!=null; e=e.InnerException) {
+            var http=e as HttpFailure;
+            if (http!=null) {
+                if (http.Status==403 || http.Status==429) return "官方更新服务暂时限制访问（HTTP "+http.Status+"）。请稍后重试，或切换网络。";
+                return "官方更新服务返回 HTTP "+http.Status+"。请稍后重试。";
+            }
+            if (e is OperationCanceledException) return "连接官方更新服务超时。请切换网络后重试。";
+            var network=e as WebException;
+            if (network!=null) {
+                if (network.Status==WebExceptionStatus.NameResolutionFailure || network.Status==WebExceptionStatus.ProxyNameResolutionFailure)
+                    return "无法解析更新服务或代理地址。请检查网络或代理设置。";
+                if (network.Status==WebExceptionStatus.TrustFailure || network.Status==WebExceptionStatus.SecureChannelFailure)
+                    return "无法建立安全连接。请检查系统时间，或切换网络后重试。";
+            }
+            if (e is System.Security.Authentication.AuthenticationException)
+                return "无法建立安全连接。请检查系统时间，或切换网络后重试。";
+            if (e is InvalidDataException || e is XmlException)
+                return "官方更新信息未通过校验。请稍后重试。";
+        }
+        return "无法连接官方更新服务。请切换网络或稍后重试。";
     }
     static string Hash(string path) {
         using (var stream = File.OpenRead(path))
