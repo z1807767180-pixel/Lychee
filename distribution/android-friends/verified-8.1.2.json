@@ -1,0 +1,18 @@
+{
+  "status": "signed; live delivery and installed failure-mode verification pending",
+  "verifiedAtUtc": "2026-11-27T17:37:44.414555+00:00",
+  "version": "8.1.2",
+  "package": "dev.lychee.friends",
+  "versionCode": 80102,
+  "title": "荔枝朋友版 A8.1.2",
+  "sha256": "e9edd5e1ecc376bb24675ff42ae3b8fabad9589911d3587fc3717c09281a3ca7",
+  "apkBytes": 3007817,
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46042725367",
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "signatureSchemes": [
+    "v2",
+    "v3"
+  ],
+  "nativeDexSha256": "2c35726126a20c869f7ecfa56faca587bf0341603a81f51b7da30515f6364f1b",
+  "deliveryCommitPrepared": "605ec47b324535d96c9d713b54446a688bab2d7f"
+}
