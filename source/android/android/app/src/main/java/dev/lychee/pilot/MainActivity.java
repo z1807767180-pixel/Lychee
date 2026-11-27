@@ -1,5 +1,6 @@
 package dev.lychee.pilot;
 
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.content.Intent;
 import android.app.AlertDialog;
@@ -104,12 +105,20 @@ public final class MainActivity extends BridgeActivity {
                 return request.isForMainFrame() ? super.shouldInterceptRequest(web,request) : null;
             }
         });
+        // A cached launch page can render offline without a main-frame network error.
+        view.post(() -> { if (hasNoNetwork()) connectionError(view); });
+    }
+    private boolean hasNoNetwork() {
+        ConnectivityManager network = getSystemService(ConnectivityManager.class);
+        return network != null && network.getActiveNetwork() == null;
     }
     private void connectionError(WebView web) {
         if (isFinishing() || isDestroyed() || (offline!=null && offline.isShowing())) return;
         offline=new AlertDialog.Builder(this).setTitle("暂时打不开荔枝")
             .setMessage("请检查网络后重试。你的账号和园子仍会保留。")
-            .setPositiveButton("重试",(d,w)->web.loadUrl("https://"+HOST+ENTRY))
+            .setPositiveButton("重试",(d,w)->web.post(()->{
+                if (hasNoNetwork()) connectionError(web); else web.loadUrl("https://"+HOST+ENTRY);
+            }))
             .setNeutralButton("检查安卓更新",(d,w)->updates.check(true))
             .setNegativeButton("关闭",(d,w)->finish()).show();
     }
