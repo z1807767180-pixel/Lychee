@@ -65,6 +65,7 @@ async function installAndroidUpdates(webRoot) {
   await mkdir(target);
   await mkdir(join(target,tag));
   await writeFile(join(target,tag,name),apk);
+  if (Number(version.split('.')[0]) >= 8) await writeFile(join(target,tag,'Lychee-Friends-A'+version+'.apk'),apk);
   await writeFile(join(target,'download.html'),page);
   await writeFile(join(target,'current.json'),manifest);
 }
