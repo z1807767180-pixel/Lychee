@@ -1,5 +1,7 @@
 """Exercise the signed friends shell at Android entry points without a production account."""
 import re
+import os
+from pathlib import Path
 import subprocess
 import sys
 import time
@@ -162,6 +164,19 @@ if __name__ == "__main__":
     elif sys.argv[1] == "upgrade":
         old, new, apk = sys.argv[2:]
         adb("uninstall", PACKAGE)
+        if tuple(map(int, old.split("."))) >= (8, 0, 1):
+            # These public updaters support the official origin on Android 9 and newer.
+            # The dedicated test also verifies the installed bytes and a cold launch.
+            serial=adb("get-serialno").strip()
+            assert serial.startswith("emulator-") and adb("shell","getprop","ro.kernel.qemu").strip()=="1"
+            adb("root")
+            adb("wait-for-device")
+            signed=Path("out")/f"Lychee-Friends-V{new}.apk"
+            evidence=Path(os.environ.get("RUNNER_TEMP","."))/"official-origin-upgrade"
+            subprocess.run([sys.executable,str(Path(__file__).with_name("android-origin-upgrade.py")),
+                            apk,new,str(signed),str(evidence),"--updater-code-apk",apk],
+                           check=True,env={**os.environ,"ANDROID_SERIAL":serial})
+            sys.exit(0)
         adb("install", apk)
         assert "versionName="+old in adb("shell","dumpsys","package",PACKAGE)
         # Grant the emulator the same source permission a user grants in Settings.
