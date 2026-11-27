@@ -10,6 +10,7 @@ import {notices,mobileNotices} from './notices.mjs';
 import {handleDietVision} from './diet-vision.mjs';
 import {handleDietEntries} from './diet-store.mjs';
 import {createWebPush} from './notify-push.mjs';
+import {createQuizGames} from './quiz-game.mjs';
 
 const project=dirname(dirname(fileURLToPath(import.meta.url)));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8',
@@ -22,6 +23,12 @@ const publicInfo=Object.freeze({protocol:1,version:'6.4.0',accountApi:'v640',pri
 const accountCatalog=[...mobileNotices,...notices];
 const mobileNoticeIds=new Set(mobileNotices.map(n=>n.id));
 
+async function gardenNames(domains,origin,member) {
+  const response=await domains.handle(new Request(new URL('/api/camp?roster=circle-names',origin)),member);
+  if(!response.ok)return null;
+  return new Map((await response.json()).profiles.map(p=>[Number(p.slot),p.name]));
+}
+
 async function accountRequest(accounts,domains,url,request,ctx){
   const response=await accounts.handle(new Request(url,request),ctx);
   if(response.ok && request.method==='GET' && url.pathname==='/api/workspace' && url.searchParams.has('members')){
@@ -30,9 +37,8 @@ async function accountRequest(accounts,domains,url,request,ctx){
     const viewer=session && await accounts.resolveMember(session.accountId,garden);
     if(!viewer)return deny(403,'需要先加入这个圈子');
     const roster=await response.json();
-    const names=await domains.handle(new Request(new URL('/api/camp?roster=circle-names',url)),viewer);
-    if(!names.ok)return deny(503,'圈内昵称暂时无法读取，请重试');
-    const profiles=new Map((await names.json()).profiles.map(p=>[p.slot,p.name]));
+    const profiles=await gardenNames(domains,url,viewer);
+    if(!profiles)return deny(503,'圈内昵称暂时无法读取，请重试');
     return Response.json({members:roster.members.map(({slot,name,role})=>({name:profiles.get(slot)||name,role}))},
       {headers:response.headers});
   }
@@ -71,6 +77,22 @@ async function readLegacyRelease(root){
   return JSON.stringify(manifest);
 }
 
+function gardenQuiz(execute, domains, push) {
+  return createQuizGames(execute,{
+    names:(request,member)=>gardenNames(domains,request.url,member),
+    async announce(request,member,id,guestName) {
+      const origin=new URL(request.url).origin;
+      const announcement=await domains.handle(new Request(new URL('/api/camp',origin),{
+        method:'POST',headers:{origin,'content-type':'application/json'},
+        body:JSON.stringify({type:'note',key:id,name:member.username.slice(0,14),avatar:0,
+          body:`【头脑王者】邀请 ${guestName} 答五题\n对局编号：${id}`}),
+      }),member);
+      if (announcement.ok) void push.signal(member.gardenId);
+      return announcement.ok;
+    },
+  });
+}
+
 async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,staticRoots}){
   if(storage==='turso'){
     if(!turso?.url||!turso?.authToken)throw Error('Configure server-side Turso access before starting');
@@ -81,8 +103,9 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
     try{
       const accounts=await createTursoAccounts(client,{notices:accountCatalog});
       const domains=createTursoDomains({...turso,legacyDir,testProviderOrigin});
-      const push=createWebPush({execute:(sql,args)=>client.execute({sql,args}),domains});
-      return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{client.close();}}};
+      const execute=(sql,args)=>client.execute({sql,args});
+      const push=createWebPush({execute,domains});
+      return {accounts,domains,push,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();}finally{client.close();}}};
     }catch(error){client.close();throw error;}
   }
   if(storage!=='sqlite')throw Error('Unsupported LYCHEE_STORAGE');
@@ -94,11 +117,12 @@ async function openStores({storage,turso,dataDir,legacyDir,testProviderOrigin,st
   await mkdir(data,{recursive:true,mode:0o700});
   const db=new DatabaseSync(join(data,'accounts.sqlite'));
   const accounts=createAccounts(db,{notices:accountCatalog}), domains=createDomains({dataDir:data,legacyDir,testProviderOrigin});
-  const push=createWebPush({domains,execute(sql,args){
+  const execute=(sql,args)=>{
     const statement=db.prepare(sql);
     return statement.columns().length?{rows:statement.all(...args)}:{rows:[],rowsAffected:statement.run(...args).changes};
-  }});
-  return {accounts,domains,push,async close(){try{await push.close();await domains.close();}finally{db.close();}}};
+  };
+  const push=createWebPush({domains,execute});
+  return {accounts,domains,push,quiz:gardenQuiz(execute,domains,push),async close(){try{await push.close();await domains.close();}finally{db.close();}}};
 }
 
 export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(project,'public'),legacyDir=join(project,'legacy'),legacyWebRoot,origin,testProviderOrigin}){
@@ -117,13 +141,14 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
     if(path==='/api/v640/account'||path==='/api/v640/workspace')
       url.pathname=path.replace('/api/v640/','/api/');
     if(url.pathname==='/api/account'||url.pathname==='/api/workspace')return accountRequest(accounts,domains,url,request,ctx);
-    if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'){
+    if(path==='/api/v7/diet/recognize'||path==='/api/v7/diet/entries'||path==='/api/v7/push'||path==='/api/v7/quiz'){
       const session=await accounts.resolveSession(request);
       if(!session)return deny(401,'请先登录');
       if(url.searchParams.get('accountId')!==session.accountId)return deny(403,'账号已切换，请重新打开');
       const gardenId=url.searchParams.get('gardenId');
       const member=gardenId&&await accounts.resolveMember(session.accountId,gardenId);
       if(!member)return deny(403,'需要先加入这个圈子');
+      if(path==='/api/v7/quiz')return stores.quiz(request,member);
       if(path==='/api/v7/push')return stores.push.handle(request,session,member);
       const config=storage==='turso'?{turso,legacyDir}:{quotaFile:join(dataDir,'accounts.sqlite')};
       if(path.endsWith('/recognize')){

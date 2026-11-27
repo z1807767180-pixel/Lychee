@@ -20,6 +20,10 @@
     "client/garden.js": "bf6a6e02f28923c4f12693b2fb3723990d8175a8847e0ab7dcfc74fe8bbd0fd1",
     "client/notify-push-v7.js": "3cb737ef84a3e8ec766c4655b3cc6e4ab4746b6fd2f2ee6a3d4eecb2de30d1ff",
     "client/notify-v7.js": "e10133b2f9afb2bca9b985cda29c8831833c05019e0713813b585fefc3bf34b4",
+    "client/quiz-card-v7.webp": "88272140b613133833a661abd4fe22d80468c837ae3b2bcddf2a8e64183902fb",
+    "client/quiz-result-v7.webp": "40267be4a7481c5231390eca8c0a08efd63a6a1fd5230047930080011fe773b4",
+    "client/quiz-v7.css": "6759ced804de94288ab836650afd41793339ca5729153837cce3b04ca715450e",
+    "client/quiz-v7.js": "2e94b07c890ca855b03e312f58e5e88895a93edde24db845a97a2ddaa08679ff",
     "client/responsive-text.css": "7cb2cbad0ecd6f5a725a70a4ad09f46d9a4cb5fb9770b96e30f29ac96a85219b",
     "client/toolbox-cards.css": "844ca32d9a345daec3e83834985d95d0c1ba8361075591b59c85ee245a482bb7",
     "client/typography.css": "f3ef28aedbae1196c1e37062ad9bd09a4b6af8312a876fa7a2f457433c4c7ee5",
@@ -77,7 +81,7 @@
     "mobile/hd-wall-2.webp": "36e028370bdccf4ba520fd80ad89c42a968a5953b5b1e5281e5c45d7b62bb299",
     "mobile/hd-wall-3.webp": "e79f6952215588d386c0bf58e12853733b370f416412ef37db04291ffd9fe1c1",
     "mobile/icon.png": "c366ab432a1d3293dc58b8a113362dbf1d169d74aa143df5069548c29f4d1965",
-    "mobile/index.html": "083c79ed8c16e5160a21c1a119061666d870053de358f7e8eaceb18cbbdd773e",
+    "mobile/index.html": "40c4c9beb7edc0de1e892304fd64c4a0c0d43af24194083593910cb17979b86a",
     "mobile/journal-clap.webp": "f9162dcb267d3f1f6dbb50626f0eebcd206864f66f5f663f2b44ed0df80f3283",
     "mobile/journal-coffee.webp": "5179e9308a4d3fdecad9f04d0b5f3dcca5421edd182267025d52c1677a593fe3",
     "mobile/journal-flowers.webp": "532d39b4cb90939800abf32099dc71ea416d99199dfdfd1a002d3e71148ae17a",
@@ -111,7 +115,7 @@
     "mobile/orchard-mascot.webp": "ad48723362ad894784befae19de20da699ea51d0de29651aa95a930472104278",
     "mobile/orchard-tea.jpg": "a3b4e9e4049812739ed56b561242a008f486839cc33d71dfe6a6107f0fec8237",
     "mobile/phone.css": "d5282632f92b65bbdbd4edbf84519bba6093d56589227d8d77b9b7b34a9dc7c9",
-    "mobile/phone.js": "949202f80ba0684adfe90f388979546f10f826bdb79c3165d366cff23d8d6e38",
+    "mobile/phone.js": "5cf8bd3e38117492fd67c7b6c5e13a976d13027851a629e996d2df3407fab570",
     "mobile/riddle-picnic.webp": "bbfe79de663c30b5fa1c8a8a3e32ee01fcf34c3198d1e1dc1f56e16d463e7774",
     "mobile/slip-leaves.webp": "a55ca89eed4e1f14edc71c5b59c996d649eafc44dd7ad2b50d8b97e73647fa2f",
     "mobile/sticker-0.jpg": "a1ef251a223d0db15dde8c6508379409e8560f8cb6a7001aec6f2a23c0adca15",
@@ -162,11 +166,11 @@
     "windows/journal.js": "906019069ededa392a5880b5bf90966e1ea657110ea3bbaf3ac3d019c0752af1",
     "windows/mobile-wide.css": "fc9273bc11fa529df2edac4970ea7cf40c51d6eb7995d1b9ac5691c98cc21815",
     "windows/nav.css": "ab4650fab3ebc3b0c2b6adadc8fbe6d7a7e64e3cee9554d00ff31bce32e22c1a",
-    "windows/phone.js": "22a0781c7f1807aa54fa0f38ae2acd1f872aef7ca5d88dce872da7bf39c53cb4",
+    "windows/phone.js": "348dc6fcf486d61111875d2d3130ca37101bcd8bc5ebed81606a7a034b42c6ff",
     "windows/team-share.js": "01bedf8f2e72a4602cfea06eb83ed8655eb275ac56ada84c47093a82867c0e2a",
     "windows/update-ui.css": "dc5ba89ec8ae5fe914baa086d2784dc3176361fa3a7888c51390239dfeb17bb3",
     "windows/update-ui.js": "c9d5ecc4c154a86dd70ace3999a96be7d453a2747acf69a9bcb90bf3cbac1a6b",
-    "windows/workspace-nav.js": "b059e44075cf387c264234025ea16be3eeff7c12b0efbb14d029ca800caa160d",
-    "windows/workspace.html": "6f4a32ec41990ecfddab32059ee9d15c74f1efa065abc2a562ddd1d803b34642"
+    "windows/workspace-nav.js": "4f4f25472c3cde9945087d7c1a84a93a253476ba1d00c30dd128aa881fe122d4",
+    "windows/workspace.html": "721ce26efb3e5d7af650ce937276b6ae0fb582ea2311a72b38aed19bfdc3cfa9"
   }
 }
