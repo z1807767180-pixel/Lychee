@@ -1,6 +1,6 @@
 import { constants } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 // These are the public 6.4.7 server modules whose original behavior is extended in 7.0.
@@ -53,7 +53,10 @@ async function installAndroidUpdates(webRoot) {
   }
   const tag = 'android-friends-v'+version;
   const name = 'Lychee-Friends-V'+version+'.apk';
-  const apk = await readFile(new URL(tag+'/'+name, source));
+  const packageUrl = new URL(tag+'/'+name, source);
+  const {size} = await stat(packageUrl);
+  if (size < 1 || size > 128*1024*1024) throw Error('Invalid Android friends APK size');
+  const apk = await readFile(packageUrl);
   if (createHash('sha256').update(apk).digest('hex') !== sha256) {
     throw Error('Prepared Android friends APK does not match its release manifest');
   }

@@ -55,6 +55,8 @@ def build(out):
             data = notifications(data.decode()).encode()
         if Path(name).suffix in {".html", ".css", ".js"}:
             data = SHARED.sub(lambda m: prefix.encode() + m[1], data)
+        if name.endswith(".js") and name != "launch/start.js":
+            data = data.replace(b"AbortSignal.timeout(", b"window.lycheeTimeoutSignal(")
         target = out / (name if name.startswith("mobile/") else prefix.lstrip("/") + name)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)

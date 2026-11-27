@@ -8,6 +8,34 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const firstPaint = new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   const opening = firstPaint.then(() => sleep(reducedMotion ? 0 : 2300));
+  // Older Android WebViews can fetch normally without AbortSignal.timeout.
+  window.lycheeTimeoutSignal = function(ms) {
+    if (typeof window.AbortSignal?.timeout === 'function') return window.AbortSignal.timeout(ms);
+    if (typeof window.AbortController !== 'function') return undefined;
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), ms);
+    return controller.signal;
+  };
+  function probe(timeout) {
+    return new Promise(resolve => {
+      const request = new XMLHttpRequest();
+      request.open('GET','/api/client-capabilities?accountApi=v640');
+      request.timeout = timeout;
+      request.setRequestHeader('Accept','application/json');
+      request.setRequestHeader('Cache-Control','no-cache');
+      request.onload = () => {
+        let data;
+        if (request.status === 200 && (request.getResponseHeader('Content-Type') || '').includes('application/json')) {
+          try { data = JSON.parse(request.responseText); } catch { /* The service may still be starting. */ }
+        }
+        resolve({status:request.status, data});
+      };
+      request.onerror = () => resolve({status:0});
+      request.ontimeout = () => resolve({status:0});
+      request.onabort = () => resolve({status:0});
+      request.send();
+    });
+  }
   function offerRetry(message) {
     status.textContent = message;
     retry.hidden = false;
@@ -17,26 +45,28 @@
     running = true;
     retry.hidden = true;
     status.textContent = '正在连接荔枝园…';
-    const started = Date.now();
+    const deadline = Date.now()+90000;
+    const waking = setTimeout(() => {
+      if (running && retry.hidden) status.textContent='正在等荔枝园响应…';
+    },5000);
     try {
       while (true) {
-        if (!navigator.onLine) {offerRetry('网络未连接，连上后可以重试。');return;}
-        let response;
-        let capabilities;
-        try {
-          response = await fetch('/api/client-capabilities?accountApi=v640', {cache:'no-store',signal:AbortSignal.timeout(9000)});
-          if (response.ok && (response.headers.get('content-type')||'').includes('application/json')) {
-            capabilities = await response.json();
-          }
-        } catch { /* A cold service can time out before it starts accepting requests. */ }
+        const remaining = deadline-Date.now();
+        if (remaining<=0) {offerRetry('暂时连不上荔枝园，请检查当前网络后重试。');return;}
+        const {status:code,data:capabilities} = await probe(Math.min(75000,remaining));
         if (capabilities?.protocol === 1 && capabilities.accountApi==='v640' && capabilities.privateGardens && capabilities.accountNotices) break;
-        if (response?.status === 404 || capabilities?.protocol) {
+        if (code === 0 && navigator.onLine === false) {
+          offerRetry('网络未连接，连上后可以重试。');return;
+        }
+        if (code === 404 || capabilities?.protocol) {
           offerRetry('服务正在准备新版，稍后可以重试。');return;
         }
-        if (Date.now()-started>90000) {offerRetry('暂时连不上荔枝园，请稍后重试。');return;}
-        if (Date.now()-started>5000) status.textContent='荔枝园正在醒来，请稍候…';
-        await sleep(2500);
+        if (code === 401 || code === 403) {
+          offerRetry('当前连接被拒绝（HTTP '+code+'），请检查网络后重试。');return;
+        }
+        await sleep(Math.max(0,Math.min(2500,deadline-Date.now())));
       }
+      clearTimeout(waking);
       status.textContent='正在打开荔枝…';
       const gate = document.createElement('script');
       gate.src='/client/garden.js?v='+encodeURIComponent(document.body.dataset.clientBuild);
@@ -59,7 +89,8 @@
         panel.remove();
       }
       catch {retry.onclick=()=>location.reload();offerRetry('页面加载中断，可以重新打开。');}
-    } finally {running=false;}
+    } catch {offerRetry('启动请求未能完成，请重试。');}
+    finally {clearTimeout(waking);running=false;}
   }
   retry.onclick=start;
   window.addEventListener('online',()=>{if(!retry.hidden)retry.click();});
