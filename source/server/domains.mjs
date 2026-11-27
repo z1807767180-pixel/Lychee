@@ -118,7 +118,8 @@ function gardenSource(name, source, originalProfiles) {
         riddleIds.add(card.id);decks[card.deck].push(card);
       }
       var challengeBank = Object.values(decks).flat();
-      const soupGroups=globalThis.gardenSoupCategories(catalog_default);`);
+      const soupGroups=globalThis.gardenSoupCategories(catalog_default);
+      filters=Object.keys(soupGroups.counts);`);
     source = replaceOnce(source,'count: catalog_default.length, filters, ready:', 'count: catalog_default.length, filters, counts:soupGroups.counts, ready:');
     source = replaceOnce(source,'tags: card.tags,','tags: soupGroups.byId.get(card.id), difficulty:card.difficulty,');
     const pool='const pool = catalog_default.filter(';
@@ -129,6 +130,8 @@ function gardenSource(name, source, originalProfiles) {
       if(!['all','easy','medium','hard'].includes(level))return bad('请选择有效难度',400);
       const pool=catalog_default.filter(c=>soupGroups.match(c,p.filter,level));
       if(!pool.length)return bad('这个组合暂时没有题，请换个题型或难度。');`);
+    source = replaceOnce(source,'correct:card.correct,solution:card.solution,practice,',
+                         'correct:card.correct,solution:card.solution,source:card.source||null,practice,');
     source = replaceOnce(source, '...(commonGuesses[card.id]||[])', '...(card.aliases||[]),...(commonGuesses[card.id]||[])');
     source = replaceOnce(source, 'chat\\.[1-3]\\.', 'chat\\.[1-9]\\d*\\.');
     source = replaceOnce(source, 'avatar > 3)', 'avatar > 15)');

@@ -19,7 +19,10 @@ public final class FriendsFeedProbe {
             if (!landingPage) {
                 try (java.util.Scanner body = new java.util.Scanner(conn.getInputStream(), "UTF-8")) {
                     JSONObject feed = new JSONObject(body.useDelimiter("\\A").next());
-                    if (!args[0].equals(feed.getString("version"))) throw new IllegalStateException("Unexpected version");
+                    if (!args[0].equals(feed.getString("version"))) {
+                        System.err.println("Previous published version is still cached");
+                        throw new IllegalStateException("Unexpected version");
+                    }
                 }
             }
             System.out.println("Device reached " + conn.getURL().getHost() + " for " + args[0]);

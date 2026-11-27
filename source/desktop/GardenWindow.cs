@@ -93,9 +93,7 @@ internal sealed class GardenWindow : Window {
     bool updateChecked, checking, installing, updateView;
     WindowsUpdateFeed.Release offered;
     readonly DispatcherTimer notifications = new DispatcherTimer {Interval=TimeSpan.FromSeconds(8)};
-    readonly DispatcherTimer dismissNotification = new DispatcherTimer {Interval=TimeSpan.FromSeconds(8)};
-    Window popup;
-    WindowState restoreState=WindowState.Normal;
+    bool taskbarAttention;
     [StructLayout(LayoutKind.Sequential)] struct FlashInfo {
         public uint size; public IntPtr hwnd; public uint flags, count, timeout;
     }
@@ -133,7 +131,7 @@ internal sealed class GardenWindow : Window {
         var maximize=AddCaptionButton(controls,"□","最大化",ToggleMaximize);
         AddCaptionButton(controls,"×","关闭",Close);
         StateChanged+=delegate {
-            if(WindowState!=WindowState.Minimized)restoreState=WindowState;
+            SyncAttentionState();
             frame.Padding=WindowState==WindowState.Normal?chrome.ResizeBorderThickness:new Thickness(0);
             string label=WindowState==WindowState.Maximized?"还原":"最大化";
             maximize.Content=WindowState==WindowState.Maximized?"❐":"□";
@@ -160,45 +158,39 @@ internal sealed class GardenWindow : Window {
             if(!closing && (WindowState==WindowState.Minimized || !IsActive) && web.CoreWebView2!=null)
                 web.CoreWebView2.PostWebMessageAsString("notify:poll");
         };
-        dismissNotification.Tick+=delegate {HideNotification();};
-        Closed+=delegate {closing=true;notifications.Stop();HideNotification();web.Dispose();archive.Dispose();};
+        Activated+=delegate {SyncAttentionState();};
+        Deactivated+=delegate {SyncAttentionState();};
+        Closed+=delegate {closing=true;notifications.Stop();ClearTaskbarAttention();web.Dispose();archive.Dispose();};
     }
-    void HideNotification() {
-        dismissNotification.Stop();
-        if(popup!=null){var old=popup;popup=null;old.Close();}
+    bool HasForeground { get {return IsActive && WindowState!=WindowState.Minimized;} }
+    void FlashTaskbar(uint flags,uint count) {
+        var handle=new WindowInteropHelper(this).Handle;
+        if(handle==IntPtr.Zero)return;
+        var signal=new FlashInfo {size=(uint)Marshal.SizeOf(typeof(FlashInfo)),hwnd=handle,flags=flags,count=count};
+        FlashWindowEx(ref signal);
+        if(origin.IsLoopback && web.CoreWebView2!=null && !closing)
+            web.CoreWebView2.PostWebMessageAsString("notify:flash-call:"+flags+":"+count);
+    }
+    void ClearTaskbarAttention() {
+        if(!taskbarAttention)return;
+        taskbarAttention=false;FlashTaskbar(0,0);
+    }
+    void SyncAttentionState() {
+        if(HasForeground)ClearTaskbarAttention();
+        if(!closing && web.CoreWebView2!=null)
+            web.CoreWebView2.PostWebMessageAsString(HasForeground?"notify:active":"notify:inactive");
+    }
+    void RequestTaskbarAttention() {
+        if(closing || HasForeground || taskbarAttention)return;
+        taskbarAttention=true;FlashTaskbar(2,3);
     }
     void MinimizeWindow() {
-        HideNotification();
         WindowState=WindowState.Minimized;
     }
     void OnWindowShortcut(object sender,KeyEventArgs e) {
         if(e.Key!=Key.Q || Keyboard.Modifiers!=ModifierKeys.Control)return;
         e.Handled=true;
         MinimizeWindow();
-    }
-    void ShowNotification(string key,string body) {
-        if((WindowState!=WindowState.Minimized && IsActive) || closing || key.Length>350 || body.Length>240)return;
-        HideNotification();
-        var signal=new FlashInfo {size=(uint)Marshal.SizeOf(typeof(FlashInfo)),hwnd=new WindowInteropHelper(this).Handle,flags=2,count=3};
-        FlashWindowEx(ref signal);
-        System.Media.SystemSounds.Asterisk.Play();
-        var text=new StackPanel {Margin=new Thickness(12,8,12,8)};
-        text.Children.Add(new TextBlock {Text="荔枝 · 新消息",FontWeight=FontWeights.Bold,Margin=new Thickness(0,0,0,4)});
-        text.Children.Add(new TextBlock {Text=body,TextWrapping=TextWrapping.Wrap,TextTrimming=TextTrimming.CharacterEllipsis,MaxHeight=42});
-        var button=new Button {Content=text,HorizontalContentAlignment=HorizontalAlignment.Left};
-        AutomationProperties.SetName(button,"打开荔枝新消息");
-        var area=SystemParameters.WorkArea;
-        popup=new Window {Title="荔枝 · 消息提醒",WindowStyle=WindowStyle.None,ResizeMode=ResizeMode.NoResize,
-            ShowInTaskbar=false,ShowActivated=false,Topmost=true,Width=292,Height=80,Left=area.Right-304,Top=area.Bottom-92,Content=button};
-        popup.PreviewKeyDown+=OnWindowShortcut;
-        button.Click+=delegate {
-            HideNotification();
-            if(closing)return;
-            if(WindowState==WindowState.Minimized)WindowState=restoreState;
-            Activate();
-            web.CoreWebView2.PostWebMessageAsString("notify:open\n"+key);
-        };
-        popup.Show();dismissNotification.Start();
     }
     Button AddCaptionButton(StackPanel parent,string icon,string label,Action click) {
         var button=new Button {Content=icon,ToolTip=label,FontSize=16,Width=36,Height=30,Background=Brushes.Transparent,BorderThickness=new Thickness(0),Foreground=new SolidColorBrush(Color.FromRgb(45,76,58))};
@@ -305,12 +297,9 @@ internal sealed class GardenWindow : Window {
                     if(command=="update:check"){await CheckUpdate(true);return;}
                     if(command=="update:install"){await InstallUpdate();return;}
                     if(command=="update:dismiss"){if(!installing)updateView=false;return;}
-                    if(command=="notify:reset"){HideNotification();return;}
-                    if(command!=null && command.StartsWith("notify:show\n",StringComparison.Ordinal)){
-                        var fields=command.Split(new[]{'\n'},3);
-                        if(fields.Length==3)ShowNotification(fields[1],fields[2]);
-                        return;
-                    }
+                    if(command=="notify:state"){SyncAttentionState();return;}
+                    if(command=="notify:reset"){ClearTaskbarAttention();return;}
+                    if(command=="notify:attention"){RequestTaskbarAttention();return;}
                     switch(m.WebMessageAsJson) {
                         case "\"frame:on\"":SetIntegrated(true);break;
                         case "\"frame:off\"":SetIntegrated(false);break;
@@ -323,7 +312,7 @@ internal sealed class GardenWindow : Window {
                 core.WebResourceRequested+=LocalAsset;
                 core.NavigationStarting+=delegate(object s,CoreWebView2NavigationStartingEventArgs n){
                     Uri u;if(!Uri.TryCreate(n.Uri,UriKind.Absolute,out u) || !IsSameOrigin(u) || IsApi(u.AbsolutePath))n.Cancel=true;else SetIntegrated(false);
-                    if(!n.Cancel)HideNotification();
+                    if(!n.Cancel)ClearTaskbarAttention();
                 };
                 core.NewWindowRequested+=delegate(object s,CoreWebView2NewWindowRequestedEventArgs n){n.Handled=true;};
                 core.NavigationCompleted+=async delegate(object s,CoreWebView2NavigationCompletedEventArgs n){

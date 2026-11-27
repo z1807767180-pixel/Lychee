@@ -47,6 +47,12 @@ test('new soups and riddles can be drawn, played and revealed through the garden
   const soupByTitle = new Map(puzzlePack.soups.map(card => [card.title,card]));
   let soup = await get('soup=1&room=solo'), foundSoup = false;
   assert.equal(soup.counts['全部'].all,soup.count);
+  assert.deepEqual(soup.filters,Object.keys(soup.counts));
+  const mildHorror=puzzlePack.soups.filter(card=>card.tags.includes('微恐'));
+  assert.ok(mildHorror.length>0,'The updated pack includes mild horror');
+  for(const level of ['easy','medium','hard']){
+    assert.equal(soup.counts['微恐'][level],mildHorror.filter(card=>card.difficulty===level).length);
+  }
   assert.equal(soup.counts['全部'].easy+soup.counts['全部'].medium+soup.counts['全部'].hard,soup.count);
   const empty=Object.entries(soup.counts).flatMap(([genre,row])=>
     ['easy','medium','hard'].filter(level=>row[level]===0).map(level=>({genre,level})))[0];
@@ -88,6 +94,7 @@ test('new soups and riddles can be drawn, played and revealed through the garden
       assert.equal(next.prompt,card.prompt);
       assert.equal(answer.matched,true);
       assert.equal(answer.solution,card.solution);
+      assert.deepEqual(answer.source,card.source||null);
       foundRiddle=true;break;
     }
   }

@@ -73,11 +73,13 @@ window.LycheeNotifications = (() => {
         }
         function show(row) {
           if (!active())return;
+          if (location.pathname==='/windows/workspace.html') {
+            window.dispatchEvent(new Event('lychee:chat-refresh'));
+            bridge?.postMessage('notify:attention');
+            return;
+          }
           setNotice(row);
-          if (bridge) {
-            const key=owner+'|'+row.id;
-            bridge.postMessage('notify:show\n'+key+'\n'+(title(row)+' · '+row.body).slice(0,220));
-          } else if (!phone && !pushed && document.hidden && window.Notification?.permission==='granted' && navigator.serviceWorker) {
+          if (!phone && !pushed && document.hidden && window.Notification?.permission==='granted' && navigator.serviceWorker) {
             navigator.serviceWorker.getRegistration('/mobile/').then(sw=>{
               if (sw && active())return sw.showNotification(title(row),{
                 body:row.body, tag:owner+'/'+row.id, data:{id:row.id,scope:owner}

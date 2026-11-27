@@ -174,7 +174,6 @@ window.LycheeMobileChat = (() => {
     return React.createElement('time',{className:'mobile-chat-time',dateTime:new Date(stamp).toISOString()},date+iso.slice(11,16));
   }
 
-  const empty={count:0,firstRoom:null};
   function presence(scope){
     const page=crypto.randomUUID(),query=new URLSearchParams({accountId:scope.accountId,gardenId:scope.gardenId});
     const route='/api/v7/push?'+query;
@@ -212,65 +211,7 @@ window.LycheeMobileChat = (() => {
     }};
   }
   function useInbox(React,read,write){
-    const [badge,setBadge]=React.useState(empty);
-    const access=window.LycheeAccess?.scope,owner=access?.accountId+'/'+access?.gardenId;
-    React.useEffect(()=>{
-      let live=true,busy=false,again=false,timer;
-      setBadge(empty);
-      if(!access?.accountId||!access.gardenId)return;
-      const device=presence(access);
-      const acknowledged=new Map();
-      function current(){
-        const rooms=[...document.querySelectorAll('[data-chat-room]')];
-        return rooms.reverse().find(room=>room.getClientRects().length);
-      }
-      function readThrough(log){
-        if(!log)return 0;
-        if(log.scrollHeight-log.scrollTop-log.clientHeight<12)return Number(log.dataset.chatThrough);
-        const bounds=log.getBoundingClientRect();
-        for(const row of [...log.querySelectorAll('[data-chat-created]')].reverse()){
-          const rect=row.getBoundingClientRect();
-          if(rect.bottom<=bounds.bottom+1 && rect.bottom>bounds.top)return Number(row.dataset.chatCreated);
-        }
-        return 0;
-      }
-      async function refresh(){
-        if(!live||document.hidden)return;
-        if(busy){again=true;return;}
-        busy=true;
-        try{
-          const log=current(),room=log?.dataset.chatRoom,through=readThrough(log);
-          if(room && through>(acknowledged.get(room)||0) && !document.querySelector('dialog.mobile-chat-viewer[open]')){
-            await write({type:'v61-chat-read',room,through});
-            acknowledged.set(room,through);
-          }
-          if(!live)return;
-          const {rooms}=await read('?v61=chat-inbox');
-          if(live){
-            setBadge({count:rooms.reduce((sum,item)=>sum+Number(item.unread),0),firstRoom:rooms[0]?.room});
-            void device.report(Number(rooms[0]?.latest)||0);
-          }
-        }catch{}finally{
-          busy=false;if(again&&live){again=false;schedule();}
-        }
-      }
-      function schedule(){clearTimeout(timer);timer=setTimeout(refresh,60);}
-      let last='';
-      const observer=new MutationObserver(()=>{
-        const log=current(),key=(log?.dataset.chatRoom||'')+'/'+(log?.dataset.chatThrough||'')+'/'+!!document.querySelector('dialog.mobile-chat-viewer[open]');
-        if(key!==last){last=key;schedule();}
-      });
-      observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['data-chat-through','data-chat-room','open']});
-      document.addEventListener('visibilitychange',schedule);
-      const scrolled=e=>{if(e.target?.matches?.('[data-chat-room]'))schedule();};
-      document.addEventListener('scroll',scrolled,true);
-      window.addEventListener('lychee:chat-refresh',schedule);
-      const poll=setInterval(refresh,8000);schedule();
-      return ()=>{live=false;device.stop();observer.disconnect();clearInterval(poll);clearTimeout(timer);
-        document.removeEventListener('visibilitychange',schedule);document.removeEventListener('scroll',scrolled,true);
-        window.removeEventListener('lychee:chat-refresh',schedule);};
-    },[owner]);
-    return badge;
+    return window.LycheeChatInbox.useInbox(React,read,write,presence);
   }
   return {Avatar,Photo,Viewer,timeLabel,useInbox,preparePhoto};
 })();

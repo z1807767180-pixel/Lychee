@@ -9,6 +9,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "source/android"))
 from mobile_assets import pack_checkout
+sys.path.insert(0, str(ROOT / 'source'))
 from chat_build import journal, notifications, phone as mobile_chat
 from release_notices import account_catalog, check_previous, phone_history, releases, workspace_gate
 
@@ -57,6 +58,8 @@ def build(out):
     (out / "mobile/app.webmanifest").write_bytes((HERE / "app.webmanifest").read_bytes())
     for name in ("chat.css", "chat.js"):
         shutil.copyfile(HERE / name, out / "mobile" / name)
+    chat = out / "mobile/chat.js"
+    chat.write_bytes((ROOT / "source/client/chat-inbox.js").read_bytes() + b"\n" + chat.read_bytes())
     if out.name == "www":
         # Render copies the complete prepared/ directory. Keep service code outside www/.
         services = out.parent / "server-v7"

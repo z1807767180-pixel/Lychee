@@ -10,3 +10,9 @@
 .lychee-update div{display:flex;gap:8px}
 .lychee-update button{padding:6px 12px;border:1px solid #c7ae7f;border-radius:8px;background:#fff9eb;color:inherit;font:inherit;cursor:pointer}
 .lychee-update button:first-child{background:#ffcf9c}
+
+.mobile-journal-bubble { display: inline-flex; position: relative; }
+.mobile-journal-bubble em {
+  position: absolute; right: -9px; top: -8px; min-width: 16px; padding: 0 3px;
+  border-radius: 12px; background: #a84035; color: #fff; font: 600 11px/16px -apple-system,sans-serif;
+}

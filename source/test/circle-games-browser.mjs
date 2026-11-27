@@ -60,18 +60,21 @@ try{
     if(skip)await click(skip);
     await click(phone?'和队友玩':'自己玩');
     await until(()=>browser.js("!!document.querySelector('select[aria-label=难度]')?.offsetWidth"),'选难度');
-    await browser.js(`for(const [label,value] of [['题型','幻想'],['难度','hard']]){
+    const room=phone?'team':'solo';
+    const endpoint='/g/'+garden+'/api/camp?soup=1&room='+room;
+    const catalog=await api(endpoint),genre=phone?'微恐':'幻想';
+    const level=['hard','medium','easy'].find(value=>catalog.counts[genre]?.[value]>0);
+    assert.ok(level,'expected playable '+genre+' puzzles');
+    await browser.js(`for(const [label,value] of ${JSON.stringify([['题型',genre],['难度',level]])}){
       const e=document.querySelector('select[aria-label='+label+']');e.value=value;e.dispatchEvent(new Event('change',{bubbles:true}));
     }`);
     await until(()=>browser.js("document.querySelector('.soup-controls small')?.innerText.includes('可抽')"),'可抽数量');
     await click('抽题开局');
-    const room=phone?'team':'solo';
-    const endpoint='/g/'+garden+'/api/camp?soup=1&room='+room;
     const round=await until(async()=>(await api(endpoint)).round,'抽到符合条件的题');
-    assert.equal(round.difficulty,'hard');assert.ok(round.tags.includes('幻想'));assert.equal(round.solution,null);
+    assert.equal(round.difficulty,level);assert.ok(round.tags.includes(genre));assert.equal(round.solution,null);
     assert.equal((await api(endpoint)).round.id,round.id);
     await api('/g/'+garden+'/api/camp',{type:'soup',room,round:round.id,act:'reveal'});
-    console.log(phone?'Mobile':'Windows', 'UI selected fantasy + hard, drew a matching puzzle, and preserved its round');
+    console.log(phone?'Mobile':'Windows', 'UI drew and preserved a matching round:',genre,level);
   }
 }finally{
   await browser.close();await server.close();await rm(dir,{recursive:true});

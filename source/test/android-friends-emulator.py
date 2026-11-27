@@ -58,13 +58,22 @@ def offline(enable):
 
 def wait_for_public_https(target):
     # The device can retain an old VALIDATED entry after its default route disappears.
-    for _ in range(15):
+    failures = 0
+    deadline = time.monotonic() + 330
+    while time.monotonic() < deadline:
         try:
             print(adb("shell", "CLASSPATH=/data/local/tmp/friends-probe.jar",
                       "app_process", "/system/bin", "FriendsFeedProbe", target).strip(),flush=True)
             return
         except subprocess.CalledProcessError as error:
-            print(error.output.decode("utf8", "replace").strip()[:300], flush=True)
+            detail = error.output.decode("utf8", "replace").strip()[:300]
+            print(detail, flush=True)
+            if "Previous published version is still cached" in detail:
+                time.sleep(12)
+                continue
+            failures += 1
+            if failures >= 15:
+                break
             time.sleep(2)
     raise RuntimeError(f"The Android device could not connect to {target}")
 
@@ -87,6 +96,9 @@ if __name__ == "__main__":
             offline(False)
     elif sys.argv[1] == "channel":
         try:
+            # This fresh emulator has no user account. Discard cached online HTML
+            # before exercising the native offline entry point a second time.
+            assert "Success" in adb("shell","pm","clear",PACKAGE)
             offline(True)
             launch()
             find("暂时打不开荔枝")

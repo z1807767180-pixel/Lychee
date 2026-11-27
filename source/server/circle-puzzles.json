@@ -328,6 +328,3912 @@
         "license": "CC-BY-SA-4.0",
         "note": "荔枝为朋友聚会独立编写的中文情境、汤底和提示，采用 CC BY-SA 4.0。"
       }
+    },
+    {
+      "id": "ltda-215",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "概念神",
+      "surface": "我只要倒立，刚才那个难解的「原因」马上就成了「结论」。我没有脑袋，可我是个讲道理的家伙。",
+      "solution": "叙述者是几何证明里表示「因为」的三个点 ∵。上下翻转就成了表示「所以」的 ∴，所谓能力是符号变形。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "叙述者是几何证明里表示「因为」的三个点 ∵。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "上下翻转就成了表示「所以」的 ∴，所谓能力是符号变形。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "别把「我」当成人。",
+        "数学课上见过我。",
+        "在纸上画三个点，再把纸倒过来。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "推理",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "空白",
+        "url": "https://ltda.wikidot.com/soup-215",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《概念神》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-216",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "概念神2",
+      "surface": "这里每一批新来的人都不如上一批。说这话的那个人却从来没拿出过一份成绩单。为什么他年年都会得出同一个结论？",
+      "solution": "地点是学校，说话的是对学生不满意的老师。「你们是我带过最差的一届」是他对每届都讲的口头禅。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "地点是学校，说话的是对学生不满意的老师。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "「你们是我带过最差的一届」是他对每届都讲的口头禅。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "每隔几年就换一批听众。",
+        "没有人做过统计。",
+        "回想老师训班时常用的开场白。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "空白",
+        "url": "https://ltda.wikidot.com/soup-216",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《概念神2》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-248",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "狂欢与灾难",
+      "surface": "醒来时有几百条新消息。我翻到最上头，以为大家肯定在商量大事；翻到底，才发现消息几乎一模一样。我明知如此，却还是让情况更严重了。",
+      "solution": "群友在用「+1」复读上一条，数字表示跟帖，而非几百个新话题。看完的我也跟着回了一个「+1」，成了堆高未读的人。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "群友在用「+1」复读上一条，数字表示跟帖，而非几百个新话题。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "看完的我也跟着回了一个「+1」，成了堆高未读的人。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "发生在聊天软件里。",
+        "发言多不等于信息多。",
+        "看看大家有没有重复同一个符号。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-248",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《狂欢与灾难》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-317",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "雨过天晴",
+      "surface": "放学下大雨，同学都被家长接走了。我明知妈妈在上夜班，还是觉得她丢下了我。摸到书包侧袋里的字典，我却一下哭着笑了。",
+      "solution": "孩子自己忘了带伞，以为母亲只能在工作和接自己之间二选一。妈妈早把折叠伞和纸条塞进字典旁，孩子摸侧袋才发现。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "孩子自己忘了带伞，以为母亲只能在工作和接自己之间二选一。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "妈妈早把折叠伞和纸条塞进字典旁，孩子摸侧袋才发现。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "母亲昨天就提醒过天气。",
+        "能帮人回家的不一定是另一个人。",
+        "侧袋里除了字典还有一样东西。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "咕咕嘎嘎",
+        "url": "https://ltda.wikidot.com/soup-317",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《雨过天晴》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-324",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "便签",
+      "surface": "喝完一盒巧克力奶，我捂着肚子满教室借便签。大家都猜我要拿它去厕所用，越猜越离谱。我真跑去了厕所，纸却早被我留在别处。",
+      "solution": "学生急着去厕所，又得先告诉值日班长自己为什么离开。借纸是为写请假条，把条贴到班长桌上才跑走。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "学生急着去厕所，又得先告诉值日班长自己为什么离开。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "借纸是为写请假条，把条贴到班长桌上才跑走。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "纸没跟着他进厕所。",
+        "他的去向得有人知道。",
+        "他要用便签做的还是写字。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "妄想摘星辰",
+        "url": "https://ltda.wikidot.com/soup-324",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《便签》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-338",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "狼狈的爱",
+      "surface": "第一年除夕，两人坚持把自己喜欢的菜摆上桌，一顿饭吃得谁都不高兴。第二年买菜仍然各买各的，结果更浪费，两人倒都开心了。",
+      "solution": "新婚夫妻家乡不同，第一年各自坚持自己熟悉的年饭习惯。第二年两人各自偷偷买了对方家乡的食材；买重了心意，才会觉得幸福。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "新婚夫妻家乡不同，第一年各自坚持自己熟悉的年饭习惯。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "第二年两人各自偷偷买了对方家乡的食材；买重了心意，才会觉得幸福。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "数量不是他们真正关心的。",
+        "两个人来自不同地方。",
+        "第二年各买的是谁爱吃的菜？"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜",
+        "url": "https://ltda.wikidot.com/soup-338",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《狼狈的爱》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-339",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "特殊的春节",
+      "surface": "除夕，小明看到养父母收了个包裹，生气地掀翻了桌子。他独自看完包裹，反而愿意陪他们过年。三个人都默契地没提起寄件人。",
+      "solution": "小明以为养父母在拦着自己见亲生父母，所以误会他们。包里是亲生父母去世的证明和留信，养父母想保护他，他得知真相后也不愿让他们担心。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "小明以为养父母在拦着自己见亲生父母，所以误会他们。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "包里是亲生父母去世的证明和留信，养父母想保护他，他得知真相后也不愿让他们担心。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "三个活着的人都在顾及彼此。",
+        "小明有两对父母。",
+        "那封信足以解释为什么寄件人不能亲自来。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "本意",
+        "url": "https://ltda.wikidot.com/soup-339",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《特殊的春节》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-340",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "圣诞",
+      "surface": "他换好装去过圣诞，看见广场上有一对恋人，一句招呼没打就灰溜溜回家了。他与两个人都不认识。",
+      "solution": "他打算独自扮圣诞老人参加角色扮演活动。现场另一个圣诞老人有扮作麋鹿的伴侣相陪，撞了装又被秀了恩爱，他临时打了退堂鼓。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "他打算独自扮圣诞老人参加角色扮演活动。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "现场另一个圣诞老人有扮作麋鹿的伴侣相陪，撞了装又被秀了恩爱，他临时打了退堂鼓。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "大家都在穿节庆装扮。",
+        "他和其中一人撞了造型。",
+        "再看看另一个圣诞老人身边有什么。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-340",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《圣诞》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-418",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "猜不到的凶手",
+      "surface": "影帝领奖，身后正在放他在片中的精彩表演。观众从头到尾都没看见他的脸。他也看得津津有味。",
+      "solution": "导演怕观众靠熟脸认出凶手，让老演员和新人拍好各自的表演后互换了银幕上的脸。获奖的是老演员真正完成的表演，集锦中那张脸却是新人的。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "导演怕观众靠熟脸认出凶手，让老演员和新人拍好各自的表演后互换了银幕上的脸。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "获奖的是老演员真正完成的表演，集锦中那张脸却是新人的。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "领奖的人确实参加了拍摄。",
+        "明星的脸可能提前泄露悬疑片的反转。",
+        "后期可以保留表演同时替换面孔。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜",
+        "url": "https://ltda.wikidot.com/soup-418",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《猜不到的凶手》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-435",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "急",
+      "surface": "为了赶时间，我冲进电梯拼命按键。门总算合上，我反而更着急了。电梯运转完全正常。",
+      "solution": "我急着上厕所，只顾反复按关门键。门关了电梯却没收到楼层指令，目的地根本还没选。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "我急着上厕所，只顾反复按关门键。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "门关了电梯却没收到楼层指令，目的地根本还没选。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "他没有走错楼。",
+        "按很多次也可能只按了一个键。",
+        "关上门之后还缺哪条指令？"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-435",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《急》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-442",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "生日快乐！",
+      "surface": "小孩生日时许了个再普通不过的愿望。之后每年都过生日，一年比一年小。守护天使坚持自己没有听错愿望。",
+      "solution": "孩子说的是「我不想长大」。天使按字面让年龄逐年倒退，一直退回刚出生时。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "孩子说的是「我不想长大」。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "天使按字面让年龄逐年倒退，一直退回刚出生时。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "愿望说得有歧义。",
+        "不长大也能有两种实现方式。",
+        "天使选的是倒着走的那一种。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "幻想",
+        "微恐"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "江橘_zoe107",
+        "url": "https://ltda.wikidot.com/soup-442",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《生日快乐！》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-448",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "跑",
+      "surface": "铃声一响，走廊里的条纹突然都向同一个方向流动。有人大叫，有人痛骂；最幸运的人已经边走边笑。他们争的东西长着腿却跑不了。",
+      "solution": "条纹来自学生的校服，午餐时大家正往食堂跑。当天限量供应鸡腿，体育课提前到的人已经吃完，排在最后的人落了空。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "条纹来自学生的校服，午餐时大家正往食堂跑。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "当天限量供应鸡腿，体育课提前到的人已经吃完，排在最后的人落了空。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "同一种条纹在很多人身上。",
+        "铃响意味着上午的课结束了。",
+        "有腿的东西已经做成了菜。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "狂喜蘭舞_truthfulness",
+        "url": "https://ltda.wikidot.com/soup-448",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《跑》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-484",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "出师不利",
+      "surface": "语文考试，我提笔写下第一个字，就知道自己这一段开头出错了。这个字没写错，题也没看错。",
+      "solution": "我在写作文，问题出在第一个字落笔的位置。按这场考试的书写要求，段首要空两格，而我从第一格就开始了。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "我在写作文，问题出在第一个字落笔的位置。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "按这场考试的书写要求，段首要空两格，而我从第一格就开始了。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "别查错别字。",
+        "第一笔之前也能漏做一步。",
+        "看看格子纸左边空了几格。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "雪王大圣代_xuewang_dsd",
+        "url": "https://ltda.wikidot.com/soup-484",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《出师不利》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-489",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "迷糊",
+      "surface": "她明明在我眼前上了另一辆公交。我坐自己的车走了，下一站她竟又从车门外走进来。没有双胞胎，天也没闹鬼。",
+      "solution": "两路公交在前面的站点重合，她起初错上了先走的一班。她在共同的下一站下车，换上我乘坐的正确线路。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "两路公交在前面的站点重合，她起初错上了先走的一班。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "她在共同的下一站下车，换上我乘坐的正确线路。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两辆车有共同的站。",
+        "先开走的车也先到下一站。",
+        "她第一次上车时可能看错了号码。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-489",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《迷糊》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-491",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "加班",
+      "surface": "老板让人传达一句话。主管几乎一个字音都没改，全公司却做了和老板意思相反的事。圣诞节过后，主管丢了饭碗。",
+      "solution": "老板说「所有人全部要加班」，要求全员留下。主管把「全部要」听成「全不要」，传达成全体放假。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "老板说「所有人全部要加班」，要求全员留下。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "主管把「全部要」听成「全不要」，传达成全体放假。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "误会集中在三个音节。",
+        "有一个字的声调和断句变了。",
+        "把「全部要」和「全不要」各念一遍。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-491",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《加班》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-492",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "糖的致死量",
+      "surface": "我卡在同一关很久。同桌手比我慢，反而先通关。我请他教一招，立刻追上了他；明明赢了，我却后悔问他。",
+      "solution": "同桌用工具把游戏难度调低，并非练出了高超操作。我靠同一办法通关后，发现挑战带来的乐趣也消失了。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "同桌用工具把游戏难度调低，并非练出了高超操作。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "我靠同一办法通关后，发现挑战带来的乐趣也消失了。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "要问问两边的难度一样吗。",
+        "他教的不是手法。",
+        "轻松赢和玩得开心是两件事。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-492",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《糖的致死量》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-561",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "命运的安排",
+      "surface": "读书时我成绩好，他成绩差。他坚持说有一天会在同一所大学跟我见面。六年后他做到了，我却没有和他做成同学。",
+      "solution": "他连续多年备考，终于进入了大学。这段时间我已经离开学生阶段，成了迎接他的辅导员。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "他连续多年备考，终于进入了大学。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "这段时间我已经离开学生阶段，成了迎接他的辅导员。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "我们入校的年份不同。",
+        "六年足够改变一个人的身份。",
+        "在大学里碰面的人不一定都在读书。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-561",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《命运的安排》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-566",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "靠近",
+      "surface": "带着前世记忆来到此地后，我相信没有人挡得住我。偏偏第一次与同类相爱，才刚靠近，故事就结束了。",
+      "solution": "主角是保留了游戏碰撞规则的贪吃蛇。另一条同样穿越的蛇与它贴近相撞，触发了游戏里的死亡条件。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "主角是保留了游戏碰撞规则的贪吃蛇。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "另一条同样穿越的蛇与它贴近相撞，触发了游戏里的死亡条件。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "上辈子所在的世界有明确的碰撞规则。",
+        "它走过的身体会越来越长。",
+        "同类相碰在那个游戏里意味着什么？"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "幻想",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "白黎里",
+        "url": "https://ltda.wikidot.com/soup-566",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《靠近》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-575",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "聊斋 · 电梯",
+      "surface": "我低头走进夜里的空电梯，叫了声手机助手，回答却不是从我手里传来的。我又随口叫了几个不同的助手，四周纷纷回应。",
+      "solution": "这部怪谈里的电梯中，漂浮的人头各拿着一部手机，位置高于低头者的视线。它们的手机分别响应不同的唤醒词，暴露了那些原本看不见的乘客。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这部怪谈里的电梯中，漂浮的人头各拿着一部手机，位置高于低头者的视线。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "它们的手机分别响应不同的唤醒词，暴露了那些原本看不见的乘客。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "这是允许灵异现象的故事。",
+        "答话的的确是设备。",
+        "留意主角一直低着头，没有看哪里。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "悬疑",
+        "幻想"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-575",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《聊斋 · 电梯》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-576",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "聊斋 · 隐退记",
+      "surface": "他驱鬼几十年没失过手。今天还没念完，鬼突然精神大振。他只瞄了眼手机，就决定以后不做这行了。",
+      "solution": "驱鬼靠手机播放的经文，可平台改成了会员曲目，只让免费试听半分钟。音乐中断后法术失效，往后正版商用费用又高过报酬，他只好退休。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "驱鬼靠手机播放的经文，可平台改成了会员曲目，只让免费试听半分钟。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "音乐中断后法术失效，往后正版商用费用又高过报酬，他只好退休。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "驱鬼仪式需要声音。",
+        "电话没有打断他。",
+        "他听到的只是免费试听片段。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "喜剧",
+        "幻想"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-576",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《聊斋 · 隐退记》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-578",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "聊斋 · 缉魂",
+      "surface": "无常明明把亡魂带回了地府，名册也登记了。几天后，同一个魂又在人间好好上班。阎罗调查完，决定该改规章了。",
+      "solution": "故事中的亡魂附在有自主意识的电脑里，被带走时机器表现失常。人们把先前备份恢复到另一台电脑，同样的意识便重新出现了。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "故事中的亡魂附在有自主意识的电脑里，被带走时机器表现失常。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "人们把先前备份恢复到另一台电脑，同样的意识便重新出现了。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "这一回投胎的身体不用吃饭。",
+        "它的记忆能被复制。",
+        "修设备的人留了备份。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "微恐",
+        "推理",
+        "幻想"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-578",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《聊斋 · 缉魂》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-580",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "聊斋 · 道士消评记",
+      "surface": "妻子买来一把驱邪剑，要救性情大变的丈夫。剑一挂，她立刻给店家差评。道士上门，才发现剑的效果好得很。",
+      "solution": "夫妻原本都中了邪，丈夫先得佛珠相助，恢复正常后反被妻子当作变坏。真正仍然中邪的是妻子，挂剑使她难受，她才一口咬定东西没用。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "夫妻原本都中了邪，丈夫先得佛珠相助，恢复正常后反被妻子当作变坏。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "真正仍然中邪的是妻子，挂剑使她难受，她才一口咬定东西没用。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先想是谁在评价丈夫。",
+        "两人并非一直都是正常状态。",
+        "谁最急着把剑丢掉？"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "微恐",
+        "悬疑",
+        "幻想"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-580",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《聊斋 · 道士消评记》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-593",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "你敢骂我",
+      "surface": "下了化学课，一个学生问元素名称，另一个答对了，两人却打了起来。第三人好心说出别名，竟也被卷进去。",
+      "solution": "回答的是「汞」，在故事所用的方言里被听成骂人「滚」。劝架者解释「是水银」，又被听成了在问「是谁赢」。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "回答的是「汞」，在故事所用的方言里被听成骂人「滚」。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "劝架者解释「是水银」，又被听成了在问「是谁赢」。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两次误会都发生在听觉上。",
+        "化学符号是 Hg。",
+        "把「是水银」当成一句看热闹的话听。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-593",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《你敢骂我》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-622",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "并非",
+      "surface": "他们往群里刷恐怖图片，要求给人的照片打码。有个家伙说自己什么都不怕，点开最恐怖的链接，截图一发，全群笑翻。",
+      "solution": "群里其实都是鬼，他们怕的是人类的照片。链接里的惊吓图片加载失败了，他所谓镇定自若的截图只显示坏图。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "群里其实都是鬼，他们怕的是人类的照片。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "链接里的惊吓图片加载失败了，他所谓镇定自若的截图只显示坏图。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先弄清群成员的身份。",
+        "截图和原图并不一样。",
+        "网络不通的时候图标会变成什么？"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "微恐",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Tylous_Tylous",
+        "url": "https://ltda.wikidot.com/soup-622",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《并非》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-629",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "消失的孙军",
+      "surface": "主管坚持要查一名叫孙军的二十二岁员工，部门说查无此人。后来有人看了同一条电脑记录，连名单都没翻就解释清了。",
+      "solution": "主管把英文日志的 Sun Jun 22 当成「孙军，22岁」。那其实是星期日、六月、二十二日三个日期字段，与员工身份无关。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "主管把英文日志的 Sun Jun 22 当成「孙军，22岁」。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "那其实是星期日、六月、二十二日三个日期字段，与员工身份无关。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "别把几个英文缩写连读成人名。",
+        "第一个单词可以表示星期几。",
+        "第二个单词是月份。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "绫若羽_LingRuoYu",
+        "url": "https://ltda.wikidot.com/soup-629",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《消失的孙军》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-688",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "盼望的故事和故事",
+      "surface": "春节联欢晚会上，「妈妈」终于等来了女儿。女儿扑上去哭了，这段成了最动人的演出；真正的妈妈却没能等到她。",
+      "solution": "女儿是演员，扮演回家团圆的小品角色，为了演出没能赶回病重的母亲身边。亲生母亲在开演前去世，她喊舞台上的演员「妈」时真情流露，临场改变了原先的喜剧结尾。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "女儿是演员，扮演回家团圆的小品角色，为了演出没能赶回病重的母亲身边。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "亲生母亲在开演前去世，她喊舞台上的演员「妈」时真情流露，临场改变了原先的喜剧结尾。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "台上台下各有一个妈妈。",
+        "她在台上说的既是台词也是真心话。",
+        "真正的遗憾发生在直播开始之前。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "燃月",
+        "url": "https://ltda.wikidot.com/soup-688",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《盼望的故事和故事》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-753",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "2125年海龟汤",
+      "surface": "到了 2125 年，主持人说：我这道汤得先声明有奇幻设定。大家听完却发现，他讲的只是有人往门上的钥匙孔里看了一眼。",
+      "solution": "在这道未来故事里，带锁孔的门早已全部淘汰，只剩生物识别门。现代人觉得稀松平常的钥匙孔，已成了那一代玩家必须事先说明的虚构设定。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "在这道未来故事里，带锁孔的门早已全部淘汰，只剩生物识别门。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "现代人觉得稀松平常的钥匙孔，已成了那一代玩家必须事先说明的虚构设定。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "年份是重要线索。",
+        "各时代的「常识」不一样。",
+        "问题出在门锁的结构。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-753",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《2125年海龟汤》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-782",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "规则怪诞？",
+      "surface": "随身的规则写着：该相信穿红衣的女人；有人看到这块牌子，就把我送回去。这几条读得人背后发凉，可写规则的人一心想保护读者。",
+      "solution": "这是有记忆障碍的老人随身佩戴的识别牌，红衣女人是女儿。提醒和联系方式帮助老人认出亲人，也方便路人联系家里送他回去。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这是有记忆障碍的老人随身佩戴的识别牌，红衣女人是女儿。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "提醒和联系方式帮助老人认出亲人，也方便路人联系家里送他回去。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "它跟着同一个人走。",
+        "规则是家人写的。",
+        "另一面有联系信息。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "小怪兽_xiaoguaishou91",
+        "url": "https://ltda.wikidot.com/soup-782",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《规则怪诞？》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-875",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "瞒天过海",
+      "surface": "主持人声称正偷偷做一百页题。他没拿笔，只在大家提问时频频回答；眼看剩余页数越来越少。是什么在消耗这些纸？",
+      "solution": "「题」字能拆成「是」和「页」，主持人收集盘汤消息中出现的「是」字。每用一个「是」和一「页」拼出一个「题」，他就在倒计数里扣掉一页。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "「题」字能拆成「是」和「页」，主持人收集盘汤消息中出现的「是」字。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "每用一个「是」和一「页」拼出一个「题」，他就在倒计数里扣掉一页。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "注意游戏里哪一个字出现得特别多。",
+        "做题在这里要按字面拆开想。",
+        "把「是」和一「页」放在一起看。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-875",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《瞒天过海》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-886",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "角落/不能忘",
+      "surface": "八十多岁的妻子不能下床，等记性越来越差的丈夫出门买菜。一张小卡让他找回家；她等到灯亮，却可能再也等不到灯熄灭。",
+      "solution": "丈夫靠写着地址、联系方式和妻子照片的备忘卡，迷路后仍能认路回家。他回到妻子身边，做饭时却摔倒后没再回应；卧床的妻子无力起身关灯。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "丈夫靠写着地址、联系方式和妻子照片的备忘卡，迷路后仍能认路回家。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "他回到妻子身边，做饭时却摔倒后没再回应；卧床的妻子无力起身关灯。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "一个人行动受限，另一个人记忆受限。",
+        "卡片让这一天的第一次危险过去了。",
+        "听听灯亮后厨房里最后的动静。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-886",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《角落/不能忘》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-891",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "消失了的，去而不返的，还留下什么",
+      "surface": "「时间」一点点消失，一去不返。最后留在原地的竟是功夫明星叶问。这场失踪不涉及穿越，也没有演员登场。",
+      "solution": "发生变化的是「时间」两个汉字，笔画被逐步拿走。「时」少掉相应笔画能留下「叶」，而「间」里的「日」去掉中间一横就成了「问」。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "发生变化的是「时间」两个汉字，笔画被逐步拿走。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "「时」少掉相应笔画能留下「叶」，而「间」里的「日」去掉中间一横就成了「问」。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "把这句话写在纸上。",
+        "留意「一去」可能指拿掉一横。",
+        "目标是从「时间」两个字里留下「叶问」。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "推理",
+        "喜剧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜_RuiYanRY",
+        "url": "https://ltda.wikidot.com/soup-891",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《消失了的，去而不返的，还留下什么》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-920",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "沙蛇",
+      "surface": "前辈带一群年轻人在西北清「蛇卵」，他们盼一辈子再别看见蛇窝。这里没有爬行动物，他们却真有人为这份工作献出了生命。",
+      "solution": "「沙蛇」是人们对流动黄沙的比喻，「蛇卵」是日后会卷起风沙的风口。一代代治沙人在风口栽树护林，把阻止沙尘暴的事业传给后来者。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "「沙蛇」是人们对流动黄沙的比喻，「蛇卵」是日后会卷起风沙的风口。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "一代代治沙人在风口栽树护林，把阻止沙尘暴的事业传给后来者。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "他们常年种树。",
+        "地面上的东西会随风改变形状。",
+        "这里的「蛇窝」会遮天蔽日。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "狂妄之人",
+        "url": "https://ltda.wikidot.com/soup-920",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《沙蛇》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-156",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "fly",
+      "surface": "我住在一条永远闭合的曲线上，想让生活的轨迹不再重复。爬上画它的机械臂，我才发现，那些长短不一的零件都曾是我的邻居。",
+      "solution": "这是二维世界，「居民」本身是一条条线段，旋转的机械臂用来画出他们生活的曲线。曾想改变轨迹的前人把自己接进了机械臂，新的线段让画出的曲线更复杂。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这是二维世界，「居民」本身是一条条线段，旋转的机械臂用来画出他们生活的曲线。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "曾想改变轨迹的前人把自己接进了机械臂，新的线段让画出的曲线更复杂。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "把居民的形状也当成线索。",
+        "看看机械臂由什么组成。",
+        "增加一节会改变最终画出的图形。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "提问者X回答者",
+        "url": "https://ltda.wikidot.com/soup-156",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《fly》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-174",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "道",
+      "surface": "我为妻子打赢了最重要的一仗。她活了下来，却根本不记得我；我知道对手还会回来，仍然愿意再为她打一场。",
+      "solution": "故事里寿命耗尽时，寄托生命的元婴也会消散，主角的对手就是这条天道。他把妻子的元婴送去转生，延续了她的生命；在重新觉醒之前她不会保留旧日记忆。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "故事里寿命耗尽时，寄托生命的元婴也会消散，主角的对手就是这条天道。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "他把妻子的元婴送去转生，延续了她的生命；在重新觉醒之前她不会保留旧日记忆。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "对手不是情敌。",
+        "救她的方法是让生命换一种形式重来。",
+        "再生的代价落在了记忆上。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "冰",
+        "url": "https://ltda.wikidot.com/soup-174",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《道》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-221",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "未来",
+      "surface": "勇者一次次救下世界，每次得胜，朋友们反倒全都忘了他。最后他决定停止通关，伙伴们才终于能陪在他身边。",
+      "solution": "主人公是有自我意识的游戏角色，这个游戏没有通关后的世界。任何结局都只剩重新开始，朋友的记忆随新存档重置，停在结局之前才能保住相处的时光。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "主人公是有自我意识的游戏角色，这个游戏没有通关后的世界。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "任何结局都只剩重新开始，朋友的记忆随新存档重置，停在结局之前才能保住相处的时光。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "每次胜利后都出现同一个按钮。",
+        "有一个角色记得上一次游戏。",
+        "问问这款游戏有没有通关后可玩的内容。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "一粒兔籽",
+        "url": "https://ltda.wikidot.com/soup-221",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《未来》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-279",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "平凡与苦难",
+      "surface": "他们终于打败恶龙，可勇者一路看见的怪事一件也没改善。甚至连恶龙还活着时勉强维持的和平都变得摇摇欲坠。",
+      "solution": "村镇、官员和国家本来就有各自的问题，瘟疫与干旱等困境也并非恶龙造成。恶龙是各方共同的敌人；它消失后，原本被掩盖的内部矛盾再也无法靠讨龙来转移。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "村镇、官员和国家本来就有各自的问题，瘟疫与干旱等困境也并非恶龙造成。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "恶龙是各方共同的敌人；它消失后，原本被掩盖的内部矛盾再也无法靠讨龙来转移。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "想想一路上的麻烦是谁造成的。",
+        "队伍原本为什么能团结？",
+        "杀掉共同敌人不能解决所有人的生活困难。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "幻想",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "堂堂萝莉哒_kuhaku1",
+        "url": "https://ltda.wikidot.com/soup-279",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《平凡与苦难》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-287",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "屠杀",
+      "surface": "午夜将至，管理员逐个询问大家还有什么想说。十分钟后，三十五个始终沉默的人一起消失，留下的人继续谈笑。现场没有人受伤。",
+      "solution": "这里是人数快满的聊天群，管理员要腾出新成员的位置。他把不活跃的成员移出群，消失指从这个群的名单消失。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这里是人数快满的聊天群，管理员要腾出新成员的位置。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "他把不活跃的成员移出群，消失指从这个群的名单消失。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先确定「现场」在哪里。",
+        "这里有人数上限。",
+        "管理员有更改成员名单的能力。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "妄想摘星辰",
+        "url": "https://ltda.wikidot.com/soup-287",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《屠杀》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-341",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "新春冰湖谜影",
+      "surface": "除夕冰湖上真的冒出了传说中的祥瑞。一名木匠比其他人更希望大家看见它，可异光出现时他早已失去知觉。",
+      "solution": "木匠为生计布置了会发光的龙形图案，原想自己择机让大家发现。他与跟来的人发生争执，木匠昏迷，现场的火盆却意外触发了他布置的光效。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "木匠为生计布置了会发光的龙形图案，原想自己择机让大家发现。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "他与跟来的人发生争执，木匠昏迷，现场的火盆却意外触发了他布置的光效。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "有人事先准备了图案。",
+        "本来的表演被另一个人打断。",
+        "引起异光的最后一步是意外。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "本意",
+        "url": "https://ltda.wikidot.com/soup-341",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《新春冰湖谜影》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-464",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "凌晨两点的团圆",
+      "surface": "孙子在海外按平时的时间给爷爷打电话，正好听见全家坐齐、鞭炮响起。读了爷爷的日记，他才明白，为什么电话刚挂，家里人就全去补觉了。",
+      "solution": "祖孙住在不同时区，孙子平时打电话的时候，家乡已是深夜。爷爷主动把团圆饭挪到那个时间，叫醒全家，只为让不能回家的孙子隔着手机听一次年夜饭。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "祖孙住在不同时区，孙子平时打电话的时候，家乡已是深夜。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "爷爷主动把团圆饭挪到那个时间，叫醒全家，只为让不能回家的孙子隔着手机听一次年夜饭。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "别把电话两头想成同一个时间。",
+        "爷爷知道孙子的作息。",
+        "那顿饭是特地为听电话的人安排的。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "一个仰望星河的人0_look at the stars 0",
+        "url": "https://ltda.wikidot.com/soup-464",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《凌晨两点的团圆》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-554",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "《呼唤》—夏天",
+      "surface": "一位歌手在台下听见全场都喊自己的名字、央求再唱一遍。他们明明喜欢的却是台上的另一个人。没人认出他，也没人喊错。",
+      "solution": "这位歌手名叫「安可」，他写的歌被另一位歌手占为己有。观众在向台上的人喊 encore 要求返场，发音和「安可」一样，并不知道原作者就在现场。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这位歌手名叫「安可」，他写的歌被另一位歌手占为己有。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "观众在向台上的人喊 encore 要求返场，发音和「安可」一样，并不知道原作者就在现场。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "他的名字可以当演唱会用语。",
+        "观众是在要求返场。",
+        "把 encore 念出来听听。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "夏天_summer_XIA",
+        "url": "https://ltda.wikidot.com/soup-554",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《《呼唤》—夏天》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-607",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "夏日、我与荧火。",
+      "surface": "为了写完故事，我特意买来一罐萤火虫。玻璃罐摔碎了，我丢掉了刚买的东西，缺失的那段路却回来了。",
+      "solution": "作者买萤火虫是想唤回自己对童年夏夜的记忆。注视那点光时，他想起了女孩牵自己走过乡间小路、说萤火虫会带他们回家的往事。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "作者买萤火虫是想唤回自己对童年夏夜的记忆。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "注视那点光时，他想起了女孩牵自己走过乡间小路、说萤火虫会带他们回家的往事。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "丢失的不是一段真的道路。",
+        "光对他来说与童年有关。",
+        "有人曾在田野里牵着他的手。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Alice in Reality_YimiQ",
+        "url": "https://ltda.wikidot.com/soup-607",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《夏日、我与荧火。》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-682",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "真相",
+      "surface": "第一次去鬼屋，我花钱进去，出来时又留下一笔钱。后来我出了车祸，行动不便，却主动回鬼屋上班。老板认得我，欣然接受了。",
+      "solution": "这家鬼屋给残障人士提供工作，第一次参观时我了解这一点，额外捐了款。后来我也有了行动障碍，记得这里能发挥所长，便从顾客变成了员工。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这家鬼屋给残障人士提供工作，第一次参观时我了解这一点，额外捐了款。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "后来我也有了行动障碍，记得这里能发挥所长，便从顾客变成了员工。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "第二笔钱不是门票。",
+        "老板的用人方式值得注意。",
+        "再次回去的身份变了。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "瑞颜",
+        "url": "https://ltda.wikidot.com/soup-682",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《真相》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-808",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "双声独白",
+      "surface": "我总想把令人流泪的好故事改成圆满结局。写了又写，读者还是不买账。最后我靠一个读者才坚持下来，轮到自己被写进一个故事。",
+      "solution": "主角是为悲伤作品续写结局的创作者，一度因作品得不到认可而想放弃。一位读者的鼓励使主角重新拿笔，自己的经历也成为后来被人理解的故事。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "主角是为悲伤作品续写结局的创作者，一度因作品得不到认可而想放弃。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "一位读者的鼓励使主角重新拿笔，自己的经历也成为后来被人理解的故事。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "主角的工作与改写别人的人生有关。",
+        "一次鼓励改变了他的选择。",
+        "写故事的人自己也有一段被讲述的经历。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "Alice in Reality_YimiQ",
+        "url": "https://ltda.wikidot.com/soup-808",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《双声独白》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ltda-545",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "《耳环》-夏天",
+      "surface": "她知道我小时候所有的小事，连我当年没说出口的想法都知道。我本以为是天生一对，找不到自己的耳环后，才明白对面究竟是谁。",
+      "solution": "故事里的平行世界会交会，每个人用私人物件作锚点；进入别的世界时，属于自己的锚点就会消失。我身处另一个世界，眼前恋人的外形没变，内在却是另一个世界的我，因此拥有我的经历。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "故事里的平行世界会交会，每个人用私人物件作锚点；进入别的世界时，属于自己的锚点就会消失。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "我身处另一个世界，眼前恋人的外形没变，内在却是另一个世界的我，因此拥有我的经历。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "耳环是一件能辨认世界的东西。",
+        "同一个外表不一定对应同一个灵魂。",
+        "对方不是猜中了你的记忆。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "幻想",
+        "悬疑",
+        "微恐"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "夏天_summer_XIA",
+        "url": "https://ltda.wikidot.com/soup-545",
+        "license": "CC-BY-SA-3.0",
+        "note": "原作《《耳环》-夏天》，首载于小乌龟侦探社。荔枝节编题面与汤底、整理还原要点并编写提示，按原许可共享。https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    },
+    {
+      "id": "ts-case-c01",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "冷藏室的敲门声",
+      "surface": "凌晨两点，值班员听见冷藏室里传来三下敲门声。门显示为从里面锁上，而监控显示研究员林澈在一小时前已经离开大楼。冷藏室里到底发生了什么？",
+      "solution": "值班员听见的是手机定时震动撞击托盘，门关上后会自动锁住，当时室内没人。林澈此前移走样本，把手机留在里面，是为了让人推迟检查。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "值班员听见的是手机定时震动撞击托盘，门关上后会自动锁住，当时室内没人。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "林澈此前移走样本，把手机留在里面，是为了让人推迟检查。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先核对值班员听到了什么。",
+        "门能自己锁上，声音也能按时发生。",
+        "托盘上的三处震痕，和一部留在里面的手机有关。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c01-cold-room-knock.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C01《冷藏室的敲门声》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c02",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有脚印的回家路",
+      "surface": "午夜，顾遥家的智能门锁打开了。门外的雪却没有一枚新脚印。她到底是怎么回到家的？",
+      "solution": "顾遥搭乘维护车，在智能门锁启动程序前已经到家。维护车经过覆盖毯，路线又在降雪后被清理；午夜开锁只是定时动作。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "顾遥搭乘维护车，在智能门锁启动程序前已经到家。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "维护车经过覆盖毯，路线又在降雪后被清理；午夜开锁只是定时动作。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "门锁的时间真的是到家时间吗？",
+        "看降雪、清理路面和开锁的先后。",
+        "维护车辆载过人，门锁还设置了定时。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c02-snow-route.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C02《没有脚印的回家路》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c03",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "十二点的第二个影子",
+      "surface": "午夜换场时，后台证人看见台上出现了两个一模一样的影子。她说那是同一个演员。剧院里到底有几个人？",
+      "solution": "披风借给颜希，她扮成红王子；罗弈当时一直在后台。遮影屏配合灯光造成第二道影子，认出角色服装不足以认出演员。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "披风借给颜希，她扮成红王子；罗弈当时一直在后台。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "遮影屏配合灯光造成第二道影子，认出角色服装不足以认出演员。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "认得服装，不等于认得演员。",
+        "侧幕边有一块遮影屏。",
+        "留意借出去的披风，以及灯怎样制造第二个影子。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "微恐",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c03-second-shadow.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C03《十二点的第二个影子》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c04",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "寄不到的回信",
+      "surface": "邮袋还没有离开邮局，里面的回信却盖着明天的邮戳。时间到底出了什么问题？",
+      "solution": "邮局的邮戳机在校准时日期快了一天，测试时盖过空白信封。回信用了带次日戳的信封，在夜班邮袋封存前就已装好，并未经历时光倒流。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "邮局的邮戳机在校准时日期快了一天，测试时盖过空白信封。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "回信用了带次日戳的信封，在夜班邮袋封存前就已装好，并未经历时光倒流。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "谁规定邮戳一定等于今天？",
+        "从盖章机器查起。",
+        "校准时用过的空信封也可能进入邮件里。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c04-unpostable-reply.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C04《寄不到的回信》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c05",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "第三盏未接通的灯",
+      "surface": "停电后，仓库里出现了第三盏亮着的灯；线路图却只允许两盏。那道光从哪里来？",
+      "solution": "断电后室内应急灯亮着，门外的红色信标也亮了。窗边的反光板又映出亮斑，看似第三盏灯，其实没有第三个独立光源。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "断电后室内应急灯亮着，门外的红色信标也亮了。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "窗边的反光板又映出亮斑，看似第三盏灯，其实没有第三个独立光源。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先数发光的物体，再数看见的亮点。",
+        "窗边摆了反光板。",
+        "看门外的红光能不能在屋里留下另一个亮点。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c05-third-lamp.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C05《第三盏未接通的灯》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c06",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "一张不存在的船票",
+      "surface": "渡轮已经离港，闸机记录却显示一张不存在的船票在23:52被使用。记录时间和登船时间是同一件事吗？",
+      "solution": "闸机在离港前读的是沈洛的货运通行证，并非一张乘客船票。终端断过网，离港后看到的是先前扫描的记录，时间并不等于乘客登船时间。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "闸机在离港前读的是沈洛的货运通行证，并非一张乘客船票。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "终端断过网，离港后看到的是先前扫描的记录，时间并不等于乘客登船时间。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "被读取的未必是乘客的票。",
+        "闸机中途断过网。",
+        "把实际扫码、记录上传和渡轮离开依次排好。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP core team / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c06-nonexistent-ticket.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C06《一张不存在的船票》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c07",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "会自己归位的钥匙",
+      "surface": "锁柜从里面锁着，钥匙却在没人进入的情况下回到了挂钩上。它真的自己走回来了吗？",
+      "solution": "维修测试的磁头从服务孔带走钥匙，期间柜门一直锁着。配重收回缆线，把钥匙带回原来挂钩的位置。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "维修测试的磁头从服务孔带走钥匙，期间柜门一直锁着。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "配重收回缆线，把钥匙带回原来挂钩的位置。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "锁住的是柜门。",
+        "细缆线还有另一条通路。",
+        "看看维修时磁头和配重分别拉向哪里。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c07-key-returns.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C07《会自己归位的钥匙》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c08",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有人签收的录音",
+      "surface": "录音在空无一人的房间里被听见，但设备早已断电。它是谁在什么时候录下的？",
+      "solution": "台词早在房间清空前就已录下，文件写入缓冲区发生在后。后来恢复存储卡并播放了录音，断电的原录音机不用再运作。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "台词早在房间清空前就已录下，文件写入缓冲区发生在后。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "后来恢复存储卡并播放了录音，断电的原录音机不用再运作。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "把说话、保存、播放分成三件事。",
+        "断电前已有内容进了缓冲区。",
+        "存储卡能在另一台机器上回放。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "微恐",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c08-unclaimed-recording.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C08《没有人签收的录音》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c09",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "雨停后仍在滴水的房间",
+      "surface": "雨已经停了，房间里却在22:18继续滴水。房间里没人，屋顶也没有新的漏点。水从哪里来？",
+      "solution": "雨停前，天沟已经存下一段雨水。积水沿夹层里的排水管慢慢移动，雨停之后才抵达检修口滴进房内。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "雨停前，天沟已经存下一段雨水。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "积水沿夹层里的排水管慢慢移动，雨停之后才抵达检修口滴进房内。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "雨停了，不代表所有雨水都已经落地。",
+        "留意屋顶能暂时储水的位置。",
+        "沿着夹层的排水管倒推那滴水的旅程。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c09-rain-room.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C09《雨停后仍在滴水的房间》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c10",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "只响了一次的电话",
+      "surface": "地下机房的电话线已经断开，23:00却只响了一次。没有人打进来，响铃从哪里来？",
+      "solution": "断的是外部电话线，当时没人从外面拨进来。内部系统按时回放排队的留言，触发了内部手柄的一次响铃。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "断的是外部电话线，当时没人从外面拨进来。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "内部系统按时回放排队的留言，触发了内部手柄的一次响铃。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "没有外部来电，这点是真的。",
+        "查查响的是哪只听筒。",
+        "内部系统可以按时回放已经排队的留言。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c10-single-ring.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C10《只响了一次的电话》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c11",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "借来的签名",
+      "surface": "合同上的签名在魏宁到场前就已经出现，封存时间却没有错。是谁签的？",
+      "solution": "档案员借用了签名印章，魏宁还没到场时印迹就已出现在纸上。封存合同是后来的事；留下的压力纹也吻合盖章而非亲笔书写。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "档案员借用了签名印章，魏宁还没到场时印迹就已出现在纸上。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "封存合同是后来的事；留下的压力纹也吻合盖章而非亲笔书写。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先看字迹是怎样留在纸上的。",
+        "复写页上的压力纹很整齐。",
+        "别忘了有人可以借用签名印章。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c11-borrowed-signature.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C11《借来的签名》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c12",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有终点的电梯",
+      "surface": "电梯显示屏短暂出现了大楼不存在的“0层”，门却在B1打开。有人真的去了不存在的楼层吗？",
+      "solution": "控制器处于检修模式，零是校准使用的虚拟编号，并非楼层。空轿厢实际上停在地下一层，门也在那里打开。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "控制器处于检修模式，零是校准使用的虚拟编号，并非楼层。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "空轿厢实际上停在地下一层，门也在那里打开。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "楼层显示也可以显示内部编号。",
+        "当时电梯空载，正在检修。",
+        "零是控制器用来校准的参考点。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c12-zero-floor-elevator.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C12《没有终点的电梯》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c13",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "空杯里的第二条水线",
+      "surface": "量杯从未开封，也没有加入液体；清晨的水线却比封存时高出了一截。",
+      "solution": "固定配重的蜡扣受热软化，原本只浸入一部分的配重下沉，排开更多液体。杯中总质量未变，封口也没有动过。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "固定配重的蜡扣受热软化，原本只浸入一部分的配重下沉，排开更多液体。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "杯中总质量未变，封口也没有动过。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "没人打开杯子也能改变液面。",
+        "杯内还有部分露出水面的配重。",
+        "夜里变暖，固定配重的蜡扣变软了。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c13-second-waterline.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C13《空杯里的第二条水线》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c14",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "越过但未跨越的红箱",
+      "surface": "红色行李箱整夜没有移动，也没有通过闸门；清晨它却出现在禁区线的另一侧。",
+      "solution": "箱子没有跨越固定边界；维护人员沿地轨移动了整段可变隔离线，使边界越过箱子。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "箱子没有跨越固定边界。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "维护人员沿地轨移动了整段可变隔离线，使边界越过箱子。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "箱子的位置一直没变。",
+        "「在里面」取决于哪条线？",
+        "隔离线本身装在可以移动的导轨上。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c14-moving-red-box.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C14《越过但未跨越的红箱》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c15",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "同一张合影里的第六个人",
+      "surface": "天台始终只有五个人，门禁也没有第六次进入；全景合影里却清楚站着六个人。",
+      "solution": "旋转全景相机分时扫描；同一名快递员在镜头背后移动后，被左右两个扇区各记录一次。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "旋转全景相机分时扫描。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "同一名快递员在镜头背后移动后，被左右两个扇区各记录一次。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "拍一张全景需要一点时间。",
+        "数人之前先看看取景是从哪一侧扫过去的。",
+        "同一个人来得及绕到镜头尚未扫过的一端。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "喜剧",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c15-sixth-panorama.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C15《同一张合影里的第六个人》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c16",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有开门的交接",
+      "surface": "证物从甲室转移到了乙室；两扇房门、两套门磁和走廊监控都证明没有开门。",
+      "solution": "证物通过墙内旋转交接柜完成转移；柜筒每次只向一侧开放，因此两间房门都无需开启。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "证物通过墙内旋转交接柜完成转移。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "柜筒每次只向一侧开放，因此两间房门都无需开启。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两个人不一定要走动。",
+        "相邻房间有一面共用的墙。",
+        "能从墙两侧轮流打开的柜子就够了。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c16-closed-door-handoff.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C16《没有开门的交接》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c17",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "十一点的十二声钟",
+      "surface": "钟楼表盘停在十一点整，维修记录也承认它没有走动；午夜却准确敲了十二声。",
+      "solution": "表针走时轮系与报时轮系彼此独立；维修只锁住表针，报时轮仍由独立落锤按午夜凸轮运行。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "表针走时轮系与报时轮系彼此独立。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "维修只锁住表针，报时轮仍由独立落锤按午夜凸轮运行。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "有两种不同的「报时」。",
+        "检查指针和钟锤是否必须共用传动。",
+        "修理工锁住的只是其中一套机构。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "微恐",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c17-twelve-strikes.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C17《十一点的十二声钟》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c18",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "少了一公斤的密封箱",
+      "surface": "密封箱没有开封、没有移位，内容物清单也完整；同一台秤却显示它在十分钟内轻了一公斤。",
+      "solution": "秤在一公斤校准块留在台面时执行自动归零；之后移走校准块，箱子读数因此减少一公斤。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "秤在一公斤校准块留在台面时执行自动归零。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "之后移走校准块，箱子读数因此减少一公斤。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先别翻箱子，看看秤。",
+        "秤可以在有东西时把读数设为零。",
+        "想想把那件一公斤的东西移走后会怎样。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c18-lighter-sealed-crate.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C18《少了一公斤的密封箱》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c19",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "关窗后才出现的雾",
+      "surface": "窗户敞开时房间清澈，关闭并密封后反而出现白雾；没有漏水，也没有人启动加湿器。",
+      "solution": "关窗同时停止通风，室内湿气累积并越过冷玻璃的露点；白雾是延迟凝结，不是新增水源。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "关窗同时停止通风，室内湿气累积并越过冷玻璃的露点。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "白雾是延迟凝结，不是新增水源。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "屋里本来就有水汽。",
+        "窗户打开时，空气持续流动。",
+        "关窗后湿度升高，遇冷玻璃就会凝结。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c19-fog-after-window.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C19《关窗后才出现的雾》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c20",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "六个岗位的第五个人",
+      "surface": "六个岗位都完成了本人签到，所有凭证也合法；监控从头到尾却只出现五个人。",
+      "solution": "签到系统记录岗位资格而非唯一自然人；一名持双资质的值班员在两个时段合法兼任两个岗位。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "签到系统记录岗位资格而非唯一自然人。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "一名持双资质的值班员在两个时段合法兼任两个岗位。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "数一数岗位，再数不同的人。",
+        "排班有先后。",
+        "一个人可能有两套合格的岗位资格。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c20-fifth-worker.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C20《六个岗位的第五个人》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c21",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "完整录像里消失的七分钟",
+      "surface": "录像索引从00:00连续到00:20，没有删除、断网或坏帧；关键的七分钟却没有任何连续画面。",
+      "solution": "相机进入低功耗抽样模式，每分钟只保留一帧；连续索引描述文件覆盖区间，不代表连续采样。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "相机进入低功耗抽样模式，每分钟只保留一帧。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "连续索引描述文件覆盖区间，不代表连续采样。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "视频总时长没有缺口。",
+        "留意每分钟究竟录下多少帧。",
+        "省电模式可能留下一幅画面，却漏掉两帧之间的动作。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c21-missing-seven-minutes.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C21《完整录像里消失的七分钟》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c22",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有超标的超载桥",
+      "surface": "每个车轴读数都低于法定上限，也没有额外车辆；桥梁系统却正确触发了超载封闭。",
+      "solution": "单轴阈值与桥跨总载荷是两种约束；多根合规车轴同时位于主跨时，总和超过了结构限值。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "单轴阈值与桥跨总载荷是两种约束。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "多根合规车轴同时位于主跨时，总和超过了结构限值。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "记录里有不止一根车轴。",
+        "单项都合规，合在一起呢？",
+        "桥还要限制同一时刻主跨承受的总重量。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c22-overloaded-bridge.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C22《没有超标的超载桥》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c24",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "闭馆后转向的画",
+      "surface": "展厅门整夜未开，画框封条完好，连续全景监控也没有拍到搬运；清晨画却朝向了相反方向。",
+      "solution": "画框固定在可从服务侧驱动的旋转墙上；异步全景又把转动前后的扇区拼成一幅看似连续的画面。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "画框固定在可从服务侧驱动的旋转墙上。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "异步全景又把转动前后的扇区拼成一幅看似连续的画面。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "画框确实没有拆。",
+        "展览用的墙本身能转。",
+        "全景相机不是在同一瞬间拍完所有方向。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c24-turned-painting.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C24《闭馆后转向的画》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c25",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有响起的第二次门铃",
+      "surface": "访客在十秒内按了两次门铃，控制器也记录了两次触发；屋内的人却只听见一次。",
+      "solution": "两次按压都真实发生，但控制器的十秒防抖窗口把第二次触发合并进第一次响铃周期，触发记录不等于声音次数。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "两次按压都真实发生。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "但控制器的十秒防抖窗口把第二次触发合并进第一次响铃周期，触发记录不等于声音次数。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "按钮按下和喇叭响起是两种记录。",
+        "两次按压隔得特别近。",
+        "门铃会把很短时间里的多次按压合并。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c25-silent-second-bell.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C25《没有响起的第二次门铃》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c26",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "比地图短的管线",
+      "surface": "施工图上的管线只有四十米，验收仪却测得六十三米；管线没有绕出图纸标出的走廊。",
+      "solution": "施工图是平面投影，管线在两座竖井内多次下降和上升；走廊投影没有变化，真实三维长度却包含垂直段。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "施工图是平面投影，管线在两座竖井内多次下降和上升。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "走廊投影没有变化，真实三维长度却包含垂直段。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "施工图是从一个方向看的。",
+        "管道不仅能向前，还能向下。",
+        "把竖井里上下走的那些段加回去。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c26-short-map-pipeline.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C26《比地图短的管线》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c27",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "停在原地的移动平台",
+      "surface": "自动平台午夜前后都停在同一个定位框内；平台上的密封货箱却在另一座仓库被找到。",
+      "solution": "平台完成了一次往返，在中转站由机械臂卸下货箱，再空载回到原定位框；终态位置不能代表中途轨迹或货物位置。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "平台完成了一次往返，在中转站由机械臂卸下货箱，再空载回到原定位框。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "终态位置不能代表中途轨迹或货物位置。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "只知道开始和结束的位置。",
+        "想象一下平台中途去了哪里。",
+        "卸完货可以空着回到原处。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c27-stationary-moving-platform.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C27《停在原地的移动平台》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c29",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "签名盖的是岗位",
+      "surface": "夜间批准单上有主管的完整签名，可主管当晚在另一座城市；笔迹鉴定也确认没有伪造。",
+      "solution": "文件上的图形是经授权的岗位电子章，不是主管个人手写签名；值班代理按制度调用岗位章，流程真实但不能证明主管本人在场。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "文件上的图形是经授权的岗位电子章，不是主管个人手写签名。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "值班代理按制度调用岗位章，流程真实但不能证明主管本人在场。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先问签过的是人名还是岗位。",
+        "代理值班的人按规矩也能审批。",
+        "岗位的电子章与主管本人所在位置无关。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c29-role-stamp-signature.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C29《签名盖的是岗位》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c30",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "同一工号的两次值班",
+      "surface": "同一工号从傍晚一直工作到清晨，记录之间没有退出；监控却显示前后是两个完全不同的人。",
+      "solution": "这是轮班池工号，交接时由身份系统回收并重新绑定给下一名临时人员；业务日志按工号连续，人员绑定表按时段变化。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "这是轮班池工号，交接时由身份系统回收并重新绑定给下一名临时人员。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "业务日志按工号连续，人员绑定表按时段变化。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "工号和姓名属于不同栏位。",
+        "交接时业务日志没中断。",
+        "看同一工号在前后两个时段各分配给了谁。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c30-shared-shift-id.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C30《同一工号的两次值班》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c31",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "未入住的第八位住客",
+      "surface": "旅店登记表显示八位住客全部入住，门禁和早餐记录却最多只有七个不同的人。",
+      "solution": "登记表的八行主键是床位合同，其中一名长住客同时租下相连的工作床位；八份有效合同只对应七个自然人。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "登记表的八行主键是床位合同，其中一名长住客同时租下相连的工作床位。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "八份有效合同只对应七个自然人。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "登记表上每一行对应什么？",
+        "七个人里有一人用了不止一个床位。",
+        "那位长住客另租了相连的位置当工作空间。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c31-eighth-unchecked-guest.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C31《未入住的第八位住客》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c33",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "先到场的迟到者",
+      "surface": "门禁说调查员在 23:58 进入，直播画面却到 00:04 才出现他；值班表仍判定他午夜迟到。",
+      "solution": "门禁时钟快两分钟，视频播放器又有四分钟缓冲；校正到统一时间后，调查员在 00:00:20 到达，确实晚于午夜班次起点。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "门禁时钟快两分钟，视频播放器又有四分钟缓冲。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "校正到统一时间后，调查员在 00:00:20 到达，确实晚于午夜班次起点。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两台设备各有自己的时间。",
+        "门禁的钟走快了，直播还有延迟。",
+        "把两边都校准到同一个班次起点再比较。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c33-early-late-arrival.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C33《先到场的迟到者》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c34",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "封条上的明天",
+      "surface": "箱子在周一晚上完成封存，完整封条却印着周二日期；物流链没有中断，封条也没有更换。",
+      "solution": "封条由次日班次提前批量印制，日期表示计划出库批次而非粘贴时刻；唯一序列号和保管链证明封条周一已被领用。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "封条由次日班次提前批量印制，日期表示计划出库批次而非粘贴时刻。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "唯一序列号和保管链证明封条周一已被领用。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "日期印在封条上，未必是贴封条的日期。",
+        "仓库会提前备好下一班的材料。",
+        "比印刷日期更能追溯实物的是唯一序号。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c34-tomorrow-seal.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C34《封条上的明天》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c35",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "玻璃里多出来的值班员",
+      "surface": "大厅监控在同一分钟拍到两名穿同样制服的值班员；门禁和排班却都只有一个人。",
+      "solution": "弧形玻璃产生偏移反射，值班员又把备用外套挂在转角衣架上；反射把本人和制服轮廓组合成了第二个人形。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "弧形玻璃产生偏移反射，值班员又把备用外套挂在转角衣架上。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "反射把本人和制服轮廓组合成了第二个人形。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "镜头里看见的第二人有没有独立动作？",
+        "看大厅转角的衣架。",
+        "备用制服加上弧面玻璃里的反射能拼成人形。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "微恐"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c35-extra-glass-attendant.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C35《玻璃里多出来的值班员》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c36",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "终点站没有下车的人",
+      "surface": "列车到达终点时车载计数显示少了一人，刷卡记录也有一名乘客未出站；站台录像却没有任何人留在车上。",
+      "solution": "列车临时换入支线站台，乘客在中途联络通道换乘；车载计数把转移记为仍在车上，刷卡系统又延迟汇总，所有记录真实但统计边界不同。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "列车临时换入支线站台，乘客在中途联络通道换乘。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "车载计数把转移记为仍在车上，刷卡系统又延迟汇总，所有记录真实但统计边界不同。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "离开车厢不等于走出车站。",
+        "这趟车临时换过站台。",
+        "还有一条联络通道可以中途换乘。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c36-no-one-left-terminal.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C36《终点站没有下车的人》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c39",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "两次相同的心跳",
+      "surface": "监控回放里同一秒出现两次完全相同的心跳，设备日志却只有一次发送。",
+      "solution": "回放服务重复播放了同一心跳包；信号源只发送一次，采集、缓存和回放层必须分开核对。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "回放服务重复播放了同一心跳包。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "信号源只发送一次，采集、缓存和回放层必须分开核对。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两次图样完全重合，连细节都一样。",
+        "把心跳发送记录和回放记录分别看。",
+        "同一条记录可能被播放器重复读了一次。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "微恐",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c39-duplicated-heartbeat.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C39《两次相同的心跳》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c43",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "停在红线外的列车",
+      "surface": "驾驶台显示列车已停在红线外，车轮标记却压过了红线。",
+      "solution": "制动控制点、车头标记和车轮实际停止点采用不同参照位置；控制反馈正确但不等于车轮位置。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "制动控制点、车头标记和车轮实际停止点采用不同参照位置。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "控制反馈正确但不等于车轮位置。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "列车不是一个没有长度的点。",
+        "红线是拿来和哪个标记比较的？",
+        "驾驶台的制动参考点与轮子的位置有距离。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c43-train-stop-reference.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C43《停在红线外的列车》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c49",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "无人机没有转弯",
+      "surface": "画面方向突然转向，飞行轨迹却显示无人机一直朝北。",
+      "solution": "云台转动改变摄像机视线，飞行器航向没有改变；画面参照系与机体参照系不同。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "云台转动改变摄像机视线，飞行器航向没有改变。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "画面参照系与机体参照系不同。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "镜头朝向与机头朝向可以不同。",
+        "飞行轨迹一直笔直。",
+        "机身下面装相机的云台能够独自转动。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c49-gimbal-turn-drone.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C49《无人机没有转弯》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c50",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "仓库里多出的托盘",
+      "surface": "库存表显示多出一只托盘，批次总量却完全吻合。",
+      "solution": "库存按批次和托盘计数，盘点口径不等于唯一货物数量；一批货在拆分后留下了两个托盘标签。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "库存按批次和托盘计数，盘点口径不等于唯一货物数量。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "一批货在拆分后留下了两个托盘标签。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "先决定盘点的是货还是装货的托盘。",
+        "留意一批货有没有分成两份。",
+        "两个标签仍然可能属于同一批货。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c50-extra-warehouse-pallet.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C50《仓库里多出的托盘》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c52",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "夜里变短的河",
+      "surface": "夜间测绘显示河道长度变短，河岸和水流都没有移动。",
+      "solution": "测量使用的水位基准点被临时抬高，截面阈值变化让可见河段变短，河道本身没有改变。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "测量使用的水位基准点被临时抬高。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "截面阈值变化让可见河段变短，河道本身没有改变。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "河岸没有动，测量的起点却未必一样。",
+        "两次测绘怎样决定哪里算可见河段？",
+        "抬高水位参考点会改变划入图中的河段。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c52-shorter-river-night.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C52《夜里变短的河》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c57",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "不动的风向标",
+      "surface": "短时风向已经改变，风向标指针却保持原方向。",
+      "solution": "机械阻尼和轴承滞后让短时变化没有反映在指针上；风向变化与显示响应不同步。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "机械阻尼和轴承滞后让短时变化没有反映在指针上。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "风向变化与显示响应不同步。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "风变向的时间很短。",
+        "指针不是一有风就能立刻调头。",
+        "轴承和阻尼会让机械反应慢半拍。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c57-lagging-wind-vane.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C57《不动的风向标》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c58",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "同一容积的两种水位",
+      "surface": "两个容器装入同样体积的水，液面高度却不同。",
+      "solution": "容器截面积随高度变化，等体积液体对应不同高度；体积守恒不推出高度相等。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "容器截面积随高度变化，等体积液体对应不同高度。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "体积守恒不推出高度相等。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "水量相同是可靠线索。",
+        "留意两只容器的侧面形状。",
+        "同样多的水倒进窄处，和倒进宽处的高度不同。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c58-same-volume-two-levels.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C58《同一容积的两种水位》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c59",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "多出来的第九层",
+      "surface": "气压楼层估计显示建筑有第九层，电梯和消防图却只有八层。",
+      "solution": "气压模型把夹层和设备层重复计入，估计层数与建筑登记层数口径不同。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "气压模型把夹层和设备层重复计入。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "估计层数与建筑登记层数口径不同。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "楼层数字来自估算。",
+        "画楼层图和测气压用的是两套标准。",
+        "看看夹层与设备层有没有被重复计入。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c59-extra-ninth-floor.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C59《多出来的第九层》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c61",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "少了一圈的胶带",
+      "surface": "计数器显示胶带少了一圈，但剩余长度与现场测量对不上。",
+      "solution": "卷盘更换了芯径，计数器只记录圈数而没有重新校准；圈数不等于剩余长度。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "卷盘更换了芯径，计数器只记录圈数而没有重新校准。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "圈数不等于剩余长度。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "一圈胶带一定有固定长度吗？",
+        "看看卷盘中央那一圈的大小。",
+        "换了芯径还沿用原来的圈长，就会算错长度。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c61-missing-tape-turn.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C61《少了一圈的胶带》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c62",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "绳子没有变短",
+      "surface": "绳子两端距离没有变化，卷扬机却报告已经收回了三米。",
+      "solution": "滑轮重新换了锚点，端点距离保持不变但绳子的实际路径长度改变；几何端点不代表路径长度。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "滑轮重新换了锚点，端点距离保持不变但绳子的实际路径长度改变。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "几何端点不代表路径长度。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "两端的直线距离只是一个量。",
+        "看看中间绕过几只滑轮。",
+        "锚点换了，实际绕行路径就能缩短。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c62-rope-not-shorter.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C62《绳子没有变短》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c63",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "冷库里先融化的冰",
+      "surface": "冰芯温度仍在零度以下，表面却已经出现了一圈融水。",
+      "solution": "盐水夹层降低了表面局部融化阈值，表面状态先于核心温度变化；单一温度读数不能代表全部相态。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "盐水夹层降低了表面局部融化阈值，表面状态先于核心温度变化。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "单一温度读数不能代表全部相态。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "温度计测的是冰芯。",
+        "接触表面的液体里还有别的成分。",
+        "含盐的表层和内部纯冰开始融化的温度不同。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c63-ice-melts-first.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C63《冷库里先融化的冰》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c64",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有裂纹的玻璃",
+      "surface": "撞击声和应力报警都出现了，玻璃表面却找不到裂纹。",
+      "solution": "框架把冲击应力转移到固定件，声学传感器记录了冲击而不是裂纹；声响、受力和破坏不是同一事件。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "框架把冲击应力转移到固定件，声学传感器记录了冲击而不是裂纹。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "声响、受力和破坏不是同一事件。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "传感器确认的是冲击。",
+        "找一找力传给了谁。",
+        "声音很响，受力的也可能是固定件。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c64-uncracked-glass.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C64《没有裂纹的玻璃》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c65",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "同样高度的两道水印",
+      "surface": "两张纸的水印都在同一高度，裁切线却无法对齐。",
+      "solution": "纸张沿两个方向的膨胀不同，水印相对位置发生变化；尺面高度不等于原始排版位置。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "纸张沿两个方向的膨胀不同，水印相对位置发生变化。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "尺面高度不等于原始排版位置。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "纸张也会改变尺寸。",
+        "横向和纵向不一定膨胀同样多。",
+        "同高的水印未必还在原先的裁切坐标上。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c65-twin-watermarks.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C65《同样高度的两道水印》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c66",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有被搬动的砝码",
+      "surface": "砝码位置没有变化，天平读数却在一分钟内下降。",
+      "solution": "秤盘下的隐藏磁性耦合改变了受力，砝码本身没有移动；读数变化不必由可见物体移动造成。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "秤盘下的隐藏磁性耦合改变了受力，砝码本身没有移动。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "读数变化不必由可见物体移动造成。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "秤测到的力可能来自看不见的地方。",
+        "看看秤盘底下。",
+        "磁力能改变读数而不用把砝码移走。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c66-still-weight.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C66《没有被搬动的砝码》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c68",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "空座位的在场证明",
+      "surface": "座椅传感器一直显示有人，监控却拍到座位已经空了。",
+      "solution": "座椅压力锁存器在离座后延迟复位，传感状态不等于人员仍在场。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "座椅压力锁存器在离座后延迟复位。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "传感状态不等于人员仍在场。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "座椅里装的是压力感应器。",
+        "人刚离开时，状态会立即清掉吗？",
+        "这个感应器复位前有一段延迟。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c68-empty-seat-proof.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C68《空座位的在场证明》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c69",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "第三份会议纪要",
+      "surface": "同一时段出现三份会议纪要，参会者却只参加过一次会议。",
+      "solution": "一次会议产生了并行草稿，模板服务随后自动合并；文件份数不等于会议次数。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "一次会议产生了并行草稿，模板服务随后自动合并。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "文件份数不等于会议次数。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "记会议的人能同时有好几个。",
+        "两份文件最早都叫草稿。",
+        "看看合并这两份草稿时系统有没有另存一份。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c69-third-minutes.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C69《第三份会议纪要》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c72",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "一封被两次读出的通知",
+      "surface": "阅读记录显示通知被打开两次，发送日志却只有一次。",
+      "solution": "一次发送在客户端确认丢失后重试投递到两个终端，阅读次数和发送次数不是同一计数。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "一次发送在客户端确认丢失后重试投递到两个终端。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "阅读次数和发送次数不是同一计数。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "同一个人可以有两台设备。",
+        "一次发送中会有送达确认。",
+        "确认丢了以后，另一台设备也收到了重投的消息。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c72-message-read-twice.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C72《一封被两次读出的通知》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c73",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "玻璃里多出的出口",
+      "surface": "值班员在玻璃里看见第二个出口，平面图上却只有一扇门。",
+      "solution": "倾斜玻璃反射出另一侧门框，视觉出口并不存在；观察路径被反射面折叠。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "倾斜玻璃反射出另一侧门框，视觉出口并不存在。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "观察路径被反射面折叠。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "别凭轮廓就认定那里有通道。",
+        "换一个角度看玻璃。",
+        "门框的反射也会给人第二处出口的错觉。"
+      ],
+      "difficulty": "easy",
+      "tags": [
+        "微恐",
+        "悬疑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c73-phantom-exit.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C73《玻璃里多出的出口》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c74",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "没有回声的脚步声",
+      "surface": "走廊里听见了脚步声，尽头麦克风却没有录到回声。",
+      "solution": "走廊麦克风对直达声和反射声发生相位抵消，声源存在但接收端没有回声。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "走廊麦克风对直达声和反射声发生相位抵消。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "声源存在但接收端没有回声。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "人在走廊里听和设备在固定位置收音是两件事。",
+        "声音有从墙面反射来的，也有直接到的。",
+        "在麦克风所在位置，两路声波可能互相抵消。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "微恐",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c74-silent-footsteps.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C74《没有回声的脚步声》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c75",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "同一照片的两种天气",
+      "surface": "一张照片左边是晴天，右边却像刚下过雨。",
+      "solution": "相机以不同曝光时刻采样并合成 HDR，照片中的两种天气来自不同时间。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "相机以不同曝光时刻采样并合成 HDR。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "照片中的两种天气来自不同时间。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "手机按一次快门，有时会拍很多帧。",
+        "这是一张合成的高动态范围照片。",
+        "不同区域可能取自前后不同的曝光瞬间。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c75-two-weather-photo.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C75《同一照片的两种天气》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c76",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "红灯先亮的那一秒",
+      "surface": "监控画面显示红灯比绿灯早亮一秒，现场记录却说两灯同时切换。",
+      "solution": "滚动快门逐行采样，画面上下部分来自不同瞬间；帧内位置不代表同一时刻。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "滚动快门逐行采样，画面上下部分来自不同瞬间。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "帧内位置不代表同一时刻。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "录像里一帧画面不一定同时拍完。",
+        "两盏灯在画面里的高度不同。",
+        "逐行读取让先扫到和后扫到的地方对应不同时刻。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "日常",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c76-red-light-second.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C76《红灯先亮的那一秒》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c77",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "看不见的第九根线",
+      "surface": "摄像头拍不到第九根线，安全系统却在它断开时报警。",
+      "solution": "第九根是红外安全线，超出可见光范围；摄像头缺失不代表物理线路不存在。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "第九根是红外安全线，超出可见光范围。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "摄像头缺失不代表物理线路不存在。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "有些警戒线是一束光。",
+        "普通可见光摄像头看到的范围有限。",
+        "留意能被探测器接收到的红外光。"
+      ],
+      "difficulty": "medium",
+      "tags": [
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c77-invisible-ninth-wire.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C77《看不见的第九根线》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
+    },
+    {
+      "id": "ts-case-c78",
+      "schema_version": "1.0",
+      "language": "zh",
+      "title": "从另一面传来的声音",
+      "surface": "定位系统把声音指向东墙，现场却只有西侧设备在运行。",
+      "solution": "结构传声沿墙体先于空气传声抵达，定位算法把较早到达路径误当成声源方向。",
+      "facts": [
+        {
+          "id": "f1",
+          "text": "结构传声沿墙体先于空气传声抵达。",
+          "required": true
+        },
+        {
+          "id": "f2",
+          "text": "定位算法把较早到达路径误当成声源方向。",
+          "required": true
+        }
+      ],
+      "unknowns": [],
+      "character_claims": [],
+      "hints": [
+        "听见声音的地点不是它产生的地点。",
+        "声音可以沿着固体传播。",
+        "墙体里的信号先到，定位系统把来路当成了声源方向。"
+      ],
+      "difficulty": "hard",
+      "tags": [
+        "微恐",
+        "悬疑",
+        "推理"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "TURTLE SOUP 项目组 / 哥只是个传说",
+        "url": "https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/content/zh/cases/c78-sound-from-other-side.json",
+        "license": "MIT",
+        "note": "选自中文海龟汤调查游戏 C78《从另一面传来的声音》，荔枝节编案情、还原要点并重写三档提示。Copyright (c) 2026 哥只是个传说。许可原文：https://github.com/wangyufanshuai/turtle-soup/blob/2a5d14ad509946a312069910e97627b1625a206c/LICENSE"
+      }
     }
   ],
   "riddles": [
@@ -473,6 +4379,2557 @@
         "周日",
         "周天"
       ]
+    },
+    {
+      "id": "garden-sourced-hf-0",
+      "deck": "warmup",
+      "prompt": "点数时只念二到九。哪四个字既能补出两头，又像在形容生活拮据？",
+      "options": [
+        "缺衣少食",
+        "不三不四",
+        "七上八下"
+      ],
+      "correct": 0,
+      "solution": "开头缺「一」，末尾少「十」，连起来正好谐「缺衣少食」。",
+      "topic": "谐音",
+      "aliases": [
+        "缺衣少食"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=0",
+        "license": "Apache-2.0",
+        "row": 0,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-29",
+      "deck": "warmup",
+      "prompt": "肥皂模具上分别印了「肝」和「胆」。把这块香皂念成一个成语，会是什么？",
+      "options": [
+        "胆大心细",
+        "肝胆相照",
+        "同心协力"
+      ],
+      "correct": 1,
+      "solution": "「肝胆香皂」和「肝胆相照」只差字形，读音相同。",
+      "topic": "谐音",
+      "aliases": [
+        "肝胆相照"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=29",
+        "license": "Apache-2.0",
+        "row": 29,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-36",
+      "deck": "warmup",
+      "prompt": "猜一个过去常见的环保机构简称。哪种「鼠」专管环境卫生？",
+      "options": [
+        "环保署",
+        "袋鼠",
+        "田鼠"
+      ],
+      "correct": 0,
+      "solution": "把老鼠的「鼠」听成机关的「署」，答案就从动物变成了环保署。",
+      "topic": "谐音",
+      "aliases": [
+        "环保署",
+        "环境保护署"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=36",
+        "license": "Apache-2.0",
+        "row": 36,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-40",
+      "deck": "advanced",
+      "prompt": "小马的爸爸在市图书馆门口。把「市图、老马」念快些，像哪个成语？",
+      "options": [
+        "识途老马",
+        "走马观花",
+        "一马当先"
+      ],
+      "correct": 0,
+      "solution": "市图近音识途，小马的爸爸是老马，合起来就是识途老马。",
+      "topic": "谐音",
+      "aliases": [
+        "识途老马"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=40",
+        "license": "Apache-2.0",
+        "row": 40,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-41",
+      "deck": "advanced",
+      "prompt": "一头牛会游泳，可一下水就不再哞叫。用哪个成语给这幕画配音？",
+      "options": [
+        "有勇无谋",
+        "有口难言",
+        "如鱼得水"
+      ],
+      "correct": 0,
+      "solution": "牛「有泳无哞」。泳与勇同音，哞和谋近音。",
+      "topic": "谐音",
+      "aliases": [
+        "有勇无谋"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=41",
+        "license": "Apache-2.0",
+        "row": 41,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-42",
+      "deck": "warmup",
+      "prompt": "面铺仅有的两袋面条一起被盗了。把这件事念成一个成语。",
+      "options": [
+        "两面三刀",
+        "面不改色",
+        "面面俱到"
+      ],
+      "correct": 2,
+      "solution": "两份面都遭盗，就是「面面俱盗」，最后一个字换成同音的「到」。",
+      "topic": "谐音",
+      "aliases": [
+        "面面俱到"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=42",
+        "license": "Apache-2.0",
+        "row": 42,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-43",
+      "deck": "warmup",
+      "prompt": "信封里画着两枚鸡蛋。把「信是蛋蛋」连起来念，像哪个成语？",
+      "options": [
+        "名副其实",
+        "一诺千金",
+        "信誓旦旦"
+      ],
+      "correct": 2,
+      "solution": "是、誓同音，蛋、旦同音。两枚蛋正好对应两个旦。",
+      "topic": "谐音",
+      "aliases": [
+        "信誓旦旦"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=43",
+        "license": "Apache-2.0",
+        "row": 43,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-44",
+      "deck": "advanced",
+      "prompt": "眼前的薄冰亮闪闪，简直像铝箔。哪个成语听起来相近？",
+      "options": [
+        "如履薄冰",
+        "冰清玉洁",
+        "如释重负"
+      ],
+      "correct": 0,
+      "solution": "像铝的薄冰可说成「如铝薄冰」，把铝换成同音的履。",
+      "topic": "谐音",
+      "aliases": [
+        "如履薄冰"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=44",
+        "license": "Apache-2.0",
+        "row": 44,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-82",
+      "deck": "warmup",
+      "prompt": "漫画里的光头和尚把伞一撑，低头看不见天。猜一个表示肆无忌惮的成语。",
+      "options": [
+        "无忧无虑",
+        "无法无天",
+        "无边无际"
+      ],
+      "correct": 1,
+      "solution": "「无发」借音成「无法」，伞挡住天又扣住「无天」。",
+      "topic": "谐音",
+      "aliases": [
+        "无法无天"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=82",
+        "license": "Apache-2.0",
+        "row": 82,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-87",
+      "deck": "warmup",
+      "prompt": "有人把「人之初，性本善」听成了一句报姓氏的话。他会以为人起初都姓什么？",
+      "options": [
+        "善",
+        "本",
+        "初"
+      ],
+      "correct": 0,
+      "solution": "把「性本善」错听为「姓本善」，就把善良的善当成了姓。",
+      "topic": "谐音",
+      "aliases": [
+        "善"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=87",
+        "license": "Apache-2.0",
+        "row": 87,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-173",
+      "deck": "warmup",
+      "prompt": "羊群听到「狼来了」掉头就跑。把这两个动作压成两字，像哪种水果？",
+      "options": [
+        "杨桃",
+        "樱桃",
+        "山楂"
+      ],
+      "correct": 0,
+      "solution": "羊逃，读作 yáng táo，刚好与杨桃同音。",
+      "topic": "谐音",
+      "aliases": [
+        "杨桃"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=173",
+        "license": "Apache-2.0",
+        "row": 173,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-751",
+      "deck": "warmup",
+      "prompt": "想用一个成语形容麻雀忽然全安静了，把「压雀无声」改回哪四个字？",
+      "options": [
+        "鸦雀无声",
+        "悄无声息",
+        "万籁俱寂"
+      ],
+      "correct": 0,
+      "solution": "把动作「压」换成同音的「鸦」，就回到了原成语。",
+      "topic": "谐音",
+      "aliases": [
+        "鸦雀无声"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=751",
+        "license": "Apache-2.0",
+        "row": 751,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-762",
+      "deck": "warmup",
+      "prompt": "哪一种「蛇」只要善于说话，就号称三寸长还不会烂？",
+      "options": [
+        "三寸不烂之舌",
+        "眼镜蛇",
+        "响尾蛇"
+      ],
+      "correct": 0,
+      "solution": "蛇与舌同音，这里说的是能言善辩的舌头。",
+      "topic": "谐音",
+      "aliases": [
+        "三寸不烂之舌"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=762",
+        "license": "Apache-2.0",
+        "row": 762,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-810",
+      "deck": "warmup",
+      "prompt": "小朋友从一盆「洗澡水」里捞东西吃，大人却说洗得很干净。洗的到底是什么？",
+      "options": [
+        "香皂",
+        "毛巾",
+        "枣"
+      ],
+      "correct": 2,
+      "solution": "按「洗枣」来读，盆里泡的是要吃的枣子。",
+      "topic": "谐音",
+      "aliases": [
+        "枣"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=810",
+        "license": "Apache-2.0",
+        "row": 810,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-946",
+      "deck": "warmup",
+      "prompt": "排着队一个接一个蹲下。猜一座欧洲首都，答案要靠普通话借音。",
+      "options": [
+        "里斯本",
+        "雅典",
+        "伦敦"
+      ],
+      "correct": 2,
+      "solution": "「轮蹲」念起来近似「伦敦」，是把轮流蹲下说成了地名。",
+      "topic": "谐音",
+      "aliases": [
+        "伦敦"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=946",
+        "license": "Apache-2.0",
+        "row": 946,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1039",
+      "deck": "warmup",
+      "prompt": "玫瑰、向日葵、茉莉参加拔河。猜谐音的话，你会觉得哪朵最「没力」？",
+      "options": [
+        "茉莉",
+        "向日葵",
+        "玫瑰"
+      ],
+      "correct": 0,
+      "solution": "把「茉莉」念得像「没力」，花名就成了这句玩笑。",
+      "topic": "谐音",
+      "aliases": [
+        "茉莉",
+        "茉莉花"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1039",
+        "license": "Apache-2.0",
+        "row": 1039,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1125",
+      "deck": "warmup",
+      "prompt": "什么「酒」倒不进酒杯，却常常用来祝福友谊持续很久？",
+      "options": [
+        "米酒",
+        "花雕酒",
+        "天长地久"
+      ],
+      "correct": 2,
+      "solution": "酒和久同音。祝福里的「久」说的是时间长短。",
+      "topic": "谐音",
+      "aliases": [
+        "天长地久"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1125",
+        "license": "Apache-2.0",
+        "row": 1125,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1145",
+      "deck": "warmup",
+      "prompt": "四个 4 相加，得数读快一点，听起来像哪种水果？",
+      "options": [
+        "石榴",
+        "枇杷",
+        "柚子"
+      ],
+      "correct": 0,
+      "solution": "4 加四次是十六。「十六」和「石榴」音近。",
+      "topic": "谐音",
+      "aliases": [
+        "石榴"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1145",
+        "license": "Apache-2.0",
+        "row": 1145,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1146",
+      "deck": "warmup",
+      "prompt": "把一碗粥往头发上一倒，猜一位姓周的演员。",
+      "options": [
+        "周星驰",
+        "周润发",
+        "周杰伦"
+      ],
+      "correct": 1,
+      "solution": "「粥润发」是粥把头发润湿了，谐音正是周润发。",
+      "topic": "谐音",
+      "aliases": [
+        "周润发"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1146",
+        "license": "Apache-2.0",
+        "row": 1146,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1213",
+      "deck": "warmup",
+      "prompt": "两个孩子争着决定鸡蛋用蒸的还是煎的。妈妈说「别争了」，爱吃蒸蛋的人怎么听？",
+      "options": [
+        "别煎了",
+        "别煮了",
+        "别蒸了"
+      ],
+      "correct": 2,
+      "solution": "争与蒸同音。妈妈想让两人停下争吵，孩子却听成取消蒸蛋。",
+      "topic": "谐音",
+      "aliases": [
+        "别蒸了"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1213",
+        "license": "Apache-2.0",
+        "row": 1213,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1232",
+      "deck": "warmup",
+      "prompt": "金钟奖、金马奖、金像奖，哪个奖念起来最像在说「忠心报国」？",
+      "options": [
+        "金像奖",
+        "金马奖",
+        "金钟奖"
+      ],
+      "correct": 2,
+      "solution": "「金钟」近音「精忠」，接上报国就成了精忠报国。",
+      "topic": "谐音",
+      "aliases": [
+        "金钟奖"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1232",
+        "license": "Apache-2.0",
+        "row": 1232,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1270",
+      "deck": "advanced",
+      "prompt": "书架空着一本。把书的英文 book 和中文拼着念，能凑出哪个成语？",
+      "options": [
+        "缺一不可",
+        "一成不变",
+        "独一无二"
+      ],
+      "correct": 0,
+      "solution": "「缺一 book」里 book 的发音被借来凑「不可」，说的是一本也不能少。",
+      "topic": "谐音",
+      "aliases": [
+        "缺一不可"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1270",
+        "license": "Apache-2.0",
+        "row": 1270,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1276",
+      "deck": "warmup",
+      "prompt": "「布」和「纸」两位朋友里，哪一位专怕「万一」？",
+      "options": [
+        "纸",
+        "两位都怕",
+        "布"
+      ],
+      "correct": 0,
+      "solution": "俗话「不怕一万，只怕万一」，把「不、只」听成「布、纸」。",
+      "topic": "谐音",
+      "aliases": [
+        "纸"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1276",
+        "license": "Apache-2.0",
+        "row": 1276,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1280",
+      "deck": "warmup",
+      "prompt": "蜈蚣、蚂蚁、蜜蜂里，谁会说自己没有功劳就不领报酬？",
+      "options": [
+        "蚂蚁",
+        "蜈蚣",
+        "蜜蜂"
+      ],
+      "correct": 1,
+      "solution": "「蜈蚣」与「无功」同音，正好接上「无功不受禄」。",
+      "topic": "谐音",
+      "aliases": [
+        "蜈蚣"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1280",
+        "license": "Apache-2.0",
+        "row": 1280,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1281",
+      "deck": "warmup",
+      "prompt": "古装戏里有种「纸」，皇帝颁下才算数，文具店买不到。指的是什么？",
+      "options": [
+        "信纸",
+        "宣纸",
+        "圣旨"
+      ],
+      "correct": 2,
+      "solution": "文具的纸和皇帝下旨的旨同音。",
+      "topic": "谐音",
+      "aliases": [
+        "圣旨"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1281",
+        "license": "Apache-2.0",
+        "row": 1281,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1283",
+      "deck": "warmup",
+      "prompt": "猜个近音梗。大象皮、老虎皮和狮子皮，哪张被评为最「差」？",
+      "options": [
+        "老虎皮",
+        "大象皮",
+        "狮子皮"
+      ],
+      "correct": 1,
+      "solution": "「象皮差」故意读得像文具「橡皮擦」，并非在评价三种皮料。",
+      "topic": "谐音",
+      "aliases": [
+        "大象皮"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1283",
+        "license": "Apache-2.0",
+        "row": 1283,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1662",
+      "deck": "advanced",
+      "prompt": "把「无事生非」听成一句三国人物家谱：什么姓的妈妈生了张飞？",
+      "options": [
+        "吴",
+        "张",
+        "施"
+      ],
+      "correct": 0,
+      "solution": "按「吴氏生飞」来念，无、事、非借音成了吴、氏、飞。",
+      "topic": "谐音",
+      "aliases": [
+        "吴"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1662",
+        "license": "Apache-2.0",
+        "row": 1662,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1706",
+      "deck": "warmup",
+      "prompt": "哪种蝙蝠会被成语谜说成一天到晚不休息？",
+      "options": [
+        "风尘仆仆",
+        "不修边幅",
+        "昼伏夜出"
+      ],
+      "correct": 1,
+      "solution": "「不休蝙蝠」近音「不修边幅」。成语本义是穿着打扮随意。",
+      "topic": "谐音",
+      "aliases": [
+        "不修边幅"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1706",
+        "license": "Apache-2.0",
+        "row": 1706,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1945",
+      "deck": "warmup",
+      "prompt": "草地上到处是绿叶，一朵花也没有。说出这个状况，听着像哪种花？",
+      "options": [
+        "桃花",
+        "兰花",
+        "梅花"
+      ],
+      "correct": 2,
+      "solution": "「没花」与「梅花」同音。",
+      "topic": "谐音",
+      "aliases": [
+        "梅花"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1945",
+        "license": "Apache-2.0",
+        "row": 1945,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1944",
+      "deck": "warmup",
+      "prompt": "一群羊刚才还在草地上，转眼全跑没了。说句「羊没」，像哪种水果？",
+      "options": [
+        "杨梅",
+        "枇杷",
+        "蓝莓"
+      ],
+      "correct": 0,
+      "solution": "羊没与杨梅读音相同，水果名来自消失的羊。",
+      "topic": "谐音",
+      "aliases": [
+        "杨梅"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1944",
+        "license": "Apache-2.0",
+        "row": 1944,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1943",
+      "deck": "warmup",
+      "prompt": "狼从一只羊旁边走过，竟完全没看见。用一个同音字猜海味。",
+      "options": [
+        "蟹",
+        "贝",
+        "虾"
+      ],
+      "correct": 2,
+      "solution": "说狼看不见是「瞎」，取同音的「虾」。这一题只猜字音。",
+      "topic": "谐音",
+      "aliases": [
+        "虾",
+        "虾子"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1943",
+        "license": "Apache-2.0",
+        "row": 1943,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2255",
+      "deck": "warmup",
+      "prompt": "出租车没生意，一直停在那里。形容车太清闲，像哪位演员的中文名字？",
+      "options": [
+        "李敏镐",
+        "朴叙俊",
+        "车太贤"
+      ],
+      "correct": 2,
+      "solution": "「车太闲」与「车太贤」同音，三字都能从场景中找到。",
+      "topic": "谐音",
+      "aliases": [
+        "车太贤"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2255",
+        "license": "Apache-2.0",
+        "row": 2255,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2294",
+      "deck": "warmup",
+      "prompt": "拿出五角钱，换个说法念给几何老师听。听上去会是哪种图形？",
+      "options": [
+        "半圆",
+        "三角形",
+        "直线"
+      ],
+      "correct": 0,
+      "solution": "五角是半元。「元」和「圆」同音，半元就听成了半圆。",
+      "topic": "谐音",
+      "aliases": [
+        "半圆"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2294",
+        "license": "Apache-2.0",
+        "row": 2294,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2381",
+      "deck": "warmup",
+      "prompt": "童话里的公主站在一片叶子上。把「主立叶」念成西方戏剧人物的名字。",
+      "options": [
+        "灰姑娘",
+        "朱丽叶",
+        "奥菲莉娅"
+      ],
+      "correct": 1,
+      "solution": "公主的主、站立的立、叶子的叶，借音成了朱丽叶。",
+      "topic": "谐音",
+      "aliases": [
+        "朱丽叶"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2381",
+        "license": "Apache-2.0",
+        "row": 2381,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2440",
+      "deck": "warmup",
+      "prompt": "黄鼠狼等着鸡露面才行动。用一个表示看情况办事的成语形容它。",
+      "options": [
+        "见机行事",
+        "按图索骥",
+        "守口如瓶"
+      ],
+      "correct": 0,
+      "solution": "它是「见鸡行事」。鸡、机同音，换回机就是原成语。",
+      "topic": "谐音",
+      "aliases": [
+        "见机行事"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2440",
+        "license": "Apache-2.0",
+        "row": 2440,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2514",
+      "deck": "warmup",
+      "prompt": "谜里的主角先离婚八次，正打算结第九次婚。单看前八次经历，像哪座欧洲城市？",
+      "options": [
+        "柏林",
+        "巴黎",
+        "布拉格"
+      ],
+      "correct": 1,
+      "solution": "把「八离」连着念，音近巴黎。这是数字地名谜。",
+      "topic": "谐音",
+      "aliases": [
+        "巴黎"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2514",
+        "license": "Apache-2.0",
+        "row": 2514,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2539",
+      "deck": "warmup",
+      "prompt": "一只蜜蜂落在日历上。把「蜂」和「日历」连起来，猜形容天气的成语。",
+      "options": [
+        "风和日丽",
+        "春暖花开",
+        "和风细雨"
+      ],
+      "correct": 0,
+      "solution": "「蜂和日历」与「风和日丽」同音。",
+      "topic": "谐音",
+      "aliases": [
+        "风和日丽"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2539",
+        "license": "Apache-2.0",
+        "row": 2539,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2602",
+      "deck": "warmup",
+      "prompt": "小羊憋住气，一口都没往外吐。把「羊没吐气」念成哪个成语？",
+      "options": [
+        "扬眉吐气",
+        "屏声静气",
+        "长吁短叹"
+      ],
+      "correct": 0,
+      "solution": "「羊没」借近音为「扬眉」，再接「吐气」，就凑成扬眉吐气。",
+      "topic": "谐音",
+      "aliases": [
+        "扬眉吐气"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2602",
+        "license": "Apache-2.0",
+        "row": 2602,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2681",
+      "deck": "advanced",
+      "prompt": "题条写着「一溜三棵树」，十匹马要一树一匹。猜谜人怎样听出了十棵树？",
+      "options": [
+        "一、六、三棵",
+        "三排各三棵",
+        "每棵分成十份"
+      ],
+      "correct": 0,
+      "solution": "把一溜听成「一、六」，再接三，1＋6＋3 刚好是 10。",
+      "topic": "谐音",
+      "aliases": [
+        "一、六、三棵",
+        "1+6+3",
+        "一六三",
+        "1 6 3"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2681",
+        "license": "Apache-2.0",
+        "row": 2681,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2779",
+      "deck": "warmup",
+      "prompt": "同学用一位作曲家的名字鼓励自己背书多拿分。他在拿谁的名字开玩笑？",
+      "options": [
+        "巴赫",
+        "贝多芬",
+        "肖邦"
+      ],
+      "correct": 1,
+      "solution": "多背就能多得分，缩成「背多分」，听起来像贝多芬。",
+      "topic": "谐音",
+      "aliases": [
+        "贝多芬"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2779",
+        "license": "Apache-2.0",
+        "row": 2779,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-976",
+      "deck": "warmup",
+      "prompt": "米说自己的妈妈是「花」。哪种零食听起来既抱过米，也抱过花，能在这道亲戚谜里客串外公？",
+      "options": [
+        "爆米花",
+        "花生糖",
+        "炒米饼"
+      ],
+      "correct": 0,
+      "solution": "按原题的谐音把爆听成抱，「抱米、花」就成了同时抱过米和花的人。",
+      "topic": "谐音",
+      "aliases": [
+        "爆米花"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=976",
+        "license": "Apache-2.0",
+        "row": 976,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3197",
+      "deck": "advanced",
+      "prompt": "弹钢琴给别人伴奏。用一个通常表示乐于帮忙的成语，把最后一字换个读音。",
+      "options": [
+        "高山流水",
+        "自得其乐",
+        "助人为乐"
+      ],
+      "correct": 2,
+      "solution": "平时念「助人为乐（lè）」，伴奏时故意将乐念成音乐的 yuè。",
+      "topic": "谐音",
+      "aliases": [
+        "助人为乐"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3197",
+        "license": "Apache-2.0",
+        "row": 3197,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3223",
+      "deck": "advanced",
+      "prompt": "刘邦打进咸阳，谜面说「秦皇倒」。这个短句听起来像河北哪座城市？",
+      "options": [
+        "保定",
+        "邯郸",
+        "秦皇岛"
+      ],
+      "correct": 2,
+      "solution": "秦皇「倒」了，倒与岛同音，三字就成为地名。",
+      "topic": "谐音",
+      "aliases": [
+        "秦皇岛"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3223",
+        "license": "Apache-2.0",
+        "row": 3223,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3255",
+      "deck": "warmup",
+      "prompt": "老师看见同学边扫地边吃冰棒，说「你也太闲了」。同学却回答「明明是甜的」。他听错了哪个字？",
+      "options": [
+        "把扫听成少",
+        "把闲听成咸",
+        "把闲听成甜"
+      ],
+      "correct": 1,
+      "solution": "老师在说清闲，他却按冰棒的咸淡来回答。",
+      "topic": "谐音",
+      "aliases": [
+        "把闲听成咸",
+        "闲和咸",
+        "咸",
+        "太咸了"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3255",
+        "license": "Apache-2.0",
+        "row": 3255,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-78",
+      "deck": "warmup",
+      "prompt": "过河前先在证件上盖一个印，才能渡过去。把「印、渡」读成哪个国家？",
+      "options": [
+        "印度",
+        "不丹",
+        "印尼"
+      ],
+      "correct": 0,
+      "solution": "印是印章，渡是渡河。把渡换成同音的度，便得到印度。",
+      "topic": "谐音",
+      "aliases": [
+        "印度"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=78",
+        "license": "Apache-2.0",
+        "row": 78,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-398",
+      "deck": "warmup",
+      "prompt": "抬头看见的是天上的星星，动物园里哪种动物的名字和它正好是一对同音词？",
+      "options": [
+        "长臂猿",
+        "狒狒",
+        "猩猩"
+      ],
+      "correct": 2,
+      "solution": "「星星」和「猩猩」同音，一个在天上，一个是动物。",
+      "topic": "谐音",
+      "aliases": [
+        "猩猩"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=398",
+        "license": "Apache-2.0",
+        "row": 398,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-816",
+      "deck": "warmup",
+      "prompt": "一只舞台道具猪穿着发亮的皮革。把「猪、革、亮」说快一点，像三国里的谁？",
+      "options": [
+        "诸葛亮",
+        "周瑜",
+        "鲁肃"
+      ],
+      "correct": 0,
+      "solution": "把猪革亮的三个音借给人名，便近似诸葛亮。",
+      "topic": "谐音",
+      "aliases": [
+        "诸葛亮"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=816",
+        "license": "Apache-2.0",
+        "row": 816,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-982",
+      "deck": "advanced",
+      "prompt": "画家把一条粗绳画进了画里。把「粗绳入画」读成哪句称赞画技的成语？",
+      "options": [
+        "浓墨重彩",
+        "栩栩如生",
+        "出神入化"
+      ],
+      "correct": 2,
+      "solution": "粗绳近似出神，入画谐入化。原题借近音，成语的最后一个字应写「化」。",
+      "topic": "谐音",
+      "aliases": [
+        "出神入化"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=982",
+        "license": "Apache-2.0",
+        "row": 982,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1222",
+      "deck": "advanced",
+      "prompt": "早期的 286、386 和 486 处理器差在哪里？同学把「差」听成了另一个字，会答什么？",
+      "options": [
+        "写在成绩单上",
+        "贴在显示屏上",
+        "插在主板上"
+      ],
+      "correct": 2,
+      "solution": "把「差在哪儿」听成「插在哪儿」，于是回答了处理器的安装位置。",
+      "topic": "谐音",
+      "aliases": [
+        "插在主板上"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1222",
+        "license": "Apache-2.0",
+        "row": 1222,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wq1",
+      "deck": "warmup",
+      "prompt": "小鸡把人气得直跺脚。把「鸡、气、人」连起来念，像哪类玩具？",
+      "options": [
+        "不倒翁",
+        "机器人",
+        "遥控车"
+      ],
+      "correct": 1,
+      "solution": "把三个字分别换成同音字，就是「机器人」。",
+      "topic": "谐音",
+      "aliases": [
+        "机器人"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《智力題》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=94514237",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wq2",
+      "deck": "warmup",
+      "prompt": "如果海鸥改在围裙上空盘旋，为什么这个新名字听起来像要打群架？",
+      "options": [
+        "海鸥谐音海岸",
+        "裙鸥谐音求偶",
+        "围鸥谐音围殴"
+      ],
+      "correct": 2,
+      "solution": "把海上飞的海鸥叫作围裙上的「围鸥」，正好和围殴同音。",
+      "topic": "谐音",
+      "aliases": [
+        "围鸥谐音围殴",
+        "围鸥",
+        "围殴",
+        "围鸥和围殴同音"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《智力題》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=94514237",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wq3",
+      "deck": "warmup",
+      "prompt": "小鱼游过时发出「布噜布噜」的声音。按这个中英谐音冷笑话，海水会是什么颜色？",
+      "options": [
+        "蓝色",
+        "绿色",
+        "紫色"
+      ],
+      "correct": 0,
+      "solution": "「布噜」模仿英文 blue 的声音，blue 的意思是蓝色。",
+      "topic": "谐音",
+      "aliases": [
+        "蓝色"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《智力題》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=94514237",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wc1",
+      "deck": "warmup",
+      "prompt": "一位叫娜娜的女孩被叫作「香蕉」。同学把她的姓和名字念在一起，像 banana。她姓什么？",
+      "options": [
+        "芭",
+        "艾",
+        "苏"
+      ],
+      "correct": 0,
+      "solution": "「芭娜娜」读来像英语 banana，所以绰号是香蕉。",
+      "topic": "谐音",
+      "aliases": [
+        "芭"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《冷笑話》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=93953847",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wc2",
+      "deck": "advanced",
+      "prompt": "给你看一长串只有 A 和 B 的字母。英文里的哪句老朋友问候最适合这串字？",
+      "options": [
+        "Long time no see",
+        "Good morning",
+        "See you soon"
+      ],
+      "correct": 0,
+      "solution": "读成 long time no C，就是「半天没见 C」；C 和 see 同音。",
+      "topic": "谐音",
+      "aliases": [
+        "Long time no see",
+        "long time no c",
+        "好久不见"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《冷笑話》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=93953847",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wc3",
+      "deck": "warmup",
+      "prompt": "如果光凭菜名的读音来答，健身练出来的「肌肉」会是哪一种肉？",
+      "options": [
+        "鸭肉",
+        "鱼肉",
+        "鸡肉"
+      ],
+      "correct": 2,
+      "solution": "鸡肉和肌肉的普通话读音相同，谜底只借发音。",
+      "topic": "谐音",
+      "aliases": [
+        "鸡肉"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《冷笑話》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=93953847",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-wiki-wj1",
+      "deck": "warmup",
+      "prompt": "冰块被问起愿望，它说想退伍。这句话把冰块的工作听成了什么？",
+      "options": [
+        "打工",
+        "站岗",
+        "当兵"
+      ],
+      "correct": 2,
+      "solution": "「当冰」和「当兵」同音。冰块把当冰说成了服兵役。",
+      "topic": "谐音",
+      "aliases": [
+        "当兵",
+        "冰和兵同音"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "中文维基百科《笑話》贡献者",
+        "url": "https://zh.wikipedia.org/w/index.php?oldid=93924519",
+        "license": "CC-BY-SA-4.0",
+        "note": "据固定版本的公开问答重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-749",
+      "deck": "warmup",
+      "prompt": "邮筒的投信口小得连信封都塞不进。用哪个成语来抱怨最贴切？",
+      "options": [
+        "毫无音信",
+        "难以置信",
+        "不言而喻"
+      ],
+      "correct": 1,
+      "solution": "把成语拆开看：「置」是放，「信」是信件，果然难以把信放进去。",
+      "topic": "字义双关",
+      "aliases": [
+        "难以置信"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=749",
+        "license": "Apache-2.0",
+        "row": 749,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-773",
+      "deck": "warmup",
+      "prompt": "新航线今天首航，乘客终于有飞机可以坐。哪个成语突然变成了字面意思？",
+      "options": [
+        "趁热打铁",
+        "无孔不入",
+        "有机可乘"
+      ],
+      "correct": 2,
+      "solution": "成语里的机本指机会，在这道题里被读成飞机。",
+      "topic": "字义双关",
+      "aliases": [
+        "有机可乘"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=773",
+        "license": "Apache-2.0",
+        "row": 773,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-968",
+      "deck": "warmup",
+      "prompt": "歌手希望在台上「露一手」。如果他偏要按字面意思穿戴，会怎么戴手套？",
+      "options": [
+        "只戴一只手套",
+        "把手套扣在腰上",
+        "两只手套都戴"
+      ],
+      "correct": 0,
+      "solution": "戴一只手套会露出另一只手，刚好把表演绝活的说法演出来了。",
+      "topic": "字义双关",
+      "aliases": [
+        "只戴一只手套"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=968",
+        "license": "Apache-2.0",
+        "row": 968,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1192",
+      "deck": "warmup",
+      "prompt": "警察爸爸明明看见孩子在「偷」，却觉得不用阻止。这个动词后面接什么就说得通？",
+      "options": [
+        "偷拆信封",
+        "偷拿零钱",
+        "偷笑"
+      ],
+      "correct": 2,
+      "solution": "偷笑里的「偷」是偷偷地做，不表示拿走别人的东西。",
+      "topic": "字义双关",
+      "aliases": [
+        "偷笑",
+        "笑",
+        "偷着笑"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1192",
+        "license": "Apache-2.0",
+        "row": 1192,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1233",
+      "deck": "warmup",
+      "prompt": "什么东西可以「洗」，还能「吃」，却不能真的吞进肚子里？",
+      "options": [
+        "麻将牌",
+        "梨",
+        "水饺"
+      ],
+      "correct": 0,
+      "solution": "开局要洗牌，牌局里的吃也是动作名称。两个动词都换了用法。",
+      "topic": "字义双关",
+      "aliases": [
+        "麻将牌"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1233",
+        "license": "Apache-2.0",
+        "row": 1233,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1253",
+      "deck": "warmup",
+      "prompt": "两个人面对面、膝挨膝讨论。把「相对而论」缩成三个字，像哪个物理理论？",
+      "options": [
+        "进化论",
+        "量子论",
+        "相对论"
+      ],
+      "correct": 2,
+      "solution": "两人相对而坐又在议论，按字面凑成「相对论」。",
+      "topic": "字义双关",
+      "aliases": [
+        "相对论"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1253",
+        "license": "Apache-2.0",
+        "row": 1253,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1260",
+      "deck": "warmup",
+      "prompt": "成语谜里的数字要评「最听话」。看到「百依百顺」会把票投给几？",
+      "options": [
+        "一万",
+        "一千",
+        "一百"
+      ],
+      "correct": 2,
+      "solution": "这个成语里，百后面总是跟着依或顺。谜底取它的字面。",
+      "topic": "字义双关",
+      "aliases": [
+        "一百",
+        "100",
+        "百"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1260",
+        "license": "Apache-2.0",
+        "row": 1260,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1263",
+      "deck": "warmup",
+      "prompt": "菜单上山珍很贵，稀饭很便宜。有人偏说稀饭贵，他故意搬出了哪句俗话？",
+      "options": [
+        "民以食为天",
+        "物以稀为贵",
+        "一分价钱一分货"
+      ],
+      "correct": 1,
+      "solution": "「稀」在俗话里是稀少，在稀饭里是稀薄。两种意思被故意混在一起。",
+      "topic": "字义双关",
+      "aliases": [
+        "物以稀为贵"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1263",
+        "license": "Apache-2.0",
+        "row": 1263,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-183",
+      "deck": "warmup",
+      "prompt": "童话里的烟花向星星飞去，星星怎么躲？用它本来就会做的一个动作答。",
+      "options": [
+        "闪",
+        "落",
+        "吹"
+      ],
+      "correct": 0,
+      "solution": "星光会闪烁，「闪」又能指闪身躲开。",
+      "topic": "字义双关",
+      "aliases": [
+        "闪"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=183",
+        "license": "Apache-2.0",
+        "row": 183,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-193",
+      "deck": "warmup",
+      "prompt": "人想从拥挤的过道穿过去，礼貌地「借」什么，通常不用还？",
+      "options": [
+        "借光",
+        "借笔",
+        "借伞"
+      ],
+      "correct": 0,
+      "solution": "「借光」是请人让一让，并没有真的把东西借走。",
+      "topic": "字义双关",
+      "aliases": [
+        "借光"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=193",
+        "license": "Apache-2.0",
+        "row": 193,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2054",
+      "deck": "warmup",
+      "prompt": "哪个书架上的书最容易被说成「毛病特别多」，书却完全没有印错？",
+      "options": [
+        "地图册",
+        "医学书",
+        "天文图册"
+      ],
+      "correct": 1,
+      "solution": "这里的毛病是疾病，医学书当然会介绍许多种。",
+      "topic": "字义双关",
+      "aliases": [
+        "医学书"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2054",
+        "license": "Apache-2.0",
+        "row": 2054,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2214",
+      "deck": "warmup",
+      "prompt": "哪位办公室工作人员，名字听起来像本秘密的书，实际上不能翻页？",
+      "options": [
+        "出纳",
+        "会计",
+        "秘书"
+      ],
+      "correct": 2,
+      "solution": "秘书是职位名称，尽管名字里有「书」字。",
+      "topic": "字义双关",
+      "aliases": [
+        "秘书"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2214",
+        "license": "Apache-2.0",
+        "row": 2214,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2272",
+      "deck": "warmup",
+      "prompt": "哪种「偷」搁在忙碌的工作中很讨人喜欢，既没拿东西也不用赔？",
+      "options": [
+        "暗中取物",
+        "忙里偷闲",
+        "顺手牵羊"
+      ],
+      "correct": 1,
+      "solution": "偷闲是挤一点空闲出来，被「偷」走的是时间。",
+      "topic": "字义双关",
+      "aliases": [
+        "忙里偷闲"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2272",
+        "license": "Apache-2.0",
+        "row": 2272,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2349",
+      "deck": "warmup",
+      "prompt": "大家整整齐齐地笑了起来。把「齐齐、哈」当线索，猜黑龙江的一座城市。",
+      "options": [
+        "牡丹江",
+        "齐齐哈尔",
+        "佳木斯"
+      ],
+      "correct": 1,
+      "solution": "「齐齐」扣大家一起，「哈」扣笑声，指向齐齐哈尔。",
+      "topic": "字义双关",
+      "aliases": [
+        "齐齐哈尔"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2349",
+        "license": "Apache-2.0",
+        "row": 2349,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2504",
+      "deck": "warmup",
+      "prompt": "草原竖了块牌，写着「杜绝放牧」。抽两个字，恰好是一位唐代诗人。是谁？",
+      "options": [
+        "孟郊",
+        "杜牧",
+        "李白"
+      ],
+      "correct": 1,
+      "solution": "取杜绝的杜、放牧的牧，便组成杜牧。",
+      "topic": "字义双关",
+      "aliases": [
+        "杜牧"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2504",
+        "license": "Apache-2.0",
+        "row": 2504,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2513",
+      "deck": "warmup",
+      "prompt": "刚收到一封信，第一件事是打开封口。把这个动作缩成两字，像河南哪座城市？",
+      "options": [
+        "洛阳",
+        "安阳",
+        "开封"
+      ],
+      "correct": 2,
+      "solution": "「开封」既能说打开封口，也是地名。",
+      "topic": "字义双关",
+      "aliases": [
+        "开封"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2513",
+        "license": "Apache-2.0",
+        "row": 2513,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2575",
+      "deck": "warmup",
+      "prompt": "写「无」字的表格本应有一万个，数下来只有 9999 个。猜一个形容万分稳妥的成语。",
+      "options": [
+        "百无一用",
+        "无中生有",
+        "万无一失"
+      ],
+      "correct": 2,
+      "solution": "按字面重读：一万个「无」里，有一个遗失了。",
+      "topic": "字义双关",
+      "aliases": [
+        "万无一失"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2575",
+        "license": "Apache-2.0",
+        "row": 2575,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2576",
+      "deck": "warmup",
+      "prompt": "纸上有七个横躺着的符号、八个竖立着的符号。哪个成语给这张纸当标题最巧？",
+      "options": [
+        "七上八下",
+        "七零八落",
+        "横七竖八"
+      ],
+      "correct": 2,
+      "solution": "横着的七和竖着的八，正好能按字面拼出成语。",
+      "topic": "字义双关",
+      "aliases": [
+        "横七竖八"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2576",
+        "license": "Apache-2.0",
+        "row": 2576,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2594",
+      "deck": "warmup",
+      "prompt": "哪样穿戴用品最容易「满足」？把这两个字都按字面理解。",
+      "options": [
+        "手表",
+        "袜子",
+        "围巾"
+      ],
+      "correct": 1,
+      "solution": "脚一伸进去，袜子里就装满了「足」。",
+      "topic": "字义双关",
+      "aliases": [
+        "袜子"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2594",
+        "license": "Apache-2.0",
+        "row": 2594,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3200",
+      "deck": "warmup",
+      "prompt": "花木兰的孩子，名字听起来像一种能带壳剥开的食物。猜两个字。",
+      "options": [
+        "瓜子",
+        "花生",
+        "板栗"
+      ],
+      "correct": 1,
+      "solution": "木兰姓花，孩子是花家人生的，把「花、生」连起来就是花生。",
+      "topic": "字义双关",
+      "aliases": [
+        "花生",
+        "花生米"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3200",
+        "license": "Apache-2.0",
+        "row": 3200,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3210",
+      "deck": "warmup",
+      "prompt": "花匠连着几夜都见花瓣飘落，看到一朵又一朵花谢。猜一句客套话。",
+      "options": [
+        "劳驾",
+        "久仰",
+        "多谢"
+      ],
+      "correct": 2,
+      "solution": "许多花都谢了，是「多」「谢」。作客套话时则表示感谢。",
+      "topic": "字义双关",
+      "aliases": [
+        "多谢"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3210",
+        "license": "Apache-2.0",
+        "row": 3210,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3260",
+      "deck": "warmup",
+      "prompt": "太阳一家添了小太阳。庆贺的人说了哪句平时过生日也说的话？",
+      "options": [
+        "生日快乐",
+        "年年有余",
+        "长命百岁"
+      ],
+      "correct": 0,
+      "solution": "太阳又叫日，生下一个日，把「生日」重新断开就能听出笑点。",
+      "topic": "字义双关",
+      "aliases": [
+        "生日快乐"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3260",
+        "license": "Apache-2.0",
+        "row": 3260,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2999",
+      "deck": "warmup",
+      "prompt": "明明一直在给远方的朋友打电话，为什么笑话却说此人「言而无信」？",
+      "options": [
+        "只用空信封",
+        "从来不开口",
+        "只通话不写信"
+      ],
+      "correct": 2,
+      "solution": "有言语、没书信，就被硬解释成「言而无信」。",
+      "topic": "字义双关",
+      "aliases": [
+        "只通话不写信"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2999",
+        "license": "Apache-2.0",
+        "row": 2999,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3186",
+      "deck": "warmup",
+      "prompt": "考卷上什么「蛋」既不能煮熟，也不怕掉到地上摔碎？",
+      "options": [
+        "鹌鹑蛋",
+        "零蛋",
+        "咸鸭蛋"
+      ],
+      "correct": 1,
+      "solution": "零分俗称零蛋，它是纸上的成绩。",
+      "topic": "字义双关",
+      "aliases": [
+        "零蛋"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3186",
+        "license": "Apache-2.0",
+        "row": 3186,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1193",
+      "deck": "warmup",
+      "prompt": "面包铺里卖什么名字带「狗」的食物？它不会汪汪叫。",
+      "options": [
+        "热狗",
+        "三明治",
+        "肉松卷"
+      ],
+      "correct": 0,
+      "solution": "热狗是食物的名字，跟会叫的动物无关。",
+      "topic": "字义双关",
+      "aliases": [
+        "热狗",
+        "热狗面包"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1193",
+        "license": "Apache-2.0",
+        "row": 1193,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2541",
+      "deck": "warmup",
+      "prompt": "什么「池」装在遥控器里能派上用场，用它洗澡可不行？",
+      "options": [
+        "鱼池",
+        "水池",
+        "电池"
+      ],
+      "correct": 2,
+      "solution": "电池用来供电，名字里虽然有池，却不是盛水的池子。",
+      "topic": "字义双关",
+      "aliases": [
+        "电池"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2541",
+        "license": "Apache-2.0",
+        "row": 2541,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-163",
+      "deck": "warmup",
+      "prompt": "把一张三角形照片等比例放大两倍。边长变了，哪一样和原来一样大？",
+      "options": [
+        "角度",
+        "周长",
+        "面积"
+      ],
+      "correct": 0,
+      "solution": "等比例放大改变长度和面积，角的两边张开的程度不变。",
+      "topic": "观察推理",
+      "aliases": [
+        "角度",
+        "角的度数",
+        "角的大小",
+        "角度不变"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=163",
+        "license": "Apache-2.0",
+        "row": 163,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-344",
+      "deck": "warmup",
+      "prompt": "同一天里，一座城白天黑过一回，晚上又黑了一回。白天可能碰上了什么天象？",
+      "options": [
+        "日全食",
+        "月全食",
+        "满月"
+      ],
+      "correct": 0,
+      "solution": "日全食时，处在全食带的地方可在白天突然暗下去，然后再见日光。",
+      "topic": "观察推理",
+      "aliases": [
+        "日全食"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=344",
+        "license": "Apache-2.0",
+        "row": 344,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-444",
+      "deck": "warmup",
+      "prompt": "一个人能吹着口哨，把自己的一整排牙齿刷得干干净净。他怎么才能同时做到？",
+      "options": [
+        "让牙刷吹口哨",
+        "把活动假牙拿在手里刷",
+        "一直闭紧嘴"
+      ],
+      "correct": 1,
+      "solution": "题面没说牙一定在嘴里。取下假牙，就能一边刷一边吹口哨。",
+      "topic": "观察推理",
+      "aliases": [
+        "把活动假牙拿在手里刷",
+        "假牙",
+        "取下假牙",
+        "刷假牙"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=444",
+        "license": "Apache-2.0",
+        "row": 444,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-721",
+      "deck": "warmup",
+      "prompt": "曼谷本地时间午夜零点正在下雨。整整 72 小时后抬头看，同一地点能看见太阳吗？",
+      "options": [
+        "不能，仍是午夜",
+        "只有雨停才可以",
+        "可以，正好是正午"
+      ],
+      "correct": 0,
+      "solution": "72 小时恰好三天，本地时刻还是零点，与天气无关。",
+      "topic": "观察推理",
+      "aliases": [
+        "不能，仍是午夜",
+        "不会",
+        "不能",
+        "还是半夜",
+        "仍是午夜",
+        "还是午夜"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=721",
+        "license": "Apache-2.0",
+        "row": 721,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-919",
+      "deck": "warmup",
+      "prompt": "三个孩子同时猜拳，各出了石头、剪刀、布。三个人两只手上的手指一共有几根？",
+      "options": [
+        "15",
+        "30",
+        "7"
+      ],
+      "correct": 1,
+      "solution": "手指缩进拳头也还在。按每人十指算，是三十根。",
+      "topic": "观察推理",
+      "aliases": [
+        "30",
+        "三十",
+        "30根",
+        "三十根"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=919",
+        "license": "Apache-2.0",
+        "row": 919,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1190",
+      "deck": "advanced",
+      "prompt": "旧说里的「犬子」和「太子」，若只比较前一个字，那一点到底差在哪儿？",
+      "options": [
+        "点的位置不同",
+        "太字少一横",
+        "犬字多两点"
+      ],
+      "correct": 0,
+      "solution": "犬和太都由「大」加一点组成；犬的点靠右上，太的点在下方。",
+      "topic": "观察推理",
+      "aliases": [
+        "点的位置不同",
+        "点的位置",
+        "点的位置不一样"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1190",
+        "license": "Apache-2.0",
+        "row": 1190,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-1198",
+      "deck": "advanced",
+      "prompt": "我用三个汉字写一个数，擦掉首字是十一，擦掉末字是五十。原数是多少？",
+      "options": [
+        "五十五",
+        "五百一十",
+        "五十一"
+      ],
+      "correct": 2,
+      "solution": "五、十、一这三个字正好符合两个擦字条件。",
+      "topic": "观察推理",
+      "aliases": [
+        "五十一",
+        "51"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=1198",
+        "license": "Apache-2.0",
+        "row": 1198,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2244",
+      "deck": "advanced",
+      "prompt": "手里有写着 1、2、6 的三张数字卡，6 倒过来看成 9。怎样摆，能得到 43 的整数倍？",
+      "options": [
+        "129",
+        "126",
+        "219"
+      ],
+      "correct": 0,
+      "solution": "把 6 倒转再排成 129，129 正好等于 43 乘 3。",
+      "topic": "观察推理",
+      "aliases": [
+        "129",
+        "一百二十九"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2244",
+        "license": "Apache-2.0",
+        "row": 2244,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2251",
+      "deck": "advanced",
+      "prompt": "桌上平放一块切好的西瓜片，四刀都从上往下直切，想得到九小块。用哪个汉字来记切法？",
+      "options": [
+        "口",
+        "井",
+        "十"
+      ],
+      "correct": 1,
+      "solution": "一个方向切两条平行线，再横着切两条。两组线都在瓜片内相交，就有三行三列。",
+      "topic": "观察推理",
+      "aliases": [
+        "井",
+        "井字",
+        "井字形",
+        "井字切法"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2251",
+        "license": "Apache-2.0",
+        "row": 2251,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2253",
+      "deck": "warmup",
+      "prompt": "六只馒头装在同一只盆里，六个人每人领走一只。为什么最后那只馒头还在盆里？",
+      "options": [
+        "最后一人把盆一起端走",
+        "其中一个人没分到",
+        "有人把馒头吃了"
+      ],
+      "correct": 0,
+      "solution": "题目只要求每人拿到一只，没要求每个人都把馒头从盆里拿出来。",
+      "topic": "观察推理",
+      "aliases": [
+        "最后一人把盆一起端走",
+        "连盆一起拿走",
+        "最后一个连盆拿走",
+        "连盆端走"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2253",
+        "license": "Apache-2.0",
+        "row": 2253,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2540",
+      "deck": "warmup",
+      "prompt": "把「池」里的水拿掉，又把「地」里的土拿掉。两个字会留下什么相同的字？",
+      "options": [
+        "也",
+        "他",
+        "池"
+      ],
+      "correct": 0,
+      "solution": "池去掉三点水、地去掉提土旁，留下来的都是也。",
+      "topic": "观察推理",
+      "aliases": [
+        "也",
+        "也字"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2540",
+        "license": "Apache-2.0",
+        "row": 2540,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2554",
+      "deck": "advanced",
+      "prompt": "一百支队伍参加单败淘汰赛，只决出冠军，不打排位赛。最少要赛几场？",
+      "options": [
+        "99场",
+        "50场",
+        "100场"
+      ],
+      "correct": 0,
+      "solution": "每场只淘汰一支队伍。留下唯一冠军，要淘汰另外 99 支。",
+      "topic": "观察推理",
+      "aliases": [
+        "99场",
+        "99",
+        "九十九",
+        "九十九场"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2554",
+        "license": "Apache-2.0",
+        "row": 2554,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2826",
+      "deck": "advanced",
+      "prompt": "在一个游戏中，5 能赢 0，0 能赢 2，2 又能赢 5。用手就能玩，它是什么？",
+      "options": [
+        "掰手腕",
+        "石头剪刀布",
+        "拍手数数"
+      ],
+      "correct": 1,
+      "solution": "五指张开是布，握成拳当零，伸两指是剪刀。三种手势刚好相克。",
+      "topic": "观察推理",
+      "aliases": [
+        "石头剪刀布",
+        "猜拳",
+        "剪刀石头布",
+        "石头剪子布"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2826",
+        "license": "Apache-2.0",
+        "row": 2826,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-2840",
+      "deck": "warmup",
+      "prompt": "把「国」字的边框当作国界，它的「内地」里藏着什么宝贝？",
+      "options": [
+        "玉",
+        "金",
+        "银"
+      ],
+      "correct": 0,
+      "solution": "简体「国」字的外框里面，恰好写着一个玉。",
+      "topic": "观察推理",
+      "aliases": [
+        "玉"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=2840",
+        "license": "Apache-2.0",
+        "row": 2840,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3232",
+      "deck": "warmup",
+      "prompt": "名片上分别写着孔和孟。两个姓都藏着「子」，它在两个字里分别躲在什么位置？",
+      "options": [
+        "都在正中央",
+        "孔的左边、孟的上面",
+        "孔的右边、孟的下面"
+      ],
+      "correct": 1,
+      "solution": "拆开字看，「孔」左边是子，「孟」上面是子、下面是皿。",
+      "topic": "观察推理",
+      "aliases": [
+        "孔的左边、孟的上面",
+        "左和上",
+        "左边和上边",
+        "左上"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3232",
+        "license": "Apache-2.0",
+        "row": 3232,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3205",
+      "deck": "warmup",
+      "prompt": "软木塞堵在瓶口，不拔塞、不打碎瓶子，也不钻孔。怎样让半瓶里的饮料倒出来？",
+      "options": [
+        "把标签撕掉",
+        "把塞子推进瓶里",
+        "把瓶底转到上面"
+      ],
+      "correct": 1,
+      "solution": "禁止的是把软木塞拔出来；往里推，瓶口同样能打开。",
+      "topic": "观察推理",
+      "aliases": [
+        "把塞子推进瓶里",
+        "推进去",
+        "把木塞推进去",
+        "将软木塞推入瓶中"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3205",
+        "license": "Apache-2.0",
+        "row": 3205,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3234",
+      "deck": "advanced",
+      "prompt": "书店标价都是整元。哥哥买一本书差 5 元，弟弟差 1 角，两人合起来仍不够。这本书几元？",
+      "options": [
+        "10元",
+        "6元",
+        "5元"
+      ],
+      "correct": 2,
+      "solution": "书价至少为 5 元。若为 6 元或更多，哥哥至少有 1 元，足以补弟弟差的 1 角。因此只能是 5 元。",
+      "topic": "观察推理",
+      "aliases": [
+        "5元",
+        "5",
+        "五元",
+        "五块钱"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3234",
+        "license": "Apache-2.0",
+        "row": 3234,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
+    },
+    {
+      "id": "garden-sourced-hf-3391",
+      "deck": "warmup",
+      "prompt": "岸边的毛毛虫没赶时间。它不游泳，也没有桥可爬，过些日子却飞到了小河对岸。它等了什么？",
+      "options": [
+        "化蛹后羽化成蝶",
+        "河水倒流",
+        "长出鱼鳍"
+      ],
+      "correct": 0,
+      "solution": "题目没有规定当天就要过去。等它长成蝴蝶，便可以自己飞过小河。",
+      "topic": "观察推理",
+      "aliases": [
+        "化蛹后羽化成蝶",
+        "变成蝴蝶",
+        "羽化",
+        "等它变成蝴蝶",
+        "化蝶"
+      ],
+      "source": {
+        "kind": "adapted",
+        "author": "ShakaRover / ChineseDatasets",
+        "url": "https://huggingface.co/datasets/ShakaRover/ChineseDatasets/viewer/brainteasers/train?row=3391",
+        "license": "Apache-2.0",
+        "row": 3391,
+        "revision": "5090c4f0fc9f2fab0e2de7d9d229f034b0524923",
+        "note": "据 brainteasers/train 对应行重新措辞，补充选项和解释。"
+      }
     }
   ]
 }
