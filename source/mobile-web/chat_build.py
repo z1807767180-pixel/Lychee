@@ -53,9 +53,10 @@ def notifications(text):
     return replace(text, "btn('刷新',refresh),", """btn('刷新',refresh),
         push && !push.enabled && h('p',null,!push.supported?'iPhone 请将荔枝添加到主屏幕，从图标打开后开启后台通知。':!push.configured?'服务器尚未启用后台推送。':'开启后台通知后，回到主屏幕或锁屏也能收到园中消息。'),""")
 
-def direct_runtime(files):
+def direct_runtime(files, *, windows=False):
     """Expose existing feature components without mounting the original application."""
-    source = tool_views.clock_ledger(phone(files["mobile/phone.js"].decode()))
+    platform_phone = files["windows/phone.js"].decode() if windows else phone(files["mobile/phone.js"].decode())
+    source = tool_views.clock_ledger(platform_phone)
     source = replace(source, 'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(null)',
                      'function hc({compact:e=!1,phoneShell:a}){let[t,l]=(0,Y.useState)(ctx.camp)')
     source = replace(source, '[L,y]=(0,Ee.useState)(""),[v,i]', '[L,y]=(0,Ee.useState)(ctx.dest),[v,i]')
@@ -109,7 +110,7 @@ def direct_runtime(files):
         elif name == "client/diet-v7.js":
             code = tool_views.diet(code)
         elif name == "mobile/journal.js":
-            code = journal(code)
+            code = files["windows/journal.js"].decode() if windows else journal(code)
         parts.append(code + "\n;")
         if name == "client/business-scope.js":
             parts.append('if(ctx.roomApi)window.LycheeBusiness.api=ctx.roomApi;')
