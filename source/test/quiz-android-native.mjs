@@ -10,8 +10,9 @@ import {setTimeout as delay} from 'node:timers/promises';
 import {createApp, serveRequest} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 
-const [folderArg, webArg, evidenceArg] = process.argv.slice(2);
+const [folderArg, webArg, evidenceArg, legacyProfile] = process.argv.slice(2);
 if (!folderArg || !webArg || !evidenceArg) throw Error('Pass QA build, prepared mobile directory and evidence directory');
+if (legacyProfile && !['missing-timeout', 'missing-controller'].includes(legacyProfile)) throw Error('Unknown WebView profile');
 const folder = resolve(folderArg), evidence = resolve(evidenceArg);
 await mkdir(evidence, {recursive: true});
 const pkg = 'dev.lychee.quizqa', origin = 'https://127.0.0.1:18443';
@@ -20,8 +21,21 @@ const webview = adb('shell','dumpsys','webviewupdate').split('\n').find(line=>li
 const report = {platform:adb('shell','getprop','ro.build.version.release'),webview,rounds:[]};
 const app = await createApp({origin, webRoot:resolve(webArg), dataDir:await mkdtemp(join(folder,'garden-'))});
 const quizResponses = [];
+const capabilityResponses = [];
+const launchPath = '/mobile/assets-' + (await readFile(join(webArg,'mobile/version.txt'),'utf8')).trim() + '/launch/start.js';
+const launch = await readFile(join(webArg,launchPath.slice(1)));
 const server = createServer({key:await readFile(join(folder,'server.key')),cert:await readFile(join(folder,'server.pem'))}, (req,res) => {
-  if (req.url === '/qa-update') {
+  const pathname = new URL(req.url,origin).pathname;
+  if (legacyProfile && pathname === launchPath) {
+    const disable = "if(window.AbortSignal)Object.defineProperty(window.AbortSignal,'timeout',{value:undefined,configurable:true});" +
+      (legacyProfile === 'missing-controller' ? "Object.defineProperty(window,'AbortController',{value:undefined,configurable:true});" : '');
+    res.writeHead(200,{'content-type':'text/javascript; charset=utf-8','cache-control':'no-store'});
+    res.write(disable+'\n');
+    res.end(launch);
+    return;
+  }
+  if (pathname === '/api/client-capabilities') res.on('finish',()=>capabilityResponses.push(res.statusCode));
+  if (req.url === '/qa-update/current.json') {
     res.writeHead(200,{'content-type':'application/json'}).end(JSON.stringify({version:'7.0.2',note:'测试',sha256:'0'.repeat(64)}));
     return;
   }
@@ -71,6 +85,14 @@ try {
   for (const domain of ['Network','Runtime','Page']) await browser.call(domain+'.enable');
   await until(()=>browser.js("document.body.innerText.includes('注册新账号') || document.body.innerText.includes('登录荔枝园')"),'friends sign-in');
   assert.ok(await browser.js('!!window.Capacitor && navigator.userAgent.includes("Android")'));
+  if (legacyProfile) {
+    report.profile = legacyProfile;
+    report.sessionStartup = await browser.js("({timeout: typeof window.AbortSignal?.timeout, controller:typeof window.AbortController,appVersion:document.body.dataset.clientBuild})");
+    assert.equal(report.sessionStartup.timeout,'undefined');
+    assert.equal(report.sessionStartup.controller,legacyProfile==='missing-controller'?'undefined':'function');
+    assert.ok(capabilityResponses.includes(200));
+    await screenshot('00-cold-launch-sign-in');
+  }
   const player={},friend={},workspace='/api/v640/workspace';
   for (const [user,name] of [[player,'青荔'],[friend,'小桂']]) await api(user,'/api/v640/account',{mode:'register',name,password:randomUUID()});
   const garden=(await api(player,workspace,{action:'create',name:'安卓问答验收园'})).activeGardenId;
@@ -81,6 +103,12 @@ try {
   assert.ok((await browser.call('Network.setCookie',{name,value,url:origin+'/',path:'/',secure:true,httpOnly:true})).success);
   await browser.call('Page.navigate',{url:origin+'/mobile/?garden='+garden});
   await until(()=>browser.js("!!document.querySelector('.ga-circle-list')?.offsetWidth"),'garden landing');
+  if (legacyProfile) {
+    await screenshot('01-local-garden');
+    report.gardenVisible=true;
+    report.capabilityHttpStatuses=[...capabilityResponses];
+    report.launchSha256=createHash('sha256').update(launch).digest('hex');
+  }
   if (!await browser.js("[...document.querySelectorAll('button')].some(x=>x.offsetWidth&&x.innerText.trim()==='头脑王者')")) await click('工具箱');
   await click('头脑王者'); await until(()=>browser.js("document.querySelector('.qz-ranks')?.innerText.includes('小桂')"),'friend rank');
   await screenshot('01-lobby');

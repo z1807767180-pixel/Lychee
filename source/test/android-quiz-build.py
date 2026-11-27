@@ -29,8 +29,10 @@ def build(folder):
     main = app / "src/main"
     java = main / "java/dev/lychee/pilot"
     replace_once(java / "MainActivity.java", '"lychee-link-check.onrender.com"', f'"{authority}"')
-    replace_once(java / "ShellUpdates.java", '"https://github.com/"+REPO+"/releases/download/android-friends/current.json"',
-                 f'"https://{authority}/qa-update"')
+    replace_once(java / "ShellUpdates.java", '"https://lychee-link-check.onrender.com/android-update/"',
+                 f'"https://{authority}/qa-update/"')
+    replace_once(java / "ShellUpdates.java", '"https://github.com/"+REPO+"/releases/download/"',
+                 f'"https://{authority}/qa-fallback/"')
     replace_once(app / "build.gradle", 'applicationId "dev.lychee.friends"', 'applicationId "dev.lychee.quizqa"')
     conf = qa / "capacitor.config.json"
     config = json.loads(conf.read_text(encoding="utf-8"))

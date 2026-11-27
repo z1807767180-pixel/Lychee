@@ -27,13 +27,13 @@ window.LycheeMobileChat = (() => {
   function acquire(url) {
     let entry = media.get(url);
     if (!entry) {
-      const controller = new AbortController();
+      const controller = typeof AbortController === 'function' ? new AbortController() : undefined;
       entry = {users:0, controller};
-      entry.promise = fetch(url, {credentials:'same-origin',signal:controller.signal}).then(async response => {
+      entry.promise = fetch(url, {credentials:'same-origin',signal:controller?.signal}).then(async response => {
         if (!response.ok) throw Error('图片暂时无法读取');
         entry.full=response.headers.get('X-Lychee-Preview')!=='small';
         const blob = await response.blob();
-        if (controller.signal.aborted || !blob.type.startsWith('image/')) throw Error('图片无效');
+        if (!entry.users || !blob.type.startsWith('image/')) throw Error('图片无效');
         entry.src = URL.createObjectURL(blob);
         return entry.src;
       }).catch(error => {
@@ -45,7 +45,7 @@ window.LycheeMobileChat = (() => {
     entry.users++;
     return {promise:entry.promise, release() {
       if (--entry.users) return;
-      entry.controller.abort();
+      entry.controller?.abort();
       if (entry.src) URL.revokeObjectURL(entry.src);
       if (media.get(url)===entry) media.delete(url);
     }};

@@ -40,11 +40,11 @@
     useEffect(()=>{
       let live=true, timer, controller;
       async function poll() {
-        controller=new AbortController();
+        controller=typeof AbortController==='function'?new AbortController():undefined;
         const seen=epoch.current;
         try {
           if (!document.hidden && !lock.current) {
-            const data=await request(id,null,controller.signal);
+            const data=await request(id,null,controller?.signal);
             if(live && !lock.current && seen===epoch.current) {
               if(id) receive(data);else setLobby(data);
               setError('');

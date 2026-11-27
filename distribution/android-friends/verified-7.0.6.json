@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-27",
+  "scope": "Android friends APK and hosted mobile web release",
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45956360348",
+  "original705InAppUpgrade": "https://github.com/z1807767180-pixel/Lychee/actions/runs/45957232059",
+  "androidReleaseCommit": "dde32ffc43aff9b9e505a6030db8af1ba760b37d",
+  "webReleaseCommit": "0109e9c54ce32224f6d2d490898e8d99f453c9fb",
+  "public": {
+    "android": "7.0.6",
+    "officialDownload": "https://lychee-link-check.onrender.com/android-update/android-friends-v7.0.6/Lychee-Friends-V7.0.6.apk",
+    "landing": "https://lychee-link-check.onrender.com/android-update/download.html",
+    "sha256": "8325c23e6fb029234f7eac81583bb0ae72e63a2860bbb4700f40dc8c3e3acbaf",
+    "apkBytes": 3007817,
+    "noRedirects": true,
+    "windows": "7.0.7",
+    "mobile": "7.0.6",
+    "matchesPublicEntryStartupAndQuiz": true
+  },
+  "originalAndOfficialChannelsIdentical": true,
+  "package": "dev.lychee.friends",
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "officialOnlyDevice": {
+    "from": "7.0.1",
+    "to": "7.0.6",
+    "installedSha256": "8325c23e6fb029234f7eac81583bb0ae72e63a2860bbb4700f40dc8c3e3acbaf",
+    "platform": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "appUid": "10211",
+    "testedUpdaterDex": {
+      "classes.dex": "828190c14bab8b4222d59d536078f5a97657440e940ffe9c4bb2884d27a0c8be"
+    },
+    "directIPv4AndIPv6Rejected": true,
+    "systemConfirmationRequired": true,
+    "officialLoginVisible": true,
+    "officialColdLaunchLoginVisible": true,
+    "officialWebVersionViaTunnel": "7.0.6"
+  },
+  "officialOnlyFixture": "Only the version stamp was lowered on the release-signed probe APK. Its classes.dex exactly matched the final APK. Original V7.0.5 needs the legacy channel or a one-time manual install.",
+  "updatePolicy": {
+    "officialManifestOnly": true,
+    "unavailableOriginUsesApprovedGithubCdn": true,
+    "coldOriginRetriedAfterGithubUnavailable": true,
+    "originRedirectRejected": true,
+    "malformedManifestStopsAtOrigin": true,
+    "unexpectedEncodingRejected": true,
+    "oversizedManifestRejected": true,
+    "untrustedFallbackRedirectRejected": true,
+    "zeroByteEofAndTimeoutRetryCleanly": true,
+    "partialEofAndPartialTimeoutDoNotSwitchSource": true,
+    "partialHttpStatusRejected": true,
+    "correctAndIncorrectFullApkDigest": true,
+    "validFriendsArchiveAndWrongPackageOrVersion": true,
+    "actualSystemCertificateRejected": true,
+    "samePackageAndVersionDifferentSignerRejected": true
+  },
+  "authenticatedBrowser": {
+    "retry": {
+      "http": 403,
+      "visible": "当前连接被拒绝（HTTP 403），请检查网络后重试。",
+      "button": "重试",
+      "physicalClick": true,
+      "capabilityRequests": 2,
+      "sameAccount": true,
+      "sameGarden": true,
+      "missingAbortApis": true
+    },
+    "slow": {
+      "elapsedMs": 11009,
+      "requests": 1,
+      "sameGarden": true
+    },
+    "refresh": {
+      "previousText": "荔枝园正在醒来，请稍候…",
+      "previousProbeCount": 0,
+      "newProbeCount": 1,
+      "originUnchanged": true,
+      "sessionAndGardenRetained": true
+    }
+  },
+  "androidWebView": [
+    {
+      "profile": "missing-timeout",
+      "sessionStartup": {
+        "timeout": "undefined",
+        "controller": "function",
+        "appVersion": "7.0.6"
+      },
+      "gardenVisible": true,
+      "capabilityHttpStatuses": [
+        200,
+        200
+      ],
+      "launchSha256": "57bac64cd1eae058231a7a9327e2154baa56b49d79932132d7b54d9c644aeb3c",
+      "webviewQuizRequests": 29,
+      "pass": true,
+      "completedQuestions": 5
+    },
+    {
+      "profile": "missing-controller",
+      "sessionStartup": {
+        "timeout": "undefined",
+        "controller": "undefined",
+        "appVersion": "7.0.6"
+      },
+      "gardenVisible": true,
+      "capabilityHttpStatuses": [
+        200,
+        200
+      ],
+      "launchSha256": "57bac64cd1eae058231a7a9327e2154baa56b49d79932132d7b54d9c644aeb3c",
+      "webviewQuizRequests": 28,
+      "pass": true,
+      "completedQuestions": 5
+    }
+  ],
+  "limits": "Android 15 emulator and real System WebView 124 with individual API omissions, isolated accounts for garden tests. Reachability and recovery on the reported 5G phone remain unverified."
+}
