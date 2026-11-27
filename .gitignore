@@ -8,3 +8,6 @@
 .env.*
 *.env
 __pycache__/
+
+# Machine-local checkouts, temporary builds and unpublished credentials
+/.local/
