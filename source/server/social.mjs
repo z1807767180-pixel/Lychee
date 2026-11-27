@@ -58,12 +58,14 @@ async function planList(q,me,groups,personal,original,history){
   const selectedGoalId=bannerGoals.length===1?bannerGoals[0].id:bannerGoals.find(g=>g.id===choice?.goal)?.id||null;
   return {goals,sharedGoals,bannerGoals,selectedGoalId};
 }
-async function messages(q,kind,scope,before){
+async function messages(q,kind,scope,before,viewer,peer){
   const params=[kind,scope];
   let filter='';
   if(before){const n=Number(before);if(!Number.isSafeInteger(n)||n<1)reject(400,'无效的翻页位置');filter=' AND seq<?';params.push(n);}
-  const rows=await q.all('SELECT e.seq,e.id,e.author AS authorId,a.username AS name,e.body,e.created FROM mc_v8_entries e JOIN mc_accounts a ON a.id=e.author WHERE kind=? AND scope=?'+filter+' ORDER BY seq DESC LIMIT 100',...params);
-  return {messages:rows.reverse(),through:rows.at(-1)?.seq??0,before:rows[0]?.seq??0};
+  const attachment=kind==='dm'?',EXISTS(SELECT 1 FROM mc_v813_dm_photo p WHERE p.entry=e.id) AS hasPhoto':'';
+  const rows=await q.all('SELECT e.seq,e.id,e.author AS authorId,a.username AS name,e.body,e.created'+attachment+' FROM mc_v8_entries e JOIN mc_accounts a ON a.id=e.author WHERE kind=? AND scope=?'+filter+' ORDER BY seq DESC LIMIT 100',...params);
+  rows.reverse();
+  return {messages:rows.map(({hasPhoto,...row})=>hasPhoto?{...row,imageUrl:'/api/v8/social?'+new URLSearchParams({view:'dmPhoto',accountId:viewer,id:peer,messageId:row.id})}:row),through:rows.at(-1)?.seq??0,before:rows[0]?.seq??0};
 }
 function legacyCursor(rows){
   const last=rows.at(-1);
@@ -151,7 +153,7 @@ async function get(q,session,params,history){
     const pin=saved?await pinMessage(q,history,me,id,saved.message):null;
     return {group:g,members:await roster(q,me,id),pin,...page};
   }
-  if(view==='dm')return {friend:await friend(q,me,id),...await messages(q,'dm',pair(me,id).join(':'),params.get('before'))};
+  if(view==='dm')return {friend:await friend(q,me,id),...await messages(q,'dm',pair(me,id).join(':'),params.get('before'),me,id)};
   if(view==='tree'){
     const mine=!id||id===me,owner=mine?{id:me,name:session.username}:await friend(q,me,id);
     const [plant,notes,help,gifts]=await Promise.all([
@@ -291,7 +293,20 @@ async function change(q,session,p,history){
       else{kind=validKind(p.kind);readKey=kind;}
       if(p.action==='message'){
         if(!scope)reject(400,'请选择聊天对象');
-        const item=await append(q,me,p,kind,scope,'',text(p.body,4000));
+        const picture=p.picture;
+        if(picture!==undefined){
+          if(kind!=='dm')reject(400,'群聊图片请使用群聊图片入口');
+          if(typeof picture!=='string'||picture.length>384000||picture.length%4!==0||!/^\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(picture))reject(400,'请选择有效的 JPEG 图片');
+          const bytes=Buffer.from(picture,'base64');
+          if(bytes.length<4||bytes.readUInt16BE(bytes.length-2)!==0xffd9||bytes.toString('base64')!==picture)reject(400,'图片数据不完整');
+        }
+        if(kind==='dm'){
+          const prior=await q.first('SELECT p.jpeg FROM mc_v8_entries e LEFT JOIN mc_v813_dm_photo p ON p.entry=e.id WHERE e.author=? AND e.client_id=?',me,assertUuid(p.clientId));
+          if(prior&&(prior.jpeg??undefined)!==picture)reject(409,'此操作标识已使用');
+        }
+        const body=text(p.body??'',4000,picture!==undefined)||'[图片]';
+        const item=await append(q,me,p,kind,scope,'',body);
+        if(picture!==undefined)await q.run('INSERT INTO mc_v813_dm_photo(entry,jpeg) VALUES(?,?) ON CONFLICT(entry) DO NOTHING',item.id,picture);
         if(kind==='group')await q.run('INSERT OR IGNORE INTO mc_v8_legacy_delivery(entry) VALUES(?)',item.id);
         return item;
       }
@@ -382,10 +397,15 @@ export async function createSocial(options){
     try{
       const params=new URL(request.url).searchParams;
       if(params.get('accountId')!==session.accountId)reject(403,'账号已切换，请重新打开');
-      if(request.method==='GET'&&params.get('view')==='postPhoto'){
-        const id=params.get('id');
+      const view=params.get('view');
+      if(request.method==='GET'&&(view==='postPhoto'||view==='dmPhoto')){
+        const id=params.get('id'),me=session.accountId;
         const picture=await store.transaction(false,async q=>{
-          await rootFor(q,session.accountId,id);
+          if(view==='dmPhoto'){
+            await friend(q,me,id);
+            return q.first("SELECT p.jpeg FROM mc_v813_dm_photo p JOIN mc_v8_entries e ON e.id=p.entry WHERE e.kind='dm' AND e.scope=? AND e.id=?",pair(me,id).join(':'),assertUuid(params.get('messageId')));
+          }
+          await rootFor(q,me,id);
           return q.first('SELECT jpeg FROM mc_v81_post_photo WHERE post=?',id);
         });
         if(!picture)reject(404,'图片不可见');

@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
 import {createApp} from '../server/index.mjs';
 import {startTursoFixture} from './turso-fixture.mjs';
@@ -12,7 +13,7 @@ const origin='https://lychee.test';
 for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持久化、原资料和个人工具 '+storage,async()=>{
   const dir=await mkdtemp(join(tmpdir(),'lychee-social-'));
   const fixture=storage==='turso'?await startTursoFixture({databasePath:join(dir,'cloud.sqlite')}):null;
-  const options={storage,dataDir:dir,turso:fixture&&{url:fixture.url,authToken:fixture.authToken},origin};
+  const options={storage,dataDir:dir,webRoot:fileURLToPath(new URL('../source/web/',import.meta.url)),turso:fixture&&{url:fixture.url,authToken:fixture.authToken},origin};
   let app;
   try{
     app=await createApp(options);
@@ -42,7 +43,10 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
     const ownRoster=(await api(scoped(a,tools,'camp?roster=lychee'),null,a.cookie)).data;
     assert.equal(ownRoster.members.length,1);assert.equal(ownRoster.members[0].name,a.name);
     await api(scoped(b,tools,'camp?roster=lychee'),null,b.cookie,403);
-    await api(scoped(a,tools,'camp?roster=circle-names'),null,a.cookie,403);
+    const names=(await api(scoped(a,tools,'camp?roster=circle-names'),null,a.cookie)).data.profiles;
+    assert.deepEqual(names.map(p=>p.name),[a.name]);
+    await api(scoped(b,tools,'camp?roster=circle-names'),null,b.cookie,403);
+    await api(scoped(a,tools,'camp?roster=other'),null,a.cookie,403);
     await api(scoped(a,tools,'camp?roster=lychee&room=group'),null,a.cookie,403);
     await api(scoped(a,tools,'phone?private=1&tools=2'),null,a.cookie);
     const taskId=randomUUID();
@@ -94,7 +98,7 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
     await get(c,{view:'dm',id:b.id},403);
     await act(c,'message',{friendId:b.id,body:'拒绝',clientId:randomUUID()},403);
     const post=(await act(a,'post',{kind:'feed',title:'动态',body:'好友可看',clientId:randomUUID()})).id;
-    const question=(await act(a,'post',{kind:'questions',body:'问一问',clientId:randomUUID()})).id;
+    const question=(await act(a,'post',{kind:'questions',title:'问一问',clientId:randomUUID()})).id;
     assert.deepEqual((({feed,questions,garden})=>[feed,questions,garden])((await get(b)).unread),[1,1,2]);
     await act(b,'read',{kind:'feed',through:(await get(b,{view:'feed',kind:'feed'})).through});
     assert.equal((await get(b)).unread.garden,1);
@@ -102,7 +106,7 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
     assert.ok((await get(a,{view:'feed',kind:'feed'})).repliesToMe.some(r=>r.postId===post&&r.id===reply));
     assert.ok(!(await get(c,{view:'post',id:post})).replies.some(r=>r.id===reply));
     await act(c,'reply',{postId:post,replyTo:reply,body:'不能回陌生人的留言',clientId:randomUUID()},404);
-    const privatePost=(await act(b,'post',{kind:'questions',body:'丙不可见',clientId:randomUUID()})).id;
+    const privatePost=(await act(b,'post',{kind:'questions',title:'丙不可见',clientId:randomUUID()})).id;
     await get(c,{view:'post',id:privatePost},404);
     await act(c,'reply',{postId:privatePost,body:'不可回',clientId:randomUUID()},404);
     const oldId=randomUUID(),entry=randomUUID();
@@ -152,7 +156,39 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
     assert.equal((await groupView(a,ga)).members.find(m=>m.id===b.id).slot,2);
     await act(a,'groupLeave',{groupId:ga});
     assert.equal((await groupView(b,ga)).group.role,'owner');
+    const jpeg=await readFile(new URL('../source/web/mobile/sticker-0.jpg',import.meta.url));
+    const picture=jpeg.toString('base64'),key=randomUUID();
+    const payload={friendId:b.id,clientId:key,picture,body:''};
+    const [one,two]=await Promise.all([act(a,'message',payload),act(a,'message',payload)]);
+    assert.equal(one.id,two.id);
+    await act(a,'message',{...payload,picture:undefined,body:'[图片]'},409);
+    await act(a,'message',{...payload,picture:(await readFile(new URL('../source/web/mobile/sticker-1.jpg',import.meta.url))).toString('base64')},409);
+    for(const invalid of ['','////','/9j/'+('A'.repeat(384000)),null])await act(a,'message',{...payload,clientId:randomUUID(),picture:invalid},400);
+    await act(c,'message',{...payload,friendId:b.id},403);
+    const caption=await act(b,'message',{friendId:a.id,clientId:randomUUID(),picture,body:'喝杯茶'});
+    const page=await get(b,{view:'dm',id:a.id});
+    assert.equal(page.messages.filter(m=>m.id===one.id).length,1);
+    const senderPage=await get(a,{view:'dm',id:b.id});
+    const getPic=(path,cookie)=>app.handle(new Request(origin+path,{headers:cookie?{cookie}:{}}));
+    for(const [u,rows] of [[a,senderPage],[b,page]]){
+      const address=rows.messages.find(m=>m.id===one.id).imageUrl;
+      const response=await getPic(address,u.cookie);
+      assert.equal(response.status,200);assert.equal(response.headers.get('content-type'),'image/jpeg');
+      assert.match(response.headers.get('cache-control'),/no-store/);
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()),jpeg);
+      assert.equal((await getPic(address,c.cookie)).status,403);
+      assert.equal((await getPic(address,null)).status,401);
+      assert.equal(rows.messages.find(m=>m.id===one.id).body,'[图片]');
+      assert.equal(rows.messages.find(m=>m.id===caption.id).body,'喝杯茶');
+      assert.ok(!JSON.stringify(rows).includes(picture));
+    }
+    assert.equal((await get(a)).friends.find(f=>f.id===b.id).lastMessage.body,'喝杯茶');
+    assert.ok(!JSON.stringify(await get(a)).includes(picture));
+    await get(c,{view:'dmPhoto',id:a.id,messageId:one.id},404); // c is also a's friend, outside this conversation
+    await get(a,{view:'dmPhoto',id:b.id,messageId:dm.id},404); // text-only historical message
     await app.close();app=await createApp(options);
+    const persisted=await getPic(page.messages.find(m=>m.id===one.id).imageUrl,b.cookie);
+    assert.deepEqual(Buffer.from(await persisted.arrayBuffer()),jpeg);
     assert.equal((await get(b,{view:'tree'})).gifts.length,1);
     assert.equal((await groupView(b,ga)).group.cover,cover);
     assert.equal((await get(a,{view:'post',id:question})).post.id,question);

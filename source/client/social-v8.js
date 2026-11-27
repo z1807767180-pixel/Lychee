@@ -225,9 +225,10 @@
       return go('tool',{gardenId,dest:detail,history,match,tab:section()});
     }
     function tools(){
-      header('工具箱');
+      const playing=route.view==='chatGames';header(playing?'一起玩':'工具箱');
       const sections=[['日常工具',['wheel','diet','tasks','focus','ledger']],['一起玩',['quiz','gomoku','soup','riddles']],['AI 工具',['ai-chat','ai-image']]];
       for(const [label,destinations] of sections){
+        if(playing&&label!=='一起玩')continue;
         const grid=h('div',null,'s8-grid');main.append(heading(label),grid);
         for(const dest of destinations){const [,title,art]=toolLinks.find(x=>x[0]===dest);const button=btn('',()=>openTool(dest),'s8-tool');button.append(photo(art),h('b',title));grid.append(button);}
       }
@@ -291,7 +292,7 @@
         }main.append(gallery);return;
       }
       if(view==='group'||view==='dm')return window.LycheeSocialChat.display(ui,view,params.id,data,drafts,keepComposer);
-      if(view==='tools')return tools();if(view==='me'||view==='settings')return me(view==='settings');
+      if(view==='tools'||view==='chatGames')return tools();if(view==='me'||view==='settings')return me(view==='settings');
       if(view==='style')return window.LycheeSocialPersonal.appearance(ui);
       if(view==='profile')return window.LycheeSocialPersonal.profile(ui);
       if(view==='funStatus')return window.LycheeSocialPersonal.funStatus(ui);

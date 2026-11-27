@@ -2,7 +2,23 @@
    chat protocol. Direct messages continue to use their separate endpoint. */
 (function(){
   'use strict';
-  const emoji=['😀','😊','🥰','😂','👍','❤️','🌱','🎉','🍵','📷','🙌','✨'];
+  const favorites=['😊','🥰','😂','👍','❤️','🌱','🎉','🍵','📷','🙌','✨','🍃'];
+  const categories=/* original-emoji-categories */ [];
+  const stickers=['喝杯茶','打个盹','加油呀','去打球','嗨','太棒了'];
+  const lines={back:'M14 4 6 12l8 8', dots:'M4 12h.2m7.8 0h.2m7.8 0h.2',plus:'M12 4v16M4 12h16',smile:'M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm-4 8h.1m7.9 0h.1M8 14q4 5 8 0',photo:'M3 5h18v14H3zM4 17l5-5 4 4 3-3 4 4M15 9h.2',game:'M7 8h10c3 0 4 2 5 8 0 3-2 4-4 1l-2-2H8l-2 2c-2 3-4 2-4-1 1-6 2-8 5-8Zm0 3v4m-2-2h4m6-1h.1m3 2h.1',pin:'m8 3 9 0-2 3v4l3 3v1H6v-1l3-3V6zM12 14v7'};
+  function icon(name){
+    const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),path=document.createElementNS(ns,'path');
+    svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width',name==='dots'?'3.5':'1.65');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');
+    path.setAttribute('d',lines[name]);svg.appendChild(path);return svg;
+  }
+  function fitKeyboard(){
+    const shell=document.querySelector('.s8[data-chat=true]'),vp=window.visualViewport;
+    if(!shell||!vp)return;
+    const open=vp.scale===1 && shell.querySelector('.s8-inputbar textarea')===document.activeElement && window.innerHeight-vp.height>80;
+    shell.classList.toggle('s8-keyboard',open);
+    if(open){shell.style.setProperty('--s8-vv-height',vp.height+'px');shell.style.setProperty('--s8-vv-top',vp.offsetTop+'px');}
+  }
+  if(window.visualViewport){window.visualViewport.addEventListener('resize',fitKeyboard);window.visualViewport.addEventListener('scroll',fitKeyboard);}
   async function jpeg(file){
     if(!file||!file.type.startsWith('image/'))throw Error('请选择图片');
     const url=URL.createObjectURL(file),img=new Image();
@@ -22,8 +38,10 @@
     const meInGroup=group&&data.members.find(m=>m.id===me),key=view+':'+id;
     const endpoint=window.LycheeSocialAppearance.endpoint(me,id,'camp');
     const title=group?data.group.name:data.friend.name;
-    const details=btn('•••',()=>ui.go(group?'members':'friendProfile',{id}),'s8-room-details');
-    details.setAttribute('aria-label',group?'群详情':'好友资料');header(title,details);
+    const details=btn('',()=>ui.go(group?'members':'friendProfile',{id}),'s8-room-details');
+    details.setAttribute('aria-label',group?'群详情':'好友资料');details.append(icon('dots'));header(title,details);
+    const back=main.closest('.s8').querySelector('.s8-back');
+    if(back){back.setAttribute('aria-label','返回');const label=h('span',back.textContent,'s8-room-back-label');back.replaceChildren(icon('back'),label);}
     const top=document.createElement('small');top.className='s8-room-meta';top.textContent=group?'群聊 · '+data.members.length+' 位成员':'私聊';
     main.closest('.s8').querySelector('.s8-header h1').append(top);
     const log=h('section',null,'s8-log');log.setAttribute('aria-label','聊天记录');main.append(log);
@@ -31,7 +49,13 @@
     async function scoped(body){const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(body)});if(!response.ok){const result=await response.json().catch(()=>({}));throw Error(result.error||'操作失败，请重试');}}
     let menu;
     function closeMenu(){if(menu)menu.remove();menu=null;}
-    function showImage(src){const overlay=h('div',null,'s8-image-preview');overlay.setAttribute('role','dialog');overlay.setAttribute('aria-label','群聊原图');const photo=h('img');photo.alt='群聊原图';photo.src=src;const close=btn('关闭',()=>overlay.remove());overlay.append(photo,close);main.append(overlay);close.focus();}
+    function showImage(src){const overlay=h('div',null,'s8-image-preview');overlay.setAttribute('role','dialog');overlay.setAttribute('aria-label','聊天原图');const photo=h('img');photo.alt='聊天原图';photo.src=src;const close=btn('关闭',()=>overlay.remove());overlay.append(photo,close);main.append(overlay);close.focus();}
+    function safePhoto(msg){
+      if(!msg.imageUrl)return false;
+      if(group)return msg.imageUrl.startsWith(endpoint+'?image=');
+      const url=new URL(msg.imageUrl,location.origin),query=url.searchParams;
+      return url.origin===location.origin && url.pathname==='/api/v8/social' && query.get('view')==='dmPhoto' && query.get('accountId')===me && query.get('id')===id && query.get('messageId')===msg.id;
+    }
     let previous;const messages=new Map();
     const items=data.messages.slice();
     const outside=group&&data.pin&&!items.some(m=>m.id===data.pin.id);
@@ -40,9 +64,9 @@
     for(const msg of items){
       const divider=window.LycheeSocialApi.chatDivider(previous,msg.created,300000);previous=msg.created;if(divider)log.append(h('time',divider,'s8-time'));
       const mine=msg.authorId===me,row=h('article',null,'s8-msg'+(mine?' mine':''));
-      row.dataset.message=msg.id;messages.set(msg.id,msg);row.append(avatar(msg));row.append(h('small',(msg.name||'园友')+(mine?' · 我':''),'s8-sender'));
-      if(msg.imageUrl&&group&&msg.imageUrl.startsWith(endpoint+'?image=')){
-        const button=btn('',()=>showImage(msg.imageUrl),'s8-photo-button');const im=h('img');im.src=msg.imageUrl;im.alt='群聊图片';im.loading='lazy';button.append(im);row.append(button);
+      row.dataset.message=msg.id;messages.set(msg.id,msg);row.append(avatar(msg));row.append(h('small',(msg.name||'园友'),'s8-sender'));
+      if(safePhoto(msg)){
+        const button=btn('',()=>showImage(msg.imageUrl),'s8-photo-button');const im=h('img');im.src=msg.imageUrl;im.alt='聊天图片';im.loading='lazy';button.append(im);row.append(button);
       }
       if(msg.body&&(!msg.imageUrl||msg.body!=='[图片]'))row.append(h('p',msg.body));
       const invite=!group&&window.LycheeSocialTools?.invitation(msg.body);
@@ -52,7 +76,7 @@
     }
     if(group&&data.pin){
       const pin=btn('',locate,'s8-room-pin'),target=Array.from(log.querySelectorAll('.s8-msg')).find(el=>el.dataset.message===data.pin.id);
-      pin.append(h('b','置顶'),h('span',(data.pin.name?data.pin.name+'：':'')+data.pin.body),h('i','›'));
+      pin.append(icon('pin'),h('b','置顶'),h('span',(data.pin.name?data.pin.name+'：':'')+data.pin.body),h('i','›'));
       main.closest('.s8').querySelector('.s8-header').after(pin);
       function locate(){if(!target)return;target.classList.add('s8-highlight');target.scrollIntoView({block:'center'});target.focus({preventScroll:true});setTimeout(()=>target.classList.remove('s8-highlight'),1800);}
       if(ui.route.params.locate){delete ui.route.params.locate;requestAnimationFrame(locate);}
@@ -84,21 +108,44 @@
     const send=h('button','发送','s8-primary');send.type='submit';
     const remember=()=>{draft.id=null;drafts.set(key,draft);};
     function update(){send.hidden=!draft.text.trim()&&!draft.picture;attachment.replaceChildren();if(draft.picture){const im=h('img');im.src='data:image/jpeg;base64,'+draft.picture;im.alt='待发送图片';attachment.append(im,btn('移除图片',()=>{draft.picture='';remember();update();}));}}
-    area.oninput=()=>{draft.text=area.value;remember();update();};file.onchange=async()=>{try{if(file.files[0]){draft.picture=await jpeg(file.files[0]);remember();update();}}catch(e){notice(e.message);}file.value='';};
-    const palette=btn('☺',()=>toggle('emoji'),'s8-compose-icon');palette.setAttribute('aria-label','选表情');
-    const plus=btn('＋',()=>toggle('more'),'s8-compose-icon');plus.setAttribute('aria-label','更多聊天操作');
-    function toggle(tab){const next=tray.dataset.open===tab?'':tab;tray.dataset.open=next;tray.replaceChildren();
-      if(next==='emoji')for(const symbol of emoji)tray.append(btn(symbol,()=>{const start=area.selectionStart,end=area.selectionEnd;area.setRangeText(symbol,start,end,'end');area.dispatchEvent(new Event('input'));tray.replaceChildren();tray.dataset.open='';area.focus();}));
-      if(next==='more'&&group){tray.append(btn('发图片',()=>file.click()),btn('表情',()=>toggle('emoji')),btn('一起玩',()=>ui.legacyGame(id)));}
+    function resize(){area.style.height='38px';area.style.height=Math.min(114,Math.max(38,area.scrollHeight+2))+'px';}
+    area.oninput=()=>{draft.text=area.value;remember();resize();update();};
+    async function pickImage(blob){draft.picture=await jpeg(blob);remember();update();toggle('');}
+    file.onchange=async()=>{try{if(file.files[0])await pickImage(file.files[0]);}catch(e){notice(e.message);}file.value='';};
+    const palette=btn('',()=>toggle('emoji'),'s8-compose-icon');palette.append(icon('smile'));palette.setAttribute('aria-label','选表情');
+    const plus=btn('',()=>toggle('more'),'s8-compose-icon');plus.append(icon('plus'));plus.setAttribute('aria-label','更多聊天操作');
+    function selectSymbol(symbol){const start=area.selectionStart,end=area.selectionEnd;if(area.value.length-(end-start)+symbol.length>area.maxLength)return;area.setRangeText(symbol,start,end,'end');area.dispatchEvent(new Event('input'));}
+    function showSymbols(name){
+      tray.replaceChildren();const grid=h('div',null,'s8-symbols');
+      if(name==='荔枝贴纸'){
+        stickers.forEach((label,i)=>{const src='/mobile/sticker-'+i+'.jpg',b=btn('',async()=>{
+          try{const res=await fetch(src);if(!res.ok)throw Error('贴纸未能加载');await pickImage(await res.blob());}catch(e){notice(e.message);}
+        });b.setAttribute('aria-label',label);const im=h('img');im.src=src;im.alt=label;im.loading='lazy';b.append(im);grid.append(b);});
+      }else{
+        const symbols=name==='常用'?favorites:categories.find(pair=>pair[0]===name)[1].split(' ');
+        for(const symbol of symbols)grid.append(btn(symbol,()=>selectSymbol(symbol)));
+      }
+      const tabs=h('div',null,'s8-emoji-tabs');
+      for(const label of ['常用',...categories.map(pair=>pair[0]),'荔枝贴纸']){const b=btn(label,()=>showSymbols(label));b.setAttribute('aria-pressed',String(name===label));tabs.append(b);}
+      tray.append(grid,tabs);const active=tabs.querySelector('[aria-pressed=true]');tabs.scrollLeft=Math.max(0,active.offsetLeft-tabs.offsetLeft-70);
     }
+    function toggle(tab){
+      const next=tray.dataset.open===tab?'':tab;tray.dataset.open=next;tray.replaceChildren();palette.setAttribute('aria-expanded',String(next==='emoji'));plus.setAttribute('aria-expanded',String(next==='more'));
+      if(next){area.blur();}if(next==='emoji')showSymbols('常用');
+      if(next==='more')for(const [name,label,action] of [['photo','发图片',()=>file.click()],['smile','表情',()=>toggle('emoji')],['game','一起玩',()=>ui.go('chatGames')]]){
+        const b=btn('',action);const tile=h('span',null,'s8-action-tile');tile.append(icon(name));b.append(tile,h('span',label));tray.append(b);
+      }
+    }
+    area.onfocus=()=>{if(tray.dataset.open)toggle('');fitKeyboard();};
+    area.onblur=()=>main.closest('.s8')?.classList.remove('s8-keyboard');
     composer.addEventListener('submit',async e=>{e.preventDefault();if(send.disabled)return;const text=area.value.trim();if(!text&&!draft.picture)return;
       if(draft.picture&&text.length>200){notice('带图片的消息说明限 200 字');return;}
       const requestId=draft.id||window.LycheeSocialApi.requestId();draft.id=requestId;drafts.set(key,draft);send.disabled=true;area.readOnly=true;
-      try{if(draft.picture)await scoped({type:'note',name:home.me.name,avatar:0,key:requestId,body:text,picture:draft.picture});
-        else await ui.mutate('message',{...(group?{groupId:id}:{friendId:id}),body:text,clientId:requestId});
+      try{if(group&&draft.picture)await scoped({type:'note',name:home.me.name,avatar:0,key:requestId,body:text,picture:draft.picture});
+        else await ui.mutate('message',{...(group?{groupId:id}:{friendId:id}),body:text,clientId:requestId,...(draft.picture?{picture:draft.picture}:{})});
         drafts.delete(key);if(composer.isConnected)await ui.repaint();
       }catch(error){notice(error.message);}finally{send.disabled=false;area.readOnly=false;}});
-    bar.append(area,palette);if(group)bar.append(plus);bar.append(send);composer.append(attachment,tray,bar,file);const shell=main.closest('.s8');shell.insertBefore(composer,shell.querySelector('.s8-nav'));update();
+    bar.append(area,palette,plus,send);composer.append(attachment,bar,tray,file);const shell=main.closest('.s8');shell.insertBefore(composer,shell.querySelector('.s8-nav'));resize();update();
   }
   window.LycheeSocialChat={display,compress:jpeg};
 })();
