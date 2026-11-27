@@ -25,6 +25,7 @@ async function click(b,text,selector='button'){
 }
 const visible=(b,selector)=>until(()=>get(b,s=>!!document.querySelector(s)?.getClientRects().length,selector),selector);
 const has=(b,text)=>until(()=>get(b,s=>document.body.innerText.includes(s),text),text);
+const noChatMeter=b=>get(b,()=>!/(今日问答剩余|今日问答额度已用完)/.test(document.body.innerText));
 async function readLabel(browser,text){
   for(let i=0;i<14;i++){
     if(await get(browser,s=>document.body.innerText.includes(s),text))return true;
@@ -64,7 +65,7 @@ function seedFull(account,dir){
   try{
     const count=db.prepare('SELECT COUNT(*) AS n FROM mc_ai_quota_requests WHERE account=? AND day=? AND kind=? AND consumed=1');
     const insert=db.prepare('INSERT INTO mc_ai_quota_requests(account,request_key,signature,day,kind) VALUES(?,?,?,?,?)');
-    for(const [kind,limit] of [['chat',20],['image',10]]){
+    for(const [kind,limit] of [['chat',20],['image',15]]){
       for(let i=count.get(account,day,kind).n;i<limit;i++)insert.run(account,randomUUID(),'fixture-only',day,kind);
     }
   }finally{db.close();}
@@ -124,8 +125,8 @@ test('真实双端跨园额度、重试、头像封面和主持',async t=>{
       for(const [target,kind] of [['AI 助手','chat'],['AI 生图','image'],['个人资料','image'],['状态灵感','chat'],['cover','image'],['海龟汤','chat']]){
         stage=window+':'+target;
         await openPage(x,specs[i],server.url,gardens[i],target);
-        const expected=kind==='image'?'今日生图剩余 10 / 10 张':'今日问答剩余 20 / 20 次';
-        report.views.push({window,target,expected,visible:await readLabel(x,expected)});
+        const expected=kind==='image'?'今日生图剩余 15 / 15 张':null;
+        report.views.push({window,target,expected,visible:expected?await readLabel(x,expected):await noChatMeter(x)});
       }
     }
     stage='真实聊天成功后丢失响应';
@@ -136,28 +137,28 @@ test('真实双端跨园额度、重试、头像封面和主持',async t=>{
       await win.call('Input.insertText',{text:'相同的本机测试输入'});
     }
     await typePrompt();await win.js('window.qaLoseReply=true');await click(win,'发送');
-    await has(win,'测试：响应已丢失');await has(win,'今日问答剩余 19 / 20 次');
+    await has(win,'测试：响应已丢失');assert.ok(await noChatMeter(win));
     await click(win,'发送');await has(win,'回环测试回复');
     assert.equal(provider.length,1);
-    await typePrompt();await click(win,'发送');await has(win,'今日问答剩余 18 / 20 次');
+    await typePrompt();await click(win,'发送');assert.ok(await noChatMeter(win));
     const ids=await win.js('window.qaWire');assert.equal(ids.length,3);assert.match(ids[0],/^[a-f0-9-]{36}$/i);
     assert.equal(ids[0],ids[1]);assert.notEqual(ids[1],ids[2]);assert.equal(provider.length,2);
     report.retries={realBrowserPosts:3,mockProviderPosts:2,sameKeyAfterLostReply:true,freshKeyAfterSuccess:true};
-    stage='另一独立会话在乙园读到18次';
-    await openPage(b[1],mobile,server.url,gardens[1],'AI 助手');await has(b[1],'今日问答剩余 18 / 20 次');
+    stage='另一独立会话在乙园无问答日限提示';
+    await openPage(b[1],mobile,server.url,gardens[1],'AI 助手');assert.ok(await noChatMeter(b[1]));
     await shot(b[1],'mobile-cross-garden');
     stage='个人状态真实辅助回复和用量刷新';
-    await openPage(b[1],mobile,server.url,gardens[1],'状态灵感');await has(b[1],'今日问答剩余 18 / 20 次');
+    await openPage(b[1],mobile,server.url,gardens[1],'状态灵感');assert.ok(await noChatMeter(b[1]));
     await click(b[1],'✦ AI 状态灵感','.a62-assist button');await has(b[1],'回环测试回复');
-    await until(()=>get(b[1],()=>document.querySelector('.a62-assist .a62-quota')?.innerText==='今日问答剩余 17 / 20 次'),'辅助入口扣量后刷新');
-    assert.equal(provider.length,3);report.profileAssistRefresh={previous:18,remaining:17};
+    assert.ok(await noChatMeter(b[1]));
+    assert.equal(provider.length,3);report.profileAssistRefresh={hasDailyLimit:false};
     seedFull(account,dir);
     for(const [i,x] of b.entries()){
       const window=i?'mobile':'windows';
       for(const [target,kind] of [['AI 助手','问答'],['AI 生图','生图'],['cover','生图'],['个人资料','生图'],['状态灵感','问答'],['海龟汤','问答']]){
         stage=window+':耗尽:'+target;await openPage(x,specs[i],server.url,gardens[i],target);
-        const expected='今日'+kind+'额度已用完，北京时间零点恢复';
-        report.views.push({window,target,expected,visible:await readLabel(x,expected)});
+        const expected=kind==='生图'?'今日生图额度已用完，北京时间零点恢复':null;
+        report.views.push({window,target,expected,visible:expected?await readLabel(x,expected):await noChatMeter(x)});
         if(['AI 助手','个人资料','海龟汤','状态灵感'].includes(target))await shot(x,window+'-'+({ 'AI 助手':'chat','个人资料':'avatar','海龟汤':'soup','状态灵感':'assist'}[target]));
       }
     }

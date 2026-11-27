@@ -106,8 +106,8 @@ export async function verifyStoredPicture({session, owner, garden, ownerId}) {
     state.activeGardenId===garden && state.gardens?.some(g=>g.id===garden && g.role==='owner'),'album-owner');
   const base=pinned(garden,ownerId)+'phone';
   const status=await call(base+'?v62=status');
-  requireThat(status.image===true && status.limits?.image===10 && Number.isInteger(status.remaining?.image) &&
-    status.remaining.image>=0 && status.remaining.image<=10,'album-quota');
+  requireThat(status.image===true && status.limits?.image===15 && Number.isInteger(status.remaining?.image) &&
+    status.remaining.image>=0 && status.remaining.image<=15,'album-quota');
   const album=await call(base+'?v62=images');
   const picture=album.images?.find(row=>row.prompt==='荔枝' && imageId(row.id));
   requireThat(picture,'pilot-picture-missing');

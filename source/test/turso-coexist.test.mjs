@@ -186,9 +186,9 @@ test('原发布进程单端口共存：旧签名下载、迁移前503、迁移�
         const mixed=owner+'; '+oldCookie,reverse=oldCookie+'; '+owner;
         const confirm=async(path,cookie,expected)=>{
           const state=await get(path,cookie);
-          assert.deepEqual(state.limits,{chat:20,image:10});
+          assert.deepEqual(state.limits,{image:15});
           assert.equal(state.used.chat??0,expected);
-          assert.deepEqual(state.remaining,{chat:20-expected,image:10});
+          assert.deepEqual(state.remaining,{image:15});
         };
         await confirm(rawStatus,oldCookie,0);await confirm(pinned,oldCookie,0);
         const reply=await (await http('/api/phone',{type:'v62-assist',prompt:'答好'},mixed)).json();
@@ -199,7 +199,7 @@ test('原发布进程单端口共存：旧签名下载、迁移前503、迁移�
         await http('/api/camp',{type:'note',name:'旧版测试',avatar:0,key:randomUUID(),body:text},mixed);
         const roster=await get('/api/camp?roster=lychee',oldCookie);
         assert.ok(roster.notes.some(note=>note.body===text));await confirm(rawStatus,oldCookie,1);
-        quotaTest.diagnostic(JSON.stringify({stageSha256,legacyDefaultChat:30,enabledLimits:{chat:20,image:10},oldAccountUsed:1,
+        quotaTest.diagnostic(JSON.stringify({stageSha256,legacyDefaultChat:30,enabledLimits:{image:15},oldAccountUsed:1,
           otherAccountUsed:0,providerCalls:provider.calls,originalNoteReadback:true}));
       }finally{await provider.close();}
     });

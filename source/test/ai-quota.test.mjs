@@ -39,25 +39,25 @@ for(const remote of [false,true]){
     const kinds=['chat','assist','soup'];
     const chats=Array.from({length:24},(_,i)=>operation(kinds[i%3],i));
     const answers=await Promise.all(chats.map((op,i)=>invoke(i%2?one:two,owner,op,success)));
-    assert.equal(answers.filter(r=>r.status===200).length,20);
-    assert.equal(answers.filter(r=>r.status===429).length,4);
-    const images=Array.from({length:12},(_,i)=>operation('image',i));
+    assert.equal(answers.filter(r=>r.status===200).length,24);
+    assert.equal(answers.filter(r=>r.status===429).length,0);
+    const images=Array.from({length:17},(_,i)=>operation('image',i));
     const pictures=await Promise.all(images.map((op,i)=>invoke(i%2?one:two,owner,op,success)));
-    assert.equal(pictures.filter(r=>r.status===200).length,10);
+    assert.equal(pictures.filter(r=>r.status===200).length,15);
     assert.equal(pictures.filter(r=>r.status===429).length,2);
     const first=chats[answers.findIndex(r=>r.status===200)];
     assert.deepEqual(await (await invoke(two,owner,first,success)).json(),{ok:true});
-    assert.equal(paid,30);
+    assert.equal(paid,39);
     assert.equal((await invoke(one,friend,first,success)).status,200);
-    assert.equal(paid,31);
-    assert.deepEqual((await one.status(owner)).remaining,{chat:0,image:0});
+    assert.equal(paid,40);
+    assert.deepEqual((await one.status(owner)).remaining,{image:0});
     now=Date.parse('2026-11-25T16:00:00Z');
-    assert.deepEqual((await two.status(owner)).remaining,{chat:20,image:10});
+    assert.deepEqual((await two.status(owner)).remaining,{image:15});
     assert.equal((await two.status(owner)).resetAt,Date.parse('2026-11-26T16:00:00Z'));
     assert.equal((await invoke(two,owner,first,success)).status,200);
     assert.deepEqual((await one.status(owner)).used,{});
     assert.equal((await invoke(two,owner,operation('soup',1),success)).status,200);
-    assert.equal(paid,32);
+    assert.equal(paid,41);
   });
 }
 
@@ -94,7 +94,7 @@ for(const remote of [false,true]){
     ]){
       const op=opFor(name),r=await submit(op,provider,false);
       assert.equal(r.status,409);assert.equal((await r.json()).state,'refunded');
-      assert.equal((await second.status(owner)).remaining.image,10);
+      assert.equal((await second.status(owner)).remaining.image,15);
       assert.ok(sealed.has(quotaImageId(owner,op)));
       const replay=await submit(op,()=>{throw Error('forbidden replay');},false);
       assert.equal((await replay.json()).state,'refunded');
@@ -109,7 +109,7 @@ for(const remote of [false,true]){
     assert.deepEqual(await second.imageStatus(owner,gardens[1],rawId(ok),hidden),{state:'missing'});
     assert.deepEqual(await second.imageStatus(friend,garden,rawId(ok),hidden),{state:'missing'});
     assert.deepEqual(await (await submit(ok,()=>{},false)).json(),saved);
-    assert.equal(hits,originalHits);assert.equal((await second.status(owner)).remaining.image,9);
+    assert.equal(hits,originalHits);assert.equal((await second.status(owner)).remaining.image,14);
 
     // Exit a separate OS process after the atomic provider reservation. Model
     // calls are replaced with a local callback that terminates the test process.
@@ -132,15 +132,15 @@ for(const remote of [false,true]){
     await crash(lost);await crash(committed);
     assert.equal((await second.imageStatus(owner,garden,rawId(lost),probe)).state,'pending');
     assert.ok(!sealed.has(quotaImageId(owner,lost)));
-    assert.equal((await second.status(owner)).remaining.image,7);
+    assert.equal((await second.status(owner)).remaining.image,12);
     delivery(quotaImageId(owner,committed),'已入册');
     assert.equal((await second.imageStatus(owner,garden,rawId(committed),probe)).state,'ready');
     now+=imageSettlementMs+1;
     unavailable=true;
     assert.equal((await second.imageStatus(owner,garden,rawId(lost),probe)).state,'pending');
-    assert.equal((await second.status(owner,{gardenId:garden,getImageInGarden:probe})).remaining.image,7);
+    assert.equal((await second.status(owner,{gardenId:garden,getImageInGarden:probe})).remaining.image,12);
     unavailable=false;
-    assert.equal((await second.status(owner,{gardenId:garden,getImageInGarden:probe})).remaining.image,8);
+    assert.equal((await second.status(owner,{gardenId:garden,getImageInGarden:probe})).remaining.image,13);
     assert.equal((await second.imageStatus(owner,garden,rawId(lost),probe)).state,'refunded');
     delivery(quotaImageId(owner,lost),'迟到的图片');assert.ok(!pictures.has(quotaImageId(owner,lost)));
     assert.equal((await (await submit(lost,()=>{},true)).json()).state,'refunded');
@@ -158,7 +158,7 @@ for(const remote of [false,true]){
     release();
     assert.equal((await (await live).json()).state,'refunded');
     assert.ok(!pictures.has(quotaImageId(owner,slow)));
-    assert.equal((await q.status(owner)).remaining.image,8);
+    assert.equal((await q.status(owner)).remaining.image,13);
     assert.equal(hits,originalHits+1);
     const delayed=opFor('相册已提交但收据更新暂时失败');
     const faultDb=remote?fixture.sqlite:new DatabaseSync(settings.quotaFile);
@@ -171,7 +171,7 @@ for(const remote of [false,true]){
     }finally{if(!remote)faultDb.close();}
     assert.equal((await second.imageStatus(owner,garden,rawId(delayed),probe)).state,'ready');
     assert.equal((await (await submit(delayed,()=>{},false)).json()).id,quotaImageId(owner,delayed));
-    assert.equal((await q.status(owner)).remaining.image,7);
+    assert.equal((await q.status(owner)).remaining.image,12);
     assert.equal(hits,originalHits+2);
   });
 }
@@ -200,9 +200,9 @@ for(const remote of [false,true]){
     add('other-kind',owner,day,'chat',502,missing);
     add('other-account',friend,day,'image',502,missing);
     add('other-day',owner,prior,'image',502,missing);
-    assert.deepEqual((await q.status(owner)).remaining,{image:4,chat:19});
+    assert.deepEqual((await q.status(owner)).remaining,{image:9});
     const changes=()=>raw.prepare('SELECT total_changes() n').get().n;
-    const first=changes();assert.deepEqual((await q.status(owner)).remaining,{image:4,chat:19});assert.equal(changes(),first);
+    const first=changes();assert.deepEqual((await q.status(owner)).remaining,{image:9});assert.equal(changes(),first);
     const repaired=raw.prepare(`SELECT request_key FROM ${requests} WHERE consumed=0 ORDER BY request_key`).all().map(r=>r.request_key);
     assert.deepEqual(repaired,[op.key,'bad-format','upstream'].sort());
     assert.equal(raw.prepare(`SELECT response_body FROM ${requests} WHERE request_key=?`).get(op.key).response_body,missing);
@@ -225,17 +225,17 @@ test('definite provider refusal releases quota, uncertain send counts once, dupl
     assert.equal(reply.status,409);assert.equal(reply.headers.get('x-lychee-ai-retry'),'new');
   }
   assert.equal(sends,1);
-  assert.deepEqual((await quota.status(owner)).remaining,{chat:20,image:10});
+  assert.deepEqual((await quota.status(owner)).remaining,{image:15});
   const op=operation('chat',0);
   const uncertain=await invoke(quota,owner,op,timeout);
   assert.equal(uncertain.status,503);assert.equal(uncertain.headers.has('x-lychee-ai-retry'),false);
   quota.close();quota=await openAiQuota({quotaFile:join(dir,'account.sqlite')});
   assert.equal((await invoke(quota,owner,op,timeout)).status,503);
   assert.equal((await invoke(quota,owner,{...op,signature:'other-garden'},timeout)).status,409);
-  assert.equal(sends,2);assert.equal((await quota.status(owner)).remaining.chat,19);
+  assert.equal(sends,2);assert.equal((await quota.status(owner)).remaining.chat,undefined);
   const noSend=operation('assist',0);
   assert.equal((await quota.run(owner,noSend,()=>Response.json({error:'参数无效'},{status:400}))).status,400);
-  assert.equal((await quota.status(owner)).remaining.chat,19);
+  assert.equal((await quota.status(owner)).remaining.chat,undefined);
   for(const act of ['start','hint','end'])assert.equal(operationFor('/api/camp',{type:'soup',act},gardens[0]),null);
   assert.equal(operationFor('/api/camp',{type:'soup',act:'send',mode:'chat'},gardens[0]),null);
 });
@@ -268,11 +268,11 @@ test('normal HTTP account and two private gardens share one persisted quota on r
   const path=id=>'/g/'+id+'/api/phone';
   const assist={type:'v62-assist',prompt:'合成问答',requestId:randomUUID()};
   await api(path(a),assist);
-  assert.equal((await api(path(b)+'?v62=status')).remaining.chat,19);
+  assert.equal((await api(path(b)+'?v62=status')).remaining.chat,undefined);
   await api(path(b),{type:'v62-chat',id:randomUUID(),prompt:'合成对话',thinking:false,web:false,requestId:randomUUID()});
   assert.deepEqual((await api('/g/'+a+'/api/camp?soup=1&room=solo')).aiQuota.used,{chat:2});
   await app.close();app=await listen(settings);
   assert.equal((await api(path(a),assist)).reply,'本地模拟回复');
-  assert.equal((await api(path(b)+'?v62=status')).remaining.chat,18);
+  assert.equal((await api(path(b)+'?v62=status')).remaining.chat,undefined);
   assert.equal(hits,2);
 });
