@@ -11,21 +11,47 @@ PACKAGE = "dev.lychee.friends"
 def adb(*args):
     return subprocess.check_output(["adb", *args], timeout=25, stderr=subprocess.STDOUT).decode("utf8", "replace")
 
+def hierarchy():
+    raw = adb("exec-out", "uiautomator", "dump", "/dev/tty")
+    start, end = raw.find("<hierarchy"), raw.rfind("</hierarchy>")
+    if start >= 0 and end >= start:
+        return ET.fromstring(raw[start:end+len("</hierarchy>")])
+    path = "/sdcard/lychee-friends-ui.xml"
+    reply = adb("shell", "uiautomator", "dump", path)
+    if "dumped to:" not in reply:
+        raise ValueError(f"No UI hierarchy: {raw[-220:]} / {reply[-220:]}")
+    return ET.fromstring(adb("exec-out", "cat", path))
+
+def diagnostics():
+    for name, args, match in [
+        ("window", ["shell","dumpsys","window"], r"mCurrentFocus|mFocusedApp|mShowingLockscreen"),
+        ("activity", ["shell","dumpsys","activity","activities"], r"topResumedActivity|mResumedActivity"),
+        ("power", ["shell","dumpsys","power"], r"mWakefulness=|Display Power:"),
+        ("network", ["shell","dumpsys","connectivity"], r"Active default network:"),
+        ("crash", ["logcat","-b","crash","-d","-t","50"], r"."),
+    ]:
+        try:
+            lines = [s.strip() for s in adb(*args).splitlines() if re.search(match,s)]
+            print(f"{name}: {lines[-12:]}",flush=True)
+        except subprocess.SubprocessError as error:
+            print(name, type(error).__name__,flush=True)
 
 def find(label, click=False, timeout=100, retry_landing=False):
     labels = (label,) if isinstance(label, str) else label
     deadline = time.monotonic() + timeout
     retry_at = time.monotonic() + 5
     visible = []
+    last_error = "none"
+    node_sample = []
     while time.monotonic() < deadline:
         try:
-            adb("shell", "uiautomator", "dump", "/sdcard/lychee-friends-ui.xml")
-            nodes = ET.fromstring(adb("exec-out", "cat", "/sdcard/lychee-friends-ui.xml")).iter("node")
-            visible = []
+            nodes = list(hierarchy().iter("node"))
+            node_sample = [(n.get("package"), n.get("class")) for n in nodes[:12]]
+            current = [n.get("text") or n.get("content-desc") for n in nodes]
+            if any(current):
+                visible = [text for text in current if text]
             for node in nodes:
                 text = node.get("text") or node.get("content-desc") or ""
-                if text:
-                    visible.append(text)
                 if any(item in text for item in labels) or label == "登录荔枝园" and "注册新账号" in text:
                     if click:
                         a,b,c,d=map(int,re.findall(r"\d+",node.get("bounds")))
@@ -41,21 +67,41 @@ def find(label, click=False, timeout=100, retry_landing=False):
                     retry_at = time.monotonic()+12
                     print("Retried the official landing page after a transient connection failure.", flush=True)
                     break
-        except (ValueError,ET.ParseError,subprocess.SubprocessError):
-            pass
+        except (ValueError,ET.ParseError,subprocess.SubprocessError) as error:
+            last_error = f"{type(error).__name__} {error} {getattr(error,'output',b'')!r}"[:450]
         time.sleep(2)
-    raise RuntimeError(f"Did not see {label}: {visible[:18]}")
+    diagnostics()
+    raise RuntimeError(f"Did not see {label}: {visible[:18]}, nodes={node_sample}, last dump={last_error}")
 
 
 def launch():
+    # Keep the ephemeral test screen interactive throughout the network transition.
+    adb("shell","svc","power","stayon","true")
+    adb("shell","input","keyevent","KEYCODE_WAKEUP")
+    adb("shell","wm","dismiss-keyguard")
     adb("shell","am","force-stop",PACKAGE)
-    adb("shell","am","start","-W","-n",PACKAGE+"/dev.lychee.pilot.MainActivity")
+    result = adb("shell","am","start","-W","-n",PACKAGE+"/dev.lychee.pilot.MainActivity")
+    if "Status: ok" not in result:
+        raise RuntimeError(f"Android did not launch the app: {result}")
 
 
 def offline(enable):
     adb("shell","cmd","connectivity","airplane-mode","enable" if enable else "disable")
     adb("shell","svc","wifi","disable" if enable else "enable")
     adb("shell","svc","data","disable" if enable else "enable")
+    if enable:
+        deadline=time.monotonic()+25
+        while time.monotonic()<deadline:
+            state = adb("shell","dumpsys","connectivity")
+            if re.search(r"Active default network:\s*(none|null)\b",state,re.I):
+                return
+            if "Active default network:" not in state:
+                routes = adb("shell","ip","route","show","table","all")
+                if not re.search(r"^default\s", routes, re.M):
+                    return
+            time.sleep(1)
+        diagnostics()
+        raise RuntimeError("Android did not drop its default network before the offline test")
 
 def wait_for_public_https(target):
     # The device can retain an old VALIDATED entry after its default route disappears.
