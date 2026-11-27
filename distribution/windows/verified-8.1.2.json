@@ -162,6 +162,109 @@
         }
       ]
     },
+    "publicOfficialFiles": {
+      "dateUtc": "2026-11-27T17:42:31.803872+00:00",
+      "base": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.2/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 21816320,
+          "sha256": "53a8c69ba9244f336886028fe23b08215c87a247829edf89c788342a0983961e",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21368832,
+          "sha256": "f9587797b2ae6e4be77bc650400e7a6fdd5764c5365d89985856138c2a7542b1",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "faaf244a26a83934ebc17c7c5f104aa7b73c82089738c4aab2f0540364a3c5ac",
+          "status": 200,
+          "finalHost": "lychee-link-check.onrender.com"
+        }
+      ]
+    },
+    "productionAfterFeedSwitch": {
+      "utc": "2026-11-27T17:42:13.0933838Z",
+      "clientVersion": "8.1.2.0",
+      "clientSha256": "53a8c69ba9244f336886028fe23b08215c87a247829edf89c788342a0983961e",
+      "expectedFeed": "8.1.2",
+      "scenario": "production origin",
+      "packages": [
+        {
+          "kind": "exe",
+          "file": "Lychee.exe",
+          "bytes": 21816320,
+          "sha256": "53a8c69ba9244f336886028fe23b08215c87a247829edf89c788342a0983961e",
+          "updaterVerified": true
+        },
+        {
+          "kind": "msi",
+          "file": "Lychee.msi",
+          "bytes": 21368832,
+          "sha256": "f9587797b2ae6e4be77bc650400e7a6fdd5764c5365d89985856138c2a7542b1",
+          "updaterVerified": true
+        }
+      ],
+      "passed": true,
+      "manifestVersion": "8.1.2",
+      "proxyDecisions": [
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/stable.json",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v8.1.2/Lychee.exe",
+        "ALLOW https://lychee-link-check.onrender.com/windows-update/windows-v8.1.2/Lychee.msi"
+      ],
+      "blockedConnect": []
+    },
+    "manualWebsiteOnlyPortableMigration": {
+      "from": "8.1.1",
+      "to": "8.1.2",
+      "startHash": "4ec5cf40c1c1bffc3f079b72d86caf25c240d8567bba42628d2db08ec5b88eaa",
+      "mode": "manual-official-upgrade",
+      "pass": true,
+      "manualRequests": [
+        "https://lychee-link-check.onrender.com/windows-update/stable.json",
+        "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.2/Lychee.exe"
+      ],
+      "replacedBeforeOldAppLaunch": true,
+      "connections": [
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        },
+        {
+          "host": "lychee-link-check.onrender.com:443",
+          "allowed": true
+        }
+      ],
+      "privateDesktop": true,
+      "singleList": true,
+      "returnedWithoutPageReload": true,
+      "toolScreens": [
+        "交给命运",
+        "照记饮食",
+        "提醒事项",
+        "番茄钟",
+        "记账本",
+        "头脑王者",
+        "五子棋",
+        "海龟汤",
+        "脑筋急转弯",
+        "AI 助手",
+        "AI 生图"
+      ],
+      "appearance": true,
+      "settingsVersion": "Windows W8.1.2",
+      "settingsResult": "荔枝 W8.1.2\n\n已是最新版本，暂时无需更新。\n\n关闭",
+      "profile": true,
+      "persistentAccountCookie": true,
+      "artifactSha256": "53a8c69ba9244f336886028fe23b08215c87a247829edf89c788342a0983961e",
+      "localAccountRequests": 53
+    },
     "isolatedSameKindUpgrades": {
       "from": "8.1.2",
       "to": "8.1.3",

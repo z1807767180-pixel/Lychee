@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {randomUUID,createHash} from 'node:crypto';
 import {once} from 'node:events';
-import {copyFile,mkdir,mkdtemp,readFile,writeFile,rm,realpath,lstat,stat} from 'node:fs/promises';
+import {copyFile,mkdir,mkdtemp,readFile,writeFile,rm,realpath,lstat,stat,rename} from 'node:fs/promises';
 import {createServer,connect as connectTcp} from 'node:net';
 import {createServer as createHttpServer} from 'node:http';
 import {tmpdir} from 'node:os';
@@ -14,7 +14,9 @@ import {listen} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 
 const [packageDir,evidenceDir,...flags]=process.argv.slice(2);
-const websiteOnly=flags.includes('--website-only'),fromDir=flags.find(value=>value!=='--website-only');
+const manual=flags.includes('--manual-official');
+const websiteOnly=manual||flags.includes('--website-only'),fromDir=flags.find(value=>!value.startsWith('--'));
+if(manual&&!fromDir)throw Error('The manual upgrade requires an earlier portable release folder.');
 if(!packageDir||!evidenceDir||process.platform!=='win32')throw Error('Pass final Windows package folder, evidence folder, optional older source package folder.');
 const base=resolve(packageDir),out=resolve(evidenceDir),origin='https://lychee-link-check.onrender.com';
 const build=JSON.parse(await readFile(join(base,'stable.json'))),wanted=build.assets.find(a=>a.kind==='exe').sha256;
@@ -23,8 +25,23 @@ const digest=async p=>createHash('sha256').update(await readFile(p)).digest('hex
 const work=await mkdtemp(join(tmpdir(),'lychee-social-wpf-')),exe=join(work,'Lychee.exe'),profile=join(work,'profile'),tmp=join(work,'tmp');
 await mkdir(out,{recursive:true});await mkdir(tmp);await mkdir(profile);
 await copyFile(join(fromDir||base,'Lychee.exe'),exe);
-const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:prior?(websiteOnly?'public-upgrade-website-only':'public-upgrade'):websiteOnly?'current-website-only':'native-social',pass:false};
+const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:manual?'manual-official-upgrade':prior?(websiteOnly?'public-upgrade-website-only':'public-upgrade'):websiteOnly?'current-website-only':'native-social',pass:false};
 assert.equal(report.startHash,prior?prior.assets.find(a=>a.kind==='exe').sha256:wanted);
+if(manual){
+  report.manualRequests=[];
+  const get=async path=>{
+    const url=origin+'/windows-update/'+path;
+    const r=await fetch(url,{redirect:'error'});
+    assert.equal(r.status,200);assert.equal(r.url,url);report.manualRequests.push(url);return r;
+  };
+  const listing=await (await get('stable.json')).json();
+  assert.deepEqual(listing,build);
+  const asset=listing.assets.find(a=>a.kind==='exe'),staged=join(work,'verified-download.exe');
+  const bytes=Buffer.from(await (await get('windows-v'+listing.version+'/'+asset.name)).arrayBuffer());
+  assert.equal(bytes.length,asset.length);assert.equal(createHash('sha256').update(bytes).digest('hex'),wanted);
+  await writeFile(staged,bytes,{flag:'wx'});await rename(staged,exe);assert.equal(await digest(exe),wanted);
+  report.replacedBeforeOldAppLaunch=true;
+}
 let proxy;
 if(websiteOnly){
   const host=new URL(origin).hostname;
@@ -118,7 +135,7 @@ try{
   await browser.js('(()=>{const f=document.querySelector(".garden-access form");f.elements.username.value='+JSON.stringify(bb.name)+';f.elements.password.value='+JSON.stringify(bb.password)+'})()');
   await click('登录');
   await until(async()=>(await browser.call('Network.getCookies',{urls:[origin]})).cookies.some(c=>c.name==='__Host-lychee-account'&&c.secure&&c.httpOnly),'登录会话已由浏览器保存');
-  if(prior){
+  if(prior&&!manual){
     await until(async()=>await state()==='available','旧正式版发现新版',120000);
     report.offer=await browser.js("document.querySelector('[data-windows-update] strong').innerText");
     assert.ok(report.offer.endsWith(build.version));
@@ -161,7 +178,7 @@ try{
   report.persistentAccountCookie=cookies.some(c=>c.name==='__Host-lychee-account'&&c.httpOnly&&c.secure&&!c.session);
   assert.ok(report.profile&&report.persistentAccountCookie);report.artifactSha256=await digest(exe);assert.equal(report.artifactSha256,wanted);
   if(websiteOnly){
-    if(report.from.localeCompare('8.1.2','en',{numeric:true})>=0)assert.ok(report.connections.every(c=>c.allowed));
+    if(manual||report.from.localeCompare('8.1.2','en',{numeric:true})>=0)assert.ok(report.connections.every(c=>c.allowed));
     else assert.ok(report.connections.some(c=>!c.allowed&&c.host==='raw.githubusercontent.com:443'));
     assert.ok(report.connections.some(c=>c.allowed&&c.host===new URL(origin).hostname+':443'));
   }

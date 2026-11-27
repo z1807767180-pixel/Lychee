@@ -124,7 +124,7 @@ async function connect(port, origin, oldTarget) {
 const atPage = (browser, fn, ...args) => browser.js('(' + fn.toString() + ')(' + args.map(JSON.stringify).join(',') + ')');
 async function click(browser, label, selector = 'button') {
   await deadline(() => atPage(browser, (selector, label) => {
-    const button = [...document.querySelectorAll(selector)].find(b => b.offsetWidth && !b.disabled && b.innerText.trim() === label);
+    const button = [...document.querySelectorAll(selector)].find(b => b.offsetWidth && !b.disabled && (b.innerText.trim()===label||b.getAttribute('aria-label')===label));
     if (!button) return false; button.click(); return true;
   }, selector, label), 'click ' + label);
 }
@@ -284,7 +284,7 @@ async function testWindow(kind, exe, other) {
     outcome.userDataRetained = after.hasData === true || outcome.userDataAfterFreshLogin === true;
     outcome.relaunchedVersion = after.version;
     if (!control) {
-      assert.ok(fixture.requests.some(r => r.mode === (mirrorOnly?'mirror':'good') && r.path.endsWith('Lychee.' + kind)));
+      assert.ok(fixture.requests.some(r => r.mode === 'good' && r.path.endsWith('Lychee.' + kind)));
       assert.ok(!fixture.requests.some(r => r.path.endsWith('Lychee.' + (kind === 'exe'?'msi':'exe'))));
       if (outcome.userDataAfterFreshLogin) await browser.call('Page.reload');
       await settings(browser); await click(browser,'检查更新'); await panel(browser,'已是最新版本，暂时无需更新');

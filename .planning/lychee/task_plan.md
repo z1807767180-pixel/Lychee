@@ -1,16 +1,12 @@
 # 荔枝当前计划
 
-## 原生端只从荔枝官网更新
-
-发布 W8.1.2 与 A8.1.2，仅访问荔枝原 HTTPS 域名检查和下载。官网无法连接或返回错误时原地报错，保留包完整性与签名、覆盖安装保护。手机网页和 AI 规则仍沿用 V8.1.1。确认新旧更新路径、保留 8.1.1 成品及过渡说明，原机体验待本人反馈。
-
 ## 安卓软件内更新
 
-A8.0.1 已发布，等待朋友在厂商真机上的升级反馈。Android 9 的受影响旧壳，以及 GitHub 不通的 V7.0.5 及更早朋友版，可从[官网固定下载页](https://lychee-link-check.onrender.com/android-update/download.html)覆盖一次，之后可在设置中直接从荔枝官网更新。[发布与验收记录](../../docs/项目交接.md)
+跟进朋友在厂商真机上的覆盖升级反馈。现行 A8.1.2 只从荔枝官网更新。首次从旧版过渡且要求全程只连官网时，可从[安卓官网下载页](https://lychee-link-check.onrender.com/android-update/download.html)取得原签名包，按系统确认覆盖。[项目交接](../../docs/项目交接.md)
 
 ## Windows 软件内自动更新
 
-等待朋友在当前网络打开[荔枝官网 Windows 下载页](https://lychee-link-check.onrender.com/windows-update/download.html)，使用原来同类的 MSI 或 EXE 一次性过渡到当前 W8.0.0，再在荔枝设置中核对更新结果。朋友已确认这台电脑无法访问 GitHub，W7.0.3 的固定地址在此网络无法完成首次过渡；官网在该机的可达性与最终恢复仍待确认。
+等待负责人和曾无法连接 GitHub 的朋友反馈各自电脑上的更新体验。W8.1.2 起只使用荔枝官网。若要求旧端首次过渡也无 GitHub 请求，可退出旧版，在同一 Windows 用户下从[官网](https://lychee-link-check.onrender.com/windows-update/download.html)取原类型的 EXE 或 MSI 覆盖。[项目交接](../../docs/项目交接.md)
 
 ## 安卓启动连接
 
