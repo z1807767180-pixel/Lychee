@@ -40,14 +40,40 @@
       const copy=ui.h('span');copy.append(ui.h('strong',p.title),ui.h('small',shared?p.groupName:dateText(p.due)));b.append(calendar,copy,ui.h('span','›'));ui.main.append(b);
     }
   }
-  function countdown(ui,due){
-    const clock=ui.h('div',null,'s8-plan-clock');clock.setAttribute('role','timer');
-    const parts=['天','时','分','秒'].map(label=>{const n=ui.h('b');const cell=ui.h('span');cell.append(n,ui.h('small',label));clock.append(cell);return n;});
+  // There is at most one visible countdown per mounted account.
+  function createClock(h){
+    let timeout,clock,parts,target;
+    function pause(){clearTimeout(timeout);}
+    function stop(){
+      pause();clock=null;parts=null;
+      document.removeEventListener('visibilitychange',resume);
+      window.removeEventListener('pagehide',pause);
+      window.removeEventListener('pageshow',resume);
+    }
     function tick(){
-      const seconds=Math.max(0,Math.floor((due-Date.now())/1000)),values=[Math.floor(seconds/86400),Math.floor(seconds/3600)%24,Math.floor(seconds/60)%60,seconds%60];
-      parts.forEach((p,i)=>p.textContent=String(values[i]).padStart(i?2:1,'0'));
-      if(seconds>0)setTimeout(()=>{if(clock.isConnected)tick();},1000);
-    }tick();return clock;
+      pause();
+      const remaining=Math.max(0,target-Date.now()),seconds=Math.ceil(remaining/1000);
+      const values=[Math.floor(seconds/86400),Math.floor(seconds/3600)%24,Math.floor(seconds/60)%60,seconds%60];
+      parts.forEach((node,i)=>{
+        const text=String(values[i]).padStart(i?2:1,'0');
+        if(node.textContent!==text)node.textContent=text;
+      });
+      if(remaining && !document.hidden)timeout=setTimeout(resume,remaining%1000||1000);
+    }
+    function resume(){if(clock?.isConnected)tick();else stop();}
+    function show(due,compact=false){
+      stop();target=Number(due);
+      clock=h('span',null,compact?'s8-banner-clock':'s8-plan-clock');
+      clock.setAttribute('role','timer');
+      parts=['天','时','分','秒'].map(label=>{
+        const n=h('b'),cell=h('span');cell.append(n,h('small',label));clock.append(cell);return n;
+      });
+      document.addEventListener('visibilitychange',resume);
+      window.addEventListener('pagehide',pause);
+      window.addEventListener('pageshow',resume);
+      tick();return clock;
+    }
+    return {show,stop};
   }
   async function jpeg(file){
     if(!file||!file.type.startsWith('image/'))throw Error('请选择图片');
@@ -95,7 +121,7 @@
     const head=art(ui,plan.title,shared?plan.groupName+' · '+plan.date:dateText(plan.due));
     const coverKey=shared&&group?'lychee.v640.'+ui.home.me.id+'.'+group.id+'.lychee.phone.'+group.selfSlot+'.goalCover':null;
     function applyCover(){const c=coverKey&&localStorage.getItem(coverKey);if(c&&/^\/9j\/[A-Za-z0-9+/=]+$/.test(c))head.style.backgroundImage='linear-gradient(90deg,#fffaf0ee,#fffaf06a),url("data:image/jpeg;base64,'+c+'")';}
-    applyCover();ui.main.append(head,countdown(ui,plan.due));
+    applyCover();ui.main.append(head,ui.clock.show(plan.due));
     if(plan.body)ui.main.append(ui.h('p',plan.body,'s8-panel s8-plan-body'));
     if(editable&&!shared)ui.main.append(action(ui,'删除个人约定',async()=>{if(!confirm('删除这个个人约定？'))return;
       if(plan.source==='legacy')await phone(ui,plan.gardenId,{type:'v61-goal-delete',id:plan.legacyId});else await ui.mutate('goalDelete',{id:plan.id});
@@ -132,7 +158,7 @@
     };
     ui.main.append(form);
   }
-  window.LycheeSocialPlans={render(ui,view){
+  window.LycheeSocialPlans={createClock,render(ui,view){
     const plan=(ui.home.bannerGoals||ui.home.goals||[]).find(p=>p.id===ui.route.params.id);if(view==='goals')list(ui);else if(view==='goalDetail')detail(ui,plan);else edit(ui,plan);
   }};
 })();

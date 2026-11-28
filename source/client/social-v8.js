@@ -27,6 +27,7 @@
   function mount(root,account,access,initialGroup){
     const api=window.LycheeSocialApi.connect(account.id),shell=h('div',null,'s8');
     const appearance=window.LycheeSocialAppearance.make(shell,account.id);
+    const clock=window.LycheeSocialPlans.createClock(h);
     const bar=h('header',null,'s8-header'),scroll=h('div',null,'s8-scroll'),main=h('section',null,'s8-content');
     const alert=h('div',null,'s8-alert'),nav=h('nav',null,'s8-nav');
     nav.setAttribute('aria-label','主导航');alert.setAttribute('role','status');scroll.append(main);shell.append(bar,alert,scroll,nav);root.replaceChildren(shell);
@@ -39,6 +40,7 @@
     function notice(msg){alert.textContent=msg||'';}
     async function mutate(action,fields){return api.write(action,fields);}
     function go(view,params={},replace=false){
+      clock.stop();
       if(disposeTool){disposeTool();disposeTool=null;}
       if(route.view==='style')appearance.refresh(true);
       shell.querySelector('.s8-room-pin')?.remove();
@@ -86,7 +88,7 @@
       await api.write('read',{...scope,through:data.through||0,legacyThrough:data.legacyThrough||0});
       unreadPositions.set(key,marker);
     }
-    const ui={h,btn,go,back,api,main,mutate,formField,notice,header,prefs:appearance,avatar:appearance.avatar,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),legacyGame:(id,match)=>match?legacy(id,'quiz',true,match):go('tool',{dest:'quiz'}),repaint:()=>refresh(true)};
+    const ui={h,btn,go,back,api,main,clock,mutate,formField,notice,header,prefs:appearance,avatar:appearance.avatar,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),legacyGame:(id,match)=>match?legacy(id,'quiz',true,match):go('tool',{dest:'quiz'}),repaint:()=>refresh(true)};
     Object.defineProperties(ui,{home:{get:()=>home},route:{get:()=>route}});
     async function refresh(force=false){
       const token=++sequence,{view,params}=route,key=JSON.stringify(route);refreshing=true;
@@ -149,7 +151,12 @@
       const picker=h('div',null,'s8-panel');picker.hidden=true;
       const card=btn('',()=>{if(choices.length>1){picker.hidden=!picker.hidden;card.setAttribute('aria-expanded',String(!picker.hidden));}else go('goals');},'s8-card s8-hero');
       const content=h('span');content.append(h('small','我的约定'),h('b',goal?goal.title:(choices.length?'选择展示的约定':'暂无约定')));
-      if(goal){const d=new Date(goal.due);content.append(h('span',(d.getMonth()+1)+'月'+d.getDate()+'日'+(goal.source==='shared'?'　'+goal.groupName:'　'+timeOf(goal.due))));}
+      if(goal){
+        const shared=goal.source==='shared',d=new Date(goal.due);
+        const month=shared?Number(goal.date.slice(5,7)):d.getMonth()+1;
+        const day=shared?Number(goal.date.slice(8,10)):d.getDate();
+        content.append(h('span',month+'月'+day+'日　'+(shared?goal.groupName:timeOf(goal.due))),clock.show(goal.due,true));
+      }
       card.append(content,h('i','›','s8-hero-arrow'));const threads=h('div',null,'s8-thread-list');main.append(card,picker,heading('最近消息'),threads);
       if(choices.length>1){
         card.setAttribute('aria-expanded','false');
@@ -274,6 +281,7 @@
       if(!data?.length)main.append(h('p','暂无公告。','s8-panel'));
     }
     function render(view,params,data,keepComposer=false){
+      clock.stop();
       shell.querySelector('.s8-room-pin')?.remove();
       if(!keepComposer)shell.querySelector('.s8-composer')?.remove();
       main.replaceChildren();main.style.height='';shell.dataset.view=view;scroll.classList.remove('s8-has-legacy');if(view==='home')return homeView();
