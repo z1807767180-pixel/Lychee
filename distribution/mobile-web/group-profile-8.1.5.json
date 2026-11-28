@@ -1,0 +1,32 @@
+{
+  "version": "8.1.5",
+  "mobile": {
+    "version": "8.1.5",
+    "environment": "本地隔离 SQLite 及 Edge 390×844，从实际 /mobile/ 打开",
+    "checks": [
+      "陌生人无法读取名片及作者动态",
+      "群标题显示三人，可打开名单与非好友名片，未呈现动态，申请状态正确",
+      "好友名片显示真实图片预览，作者专页正确显示图片与回应并隔离其他人的动态，可回名片并发起私聊",
+      "消息头像进入同一名片，普通成员可编辑群资料，另一成员可读，旧邀请码相通",
+      "上传主图可先预览，明确保存后另一成员可经受控地址读取共享照片"
+    ]
+  },
+  "privateImagePreview": {
+    "version": "8.1.5",
+    "isolated": "loopback fake provider; synthetic account and group",
+    "quotaShown": "14/15",
+    "personalScopedImageAPI": "/g/test-personal/api/for/test-owner/phone",
+    "oneGeneration": 1,
+    "receivedReference": true,
+    "recoveredAfterNewDocument": true,
+    "uniquePollIds": 1,
+    "pollCount": 3,
+    "confirmedSaved": [
+      "hero",
+      "avatar"
+    ],
+    "savedBeforeConfirmation": 0,
+    "retryPreservedDraft": true,
+    "versionedRuntime": "/mobile/assets-8.1.5/client/social-tools-runtime.js"
+  }
+}

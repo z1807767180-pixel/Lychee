@@ -1,0 +1,107 @@
+{
+  "version": "8.1.5",
+  "date": "2026-11-28",
+  "sources": {
+    "tag": "windows-v8.1.5",
+    "commit": "ffb2a4a55205b118e76da85453f053af66447e00",
+    "archiveReleaseId": 461207722,
+    "official": "https://lychee-link-check.onrender.com/windows-update/download.html"
+  },
+  "assets": [
+    {
+      "kind": "exe",
+      "name": "Lychee.exe",
+      "length": 22040576,
+      "sha256": "7b26819b35c5dc9d8632fdbff061dc446fce281e305bb247ba7174a68aa097db"
+    },
+    {
+      "kind": "msi",
+      "name": "Lychee.msi",
+      "length": 21594112,
+      "sha256": "4cbdc8f5c135e6d3bcfd8059e580f0e1ec9be19714f03aca099211a03c56aa48"
+    }
+  ],
+  "checks": {
+    "finalEmbeddedClient": {
+      "sharedReceiptSha256": "cac0ca4a8f678c35b32124aa0d89f98f8d517340a54b1a8a98a5f0500f5bd908",
+      "sharedFiles": 199,
+      "sharedFilesWithByteForByteMatch": 197,
+      "launchPagesComposed": [
+        "mobile/index.html",
+        "windows/workspace.html"
+      ],
+      "windowsWorkspaceVersion": "8.1.5",
+      "archiveSha256": "e513b29c232e480335a8e47664b329a39f1c185081cfc17e97ab8e3c6699cd80",
+      "extractedArchiveSha256": "e513b29c232e480335a8e47664b329a39f1c185081cfc17e97ab8e3c6699cd80"
+    },
+    "officialUpdateSource": {
+      "onlyOrigin": "https://lychee-link-check.onrender.com/windows-update/",
+      "unchangedFrom": "8.1.4",
+      "runtimeNetworkChecks": "verified-8.1.2.json"
+    },
+    "msi": {
+      "verifiedEmbeddedExe": true,
+      "nativeProductVersion": "8.1.5",
+      "wizardAndShortcutTargets": true,
+      "sameUpgradeFamilyFrom": "8.1.4",
+      "authenticode": {
+        "exe": "NotSigned",
+        "msi": "NotSigned"
+      }
+    },
+    "realWpfNarrow": {
+      "from": "8.1.5",
+      "to": "8.1.5",
+      "startHash": "7b26819b35c5dc9d8632fdbff061dc446fce281e305bb247ba7174a68aa097db",
+      "mode": "narrow-group-card",
+      "pass": true,
+      "privateDesktop": true,
+      "singleList": true,
+      "nativeBounds": {
+        "bounds": [
+          460,
+          160,
+          780,
+          920
+        ],
+        "dpi": 96
+      },
+      "cssWidth": 304,
+      "groupLinks": [
+        "桂味朋友群，2位成员，查看群资料",
+        "群详情"
+      ],
+      "localAccountRequests": 18
+    },
+    "publisherArchiveGet": {
+      "dateUtc": "2026-11-28T01:14:27.726022+00:00",
+      "base": "https://github.com/z1807767180-pixel/Lychee/releases/download/windows-v8.1.5/",
+      "assets": [
+        {
+          "name": "Lychee.exe",
+          "length": 22040576,
+          "sha256": "7b26819b35c5dc9d8632fdbff061dc446fce281e305bb247ba7174a68aa097db",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "Lychee.msi",
+          "length": 21594112,
+          "sha256": "4cbdc8f5c135e6d3bcfd8059e580f0e1ec9be19714f03aca099211a03c56aa48",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        },
+        {
+          "name": "stable.json",
+          "length": 400,
+          "sha256": "72de322f3ec740d0affc10efb3f9406010637655096339597ea6c3a164f9d224",
+          "status": 200,
+          "finalHost": "release-assets.githubusercontent.com"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Win32 320 像素宽群资料入口经隔离 WebView2 与临时账号验证。未在用户现有安装上执行覆盖，本版保留既有官网更新器。"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "version": "8.1.5",
+  "releaseCommit": "14e3a2859c242bc99e847ec793a2454af9a5d40b",
+  "renderDeploy": "dep-dc52mpmi0phs73c5q4g0",
+  "verifiedAt": "2026-11-28T01:18:56.900292+00:00",
+  "publicReadOnly": true,
+  "results": [
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 5199,
+      "sha256": "9f4f5ae47b6b78436b88f374afd0f971d53a98d664ddfe3e38de02542fba564e"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/version.txt",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 6,
+      "sha256": "57a3f46472aa2808e9f03c0f8232e40ae2324e3a55199dfbe0533432ac1ce8b9"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/stable.json",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 400,
+      "sha256": "72de322f3ec740d0affc10efb3f9406010637655096339597ea6c3a164f9d224"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/download.html",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 1156,
+      "sha256": "d9045a549a6b7e7cf0f14b06a0ae6e065d5734c3125c1ab8473a14560c4cfb76"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/download.html",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 824,
+      "sha256": "9b7fd010a1b0d62f9712e91b408b852547e099a174d7eadd2aa6105bb4830e8e"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/current.json",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 242,
+      "sha256": "df4410b82ad734f7f28a3e0655c5a7fe9cdc0e22150ed207e4dbaf0b23aa4b3c"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.5/client/social-v8.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 28200,
+      "sha256": "8631d301b52ae5160609adb28c49a1bc9173542b5d4e9dbc9605d0680f31fdc4"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.5/client/social-chat.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 14630,
+      "sha256": "8d76e1451d39294b464f06f3fd2eb903f1049defe35d14402457a6b87ccc5243"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.5/client/social-personal.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 15112,
+      "sha256": "23566c4ce61c46f974e8004b3f920a172416517dae4d3f3518f8253025789610"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.5/client/social-group-art.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 4014,
+      "sha256": "b3f0482b52efb17cd17cde1c727e83918ccd78203e1c8264653e8847913afc5e"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.5/client/social-v8.css",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 31267,
+      "sha256": "1c1bd930c671911c39c163765a07d96441521957bd32f42f6e5686518aa95225"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.5/Lychee-Friends-A8.1.5.apk",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 3007817,
+      "sha256": "3bfb3618883542507b4d4075b5e17ecbdb95e4352548b2a5eaa71379edd916cf"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.5/Lychee-Friends-V8.1.5.apk",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 3007817,
+      "sha256": "3bfb3618883542507b4d4075b5e17ecbdb95e4352548b2a5eaa71379edd916cf"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.5/Lychee.exe",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 22040576,
+      "sha256": "7b26819b35c5dc9d8632fdbff061dc446fce281e305bb247ba7174a68aa097db"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.5/Lychee.msi",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 21594112,
+      "sha256": "4cbdc8f5c135e6d3bcfd8059e580f0e1ec9be19714f03aca099211a03c56aa48"
+    }
+  ],
+  "anonymousProfileStatus": 401
+}

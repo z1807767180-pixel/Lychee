@@ -28,3 +28,5 @@
 - 8.1.3 聊天修正用真实渲染对照发现，竖图末端为延展背景，显示整段会令茶桌下方出现直条。按批准画册取可见范围，自定义照片则保持等比；聊天专用样式明确 38px 单行初值并随文本自增。[真实界面](../../distribution/mobile-web/chat-8.1.3/) · [第 33 页所在画册](../../docs/design/V8.1-移动网页参考图/README.md)
 
 - 首页与详情的倒计时以计划的毫秒目标时间为准。共同约定最初只记录日期，[服务端](../../source/server/social-history.mjs)按北京时间零点转换，跨时区显示日期应用原群的年月日；个人计划按保存的实际时刻显示。[共享时钟](../../source/client/social-v8-plans.js)
+
+- Windows 将最小化、最大化和关闭按钮叠在网页标题右边，320px 整窗时 WebView 可用宽度只有 304 CSS 像素。群标题和详情按钮需保留 106px 窗控区域并允许标题截断，独立按钮应退出拖动区。已用真实窗口坐标点击验证。[共享布局](../../source/client/social-v8.css) · [窄窗验收](../../source/test/windows-social-native.mjs)
