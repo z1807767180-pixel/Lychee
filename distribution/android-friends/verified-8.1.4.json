@@ -1,0 +1,106 @@
+{
+  "verifiedAtUtc": "2026-11-28T00:16:31.996183+00:00",
+  "version": "8.1.4",
+  "title": "荔枝朋友版 A8.1.4",
+  "package": "dev.lychee.friends",
+  "versionCode": 80104,
+  "apkBytes": 3007817,
+  "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c",
+  "certificateSha256": "19637a4493577f2f09de340464bed2775e9c3274486827c1c2073d131b0824e2",
+  "signatureSchemes": [
+    "v2",
+    "v3"
+  ],
+  "unsignedBuild": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46085138533",
+  "unsignedCommit": "b9ba434bf69251ca9d459ddd339f4ccde77a0227",
+  "unsignedSha256": "16e68ec814384a8a5fe0729ce80754a8afd11f870770e5b7c27be1f73efb5f90",
+  "release": "https://github.com/z1807767180-pixel/Lychee/releases/tag/android-friends-v8.1.4",
+  "githubFeed": "https://github.com/z1807767180-pixel/Lychee/releases/download/android-friends/current.json",
+  "githubFeedMatchesSignedRelease": true,
+  "officialFileReadback": "由本轮公共发布回执统一核验",
+  "officialFiles": {
+    "Lychee-Friends-A8.1.4.apk": {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.4/Lychee-Friends-A8.1.4.apk",
+      "size": 3007817,
+      "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c"
+    },
+    "Lychee-Friends-V8.1.4.apk": {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.4/Lychee-Friends-V8.1.4.apk",
+      "size": 3007817,
+      "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c"
+    }
+  },
+  "officialDelivery": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46086523419",
+  "deliveryCommit": "1f27d88b8495c2187b52f39e51d8a747b2b98315",
+  "deliveryJob": "https://github.com/z1807767180-pixel/Lychee/actions/runs/46086523419/job/140797258787",
+  "checks": [
+    "Set up job",
+    "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "Reconstruct the locally signed public artifact",
+    "First installation on Android 15",
+    "Publish verified APK, then advance friends update channel",
+    "Check the live update channel from the installed app",
+    "Upgrade the previous public APK through Android's installer",
+    "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "Complete job"
+  ],
+  "upgrade": {
+    "from": "8.1.3",
+    "to": "8.1.4",
+    "environment": "GitHub Actions Android 15 emulator",
+    "limitedToOfficialDomain": true,
+    "androidSystemInstallerConfirmed": true,
+    "installedPackageSha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c",
+    "coldLoginAfterUpdate": true
+  },
+  "nativeDexSha256": "2c35726126a20c869f7ecfa56faca587bf0341603a81f51b7da30515f6364f1b",
+  "nativeDexMatchesPrevious": true,
+  "signedCodeTests": "Official-URL-only retry on manifest and APK connection failures and redirect rejection executed in Android 15 against signed release code before publication.",
+  "installedNewAppWithOfficialServiceUnavailable": {
+    "failureFeedback": true,
+    "githubRequests": 0
+  },
+  "limits": "本次覆盖升级由 Android 15 模拟器执行。厂商真机上的安装体验待反馈。",
+  "signedCodeChecks": {
+    "apkVersion": "8.1.4",
+    "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c",
+    "passedCases": {
+      "officialManifestOnly": true,
+      "coldOriginRetriedWithoutFallback": true,
+      "bothOriginRequestsFailClosed": true,
+      "redirectToGithubRejectedWithoutRequest": true,
+      "malformedManifestStopsAtOrigin": true,
+      "unexpectedEncodingRejected": true,
+      "oversizedManifestRejected": true,
+      "unavailableApkRetriesOnlyOfficialOrigin": true,
+      "apkRedirectToGithubRejectedWithoutRequest": true,
+      "zeroByteEofAndTimeoutRetryCleanly": true,
+      "partialEofAndPartialTimeoutDoNotSwitchSource": true,
+      "partialHttpStatusRejected": true,
+      "correctAndIncorrectFullApkDigest": true,
+      "validFriendsArchiveAndWrongPackageOrVersion": true,
+      "actualSystemCertificateRejected": true
+    },
+    "passed": true
+  },
+  "deviceUpgrade": {
+    "from": "8.1.3",
+    "to": "8.1.4",
+    "installedSha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c",
+    "platform": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "appUid": "10210",
+    "testedUpdaterDex": {
+      "classes.dex": "2c35726126a20c869f7ecfa56faca587bf0341603a81f51b7da30515f6364f1b"
+    },
+    "directIPv4AndIPv6Rejected": true,
+    "systemConfirmationRequired": true,
+    "reopenFrom": "installer",
+    "officialLoginVisible": true,
+    "officialColdLaunchLoginVisible": true,
+    "offlineOfficialUpdate": {
+      "failureDialog": true,
+      "githubRequests": 0,
+      "originRejectedConnections": 5
+    }
+  }
+}

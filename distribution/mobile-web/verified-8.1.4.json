@@ -1,0 +1,121 @@
+{
+  "version": "8.1.4",
+  "releaseCommit": "eb3596df45c78a3d214193abf72581e81aba99fb",
+  "renderDeploy": "dep-dc51mv17lnhs73a9vfdg",
+  "verifiedAt": "2026-11-28T00:11:10.039484+00:00",
+  "publicReadOnly": true,
+  "results": [
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 5114,
+      "sha256": "802da87f8f511506b6f593a1745a26aefdfe7004b05863f93df52fd4f2a82b36"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/version.txt",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 6,
+      "sha256": "f795e05b4a3a7a7ea168eb0711762c62db84c19803a564cc7a0631f1c61163f3"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/stable.json",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 400,
+      "sha256": "53a4dfd166771d4186e0ffbcd4729c67c14e1313c675e069bfdec557e848f87d"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/download.html",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 1156,
+      "sha256": "abcd696a4b035ffae2926ab252ef28ff6fbf2fca79af4b4cd7d7c47b89f70810"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/download.html",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 824,
+      "sha256": "18e57f002164e28fbe40eaedb0ebb460fd125d42b9985147c02f324c4469b315"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-v8-plans.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 11085,
+      "sha256": "6c47b836aead33395df2e7fc0f6131fffff1342490d6ebbc6e2bbaad94047133"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-v8.css",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 29025,
+      "sha256": "8c0dd12dcca9a2673ac82729e687d81cb8ebd5160a9fa4f91e654befeb9b5177"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-v8.js",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 24619,
+      "sha256": "306a80f8f74376a416d726b01d85db90bdcdff3c0f2818b0c6f7bf1b4d824e54"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-wall-kitty.webp",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 101572,
+      "sha256": "77f8b6fd4b687ce83d5bfab63fc972ca8afdc4a30a1fa72938ac15e5cc0f01a6"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-wide-miffy.webp",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 179746,
+      "sha256": "355cf39aeed770260381b100dfecba8874ffcaa69e755a6580c6a8a528b7ca9b"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/mobile/assets-8.1.4/client/social-wall-tutu.webp",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 109738,
+      "sha256": "81f17b998c60debb1f64480c87827a1771cd140a61a0f4760521e6b24f854309"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.4/Lychee-Friends-A8.1.4.apk",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 3007817,
+      "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/android-friends-v8.1.4/Lychee-Friends-V8.1.4.apk",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 3007817,
+      "sha256": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.4/Lychee.exe",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 22035968,
+      "sha256": "da6f9b1a92e5daea290dbefaee7d601dad0c71b8ca83f155e250d63b4c712fe7"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/windows-update/windows-v8.1.4/Lychee.msi",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 21590016,
+      "sha256": "3ec53f8bdcf6c9dfeffd46bf724733d776846acc9a2aa51519d9e5e6a3f30c95"
+    },
+    {
+      "url": "https://lychee-link-check.onrender.com/android-update/current.json",
+      "status": 200,
+      "redirects": 0,
+      "bytes": 237,
+      "sha256": "cc5d2a2cd5f85f5c16378357bf93313a7002e00eeccf7190ddfe31f07210a398"
+    }
+  ]
+}
