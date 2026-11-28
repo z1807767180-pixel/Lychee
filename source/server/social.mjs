@@ -165,6 +165,7 @@ async function get(q,session,params,history){
   if(view==='friendProfile'){
     const context=params.get('groupId'),card=await personContext(q,me,id,context);
     const [posts]=await Promise.all([card.canSeeFeed?authorPosts(q,me,id,4):[],stylePeople(q,history,me,[card.person],context||card.groups[0]?.id,true)]);
+    for(const post of posts)post.name=card.person.name;
     return {...card,posts};
   }
   if(view==='groupInviteCode'){
@@ -218,12 +219,17 @@ async function get(q,session,params,history){
     if(params.has('authorId')){
       const author=assertUuid(params.get('authorId'));
       if(kind!=='feed')reject(400,'请选择园中事');
-      if(author!==me)await friend(q,me,author);
+      const card=await personContext(q,me,author,null);
+      if(!card.canSeeFeed)reject(403,'请先成为好友');
       const before=params.has('before')?Number(params.get('before')):null;
       if(before!==null&&(!Number.isSafeInteger(before)||before<=0))reject(400,'无效的翻页位置');
       const items=await authorPosts(q,me,author,31,before),more=items.length>30;
       if(more)items.pop();
-      await enrichGarden(q,me,kind,items);
+      await Promise.all([enrichGarden(q,me,kind,items),stylePeople(q,history,me,[card.person],card.groups[0]?.id,true)]);
+      for(const post of items){
+        post.name=card.person.name;
+        for(const reply of post.preview||[])if(reply.authorId===author)reply.name=card.person.name;
+      }
       return {items,repliesToMe:[],through:0,nextBefore:more?items.at(-1).seq:null};
     }
     const info=await feedInfo(q,me,kind);

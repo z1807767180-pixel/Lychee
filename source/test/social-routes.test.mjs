@@ -224,11 +224,11 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
     const recent=[];
     for(let n=0;n<31;n++)recent.push((await act(b,'post',{kind:'feed',body:'好友动态'+n,clientId:randomUUID(),...(n===30?{photo:picture}:{})})).id);
     const card=await profile(c,b,ga);assert.equal(card.person.friendStatus,'friend');assert.equal(card.canSeeFeed,true);
-    assert.deepEqual(card.posts.map(p=>p.id),recent.slice(-4).reverse());assert.ok(card.posts[0].photoUrl);
+    assert.deepEqual(card.posts.map(p=>p.id),recent.slice(-4).reverse());assert.ok(card.posts[0].photoUrl);assert.ok(card.posts.every(p=>p.name===card.person.name));
     await act(c,'postReact',{postId:recent[30],emoji:'❤️',active:true});
     await act(c,'reply',{postId:recent[30],body:'果然好看',clientId:randomUUID()});
     const full=await get(c,{view:'feed',kind:'feed',authorId:b.id});
-    assert.equal(full.items.length,30);assert.ok(full.nextBefore);
+    assert.ok(full.items.every(p=>p.name===card.person.name));assert.equal(full.items.length,30);assert.ok(full.nextBefore);
     assert.equal(full.items[0].preview[0].body,'果然好看');assert.ok(full.items[0].reactions[0].mine);
     const earlier=await get(c,{view:'feed',kind:'feed',authorId:b.id,before:full.nextBefore});
     assert.ok(earlier.items.some(x=>x.id===recent[0]));assert.equal(earlier.nextBefore,null);
