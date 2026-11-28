@@ -3,6 +3,7 @@ import {join} from 'node:path';
 import {playSchema} from './social-play.mjs';
 
 const schema=[
+  'CREATE TABLE IF NOT EXISTS mc_v815_group_media(garden TEXT NOT NULL,kind TEXT NOT NULL,revision TEXT NOT NULL,jpeg TEXT NOT NULL,PRIMARY KEY(garden,kind))',
   'CREATE TABLE IF NOT EXISTS mc_v813_dm_photo(entry TEXT PRIMARY KEY,jpeg TEXT NOT NULL)',
   'CREATE TABLE IF NOT EXISTS mc_v81_post_photo(post TEXT PRIMARY KEY,jpeg TEXT NOT NULL)',
   'CREATE TABLE IF NOT EXISTS mc_v81_post_reaction(post TEXT NOT NULL,account TEXT NOT NULL,emoji TEXT NOT NULL,PRIMARY KEY(post,account,emoji))',

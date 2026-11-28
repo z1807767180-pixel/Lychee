@@ -1,4 +1,4 @@
-import {createHash,randomUUID} from 'node:crypto';
+import {createHash,randomUUID,randomBytes} from 'node:crypto';
 import {InputError,reject,json,joinMembership,gardenText} from './accounts.mjs';
 import {socialStore} from './social-store.mjs';
 import {socialHistory} from './social-history.mjs';
@@ -20,15 +20,21 @@ export function accountToolsGarden(account){
   // UUID v5 format is disjoint from all UUID v4 gardens created by the product.
   return [hex.slice(0,8),hex.slice(8,12),'5'+hex.slice(13,16),'8'+hex.slice(17,20),hex.slice(20,32)].join('-');
 }
-const groupSelect="SELECT g.id,g.name,g.subtitle,m.role,m.slot AS selfSlot,(SELECT COUNT(*) FROM mc_members others WHERE others.garden=g.id) AS memberCount,"+
+const groupSelect="SELECT g.id,g.name,g.subtitle,g.revision,(SELECT revision FROM mc_v815_group_media x WHERE x.garden=g.id AND x.kind='avatar') AS avatarRevision,(SELECT revision FROM mc_v815_group_media x WHERE x.garden=g.id AND x.kind='hero') AS heroRevision,m.role,m.slot AS selfSlot,(SELECT COUNT(*) FROM mc_members others WHERE others.garden=g.id) AS memberCount,"+
   "(SELECT COUNT(*) FROM mc_v8_entries e WHERE e.kind='group' AND e.scope=g.id AND e.author<>m.account AND e.seq>COALESCE((SELECT through FROM mc_v8_reads r WHERE r.account=m.account AND r.scope='group:'||g.id),0)) AS unread "+
   'FROM mc_members m JOIN mc_gardens g ON g.id=m.garden WHERE m.account=?';
-const groupFields=g=>({...g,cover:cover(g.id)});
+const mediaUrl=(accountId,view,id,extra)=>'/api/v8/social?'+new URLSearchParams({accountId,view,id,...extra});
+function groupFields({avatarRevision,heroRevision,...g},me){
+  const avatarUrl=avatarRevision?mediaUrl(me,'groupMedia',g.id,{kind:'avatar',rev:avatarRevision}):cover(g.id);
+  const heroes=['/mobile/orchard-courtyard.jpg','/mobile/hd-wall-1.webp','/mobile/hd-wall-2.webp','/mobile/hd-wall-3.webp'];
+  const heroUrl=heroRevision?mediaUrl(me,'groupMedia',g.id,{kind:'hero',rev:heroRevision}):heroes[createHash('sha256').update(g.id).digest()[1]%heroes.length];
+  return {...g,cover:avatarUrl,avatarUrl,heroUrl};
+}
 async function group(q,me,id){
   if(typeof id!=='string')reject(400,'请选择群聊');
   const g=await q.first(groupSelect+' AND g.id=?',me,id);
   if(!g)reject(403,'你不在这个群聊中');
-  return groupFields(g);
+  return groupFields(g,me);
 }
 const friendsCte='WITH viewer(me) AS (VALUES(?)), peers(id) AS (SELECT CASE WHEN lo=me THEN hi ELSE lo END FROM mc_v8_friends,viewer WHERE accepted=1 AND (lo=me OR hi=me)) ';
 const feedCte=friendsCte.trimEnd()+', roots AS (SELECT e.* FROM mc_v8_entries e,viewer WHERE e.kind=? AND (e.author=me OR e.author IN peers)), '+
@@ -46,6 +52,38 @@ async function friend(q,me,id){
 async function roster(q,me,id){
   return q.all("SELECT a.id,a.username AS name,m.role,m.slot,CASE WHEN a.id=? THEN 'self' WHEN f.accepted=1 THEN 'friend' WHEN f.sender=? THEN 'outgoing' WHEN f.sender IS NOT NULL THEN 'incoming' ELSE 'none' END AS friendStatus "+
     'FROM mc_members m JOIN mc_accounts a ON a.id=m.account LEFT JOIN mc_v8_friends f ON f.lo=MIN(a.id,?) AND f.hi=MAX(a.id,?) WHERE m.garden=? ORDER BY m.slot',me,me,me,me,id);
+}
+async function personContext(q,me,id,context){
+  assertUuid(id);
+  const [person,groups]=await Promise.all([
+    q.first("SELECT a.id,a.username AS name,s.status,CASE WHEN a.id=? THEN 'self' WHEN f.accepted=1 THEN 'friend' WHEN f.sender=? THEN 'outgoing' WHEN f.sender IS NOT NULL THEN 'incoming' ELSE 'none' END AS friendStatus FROM mc_accounts a LEFT JOIN mc_v8_friends f ON f.lo=MIN(a.id,?) AND f.hi=MAX(a.id,?) LEFT JOIN mc_v81_my_status s ON s.account=a.id WHERE a.id=?",me,me,me,me,id),
+    q.all('SELECT g.id,g.name,other.slot FROM mc_members mine JOIN mc_members other ON other.garden=mine.garden JOIN mc_gardens g ON g.id=mine.garden WHERE mine.account=? AND other.account=? ORDER BY g.name,g.id',me,id)
+  ]);
+  const canSeeFeed=person&&['friend','self'].includes(person.friendStatus);
+  if(!person||(!canSeeFeed&&!groups.length)||(context&&!groups.some(g=>g.id===context)))reject(403,'你无法查看这张名片');
+  return {person,groups,canSeeFeed};
+}
+async function stylePeople(q,history,me,rows,garden=null,eager=false){
+  if(!rows.length)return;
+  const [old,personal]=await Promise.all([
+    garden?history.people(q,garden):[],
+    Promise.all(rows.map(p=>(eager||p.id===me)?history.people(q,accountToolsGarden(p.id)):history.cached(accountToolsGarden(p.id))))
+  ]);
+  for(const [i,person] of rows.entries()){
+    const mine=personal[i]?.find(p=>p.account===person.id),prior=old.find(p=>p.account===person.id);
+    const portrait=mine&&(mine.revision||mine.selected!=null)?mine:prior||mine;
+    if(mine?.name&&mine.name!==person.name)person.name=mine.name;
+    else person.name=prior?.name||mine?.name||person.name;
+    const preset=portrait?.selected??(portrait?.day?portrait.avatar:null);
+    person.avatarUrl=portrait?.revision?mediaUrl(me,'memberAvatar',person.id,{rev:portrait.revision,...(portrait===prior?{groupId:garden}:{})}):'/mobile/face-'+(Number.isInteger(preset)&&preset>=0&&preset<=15?preset:createHash('sha256').update(person.id).digest()[0]%16)+'.webp';
+    if(!personal[i]&&!person.direction)person.avatarUrl=mediaUrl(me,'memberFace',person.id,garden?{groupId:garden}:{});
+    person.mood=mine?.mood||prior?.mood||'';
+  }
+}
+async function authorPosts(q,me,author,limit,before=null){
+  const rows=await q.all(feedCte+'SELECT '+fields+",EXISTS(SELECT 1 FROM mc_v81_post_photo p WHERE p.post=v.id) AS hasPhoto,(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply') AS replyCount FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind='feed' AND v.author=?"+(before?' AND v.seq<?':'')+" ORDER BY v.seq DESC LIMIT ?",me,'feed',author,...(before?[before]:[]),limit);
+  for(const row of rows){row.hasPhoto=!!row.hasPhoto;if(row.hasPhoto)row.photoUrl=mediaUrl(me,'postPhoto',row.id,{});}
+  return rows;
 }
 async function tree(q,me){
   const r=await q.first("SELECT COALESCE(t.fruit,0) AS fruit,COALESCE(t.water_count,0) AS waterCount,COALESCE(t.last_day,'') AS lastDay,COALESCE(g.progress,0) AS progress FROM (SELECT ? AS owner) p LEFT JOIN mc_v8_trees t ON t.account=p.owner LEFT JOIN mc_v8_tree_growth g ON g.account=p.owner",me);
@@ -125,9 +163,14 @@ async function get(q,session,params,history){
     return {status:saved?.status??null};
   }
   if(view==='friendProfile'){
-    const person=await friend(q,me,id);
-    const groups=await q.all("SELECT g.id,g.name,other.slot FROM mc_members mine JOIN mc_members other ON other.garden=mine.garden JOIN mc_gardens g ON g.id=mine.garden WHERE mine.account=? AND other.account=? ORDER BY g.name,g.id",me,person.id);
-    return {person,groups};
+    const context=params.get('groupId'),card=await personContext(q,me,id,context);
+    const [posts]=await Promise.all([card.canSeeFeed?authorPosts(q,me,id,4):[],stylePeople(q,history,me,[card.person],context||card.groups[0]?.id,true)]);
+    return {...card,posts};
+  }
+  if(view==='groupInviteCode'){
+    await group(q,me,id);
+    const saved=await q.first('SELECT code FROM mc_garden_codes WHERE garden=?',id);
+    return {code:saved?.code||null};
   }
   if(view==='home'){
     const [groupRows,friends,requests,goals,originalGoals,plant,feedState,questionState]=await Promise.all([
@@ -136,10 +179,11 @@ async function get(q,session,params,history){
       q.all("SELECT a.id,a.username AS name,CASE WHEN f.sender=? THEN 'outgoing' ELSE 'incoming' END AS direction FROM mc_v8_friends f JOIN mc_accounts a ON a.id=CASE WHEN f.lo=? THEN f.hi ELSE f.lo END WHERE f.accepted=0 AND (f.lo=? OR f.hi=?) ORDER BY a.username",me,me,me,me),
       q.all("SELECT id,title,body,due,created,'account' AS source FROM mc_v8_goals WHERE account=?",me),
       history.goals(q,me),tree(q,me),feedInfo(q,me,'feed'),feedInfo(q,me,'questions')]);
-    const groups=groupRows.map(groupFields);
-    const [plans]=await Promise.all([planList(q,me,groups,goals,originalGoals,history),addPreviews(q,me,groups,friends,history)]);
+    const groups=groupRows.map(g=>groupFields(g,me));
+    const self={id:me,name:session.username};
+    const [plans]=await Promise.all([planList(q,me,groups,goals,originalGoals,history),addPreviews(q,me,groups,friends,history),stylePeople(q,history,me,[self,...friends,...requests])]);
     const feed=feedState.unread,questions=questionState.unread;
-    return {me:{id:me,name:session.username},accountToolsGardenId:accountToolsGarden(me),groups,friends,requests,...plans,tree:plant,
+    return {me:self,accountToolsGardenId:accountToolsGarden(me),groups,friends,requests,...plans,tree:plant,
       unread:{feed,questions,garden:feed+questions,groups:groups.reduce((n,g)=>n+g.unread,0),private:friends.reduce((n,f)=>n+f.unread,0)}};
   }
   if(view==='group'){
@@ -151,9 +195,13 @@ async function get(q,session,params,history){
     page.messages.sort((a,b)=>a.created-b.created||(a.seq??0)-(b.seq??0));
     const saved=await q.first('SELECT message FROM mc_v81_group_pin WHERE garden=?',id);
     const pin=saved?await pinMessage(q,history,me,id,saved.message):null;
-    return {group:g,members:await roster(q,me,id),pin,...page};
+    const members=await roster(q,me,id);await stylePeople(q,history,me,members,id);
+    return {group:g,members,pin,...page};
   }
-  if(view==='dm')return {friend:await friend(q,me,id),...await messages(q,'dm',pair(me,id).join(':'),params.get('before'),me,id)};
+  if(view==='dm'){
+    const peer=await friend(q,me,id);await stylePeople(q,history,me,[peer]);
+    return {friend:peer,...await messages(q,'dm',pair(me,id).join(':'),params.get('before'),me,id)};
+  }
   if(view==='tree'){
     const mine=!id||id===me,owner=mine?{id:me,name:session.username}:await friend(q,me,id);
     const [plant,notes,help,gifts]=await Promise.all([
@@ -166,7 +214,19 @@ async function get(q,session,params,history){
     return {owner,mine,tree:plant,helpedToday:!!help,notes,gifts};
   }
   if(view==='feed'){
-    const kind=validKind(params.get('kind')),info=await feedInfo(q,me,kind);
+    const kind=validKind(params.get('kind'));
+    if(params.has('authorId')){
+      const author=assertUuid(params.get('authorId'));
+      if(kind!=='feed')reject(400,'请选择园中事');
+      if(author!==me)await friend(q,me,author);
+      const before=params.has('before')?Number(params.get('before')):null;
+      if(before!==null&&(!Number.isSafeInteger(before)||before<=0))reject(400,'无效的翻页位置');
+      const items=await authorPosts(q,me,author,31,before),more=items.length>30;
+      if(more)items.pop();
+      await enrichGarden(q,me,kind,items);
+      return {items,repliesToMe:[],through:0,nextBefore:more?items.at(-1).seq:null};
+    }
+    const info=await feedInfo(q,me,kind);
     const items=await q.all(feedCte+'SELECT '+fields+",(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply') AS replyCount,(SELECT COUNT(*) FROM visible c WHERE c.postId=v.id AND c.kind='reply' AND (c.reply_to IS NULL OR NOT EXISTS(SELECT 1 FROM visible pr WHERE pr.id=c.reply_to AND pr.kind='reply'))) AS answerCount,EXISTS(SELECT 1 FROM visible c WHERE c.postId=v.id AND c.author<>? AND c.seq>COALESCE((SELECT through FROM mc_v8_reads WHERE account=? AND scope=?),0)) AS unread FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind<> 'reply' ORDER BY v.seq DESC",me,kind,me,me,kind);
     const repliesToMe=await q.all(feedCte+'SELECT '+fields+" FROM visible v JOIN mc_accounts a ON a.id=v.author WHERE v.kind='reply' AND v.author<>? AND ((v.reply_to IS NULL AND v.owner=?) OR v.reply_to IN (SELECT id FROM visible WHERE author=?)) ORDER BY v.seq DESC",me,kind,me,me,me);
     await enrichGarden(q,me,kind,items);
@@ -238,6 +298,30 @@ async function change(q,session,p,history){
     case 'goalDelete': {
       if(!(await q.run('DELETE FROM mc_v8_goals WHERE id=? AND account=?',assertUuid(p.id),me)).rowsAffected)reject(404,'约定不存在');
       return {};
+    }
+    case 'groupEdit': {
+      const g=await group(q,me,p.groupId);
+      const [name,subtitle]=gardenText(p.name,p.subtitle);
+      if(!Number.isSafeInteger(p.revision)||p.revision<1)reject(400,'缺少有效的群资料版本');
+      if(!(await q.run('UPDATE mc_gardens SET name=?,subtitle=?,revision=revision+1 WHERE id=? AND revision=?',name,subtitle,g.id,p.revision)).rowsAffected)reject(409,'群资料已更新，请刷新后再保存');
+      for(const kind of ['avatar','hero']){
+        if(p[kind]===undefined)continue;
+        const jpeg=p[kind];
+        if(typeof jpeg!=='string'||jpeg.length>384000||!/^\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(jpeg))reject(400,'请选择有效的图片');
+        const bytes=Buffer.from(jpeg,'base64');
+        if(bytes.length<12||!bytes.subarray(-2).equals(Buffer.from([255,217])))reject(400,'图片不完整');
+        const revision=createHash('sha256').update(bytes).digest('hex');
+        await q.run('INSERT INTO mc_v815_group_media(garden,kind,revision,jpeg) VALUES(?,?,?,?) ON CONFLICT(garden,kind) DO UPDATE SET revision=excluded.revision,jpeg=excluded.jpeg',g.id,kind,revision,jpeg);
+      }
+      return {id:g.id,revision:p.revision+1};
+    }
+    case 'groupInviteCode': {
+      const g=await group(q,me,p.groupId);
+      const saved=await q.first('SELECT code FROM mc_garden_codes WHERE garden=?',g.id);
+      if(saved&&p.rotate!==true)return {code:saved.code};
+      const code='LZ-'+randomBytes(16).toString('hex').toUpperCase();
+      await q.run('INSERT INTO mc_garden_codes(garden,code) VALUES(?,?) ON CONFLICT(garden) DO UPDATE SET code=excluded.code',g.id,code);
+      return {code};
     }
     case 'groupCreate': {
       const [name,subtitle]=gardenText(p.name,p.subtitle??''),id=randomUUID();
@@ -393,11 +477,36 @@ async function change(q,session,p,history){
 }
 export async function createSocial(options){
   const store=await socialStore(options),history=socialHistory(options.dataDir);
-  return {close:()=>store.close(),async handle(request,session){
+  return {close:()=>store.close(),invalidateProfile:garden=>history.invalidate(garden),async handle(request,session){
     try{
       const params=new URL(request.url).searchParams;
       if(params.get('accountId')!==session.accountId)reject(403,'账号已切换，请重新打开');
       const view=params.get('view');
+      if(request.method==='GET'&&view==='memberFace'){
+        const id=params.get('id'),me=session.accountId,context=params.get('groupId');
+        const address=await store.transaction(false,async q=>{
+          const {person}=await personContext(q,me,id,context);
+          await stylePeople(q,history,me,[person],context,true);
+          return person.avatarUrl;
+        });
+        return new Response(null,{status:302,headers:{location:address,'cache-control':'private, no-store'}});
+      }
+      if(request.method==='GET'&&['groupMedia','memberAvatar'].includes(view)){
+        const id=params.get('id'),me=session.accountId,rev=params.get('rev'),context=params.get('groupId');
+        if(!/^[0-9a-f]{64}$/.test(rev||''))reject(404,'图片不可见');
+        const picture=await store.transaction(false,async q=>{
+          if(view==='groupMedia'){
+            await group(q,me,id);
+            return q.first('SELECT jpeg FROM mc_v815_group_media WHERE garden=? AND kind=? AND revision=?',id,params.get('kind'),rev);
+          }
+          await personContext(q,me,id,context);
+          return history.picture(q,context||accountToolsGarden(id),id,rev);
+        });
+        if(!picture)reject(404,'图片不可见');
+        const headers={'content-type':'image/jpeg','cache-control':'private, no-cache','x-content-type-options':'nosniff','etag':'"'+rev+'"'};
+        if(request.headers.get('if-none-match')===headers.etag)return new Response(null,{status:304,headers});
+        return new Response(Buffer.from(picture.jpeg,'base64'),{headers});
+      }
       if(request.method==='GET'&&(view==='postPhoto'||view==='dmPhoto')){
         const id=params.get('id'),me=session.accountId;
         const picture=await store.transaction(false,async q=>{

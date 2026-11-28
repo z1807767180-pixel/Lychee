@@ -38,12 +38,16 @@
     const meInGroup=group&&data.members.find(m=>m.id===me),key=view+':'+id;
     const endpoint=window.LycheeSocialAppearance.endpoint(me,id,'camp');
     const title=group?data.group.name:data.friend.name;
-    const details=btn('',()=>ui.go(group?'members':'friendProfile',{id}),'s8-room-details');
+    const openDetails=()=>group?ui.go('members',{id}):ui.openPerson(id);
+    const details=btn('',openDetails,'s8-room-details');
     details.setAttribute('aria-label',group?'群详情':'好友资料');details.append(icon('dots'));header(title,details);
     const back=main.closest('.s8').querySelector('.s8-back');
     if(back){back.setAttribute('aria-label','返回');const label=h('span',back.textContent,'s8-room-back-label');back.replaceChildren(icon('back'),label);}
-    const top=document.createElement('small');top.className='s8-room-meta';top.textContent=group?'群聊 · '+data.members.length+' 位成员':'私聊';
-    main.closest('.s8').querySelector('.s8-header h1').append(top);
+    const titleNode=main.closest('.s8').querySelector('.s8-header h1'),titleButton=btn('',openDetails,'s8-room-title');
+    titleButton.append(h('span',title,'s8-room-name'));
+    if(group)titleButton.append(h('span','（'+data.members.length+'）','s8-room-count'));
+    titleButton.setAttribute('aria-label',group?title+'，'+data.members.length+'位成员，查看群资料':title+'，查看资料');
+    titleNode.replaceChildren(titleButton,h('small',group?'群聊':'私聊','s8-room-meta'));
     const log=h('section',null,'s8-log');log.setAttribute('aria-label','聊天记录');main.append(log);
     const draft=drafts.get(key)||{text:'',picture:'',id:null};
     async function scoped(body){const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(body)});if(!response.ok){const result=await response.json().catch(()=>({}));throw Error(result.error||'操作失败，请重试');}}
@@ -64,7 +68,14 @@
     for(const msg of items){
       const divider=window.LycheeSocialApi.chatDivider(previous,msg.created,300000);previous=msg.created;if(divider)log.append(h('time',divider,'s8-time'));
       const mine=msg.authorId===me,row=h('article',null,'s8-msg'+(mine?' mine':''));
-      row.dataset.message=msg.id;messages.set(msg.id,msg);row.append(avatar(msg));row.append(h('small',(msg.name||'园友'),'s8-sender'));
+      row.dataset.message=msg.id;messages.set(msg.id,msg);
+      const member=group&&data.members.find(m=>m.id===msg.authorId);
+      const person=mine?home.me:(group?member||home.friends.find(f=>f.id===msg.authorId):data.friend);
+      if(person&&person.id===msg.authorId){
+        const chip=btn('',()=>ui.openPerson(person.id,member?id:undefined),'s8-chat-person');
+        chip.setAttribute('aria-label','查看'+person.name+'的资料');chip.append(avatar(person));row.append(chip);
+      }else row.append(avatar(msg));
+      row.append(h('small',person?.name||msg.name||'园友','s8-sender'));
       if(safePhoto(msg)){
         const button=btn('',()=>showImage(msg.imageUrl),'s8-photo-button');const im=h('img');im.src=msg.imageUrl;im.alt='聊天图片';im.loading='lazy';button.append(im);row.append(button);
       }
@@ -96,7 +107,7 @@
     log.onkeydown=e=>{if(e.key==='ContextMenu'||(e.shiftKey&&e.key==='F10')){e.preventDefault();actions(e.target.closest('.s8-msg'));}};
     let press,startX,startY;
     const cancel=()=>clearTimeout(press);
-    log.addEventListener('touchstart',e=>{cancel();if(e.touches.length!==1)return;startX=e.touches[0].clientX;startY=e.touches[0].clientY;const row=e.target.closest('.s8-msg');press=setTimeout(()=>{if(row?.isConnected)actions(row);},550);},{passive:true});
+    log.addEventListener('touchstart',e=>{cancel();if(e.touches.length!==1||e.target.closest('.s8-chat-person'))return;startX=e.touches[0].clientX;startY=e.touches[0].clientY;const row=e.target.closest('.s8-msg');press=setTimeout(()=>{if(row?.isConnected)actions(row);},550);},{passive:true});
     log.addEventListener('touchmove',e=>{if(Math.abs(e.touches[0].clientX-startX)+Math.abs(e.touches[0].clientY-startY)>10)cancel();},{passive:true});
     log.addEventListener('touchend',cancel);log.addEventListener('touchcancel',cancel);
     if(!data.messages.length)log.append(h('p','还没有消息。','s8-muted'));

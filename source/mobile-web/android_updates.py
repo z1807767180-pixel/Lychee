@@ -155,6 +155,7 @@ def prepare(release_path, packages, output):
             link_name = f"Lychee-Friends-A{version}.apk"
             (directory/link_name).write_bytes(apk)
         historical = {
+            "8.1.4": "409b7df2505a1efa0b355aae58b66121ae5bf4969c6498daa35ab00cab72d58c",
             "8.1.3": "21c89c05aaa028284b3e079860327d0642415cc80b5d65179869d00390fb6cb1",
             "8.0.0": "3a0b9149e8bf60b8e51acaa6b5274b9feb2d787100fcbb95e23240cb69abaf42",
             "8.1.2": "e9edd5e1ecc376bb24675ff42ae3b8fabad9589911d3587fc3717c09281a3ca7",

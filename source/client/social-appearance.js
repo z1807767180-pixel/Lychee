@@ -37,7 +37,7 @@
       const member=room?.members?.find(m=>m.id===id),groupIcon=member&&palettes.get(scope)?.icons[member.slot];
       return mine||groupIcon||fallback(id);
     }
-    function avatar(person){const id=person.authorId||person.id||person.name||'荔';const im=document.createElement('img');im.className='s8-photo s8-person';im.alt='';im.dataset.person=id;im.src=path(id);return im;}
+    function avatar(person){const id=person.authorId||person.id||person.name||'荔';const im=document.createElement('img');im.className='s8-photo s8-person';im.alt='';im.dataset.person=id;im.src=person.avatarUrl||path(id);if(person.avatarUrl)im.dataset.published='true';return im;}
     async function load(garden,force){
       const prior=palettes.get(garden);if(!garden||loading.has(garden)||(!force&&prior&&Date.now()-prior.time<90000))return;
       loading.add(garden);
@@ -47,7 +47,7 @@
         for(const [slot,index] of Object.entries(data.avatars||{}))if(Number.isInteger(index)&&index>=0&&index<16)icons[slot]=face(index);
         for(const [slot,rev] of Object.entries(data.portraits||{}))if(/^\d+$/.test(slot)&&/^[a-f0-9]{64}$/.test(rev))icons[slot]=url+'?portrait='+slot+'&rev='+rev;
         palettes.set(garden,{icons,time:Date.now()});
-        if(shell.isConnected)for(const im of shell.querySelectorAll('.s8-person')){const next=path(im.dataset.person);if(im.getAttribute('src')!==next)im.src=next;}
+        if(shell.isConnected)for(const im of shell.querySelectorAll('.s8-person:not([data-published])')){const next=path(im.dataset.person);if(im.getAttribute('src')!==next)im.src=next;}
       }catch{/* A missing picture never interferes with opening a conversation. */}finally{loading.delete(garden);}
     }
     function refresh(force=false){if(home){void load(home.accountToolsGardenId,force);if(scope)void load(scope,force);}}
