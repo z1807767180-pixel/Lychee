@@ -15,13 +15,39 @@ export function socialHistory(dataDir){
       }
       const all=db?(sql,...args)=>db.prepare(sql).all(...args):q.all;
       const prefix=db||id==='legacy'?'':'g_'+id.replaceAll('-','')+'_';
-      const names={goals:prefix+'v61_goals',binding:!db&&id==='legacy'?'mc_legacy_member_bindings':prefix+'garden_member_bindings',notes:prefix+'notes',details:prefix+'chat_details',pictures:prefix+'chat_pictures',shared:prefix+'goal',titles:prefix+'phone_garden'};
+      const names={goals:prefix+'v61_goals',binding:!db&&id==='legacy'?'mc_legacy_member_bindings':prefix+'garden_member_bindings',notes:prefix+'notes',details:prefix+'chat_details',pictures:prefix+'chat_pictures',shared:prefix+'goal',titles:prefix+'phone_garden',profile:prefix+'camp_profiles',style:prefix+'phone_style',portrait:prefix+'phone_portraits',...(!db&&id==='legacy'?{merged:'mc_legacy_all_profiles'}:{})};
       const tables=Object.values(names);
-      const found=new Set((await all("SELECT name FROM sqlite_master WHERE type='table' AND name IN ("+tables.map(()=>'?').join(',')+")",...tables)).map(x=>x.name));
+      const found=new Set((await all("SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name IN ("+tables.map(()=>'?').join(',')+")",...tables)).map(x=>x.name));
       return await callback(all,Object.fromEntries(Object.entries(names).filter(([,name])=>found.has(name))));
     }finally{db?.close();}
   }
+  // Cache only public profile metadata. Image bytes and access decisions never enter the cache.
+  const cachedPeople=new Map();
+  function cached(garden){
+    const hit=cachedPeople.get(garden);
+    if(hit&&hit.until>Date.now())return hit.rows;
+    cachedPeople.delete(garden);
+  }
   return {
+    cached,
+    invalidate(garden){cachedPeople.delete(garden);},
+    async people(q,garden){
+      const hit=cached(garden);if(hit)return hit;
+      const rows=await withTables(q,garden,async(all,t)=>{
+        if(!t.binding||!t.profile)return [];
+        return all('SELECT b.account,p.name,p.mood,p.avatar,p.day,'+(t.style?'s.avatar':'NULL')+' AS selected,'+(t.portrait?'u.revision':'NULL')+' AS revision FROM '+t.binding+' b JOIN '+(t.merged||t.profile)+' p ON p.id=CAST(b.slot AS TEXT)'+(t.style?' LEFT JOIN '+t.style+' s ON s.member=p.id':'')+(t.portrait?' LEFT JOIN '+t.portrait+' u ON u.member=p.id':''));
+      });
+      if(cachedPeople.size>=1000)cachedPeople.delete(cachedPeople.keys().next().value);
+      cachedPeople.set(garden,{rows,until:Date.now()+30000});
+      return rows;
+    },
+    async picture(q,garden,account,revision){
+      const rows=await withTables(q,garden,async(all,t)=>{
+        if(!t.binding||!t.portrait)return [];
+        return all('SELECT p.picture AS jpeg FROM '+t.portrait+' p JOIN '+t.binding+' b ON p.member=CAST(b.slot AS TEXT) WHERE b.account=? AND p.revision=?',account,revision);
+      });
+      return rows[0];
+    },
     async sharedGoals(q,groups){
       const plans=await Promise.all(groups.map(g=>withTables(q,g.id,async(all,t)=>{
         if(!t.shared)return [];
@@ -59,7 +85,14 @@ export function socialHistory(dataDir){
         const rows=await all('SELECT n.id,n.name,n.rowid AS ordinal,'+photo+' AS photo,'+body+" AS body,n.created FROM "+t.notes+" n"+details+" WHERE n.id GLOB 'chat.*' AND "+filter+" ORDER BY n.created,n.rowid",messageId||since);
         if(!rows.length)return [];
         const mapped=await q.all('SELECT account,slot FROM mc_members WHERE garden=? UNION SELECT account,slot FROM mc_retired_slots WHERE garden=?',garden,garden);
-        const members=new Map(mapped.map(r=>[String(r.slot),r.account]));
+        const bindings=t.binding?await all('SELECT slot,account FROM '+t.binding):[];
+        if(!bindings.length&&garden==='legacy')bindings.push(...await q.all('SELECT slot,account FROM mc_legacy_slots'));
+        const members=new Map();
+        for(const {slot,account} of mapped){
+          const key=String(slot);
+          if(bindings.some(b=>String(b.slot)===key&&b.account===account))
+            members.set(key,members.has(key)&&members.get(key)!==account?null:account);
+        }
         const mirror=await q.all("SELECT e.id,e.author FROM mc_v8_entries e WHERE e.kind='group' AND e.scope=? AND e.created>=?",garden,since-86400000);
         const native=new Map(mirror.map(e=>[e.id,e.author]));
         return rows.flatMap(r=>{

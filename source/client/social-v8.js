@@ -50,7 +50,9 @@
     }
     function back(){const prev=stack.pop()||{view:'home',params:{}};return go(prev.view,prev.params,true);}
     function tab(view){stack.length=0;return go(view,{},true);}
+    function openPerson(id,groupId){if(id)go('friendProfile',{id,groupId,tab:section()});}
     function section(){
+      if(route.params.tab&&['friendProfile','feed','post'].includes(route.view))return route.params.tab;
       if(['garden','post','feed','feedCompose','tree','goals','goalDetail','goalEdit'].includes(route.view))return 'garden';
       if(['tools','tool','history'].includes(route.view))return route.params.tab||'tools';
       if(['me','settings','friends','friendAdd','friendRequests','friendProfile','profile','funStatus','style','wallRestore','notifications','notices'].includes(route.view))return 'me';
@@ -73,27 +75,28 @@
       bar.append(h('h1',title));if(action)bar.append(action);
     }
     async function loadData(view,params){
-      if(['group','members','inviteGroup','groupPhotos'].includes(view))return api.read('group',{id:params.id});
-      if(view==='dm'||view==='post'||view==='friendProfile')return api.read(view,{id:params.id});
-      if(view==='feed')return api.read(view,{kind:params.kind});
+      if(['group','members','groupEdit','groupArt','groupMembers','inviteGroup','groupPhotos'].includes(view))return api.read('group',{id:params.id});
+      if(view==='friendProfile')return api.read(view,{id:params.id,...(params.groupId?{groupId:params.groupId}:{})});
+      if(view==='dm'||view==='post')return api.read(view,{id:params.id});
+      if(view==='feed')return api.read(view,{kind:params.kind,...(params.authorId?{authorId:params.authorId}:{}),...(params.before?{before:params.before}:{})});
       if(view==='tree')return api.read('tree',params.id?{id:params.id}:{});
       if(view==='notices')return access.listNotices();
       return null;
     }
     async function mark(view,params,data){
-      if(!foreground()||!data||!['group','dm','feed'].includes(view))return;
+      if(!foreground()||!data||(view==='feed'&&params.authorId)||!['group','dm','feed'].includes(view))return;
       const key=view+':'+(params.id||params.kind),marker=String(data.through||0)+'/'+String(data.legacyThrough||0);
       if(unreadPositions.get(key)===marker||marker==='0/0')return;
       const scope=view==='group'?{groupId:params.id}:view==='dm'?{friendId:params.id}:{kind:params.kind};
       await api.write('read',{...scope,through:data.through||0,legacyThrough:data.legacyThrough||0});
       unreadPositions.set(key,marker);
     }
-    const ui={h,btn,go,back,api,main,clock,mutate,formField,notice,header,prefs:appearance,avatar:appearance.avatar,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),legacyGame:(id,match)=>match?legacy(id,'quiz',true,match):go('tool',{dest:'quiz'}),repaint:()=>refresh(true)};
+    const ui={h,btn,go,back,api,main,clock,accountName:account.username,mutate,openPerson,formField,notice,header,prefs:appearance,avatar:appearance.avatar,legacy:(gardenId,detail)=>legacy(gardenId,detail,true),legacyGame:(id,match)=>match?legacy(id,'quiz',true,match):go('tool',{dest:'quiz'}),repaint:()=>refresh(true)};
     Object.defineProperties(ui,{home:{get:()=>home},route:{get:()=>route}});
     async function refresh(force=false){
       const token=++sequence,{view,params}=route,key=JSON.stringify(route);refreshing=true;
       try{
-        const details=!force&&view==='notices'?activeData:await loadData(view,params);
+        const details=!force&&['notices','groupEdit','groupArt'].includes(view)?activeData:await loadData(view,params);
         if(token!==sequence||!shell.isConnected)return;
         const chat=view==='dm'||view==='group';
         const editing=!force&&shell.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');
@@ -107,7 +110,7 @@
         if(home&&!force&&foreground()&&window.LycheeSocialPersonal.enabled(account.id))incoming(latest);
         home=latest;activeData=details;appearance.apply(latest,details?.group?details:null,chat);drawNav();
         const signature=JSON.stringify([key,home,details]);
-        if(!force&&(signature===snapshot||editing&&!chat||['tool','style','profile','funStatus','friendAdd','feedCompose','wallRestore','notifications','notices','goalEdit','joinGroup','createGroup'].includes(view)))return;
+        if(!force&&(signature===snapshot||editing&&!chat||['tool','style','profile','funStatus','friendAdd','feedCompose','wallRestore','notifications','notices','goalEdit','groupEdit','groupArt','joinGroup','createGroup'].includes(view)))return;
         snapshot=signature;const position=scroll.scrollTop,atEnd=scroll.scrollHeight-position-scroll.clientHeight<60;
         render(view,params,details,chat&&!force&&!!shell.querySelector('.s8-composer'));
         appearance.refresh();
@@ -116,7 +119,7 @@
       }catch(error){
         if(token!==sequence||!shell.isConnected)return;
         if(error.status===401){location.reload();return;}
-        if(force){header('荔圈');main.replaceChildren(h('p',error.message,'s8-panel'),btn('重试',()=>refresh(true)));}
+        if(force||error.status===403){header('荔圈');main.replaceChildren(h('p',error.message,'s8-panel'),btn('重试',()=>refresh(true)));}
         else notice(error.message||'暂时无法刷新');
         if(error.status===403&&window.lycheeShellSettings&&!window.lycheeAndroidShellVersion&&!main.querySelector('.s8-upgrade')){
           const a=h('a','检查安卓更新','s8-upgrade');a.href='lychee-android://settings/update';main.append(h('p','此安卓版本需要升级才能打开新版荔圈。'),a);
@@ -200,7 +203,7 @@
         if(!home.requests.length)main.append(h('p','暂无好友申请。','s8-panel'));return;
       }
       header('我的好友');main.append(row('添加好友','查找对方的账号名',()=>go('friendAdd'),'/mobile/nav-chat-on.webp'),row('好友申请','待处理 '+home.requests.filter(r=>r.direction==='incoming').length+' 条',()=>go('friendRequests'),'/mobile/ai-icon-write.webp'),heading('联系人'));
-      for(const f of home.friends){const button=row(f.name,'查看资料',()=>go('friendProfile',{id:f.id}));button.firstChild.replaceWith(appearance.avatar(f));main.append(button);}
+      for(const f of home.friends){const button=row(f.name,'查看资料',()=>openPerson(f.id));button.firstChild.replaceWith(appearance.avatar(f));main.append(button);}
       if(!home.friends.length)main.append(h('p','双方同意后，好友会出现在这里。','s8-panel'));
     }
     function groupForm(id,data){
@@ -215,17 +218,72 @@
         await go('group',{id:creating?result.id:id},true);}));
     }
     function members(id,data){
-      header('群详情',btn('邀请好友',()=>go('inviteGroup',{id})));const card=h('div',null,'s8-group-card');card.append(photo(data.group.cover),h('h2',data.group.name),h('small',data.members.length+' 位成员'));main.append(card,heading('群成员'));
-      for(const m of data.members){const box=h('div',null,'s8-row');box.append(appearance.avatar(m),h('strong',m.name),h('small',m.role==='owner'?'群主':'成员'));
-        if(m.friendStatus==='none')box.append(btn('加好友',calling(async()=>{await mutate('friendRequest',{accountId:m.id});await refresh(true);})));
-        if(m.friendStatus==='outgoing')box.append(h('small','已申请'));
-        if(m.friendStatus==='incoming')box.append(btn('同意好友申请',calling(async()=>{await mutate('friendAccept',{accountId:m.id});await refresh(true);})));
-        if(m.friendStatus==='friend')box.append(btn('私聊',()=>go('dm',{id:m.id})));
-        main.append(box);
-      }
+      const g=data.group;
+      header('群资料',btn('邀请好友',()=>go('inviteGroup',{id})));
+      const section=h('section',null,'s8-group-overview'),backdrop=h('img',null,'s8-group-hero');
+      backdrop.src=g.heroUrl||g.cover;backdrop.alt='';
+      const info=h('div',null,'s8-group-info'),labels=h('div');
+      labels.append(h('h2',g.name),h('small',g.subtitle||''));
+      info.append(photo(g.avatarUrl||g.cover,g.name+'群头像'),labels);
+      section.append(backdrop,info);main.append(section);
+      const people=row('群成员',data.members.length+' 人',()=>go('groupMembers',{id}));
+      people.setAttribute('aria-label','群成员');
+      const heads=h('div',null,'s8-member-strip');
+      for(const m of data.members.slice(0,6))heads.append(memberChip(m,id));
+      main.append(people,heads,row('群设置','群名、简介和邀请码',()=>go('groupEdit',{id}),'/mobile/nav-me-on.webp'),
+        row('群头像与主图','选择照片或使用 AI 生图',()=>go('groupArt',{id,kind:'avatar'}),g.avatarUrl||g.cover));
       if(data.pin)main.append(row('置顶消息',data.pin.body,()=>go('group',{id,locate:true})));
-      main.append(row('聊天图片','最近聊天中的图片',()=>go('groupPhotos',{id}),'/mobile/garden-feed.webp'));
-      main.append(btn('退出群聊',calling(async()=>{if(confirm('退出此群？现有好友关系会保留。')){await mutate('groupLeave',{groupId:id});await tab('home');}})));
+      main.append(row('聊天图片','最近聊天中的图片',()=>go('groupPhotos',{id}),'/mobile/garden-feed.webp'),
+        btn('退出群聊',calling(async()=>{if(confirm('退出此群？现有好友关系会保留。')){await mutate('groupLeave',{groupId:id});await tab('home');}})));
+    }
+    function memberChip(person,id){
+      const b=btn('',()=>openPerson(person.id,id),'s8-member-chip');
+      b.setAttribute('aria-label','查看'+person.name+'的资料');
+      b.append(appearance.avatar(person),h('small',person.name));return b;
+    }
+    function groupMembers(id,data){
+      header('群成员（'+data.members.length+'）');
+      for(const person of data.members){
+        const item=row(person.name,person.role==='owner'?'群主':'成员',()=>openPerson(person.id,id));
+        item.firstChild.replaceWith(appearance.avatar(person));main.append(item);
+      }
+    }
+    function groupEdit(id,data){
+      const g=data.group;header('群设置');
+      const name=input('text',40,g.name),subtitle=input('text',80,g.subtitle||'');name.required=true;
+      main.append(form('保存群资料',[formField('群聊名称',name),formField('群简介',subtitle)],async()=>{
+        try{await mutate('groupEdit',{groupId:id,revision:g.revision,name:name.value.trim(),subtitle:subtitle.value.trim()});}
+        catch(e){if(e.status===409){await refresh(true);notice('群资料刚更新过，请核对后再保存。');return;}throw e;}
+        await back();
+      }));
+      const panel=h('section',null,'s8-panel'),code=h('code'),actions=h('div',null,'s8-actions');panel.append(h('h2','群邀请码'),code,actions);main.append(panel);
+      function show(value){
+        code.textContent=value||'';actions.replaceChildren();
+        const update=btn(value?'更换邀请码':'获取邀请码',calling(async()=>{
+          if(value&&!confirm('更换后原邀请码立即失效，已加入的成员不受影响。'))return;
+          update.disabled=true;try{const result=await mutate('groupInviteCode',{groupId:id,rotate:!!value});if(panel.isConnected)show(result.code);}finally{update.disabled=false;}
+        }));
+        if(value&&navigator.clipboard?.writeText)actions.append(btn('复制邀请码',calling(async()=>{await navigator.clipboard.writeText(value);notice('已复制邀请码');})));
+        actions.append(update);
+      }
+      const read=calling(async()=>{const result=await api.read('groupInviteCode',{id});if(panel.isConnected)show(result.code);});
+      actions.append(btn('查看邀请码',read));
+    }
+    function groupArt(id,data,kind){
+      let g=data.group;header('群头像与主图');
+      const tabs=h('div',null,'s8-goal-tabs');main.append(tabs);
+      for(const [key,label] of [['avatar','群头像'],['hero','群主图']]){
+        const b=btn(label,()=>{if(key!==kind)go('groupArt',{id,kind:key},true);});b.setAttribute('aria-pressed',String(kind===key));tabs.append(b);
+      }
+      main.append(window.LycheeGroupArt.editor(ui,g,kind,async picture=>{
+        try{await mutate('groupEdit',{groupId:id,revision:g.revision,name:g.name,subtitle:g.subtitle||'',[kind]:picture});}
+        catch(e){
+          if(e.status!==409)throw e;
+          g=(await api.read('group',{id})).group;
+          throw Error('群资料刚有变化，已保留预览。再次确认可使用这张图片。');
+        }
+        if(route.view==='groupArt'&&route.params.id===id&&route.params.kind===kind)await back();
+      }));
     }
     function legacy(gardenId,detail,history=false,match){
       if(detail==='history'||detail==='garden')return go('history',{id:gardenId});
@@ -291,6 +349,9 @@
       if(view==='wallRestore')return window.LycheeSocialPersonal.restore(ui);
       if(view==='createGroup'||view==='inviteGroup')return groupForm(params.id,data);
       if(view==='members')return members(params.id,data);
+      if(view==='groupMembers')return groupMembers(params.id,data);
+      if(view==='groupEdit')return groupEdit(params.id,data);
+      if(view==='groupArt')return groupArt(params.id,data,params.kind||'avatar');
       if(view==='groupPhotos'){
         header('聊天图片');const endpoint=window.LycheeSocialAppearance.endpoint(home.me.id,params.id,'camp')+'?image=';
         const items=data.messages.filter(m=>m.imageUrl?.startsWith(endpoint)&&m.body!=='消息已撤回');

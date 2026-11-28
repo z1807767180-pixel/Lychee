@@ -147,7 +147,17 @@ def main(probe_fn=probe, background_flags=True):
         argv=c.create_unicode_buffer(subprocess.list2cmdline([exe] if official else [exe,'--test-local',origin]))
         check(create(exe,argv,None,None,False,0,None,str(Path(exe).parent),c.byref(si),c.byref(pi)))
         emit({'started':pi.pid,'privateDesktop':object_name(d),'inputDesktop':active_name})
-        if sys.stdin.readline().strip()!='probe':return
+        command=sys.stdin.readline().strip()
+        if command=='narrow':
+            hwnd=locate(d,pi.pid)
+            left,top,right,bottom=bounds(hwnd)
+            dpi=fn(u,'GetDpiForWindow',w.UINT,w.HWND)(hwnd)
+            check(position(hwnd,None,left,top,round(320*dpi/96),bottom-top,0x0014))
+            time.sleep(.3)
+            emit({'bounds':bounds(hwnd),'dpi':dpi})
+            sys.stdin.readline()
+            return
+        if command!='probe':return
         result=probe_fn(d,pi.pid);current=active_desktop_name()
         if current==name:raise RuntimeError('Test desktop became the input desktop.')
         emit({'edges':result,'inputDesktopAfter':current})

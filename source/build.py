@@ -212,7 +212,7 @@ def entry(text, mobile):
     original = '<script src="/mobile/phone.js?v=6.3.3" defer></script>' if mobile else '<script defer src="/windows/phone.js"></script>'
     includes = '<script defer src="/client/business-scope.js"></script>'
     includes += ''.join(f'<script defer src="/client/{n}"></script>' for n in
-                        ('social-v8-api.js','social-v8-plans.js','social-garden-posts.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-tools.js','social-personal.js','social-v8.js'))
+                        ('social-v8-api.js','social-v8-plans.js','social-garden-posts.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-tools.js','social-personal.js','social-group-art.js','social-v8.js'))
     includes += ''.join(f'<script defer src="/client/{name}"></script>' for name in TOOL_SCRIPTS)
     styles = ''.join(f'<link rel="stylesheet" href="/client/{name}">' for name in (*TOOL_STYLES,'social-v8.css','social-v8-garden.css','social-tools.css'))
     if mobile:
@@ -271,7 +271,7 @@ def build(out):
         files["windows/" + name] = (ROOT / "desktop" / name).read_bytes()
     files["index.html"] = b'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/mobile/">'
     for name in ("business-scope.js", "garden.js", "garden.css", "toolbox-cards.css", "responsive-text.css", "typography.css",
-                 'social-v8.js','social-v8-api.js','social-v8-plans.js','social-garden-posts.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-tools.js','social-personal.js','social-v8.css','social-v8-garden.css','social-tools.css',*SOCIAL_ART,
+                 'social-v8.js','social-v8-api.js','social-v8-plans.js','social-garden-posts.js','social-v8-garden.js','social-appearance.js','social-chat.js','social-tools.js','social-personal.js','social-group-art.js','social-v8.css','social-v8-garden.css','social-tools.css',*SOCIAL_ART,
                  *TOOL_SCRIPTS, *TOOL_STYLES, *TOOL_IMAGES):
         files["client/" + name] = (ROOT / "client" / name).read_bytes()
     # Use the original six emoji categories in both the social and legacy chat composers.

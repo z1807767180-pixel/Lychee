@@ -6,6 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
+import {inflateSync} from 'node:zlib';
 import {createApp} from '../server/index.mjs';
 import {startTursoFixture} from './turso-fixture.mjs';
 
@@ -199,6 +200,62 @@ for(const storage of ['sqlite','turso'])test('三账号两群真实会话、持�
       console.log('同一账号两群首页的 Turso HTTP 往返数',fixture.counts.pipelines-before);
     }
     assert.equal((await get(b,{view:'dm',id:a.id})).messages[0].id,dm.id);
+    // Both storage adapters serve the same member/profile permissions and workspace records.
+    const outsider=await register('社交丁'),profile=(who,target,context)=>get(who,{view:'friendProfile',id:target.id,...(context?{groupId:context}:{})});
+    const bTools=(await get(b)).accountToolsGardenId;
+    await api(scoped(b,bTools,'camp'),{type:'profile',name:'桂味青禾',mood:'听雨',avatar:0,action:'挥手'},b.cookie);
+    await api(scoped(b,bTools,'phone'),{type:'avatar',avatar:12},b.cookie);
+    const publicCard=await profile(c,b,ga);
+    assert.equal(publicCard.person.name,'桂味青禾');assert.equal(publicCard.person.mood,'听雨');
+    assert.equal(publicCard.person.avatarUrl,'/mobile/face-12.webp');assert.ok(!('username' in publicCard.person));
+    assert.deepEqual(publicCard.posts,[]);assert.equal(publicCard.canSeeFeed,false);
+    await get(outsider,{view:'friendProfile',id:b.id},403);
+    await get(c,{view:'friendProfile',id:b.id,groupId:gb},403);
+    await get(c,{view:'feed',kind:'feed',authorId:b.id},403);
+    await act(b,'friendRequest',{accountId:c.id});
+    assert.equal((await profile(c,b,ga)).person.friendStatus,'incoming');assert.equal((await profile(b,c,ga)).person.friendStatus,'outgoing');
+    await act(c,'friendAccept',{accountId:b.id});
+    const portraitJpeg = inflateSync(Buffer.from('eJz7f+P/AwYBLzdPNwZGRgYGRiBk+H+bwZmBg42NnY2Vg52dnZOTg4tHhJeHm5tHUkiYX0RWSl5OVkpGRkFFT11BSUdZRkbDXFPHwNDExERe3dLWwshGz9jECGQIIycnJw83jwQvr4SRooyiEcng/wEGQQ5GB0YHZkYlBiZBRmZBxv9HGETBTkUBbEBhEQF0UQaQYkbsigUxFd9i4GFmBFrDLMhgz9DFaNKPrmIUjALKAfv/mwAiqCr6','base64')).toString('base64');
+    await api(scoped(b,bTools,'phone'),{type:'portrait',picture:portraitJpeg},b.cookie);
+    const portrait=(await profile(c,b,ga)).person.avatarUrl,raw=await getPic(portrait,c.cookie);
+    assert.equal(raw.status,200);assert.equal(Buffer.from(await raw.arrayBuffer()).toString('base64'),portraitJpeg);
+    assert.equal((await getPic(portrait.replace(c.id,outsider.id),outsider.cookie)).status,403);
+    assert.equal((await getPic(portrait.replace(/rev=[a-f0-9]{64}/,'rev='+'0'.repeat(64)),c.cookie)).status,404);
+    const recent=[];
+    for(let n=0;n<31;n++)recent.push((await act(b,'post',{kind:'feed',body:'好友动态'+n,clientId:randomUUID(),...(n===30?{photo:picture}:{})})).id);
+    const card=await profile(c,b,ga);assert.equal(card.person.friendStatus,'friend');assert.equal(card.canSeeFeed,true);
+    assert.deepEqual(card.posts.map(p=>p.id),recent.slice(-4).reverse());assert.ok(card.posts[0].photoUrl);
+    await act(c,'postReact',{postId:recent[30],emoji:'❤️',active:true});
+    await act(c,'reply',{postId:recent[30],body:'果然好看',clientId:randomUUID()});
+    const full=await get(c,{view:'feed',kind:'feed',authorId:b.id});
+    assert.equal(full.items.length,30);assert.ok(full.nextBefore);
+    assert.equal(full.items[0].preview[0].body,'果然好看');assert.ok(full.items[0].reactions[0].mine);
+    const earlier=await get(c,{view:'feed',kind:'feed',authorId:b.id,before:full.nextBefore});
+    assert.ok(earlier.items.some(x=>x.id===recent[0]));assert.equal(earlier.nextBefore,null);
+    assert.ok(full.items.every(x=>x.authorId===b.id));assert.ok(!full.items.some(x=>x.id===recent[0]));
+    assert.equal((await profile(b,b)).person.friendStatus,'self');
+    const view=await groupView(c,ga),hero=(await readFile(new URL('../source/web/mobile/sticker-1.jpg',import.meta.url))).toString('base64');
+    assert.equal(view.group.role,'member');
+    const save={groupId:ga,revision:view.group.revision,name:'新群名',subtitle:'两端同看',avatar:picture,hero};
+    await act(outsider,'groupEdit',save,403);
+    await act(c,'groupEdit',{...save,hero:'bad'},400);
+    assert.equal((await groupView(c,ga)).group.revision,save.revision);
+    await act(c,'groupEdit',save);await act(b,'groupEdit',save,409);
+    assert.ok((await workspace(b,null)).gardens.some(g=>g.name==='新群名'&&g.revision===save.revision+1));
+    const v=(await groupView(c,ga)).group;assert.equal(v.cover,v.avatarUrl);assert.notEqual(v.avatarUrl,v.heroUrl);
+    for(const [address,img] of [[v.avatarUrl,picture],[v.heroUrl,hero]]){
+      const response=await getPic(address,c.cookie);assert.deepEqual(Buffer.from(await response.arrayBuffer()).toString('base64'),img);
+      const headers={cookie:c.cookie,'if-none-match':response.headers.get('etag')};
+      assert.equal((await app.handle(new Request(origin+address,{headers}))).status,304);
+      assert.equal((await getPic(address.replace(c.id,outsider.id),outsider.cookie)).status,403);
+    }
+    await workspace(c,{action:'edit',gardenId:ga,revision:v.revision,name:'旧入口改名',subtitle:'沿用'});
+    assert.equal((await groupView(b,ga)).group.name,'旧入口改名');
+    const currentCode=await get(c,{view:'groupInviteCode',id:ga});
+    assert.equal(currentCode.code,(await workspace(b,{action:'invite',gardenId:ga})).inviteCode);
+    const replacement=await act(c,'groupInviteCode',{groupId:ga,rotate:true});
+    assert.notEqual(currentCode.code,replacement.code);assert.equal((await workspace(c,{action:'invite',gardenId:ga})).inviteCode,replacement.code);
+    await get(outsider,{view:'groupInviteCode',id:ga},403);
     // Break an ownership link in this synthetic fixture. Read-only aggregation
     // must skip that garden, not infer a match from the numeric slot alone.
     const prefix=fixture?'g_'+ga.replaceAll('-','')+'_':'';

@@ -213,8 +213,9 @@ export async function createApp({dataDir,storage='sqlite',turso,webRoot=join(pro
       if(request.headers.has('content-type'))headers.set('content-type',request.headers.get('content-type'));
       const normalized=new Request(canonical,{method:request.method,headers,
         body:request.method==='POST'?await request.arrayBuffer():undefined});
-      const note=request.method==='POST'&&canonical.pathname==='/api/camp'?await normalized.clone().json().catch(()=>null):null;
+      const note=request.method==='POST'&&['/api/camp','/api/phone'].includes(canonical.pathname)?await normalized.clone().json().catch(()=>null):null;
       const response=await domains.handle(normalized,member);
+      if(response.ok&&['profile','avatar','portrait'].includes(note?.type))stores.social.invalidateProfile(member.gardenId);
       if(response.ok&&note?.type==='recall')await stores.social.recall(member,note.id);
       if(response.ok&&request.method==='POST'&&!tools)void stores.push.signal(member.gardenId);
       const safe=new Headers(response.headers);safe.set('cache-control','private, no-store');safe.delete('set-cookie');safe.set('x-content-type-options','nosniff');

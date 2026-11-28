@@ -264,5 +264,5 @@
     else direct();
     return ()=>{disposed=true;clear();};
   }
-  window.LycheeSocialTools={mount,invitation,title:dest=>titles[dest]};
+  window.LycheeSocialTools={mount,invitation,loadRuntime,scopedWindow,title:dest=>titles[dest]};
 })();

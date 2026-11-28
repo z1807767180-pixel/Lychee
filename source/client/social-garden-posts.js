@@ -135,6 +135,13 @@
   }
   function feed(ui,data){
     const kind=ui.route.params.kind,question=kind==='questions',write=()=>ui.go('feedCompose',{kind});
+    if(ui.route.params.authorId){
+      ui.header((ui.route.params.name||'园友')+'的园中事');
+      if(!data.items.length)ui.main.append(ui.h('p','暂无动态。','s8-panel'));
+      for(const item of data.items)ui.main.append(feedCard(ui,item));
+      if(data.nextBefore)ui.main.append(ui.btn('更早的动态',()=>ui.go('feed',{...ui.route.params,before:data.nextBefore})));
+      return;
+    }
     heading(ui,question?'问一问':'园中事','荔枝园',question?'garden-question.webp':'nav-garden-on.webp',
       data.items.length||question?ui.btn(question?'我来问':'发动态',write,'s8-primary'):null);
     if(question){ui.main.append(prompt(ui),ui.h('h2','好友的问题','g81-subhead'));}

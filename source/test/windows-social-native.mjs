@@ -14,7 +14,7 @@ import {listen} from '../server/index.mjs';
 import {Browser} from './edge.mjs';
 
 const [packageDir,evidenceDir,...flags]=process.argv.slice(2);
-const manual=flags.includes('--manual-official');
+const manual=flags.includes('--manual-official'),narrow=flags.includes('--group-narrow');
 const websiteOnly=manual||flags.includes('--website-only'),fromDir=flags.find(value=>!value.startsWith('--'));
 if(manual&&!fromDir)throw Error('The manual upgrade requires an earlier portable release folder.');
 if(!packageDir||!evidenceDir||process.platform!=='win32')throw Error('Pass final Windows package folder, evidence folder, optional older source package folder.');
@@ -25,7 +25,7 @@ const digest=async p=>createHash('sha256').update(await readFile(p)).digest('hex
 const work=await mkdtemp(join(tmpdir(),'lychee-social-wpf-')),exe=join(work,'Lychee.exe'),profile=join(work,'profile'),tmp=join(work,'tmp');
 await mkdir(out,{recursive:true});await mkdir(tmp);await mkdir(profile);
 await copyFile(join(fromDir||base,'Lychee.exe'),exe);
-const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:manual?'manual-official-upgrade':prior?(websiteOnly?'public-upgrade-website-only':'public-upgrade'):websiteOnly?'current-website-only':'native-social',pass:false};
+const report={from:prior?.version??build.version,to:build.version,startHash:await digest(exe),mode:narrow?'narrow-group-card':manual?'manual-official-upgrade':prior?(websiteOnly?'public-upgrade-website-only':'public-upgrade'):websiteOnly?'current-website-only':'native-social',pass:false};
 assert.equal(report.startHash,prior?prior.assets.find(a=>a.kind==='exe').sha256:wanted);
 if(manual){
   report.manualRequests=[];
@@ -178,6 +178,21 @@ try{
   await shot('01-统一首页');
   await click('桂味朋友群');await until(()=>browser.js("document.querySelector('.s8-msg')?.innerText.includes('周末一起吃荔枝')"),'原群消息');
   await shot('02-群聊');
+  if(narrow){
+    host.stdin.write('narrow\n');const geometry=JSON.parse((await log.next()).value);
+    assert.equal(geometry.bounds[2]-geometry.bounds[0],Math.round(320*geometry.dpi/96));
+    await until(()=>browser.js("window.innerWidth<=320"),'窗口调整为 320');
+    const title=await browser.js("document.querySelector('.s8-room-title').getAttribute('aria-label')");
+    for(const label of [title,'群详情']){
+      await click(label);
+      await until(()=>browser.js("document.querySelector('.s8-header h1')?.textContent==='群资料'"),'打开群资料');
+      assert.ok(await browser.js("document.querySelector('.s8-content').innerText.includes('桂味朋友群')"));
+      await shot(label===title?'04-标题进入群资料':'05-设置进入群资料');
+      await click('‹ 返回');
+    }
+    report.nativeBounds=geometry;report.cssWidth=await browser.js('window.innerWidth');
+    report.groupLinks=[title,'群详情'];report.pass=true;
+  }else{
   if(build.version==='8.1.3'){
     report.chat=[await sendChatSticker('group')];await click('返回');await click(cc.name);
     report.chat.push(await sendChatSticker('dm'));await click('返回');
@@ -211,6 +226,7 @@ try{
     if(manual||report.from.localeCompare('8.1.2','en',{numeric:true})>=0)assert.ok(report.connections.every(c=>c.allowed));
     else assert.ok(report.connections.some(c=>!c.allowed&&c.host==='raw.githubusercontent.com:443'));
     assert.ok(report.connections.some(c=>c.allowed&&c.host===new URL(origin).hostname+':443'));
+  }
   }
   report.localAccountRequests=requests;report.pass=true;
 }catch(error){report.error=error.message;report.visible=await browser?.js('document.body.innerText.slice(-900)').catch(()=>null);process.exitCode=1;}

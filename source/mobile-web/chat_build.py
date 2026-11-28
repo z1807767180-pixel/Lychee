@@ -86,7 +86,7 @@ def direct_runtime(files, *, windows=False):
       else if(dest==="focus"||dest==="ledger")page=h(dest==="focus"?GardenFocus:GardenLedger,{day:ctx.day});
       else if(dest==="tasks"||dest==="notifications")page=h(V61Page,{mode:dest==="tasks"?"Tasks":"Notifications",onOpen:row=>ctx.openNotice(row)});
       else if(dest==="ai-chat"||dest==="ai-image")page=h(A62,{mode:dest==="ai-chat"?"Chat":"ImagePage",
-        initialRatio:ctx.wallpaperMode?"9:16":undefined,onApply:picture=>ctx.wallpaper(picture)});
+        initialRatio:ctx.imageRatio||(ctx.wallpaperMode?"9:16":undefined),context:!!ctx.imageRatio,onApply:picture=>ctx.wallpaper(picture)});
       else if(dest==="quiz")page=h(window.LycheeQuizV7,{React:Ee,initialId:ctx.match.id,friendPlay:ctx.friendPlay,avatarFor:id=>ctx.avatar(players.find(p=>p.id===String(id)))});
       else if(dest==="gomoku")page=h(vn,{...common,backLabel:"工具箱"});
       else if(dest==="soup")page=h(bn,common);
